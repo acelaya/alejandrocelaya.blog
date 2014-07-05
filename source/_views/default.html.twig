@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="{{ site.url }}/css/style.css" rel="stylesheet" type="text/css" />
+        <link href="{{ site.url }}/assets/css/main.css" rel="stylesheet" type="text/css" />
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
             <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -47,12 +47,18 @@
                 </div>
             </nav>
         </header>
-        <div class="container">
+        <div id="brand">
+            <div class="container">
+                <h1><a href="{{ site.url }}/">{{ site.title }}</a></h1>
+            </div>
+        </div>
+        <div class="container" id="main">
             <div class="row">
                 <div class="col-md-9">
                     {% block content_wrapper %}{% block content %}{% endblock %}{% endblock %}
                 </div>
                 <div class="col-md-3 sidebar">
+                    <img src="http://www.alejandrocelaya.com/img/me.jpg" class="thumbnail">
                     <div class="well">
                         <h4>{{ site.title }}{% if site.subtitle %} <small>{{ site.subtitle }}</small>{% endif %}</h4>
                     </div>
@@ -77,7 +83,7 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script src="{{ site.url }}/js/main.js"></script>
+        <script src="{{ site.url }}/assets/js/main.js"></script>
         {% block scripts %}{% endblock %}
 
         {% if site.google_analytics_tracking_id %}

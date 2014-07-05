@@ -1,8 +1,8 @@
 {% extends "default" %}
 {% block content_wrapper %}
-    <article>
+    <article class="post">
         <header>
-            <h2>{{ page.title }} <small>post</small></h2>
+            <h2 class="post-title">{{ page.title }} <small>post</small></h2>
         </header>
         <div>
             {{ page.blocks.content|raw }}

@@ -1,12 +1,25 @@
-h4 small
-{
+h4 small {
     display: block;
     font-size: 60%;
     color: #888;
 }
 
-body {
-    padding-top: 70px;
+#main {
+    margin-top: 20px;
+}
+
+#brand {
+    margin-top: 50px;
+    height: 100px;
+    background-color: #2972b0;
+}
+#brand h1 {
+    line-height: 100px;
+    margin: 0;
+}
+#brand h1 a {
+    color: #fff !important;
+    text-decoration: none;
 }
 
 #search-form > .form-group {
@@ -45,4 +58,24 @@ body {
     .navbar input[type=text]:focus {
         width: 300px;
     }
+}
+
+.sidebar .thumbnail {
+    margin-top: -90px;
+    max-width: 100%;
+}
+@media (max-width: 991px) {
+    .sidebar .thumbnail {
+        display: none;
+    }
+}
+
+.post {
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.post:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
 }
