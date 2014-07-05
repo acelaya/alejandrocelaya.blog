@@ -8,9 +8,9 @@ use:
     - posts
 ---
 {% for post in page.pagination.items %}
-    <article>
+    <article class="post">
         <header>
-            <h2><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></h2>
+            <h2 class="post-title"><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></h2>
         </header>
         <div>
             {{ post.blocks.content|raw }}
