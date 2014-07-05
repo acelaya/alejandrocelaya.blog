@@ -9,24 +9,40 @@ body {
     padding-top: 70px;
 }
 
-/*.mainContent, footer.container {*/
-    /*max-width: 900px;*/
-/*}*/
-
-/*footer.container {*/
-    /*margin-top: 30px;*/
-    /*padding: 30px 0;*/
-    /*border-top: 1px dashed #aaa;*/
-/*}*/
-
-/*@media (max-width: 767px) {*/
-    /*.sidebar {*/
-        /*padding-top: 30px;*/
-    /*}*/
-/*}*/
-/*@media (min-width: 980px) {*/
-    /*body {*/
-        /*padding-top: 60px; *//* 60px to make the container go all the way to the bottom of the topbar */
-        /*padding-bottom: 40px;*/
-    /*}*/
-/*}*/
+#search-form > .form-group {
+    position: relative;
+}
+#search-form .fa-search {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 10px;
+    display: block;
+    height: 34px;
+    line-height: 32px;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+}
+#search-form input[type=text] {
+    background-color: #444;
+    border-color: #222;
+    padding-right: 40px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: background-color ease-in-out .3s, width ease-in-out .3s;
+    -o-transition: background-color ease-in-out .3s, width ease-in-out .3s;
+    transition: background-color ease-in-out .3s, width ease-in-out .3s;
+}
+#search-form input[type=text]:focus {
+    background-color: #ffffff;
+    border-color: #222;
+}
+@media (min-width: 768px) {
+    .navbar input[type=text] {
+        width: 200px;
+    }
+    .navbar input[type=text]:focus {
+        width: 300px;
+    }
+}
