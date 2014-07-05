@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}{{ page.title }}{% endblock %} &mdash; {{ site.title }} &mdash; {{ site.subtitle }}</title>
+        <title>{{ site.title }} &mdash; {{ site.subtitle }}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="{{ site.url }}/css/style.css" rel="stylesheet" type="text/css" />
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -12,10 +13,6 @@
         <![endif]-->
         <link rel="stylesheet" href="{{ site.url }}/components/highlightjs/styles/github.css" />
         <link rel="alternate" type="application/atom+xml" href="{{ site.url }}/atom.xml" title="{{ site.title }} activity feed" />
-        <style>
-        /** quick fix because bootstrap <pre> has a background-color. */
-        pre code { background-color: inherit; }
-        </style>
     </head>
     <body>
         <header>
@@ -42,10 +39,10 @@
         </header>
         <div class="mainContent container">
             <div class="row-fluid">
-                <div class="span8">
+                <div class="col-md-9">
                     {% block content_wrapper %}{% block content %}{% endblock %}{% endblock %}
                 </div>
-                <div class="span4 sidebar">
+                <div class="col-md-3 sidebar">
                     <div class="well">
                         <h4>{{ site.title }}{% if site.subtitle %} <small>{{ site.subtitle }}</small>{% endif %}</h4>
                     </div>

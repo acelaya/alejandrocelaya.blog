@@ -5,7 +5,9 @@ h4 small
     color: #888;
 }
 
-
+body {
+    padding-top: 70px;
+}
 
 /*.mainContent, footer.container {*/
     /*max-width: 900px;*/
