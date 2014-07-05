@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{ site.title }} &mdash; {{ site.subtitle }}</title>
+        <title>{% block title %}{{ site.title }} &mdash; {{ site.subtitle }}{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -27,10 +27,8 @@
                         <a class="brand" href="{{ site.url }}/">{{ site.title }}</a>
                         <div class="nav-collapse collapse">
                             <ul class="nav">
-                                <li><a href="{{ site.url }}/blog">Posts Archive</a></li>
-                                <li><a href="{{ site.url }}/blog/categories">Categories</a></li>
-                                <li><a href="{{ site.url }}/blog/tags">Tags</a></li>
-                                <li><a href="{{ site.url }}/about">About</a></li>
+                                <li><a href="{{ site.url }}/categories">Categories</a></li>
+                                <li><a href="{{ site.url }}/tags">Tags</a></li>
                             </ul>
                         </div><!--/.nav-collapse -->
                     </div>
@@ -49,8 +47,8 @@
                     <div class="well sidebar-nav">
                         <h4>Links</h4>
                         <ul class="nav">
-                            <li><a href="http://sculpin.io">sculpin.io</a></li>
-                            <li><a href="http://twitter.com/getsculpin">@getsculpin</a></li>
+                            <li><a href="http://www.alejandrocelaya.com">www.alejandrocelaya.com</a></li>
+                            <li><a href="https://twitter.com/acelayaa">@acelayaa</a></li>
                         </ul>
                     </div>
                 </div>
@@ -62,21 +60,20 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        {% block scripts %}
-        {% endblock %}
+        {% block scripts %}{% endblock %}
 
         {% if site.google_analytics_tracking_id %}
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', '{{ site.google_analytics_tracking_id }}']);
-            _gaq.push(['_trackPageview']);
+            <script type="text/javascript">
+                var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', '{{ site.google_analytics_tracking_id }}']);
+                _gaq.push(['_trackPageview']);
 
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
-        </script>
+                (function() {
+                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                })();
+            </script>
         {% endif %}
         <script src="{{ site.url }}/components/highlightjs/highlight.pack.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
