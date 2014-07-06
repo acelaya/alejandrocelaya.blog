@@ -47,70 +47,76 @@
                 </div>
             </nav>
         </header>
-        <div id="brand">
-            <div class="container">
-                <h1><a href="{{ site.url }}/">{{ site.title }}</a></h1>
-            </div>
-        </div>
-        <div class="container" id="main">
-            <div class="row">
-                <div class="col-md-9">
-                    {% block content_wrapper %}{% block content %}{% endblock %}{% endblock %}
+
+        <div id="wrap">
+            <div id="brand">
+                <div class="container">
+                    <h1><a href="{{ site.url }}/">{{ site.title }}</a></h1>
                 </div>
-                <div class="col-md-3 sidebar">
-                    <img src="http://www.alejandrocelaya.com/img/me.jpg" class="thumbnail">
-                    <ul class="list-unstyled social-list">
-                        <a target="_blank" href="https://www.linkedin.com/pub/alejandro-celaya-alastru%C3%A9/63/552/257">
-                            <li class="social-element" id="linkedin">
-                                <i class="fa fa-linkedin"></i>
-                            </li>
-                        </a>
-                        <a target="_blank" href="http://www.zend.com/en/yellow-pages/ZEND021590">
-                            <li class="social-element" id="php">
-                                <i class="fa fa-code"></i>
-                            </li>
-                        </a>
-                        <a target="_blank" href="https://github.com/acelaya/">
-                            <li class="social-element" id="github">
-                                <i class="fa fa-github-alt"></i>
-                            </li>
-                        </a>
-                        <a target="_blank" href="https://plus.google.com/+AlejandroCelaya?rel=author">
-                            <li class="social-element" id="google">
-                                <i class="fa fa-google-plus"></i>
-                            </li>
-                        </a>
-                        <a target="_blank" href="https://twitter.com/acelayaa">
-                            <li class="social-element" id="twitter">
-                                <i class="fa fa-twitter"></i>
-                            </li>
-                        </a>
-                        <a href="{{ site.url }}/atom.xml">
-                            <li class="social-element" id="rss">
-                                <i class="fa fa-rss"></i>
-                            </li>
-                        </a>
-                    </ul>
-                    <div class="well">
-                        <h4>{{ site.title }}{% if site.subtitle %} <small>{{ site.subtitle }}</small>{% endif %}</h4>
+            </div>
+            <div class="container" id="main">
+                <div class="row">
+                    <div class="col-md-9">
+                        {% block content_wrapper %}{% block content %}{% endblock %}{% endblock %}
                     </div>
-                    <div class="well">
-                        <h4>Links</h4>
-                        <ul class="nav">
-                            <li><a href="http://www.alejandrocelaya.com">www.alejandrocelaya.com</a></li>
-                            <li><a href="https://twitter.com/acelayaa">@acelayaa</a></li>
+                    <div class="col-md-3 sidebar">
+                        <img src="http://www.alejandrocelaya.com/img/me.jpg" class="thumbnail">
+                        <ul class="list-unstyled social-list">
+                            <a target="_blank" href="https://www.linkedin.com/pub/alejandro-celaya-alastru%C3%A9/63/552/257">
+                                <li class="social-element" id="linkedin">
+                                    <i class="fa fa-linkedin"></i>
+                                </li>
+                            </a>
+                            <a target="_blank" href="http://www.zend.com/en/yellow-pages/ZEND021590">
+                                <li class="social-element" id="php">
+                                    <i class="fa fa-code"></i>
+                                </li>
+                            </a>
+                            <a target="_blank" href="https://github.com/acelaya/">
+                                <li class="social-element" id="github">
+                                    <i class="fa fa-github-alt"></i>
+                                </li>
+                            </a>
+                            <a target="_blank" href="https://plus.google.com/+AlejandroCelaya?rel=author">
+                                <li class="social-element" id="google">
+                                    <i class="fa fa-google-plus"></i>
+                                </li>
+                            </a>
+                            <a target="_blank" href="https://twitter.com/acelayaa">
+                                <li class="social-element" id="twitter">
+                                    <i class="fa fa-twitter"></i>
+                                </li>
+                            </a>
+                            <a href="{{ site.url }}/atom.xml">
+                                <li class="social-element" id="rss">
+                                    <i class="fa fa-rss"></i>
+                                </li>
+                            </a>
                         </ul>
+                        <div class="well">
+                            <h4>{{ site.title }}{% if site.subtitle %} <small>{{ site.subtitle }}</small>{% endif %}</h4>
+                        </div>
+                        <div class="well">
+                            <h4>Links</h4>
+                            <ul class="nav">
+                                <li><a href="http://www.alejandrocelaya.com">www.alejandrocelaya.com</a></li>
+                                <li><a href="https://twitter.com/acelayaa">@acelayaa</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div id="push"></div>
         </div>
-        <footer class="container">
-            {% set start = 2014 %}
-            {% set end = "now"|date("Y") %}
-            <span class="pull-right">
-                &copy; {{ end == start ? end : start ~ " - " ~ end }}
-                <a target="_blank" href="http://www.alejandrocelaya.com">{{ site.my_full_name}}</a>
-            </span>
+
+        <footer id="footer">
+            <div class="container">
+                {% set start = 2014 %}
+                {% set end = "now"|date("Y") %}
+                <span class="pull-right">
+                    &copy; {{ end == start ? end : start ~ " - " ~ end }} {{ site.my_full_name}}
+                </span>
+            </div>
         </footer>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
