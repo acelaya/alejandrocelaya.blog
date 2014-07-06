@@ -210,3 +210,6 @@ body, html {
 .post .other-articles {
     margin-bottom: 0;
 }
+.post .post-title {
+    text-align: justify;
+}
