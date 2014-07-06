@@ -25,7 +25,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand async" href="http://www.alejandrocelaya.com">{{ site.my_name }}</a>
+                        <a class="navbar-brand async" href="{{ site.url }}/">Blog</a>
                         <div class="preloader"></div>
                     </div>
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -112,10 +112,9 @@
 
         <footer id="footer">
             <div class="container">
-                {% set start = 2014 %}
-                {% set end = "now"|date("Y") %}
+                &copy; {{ "now" | date("Y") }} <a href="http://www.alejandrocelaya.com">{{ site.my_full_name}}</a>
                 <span class="pull-right">
-                    &copy; {{ end == start ? end : start ~ " - " ~ end }} {{ site.my_full_name}}
+                    Powered by <a target="_blank" href="https://sculpin.io">Sculpin</a>
                 </span>
             </div>
         </footer>
