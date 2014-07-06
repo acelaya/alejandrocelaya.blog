@@ -7,49 +7,67 @@
         <div>
             {{ page.blocks.content|raw }}
         </div>
-        {% if page.categories %}
-            <p class="categories">
-            Categories:
-            {% for category in page.categories %}
-            <a href="{{ site.url }}/category/{{ category|url_encode(true) }}">{{ category }}</a>{% if not loop.last %}, {% endif %}
-            {% endfor %}
-            </p>
-        {% endif %}
-        {% if page.tags %}
-            <p class="tags">
-            Tags:
-            {% for tag in page.tags %}
-            <a href="{{ site.url }}/tag/{{ tag|url_encode(true) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
-            {% endfor %}
-            </p>
-        {% endif %}
+
+        <fieldset class="share">
+            <legend><small class="text-muted">If you liked this article, share it</small></legend>
+            <div class="buttons">
+                <a href="#" class="btn btn-sm btn-social btn-facebook">
+                    <i class="fa fa-facebook"></i> Facebook
+                </a>
+                <a href="#" class="btn btn-sm btn-social btn-twitter">
+                    <i class="fa fa-twitter"></i> Twitter
+                </a>
+                <a href="#" class="btn btn-sm btn-social btn-google-plus">
+                    <i class="fa fa-google-plus"></i> Google+
+                </a>
+                <a href="#" class="btn btn-sm btn-social btn-linkedin">
+                    <i class="fa fa-linkedin"></i> LinkedIn
+                </a>
+            </div>
+        </fieldset>
+
+        <hr>
+
+        <ul class="list-unstyled">
+            {% if page.categories %}
+                <li class="categories">
+                    <span class="text-muted">Categories:</span>
+                    {% for category in page.categories %}
+                        <a href="{{ site.url }}/category/{{ category|url_encode(true) }}">{{ category }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </li>
+            {% endif %}
+            {% if page.tags %}
+                <li class="tags">
+                    <span class="text-muted">Tags:</span>
+                    {% for tag in page.tags %}
+                        <a href="{{ site.url }}/tag/{{ tag|url_encode(true) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </li>
+            {% endif %}
+        </ul>
 
         {% if page.previous_post or page.next_post %}
-            <nav class="article">
-                <ul>
-                    {% if page.next_post %}
-                        <li>Next: <a class="next" href="{{ site.url }}{{ page.next_post.url }}" title="{{ page.next_post.title }}"><span class="title">{{ page.next_post.title }}</span></a></li>
-                    {% endif %}
-                    {% if page.previous_post %}
-                        <li>Previous: <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}" title="{{ page.previous_post.title }}"><span class="title">{{ page.previous_post.title }}</span></a></li>
-                    {% endif %}
+            <nav class="well">
+                <ul class="list-unstyled other-articles row">
+                    <li class="col-sm-6 col-xs-12">
+                        {% if page.next_post %}
+                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}">
+                                <i class="fa fa-angle-double-left"></i>
+                                <span class="title">{{ page.next_post.title }}</span>
+                            </a>
+                        {% endif %}
+                    </li>
+                    <li class="col-sm-6 col-xs-12 text-right">
+                        {% if page.previous_post %}
+                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}">
+                                <span class="title">{{ page.previous_post.title }}</span>
+                                <i class="fa fa-angle-double-right"></i>
+                            </a>
+                        {% endif %}
+                    </li>
                 </ul>
             </nav>
         {% endif %}
-        <fieldset>
-            <legend><small class="text-muted">Share this article</small></legend>
-            <a href="#" class="btn btn-sm btn-social btn-facebook">
-                <i class="fa fa-facebook"></i> Facebook
-            </a>
-            <a href="#" class="btn btn-sm btn-social btn-twitter">
-                <i class="fa fa-twitter"></i> Twitter
-            </a>
-            <a href="#" class="btn btn-sm btn-social btn-google-plus">
-                <i class="fa fa-google-plus"></i> Google+
-            </a>
-            <a href="#" class="btn btn-sm btn-social btn-linkedin">
-                <i class="fa fa-linkedin"></i> LinkedIn
-            </a>
-        </fieldset>
     </article>
 {% endblock %}
