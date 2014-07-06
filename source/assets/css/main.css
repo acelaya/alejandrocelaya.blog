@@ -7,8 +7,19 @@ h4 small {
     font-size: 60%;
     color: #888;
 }
+code {
+    border: 1px solid #e1e1e8;
+}
 pre code {
     background-color: inherit;
+    border: none;
+}
+a:hover {
+    color: #cc3333;
+}
+legend small,
+legend .small {
+    font-size: 80%;
 }
 
 body, html {
@@ -182,4 +193,20 @@ body, html {
 .post:last-child {
     border-bottom: none;
     padding-bottom: 0;
+}
+.post h2 a {
+    text-decoration: none;
+}
+.post h3 {
+    color: #31708f;
+    text-indent: 10px;
+}
+.post .share {
+    margin-top: 20px;
+}
+.post .share .buttons {
+    text-align: center;
+}
+.post .other-articles {
+    margin-bottom: 0;
 }

@@ -21,27 +21,32 @@ By using a simple configuration file, we define how our objects have to be const
 
 ~~~php
 <?php
-namespace Application\Service\Factory;
+return array(
+    // ...
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Application\Service\MyService;
+    'service_manager' => array(
+        'invokables' => array(
+            'SimpleService' => 'Application\Service\SimpleService'
+        )
+        'factories' => array(
+            'ComplexService' => 'Application\Service\Factory\ComplexService'
+        )
+        'abstract_factories' => array(
+            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
+            'Zend\Log\LoggerAbstractServiceFactory',
+        ),
+        'aliases' => array(
+            'translator' => 'MvcTranslator',
+        ),
+    ),
 
-class MyServiceFactory implements FactoryInterface
-{
-    public function createService(ServiceLocatorInterface $sm)
-    {
-        $oneDependency = $sm->get('ModuleOne\Service\OneService');
-        $anotherDependency = $sm->get('ModuleTwo\Service\AnotherService');
-
-        return new MyService($oneDependency, $anotherDependency);
-    }
-}
+    // ...
+)
 ~~~
 
 <span class="text-muted">For more information about the service manager configuration read [this](http://framework.zend.com/manual/2.3/en/modules/zend.service-manager.quick-start.html).</span>
 
-<h3 class="text-info">ServiceLocatorAwareInterface</h3>
+### ServiceLocatorAwareInterface
 
 The ServiceLocatorAwareInterface was created to make the service manager to be automatically injected on any object implementing it.
 
@@ -51,7 +56,7 @@ The problem is that this makes it very easy to use bad practices, because one te
 
 The `Zend\Mvc\Controller\AbstractController` class currently implements that interface, and there is an [opened debate](https://github.com/zendframework/zf2/issues/5168) to remove it in the future.
 
-<h3 class="text-info">Dependency Injection</h3>
+### Dependency Injection
 
 The best way to work with the Service Manager is to use it as a dependency injection container.
 
