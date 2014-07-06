@@ -6,12 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="{{ site.url }}/assets/css/main.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="{{ site.url }}/components/highlightjs/styles/github.css" />
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
             <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <link rel="stylesheet" href="{{ site.url }}/components/highlightjs/styles/github.css" />
+        <link href="{{ site.url }}/assets/css/main.css" rel="stylesheet" type="text/css" />
         <link rel="alternate" type="application/atom+xml" href="{{ site.url }}/atom.xml" title="{{ site.title }} activity feed" />
     </head>
     <body>
@@ -59,6 +59,38 @@
                 </div>
                 <div class="col-md-3 sidebar">
                     <img src="http://www.alejandrocelaya.com/img/me.jpg" class="thumbnail">
+                    <ul class="list-unstyled social-list">
+                        <a target="_blank" href="https://www.linkedin.com/pub/alejandro-celaya-alastru%C3%A9/63/552/257">
+                            <li class="social-element" id="linkedin">
+                                <i class="fa fa-linkedin"></i>
+                            </li>
+                        </a>
+                        <a target="_blank" href="http://www.zend.com/en/yellow-pages/ZEND021590">
+                            <li class="social-element" id="php">
+                                <i class="fa fa-code"></i>
+                            </li>
+                        </a>
+                        <a target="_blank" href="https://github.com/acelaya/">
+                            <li class="social-element" id="github">
+                                <i class="fa fa-github-alt"></i>
+                            </li>
+                        </a>
+                        <a target="_blank" href="https://plus.google.com/+AlejandroCelaya?rel=author">
+                            <li class="social-element" id="google">
+                                <i class="fa fa-google-plus"></i>
+                            </li>
+                        </a>
+                        <a target="_blank" href="https://twitter.com/acelayaa">
+                            <li class="social-element" id="twitter">
+                                <i class="fa fa-twitter"></i>
+                            </li>
+                        </a>
+                        <a href="{{ site.url }}/atom.xml">
+                            <li class="social-element" id="rss">
+                                <i class="fa fa-rss"></i>
+                            </li>
+                        </a>
+                    </ul>
                     <div class="well">
                         <h4>{{ site.title }}{% if site.subtitle %} <small>{{ site.subtitle }}</small>{% endif %}</h4>
                     </div>
