@@ -201,6 +201,14 @@ body, html {
     color: #31708f;
     text-indent: 10px;
 }
+.post img {
+    display: block;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px;
+}
 .post .share {
     margin-top: 20px;
 }
