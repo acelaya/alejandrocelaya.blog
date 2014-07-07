@@ -3,6 +3,8 @@
 # in a template to get the contents of the `title` key.
 title: Alejandro Celaya | Blog
 subtitle: Software development, agile methodologies and open source projects
-google_analytics_tracking_id: UA-38351554-3
 my_name: Alejandro Celaya
 my_full_name: Alejandro Celaya Alastrué
+
+google_analytics_tracking_id: UA-38351554-3
+disqus_shortname: acelayablog
