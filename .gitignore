@@ -6,5 +6,4 @@
 /app/logs/*
 /output_*/
 /source/components/
-s3.conf
-sculpin.lock
+/sculpin.lock
