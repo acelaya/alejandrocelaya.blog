@@ -51,17 +51,17 @@
             <nav class="well">
                 <ul class="list-unstyled other-articles row">
                     <li class="col-sm-6 col-xs-12">
-                        {% if page.next_post %}
-                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}">
+                        {% if page.previous_post %}
+                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}">
                                 <i class="fa fa-angle-double-left"></i>
-                                <span class="title">{{ page.next_post.title }}</span>
+                                <span class="title">{{ page.previous_post.title }}</span>
                             </a>
                         {% endif %}
                     </li>
                     <li class="col-sm-6 col-xs-12 text-right">
-                        {% if page.previous_post %}
-                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}">
-                                <span class="title">{{ page.previous_post.title }}</span>
+                        {% if page.next_post %}
+                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}">
+                                <span class="title">{{ page.next_post.title }}</span>
                                 <i class="fa fa-angle-double-right"></i>
                             </a>
                         {% endif %}
