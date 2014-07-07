@@ -27,6 +27,10 @@ body, html {
     color: #333;
 }
 
+.navbar-form {
+    margin-right: -15px;
+}
+
 #wrap {
     min-height: 100%;
     height: auto !important;
