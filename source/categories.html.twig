@@ -7,7 +7,7 @@ use:
 <h2>Categories</h2>
 
 <div>
-{% for category,posts in data.posts_categories %}
-<a href="{{ site.url }}/category/{{ category|url_encode(true) }}">{{ category }}</a>
-{% endfor %}
+    {% for category,posts in data.posts_categories %}
+        <a href="{{ site.url }}/category/{{ category|url_encode(true) }}">{{ category }}</a>
+    {% endfor %}
 </div>
