@@ -17,7 +17,7 @@ use:
         </div>
         {% if post.meta.tags %}
             <p class="tags">
-            Tags:
+            <span class="text-muted">Tags:</span>
             {% for tag in post.meta.tags %}
             <a href="{{ site.url }}/tag/{{ tag|url_encode(true) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
             {% endfor %}
