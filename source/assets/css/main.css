@@ -7,12 +7,13 @@ h4 small {
     font-size: 60%;
     color: #888;
 }
-code {
-    border: 1px solid #e1e1e8;
-}
 pre code {
     background-color: inherit;
     border: none;
+    padding: 0;
+    overflow: auto;
+    word-wrap: normal;
+    white-space: pre;
 }
 a:hover {
     color: #cc3333;
