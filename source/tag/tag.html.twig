@@ -24,7 +24,7 @@ pagination:
             <h3>{{ month }} {{ year }}</h3>
         {% endif %}
         <article>
-            <div><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></div>
+            <div><a href="{{ site.url }}{{ post.url }}/">{{ post.title }}</a></div>
         </article>
     {% endfor %}
 
@@ -32,7 +32,7 @@ pagination:
         <ul class="pager">
             {% if page.pagination.next_page %}
                 <li class="previous">
-                    <a href="{{ site.url }}{{ page.pagination.next_page.url }}">&larr; Older posts</a>
+                    <a href="{{ site.url }}{{ page.pagination.next_page.url }}/">&larr; Older posts</a>
                 </li>
             {% else %}
                 <li class="previous disabled">
@@ -41,7 +41,7 @@ pagination:
             {% endif %}
             {% if page.pagination.previous_page %}
                 <li class="next">
-                    <a href="{{ site.url }}{{ page.pagination.previous_page.url }}">Newer posts &rarr;</a>
+                    <a href="{{ site.url }}{{ page.pagination.previous_page.url }}/">Newer posts &rarr;</a>
                 </li>
             {% else %}
                 <li class="next disabled">

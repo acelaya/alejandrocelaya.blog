@@ -10,7 +10,7 @@ use:
 {% for post in page.pagination.items %}
     <article class="post">
         <header>
-            <h2 class="post-title"><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></h2>
+            <h2 class="post-title"><a href="{{ site.url }}{{ post.url }}/">{{ post.title }}</a></h2>
         </header>
         <div>
             {{ post.blocks.content|raw }}
@@ -19,7 +19,7 @@ use:
             <p class="tags">
             <span class="text-muted">Tags:</span>
             {% for tag in post.meta.tags %}
-            <a href="{{ site.url }}/tag/{{ tag|url_encode(true) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
+            <a href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag }}</a>{% if not loop.last %}, {% endif %}
             {% endfor %}
             </p>
         {% endif %}
@@ -28,7 +28,7 @@ use:
 <ul class="pager">
     {% if page.pagination.next_page %}
         <li class="previous">
-            <a href="{{ site.url }}{{ page.pagination.next_page.url }}">&larr; Older posts</a>
+            <a href="{{ site.url }}{{ page.pagination.next_page.url }}/">&larr; Older posts</a>
         </li>
     {% else %}
         <li class="previous disabled">
@@ -37,7 +37,7 @@ use:
     {% endif %}
     {% if page.pagination.previous_page %}
         <li class="next">
-            <a href="{{ site.url }}{{ page.pagination.previous_page.url }}">Newer posts &rarr;</a>
+            <a href="{{ site.url }}{{ page.pagination.previous_page.url }}/">Newer posts &rarr;</a>
         </li>
     {% else %}
         <li class="next disabled">
