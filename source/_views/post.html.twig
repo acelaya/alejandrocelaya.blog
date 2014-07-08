@@ -33,7 +33,7 @@
                 <li class="categories">
                     <span class="text-muted">Categories:</span>
                     {% for category in page.categories %}
-                        <a href="{{ site.url }}/category/{{ category|url_encode(true) }}">{{ category }}</a>{% if not loop.last %}, {% endif %}
+                        <a href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </li>
             {% endif %}
@@ -41,7 +41,7 @@
                 <li class="tags">
                     <span class="text-muted">Tags:</span>
                     {% for tag in page.tags %}
-                        <a href="{{ site.url }}/tag/{{ tag|url_encode(true) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
+                        <a href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag }}</a>{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </li>
             {% endif %}
@@ -52,7 +52,7 @@
                 <ul class="list-unstyled other-articles row">
                     <li class="col-sm-6 col-xs-12">
                         {% if page.previous_post %}
-                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}">
+                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}/">
                                 <i class="fa fa-angle-double-left"></i>
                                 <span class="title">{{ page.previous_post.title }}</span>
                             </a>
@@ -60,7 +60,7 @@
                     </li>
                     <li class="col-sm-6 col-xs-12 text-right">
                         {% if page.next_post %}
-                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}">
+                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}/">
                                 <span class="title">{{ page.next_post.title }}</span>
                                 <i class="fa fa-angle-double-right"></i>
                             </a>

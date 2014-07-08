@@ -19,9 +19,9 @@ permalink: atom.xml
     {% for post in data.posts|slice(0, 10) %}
         <entry>
             <title type="html"><![CDATA[{{ post.title }}]]></title>
-            <link href="{{ site.url }}{{ post.url }}"/>
+            <link href="{{ site.url }}{{ post.url }}/"/>
             <updated>{{ post.date|date('c') }}</updated>
-            <id>{{ site.url }}{{ post.url }}</id>
+            <id>{{ site.url }}{{ post.url }}/</id>
             <content type="html"><![CDATA[{{ post.blocks.content|raw }}]]></content>
         </entry>
     {% endfor %}
