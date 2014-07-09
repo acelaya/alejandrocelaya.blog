@@ -220,6 +220,9 @@ body, html {
 .post .share .buttons {
     text-align: center;
 }
+.post .share .buttons .btn {
+    margin: 3px 0;
+}
 .post .other-articles {
     margin-bottom: 0;
 }
