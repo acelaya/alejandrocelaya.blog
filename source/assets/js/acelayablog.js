@@ -40,6 +40,16 @@ var acelayablog = {
             entries:  '.hfeed',                     // jQuery selector for the element to contain the results list, must be a child of the results element above.
             template: '#search-results-template'    // jQuery selector for the Mustache.js template
         });
+    },
+
+    initToTopButton : function() {
+        var btn = $(".to-top");
+        btn.click(function(e) {
+            e.preventDefault();
+            $("body", "html").animate({
+                scrollTop : 0
+            })
+        });
     }
 
 };
