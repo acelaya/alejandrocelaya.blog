@@ -8,7 +8,17 @@ var acelayablog = {
     },
 
     initShareButtons : function() {
+        var buttons = $(".buttons .btn-social");
+        if (buttons.size() == 0) {
+            return;
+        }
 
+        buttons.click(function(e) {
+            var link = $(this).attr("href");
+
+            e.preventDefault();
+            window.open(link, 'Share article', 'menubar=no, toolbar=no, resizable=yes, scrollbars=yes, height=600, width=600');
+        });
     },
 
     initHighlightjs : function() {
