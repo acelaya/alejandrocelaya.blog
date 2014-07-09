@@ -22,7 +22,13 @@ pagination:
             <h3>{{ month }} {{ year }}</h3>
         {% endif %}
         <article>
-            <div><a href="{{ site.url }}{{ post.url }}/">{{ post.title }}</a></div>
+            <dl>
+                <dt><a href="{{ site.url }}{{ post.url }}/">{{ post.title }}</a></dt>
+                <dd>
+                    {% set text = post.blocks.content | striptags %}
+                    {{ text | length > 280 ? text | slice(0, 280) ~ '...' : text  }}
+                </dd>
+            </dl>
         </article>
     {% endfor %}
 
