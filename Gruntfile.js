@@ -29,7 +29,7 @@ module.exports = function(grunt) {
                     'output_prod/assets/css/main.min.css' : [
                         'output_prod/assets/css/bootstrap-social.min.css',
                         'output_prod/assets/css/highlightjs-github.min.css',
-                        'output_prod/assets/css/main.min.min.css'
+                        'output_prod/assets/css/main.min.css'
                     ]
                 }
             }
@@ -62,6 +62,24 @@ module.exports = function(grunt) {
                 ],
                 dest: 'output_prod/assets/js/main.min.js'
             }
+        },
+
+        // Clean assets outside of main files
+        clean : {
+            production : [
+                'output_prod/assets/css/main.css',
+                'output_prod/assets/css/bootstrap-social.css',
+                'output_prod/assets/css/highlightjs-github.css',
+                'output_prod/assets/css/bootstrap-social.min.css',
+                'output_prod/assets/css/highlightjs-github.min.css',
+                'output_prod/assets/js/mustache.js',
+                'output_prod/assets/js/jquery.lunr.search.js',
+                'output_prod/assets/js/acelayablog.js',
+                'output_prod/assets/js/main.js',
+                'output_prod/assets/js/lunr.min.js',
+                'output_prod/assets/js/uri.min.js',
+                'output_prod/assets/js/highlight.pack.js'
+            ]
         }
 
     });
@@ -70,8 +88,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-processhtml');
 
     grunt.registerTask('default', ['processhtml:production']);
-    grunt.registerTask('postgenerate', ['cssmin', 'uglify', 'concat']);
+    grunt.registerTask('postgenerate', ['cssmin', 'uglify', 'concat', 'clean']);
 };
