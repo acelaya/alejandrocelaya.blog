@@ -2,12 +2,12 @@
 title: How to properly use the Zend framework 2 service manager as a dependency injection container
 tags:
     - zf2
-    - zend framework 2
-    - dependency injection
-    - dependency injection container
+    - zend-framework-2
+    - dependency-injection
+    - dependency-injection-container
     - di
     - dic
-    - service manager
+    - service-manager
 categories:
     - php
 

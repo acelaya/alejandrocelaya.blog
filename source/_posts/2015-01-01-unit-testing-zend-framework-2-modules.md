@@ -5,10 +5,10 @@ categories:
     - php
 tags:
     - zf2
-    - zend framework 2
+    - zend-framework-2
     - module
     - phpunit
-    - unit testing
+    - unit-testing
     - tdd
     - agile
 

@@ -3,8 +3,8 @@ title: Dependency management in Java projects with Ant and Ivy
 tags:
     - ant
     - building
-    - continuous integration
-    - dependency management
+    - continuous-integration
+    - dependency-management
     - ivy
 categories:
     - java

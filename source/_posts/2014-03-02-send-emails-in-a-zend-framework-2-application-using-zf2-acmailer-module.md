@@ -5,7 +5,7 @@ tags:
     - github
     - modules
     - zf2
-    - zend framework 2
+    - zend-framework-2
     - zf2-acmailer
 categories:
     - php
