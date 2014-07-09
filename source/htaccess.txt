@@ -1,3 +1,7 @@
+---
+permalink: .htaccess
+---
+
 RewriteEngine On
 
 # Map the old feed routes to the new one
