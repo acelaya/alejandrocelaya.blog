@@ -10,9 +10,6 @@
             "homepage": "http://www.alejandrocelaya.com"
         }
     ],
-    "require": {
-        "components/highlightjs": "~7.3.0"
-    },
     "autoload": {
         "psr-0": {
             "AndrewShell": "app/src"
