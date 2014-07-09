@@ -1,5 +1,10 @@
+
+(function() {
+    acelayablog.initHighlightjs();
+})();
+
 $(document).ready(function() {
-    $("#search-form .fa-search").click(function() {
-        $(this).closest("form").submit();
-    });
+    acelayablog.initSearchForm();
+    acelayablog.initShareButtons();
+    acelayablog.initSearch();
 });

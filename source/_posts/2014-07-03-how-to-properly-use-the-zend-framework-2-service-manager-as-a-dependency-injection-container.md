@@ -27,10 +27,10 @@ return array(
     'service_manager' => array(
         'invokables' => array(
             'SimpleService' => 'Application\Service\SimpleService'
-        )
+        ),
         'factories' => array(
             'ComplexService' => 'Application\Service\Factory\ComplexService'
-        )
+        ),
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
