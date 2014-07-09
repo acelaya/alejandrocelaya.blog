@@ -1,0 +1,89 @@
+{% extends "default" %}
+{% block content_wrapper %}
+    <article class="post">
+        <header>
+            <h2 class="post-title">{{ page.title }} <small>post</small></h2>
+        </header>
+        <div>
+            {{ page.blocks.content | raw }}
+        </div>
+
+        <fieldset class="share">
+            <legend><small class="text-muted">If you liked this article, share it</small></legend>
+            <div class="buttons">
+                <a href="http://www.facebook.com/sharer.php?u={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/" target="_blank"
+                   class="btn btn-sm btn-social btn-facebook">
+                    <i class="fa fa-facebook"></i> Facebook
+                </a>
+                <a href="https://twitter.com/share?url={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/" target="_blank"
+                   class="btn btn-sm btn-social btn-twitter">
+                    <i class="fa fa-twitter"></i> Twitter
+                </a>
+                <a href="https://plus.google.com/share?url={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/" target="_blank"
+                   class="btn btn-sm btn-social btn-google-plus">
+                    <i class="fa fa-google-plus"></i> Google+
+                </a>
+                <a href="http://www.linkedin.com/shareArticle?mini=true&url={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/&title={{ page.title }}&source={{ site.url }}" target="_blank"
+                   class="btn btn-sm btn-social btn-linkedin">
+                    <i class="fa fa-linkedin"></i> LinkedIn
+                </a>
+            </div>
+        </fieldset>
+
+        <hr>
+
+        <ul class="list-unstyled">
+            {% if page.categories %}
+                <li class="categories">
+                    <span class="text-muted">Categories:</span>
+                    {% for category in page.categories %}
+                        <a href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </li>
+            {% endif %}
+            {% if page.tags %}
+                <li class="tags">
+                    <span class="text-muted">Tags:</span>
+                    {% for tag in page.tags %}
+                        <a href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </li>
+            {% endif %}
+        </ul>
+
+        {% if page.previous_post or page.next_post %}
+            <nav class="well">
+                <ul class="list-unstyled other-articles row">
+                    <li class="col-sm-6 col-xs-12">
+                        {% if page.previous_post %}
+                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}/">
+                                <i class="fa fa-angle-double-left"></i>
+                                <span class="title">{{ page.previous_post.title }}</span>
+                            </a>
+                        {% endif %}
+                    </li>
+                    <li class="col-sm-6 col-xs-12 text-right">
+                        {% if page.next_post %}
+                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}/">
+                                <span class="title">{{ page.next_post.title }}</span>
+                                <i class="fa fa-angle-double-right"></i>
+                            </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+
+        {% if site.disqus_shortname %}
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = '{{ site.disqus_shortname }}';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+        {% endif %}
+    </article>
+{% endblock %}

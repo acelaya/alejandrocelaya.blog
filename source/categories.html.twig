@@ -1,0 +1,13 @@
+---
+layout: default
+title: Categories
+use:
+    - posts_categories
+---
+<h2>Categories</h2>
+
+<div class="categories-list">
+    {% for category,posts in data.posts_categories %}
+        <a class="btn btn-default" href="{{ site.url }}/category/{{ category|url_encode(true) }}/">{{ category }}</a>
+    {% endfor %}
+</div>

@@ -1,24 +1,19 @@
 {
-    "name": "sculpin/blog-skeleton",
-    "description": "A Skeleton for a Sculpin Based Blog",
+    "name": "acelaya/blog",
+    "description": "Blog about software development, agile methodologies and open source software",
     "type": "sculpin-skeleton",
     "license": "MIT",
     "authors": [
         {
-            "name": "Dragonfly Development Inc.",
-            "email": "info@dflydev.com",
-            "homepage": "http://dflydev.com"
-        },
-        {
-            "name": "Beau Simensen",
-            "email": "beau@dflydev.com",
-            "homepage": "http://beausimensen.com"
+            "name": "Alejandro Celaya Alastrué",
+            "email": "alejandro@alejandrocelaya.com",
+            "homepage": "http://www.alejandrocelaya.com"
         }
     ],
-    "require": {
-        "components/bootstrap": "3.1.*",
-        "components/jquery": "1.10.*",
-        "components/highlightjs": "~7.3.0"
+    "autoload": {
+        "psr-0": {
+            "AndrewShell": "app/src"
+        }
     },
     "config": {
         "component-dir": "source/components"
