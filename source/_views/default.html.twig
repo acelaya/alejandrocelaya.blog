@@ -10,12 +10,13 @@
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="{{ site.url }}/assets/css/highlightjs-github.css" rel="stylesheet" />
+        <link href="{{ site.url }}/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" />
+        <link href="{{ site.url }}/assets/css/main.css" rel="stylesheet" type="text/css" />
+
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
             <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <link href="{{ site.url }}/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" />
-        <link href="{{ site.url }}/assets/css/main.css" rel="stylesheet" type="text/css" />
 
         <link rel="alternate" type="application/atom+xml" href="{{ site.url }}/atom.xml" title="{{ site.title }} activity feed" />
     </head>
@@ -132,7 +133,7 @@
         <script src="{{ site.url }}/assets/js/uri.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="{{ site.url }}/assets/js/jquery.lunr.search.js" type="text/javascript" charset="utf-8"></script>
         <script src="{{ site.url }}/assets/js/highlight.pack.js"></script>
-        {% block scripts %}{% endblock %}
+        <script src="{{ site.url }}/assets/js/acelayablog.js"></script>
         <script src="{{ site.url }}/assets/js/main.js"></script>
 
         {% if site.google_analytics_tracking_id %}
@@ -148,16 +149,5 @@
                 })();
             </script>
         {% endif %}
-        <script type="text/javascript">
-            $(function() {
-                $('#search-query').lunrSearch({
-                    indexUrl: '/search.json',             // URL of the `search.json` index data for your site
-                    results:  '#search-results',          // jQuery selector for the search results container
-                    entries:  '.hfeed',                 // jQuery selector for the element to contain the results list, must be a child of the results element above.
-                    template: '#search-results-template'  // jQuery selector for the Mustache.js template
-                });
-            });
-        </script>
-        <script>hljs.initHighlightingOnLoad();</script>
     </body>
 </html>
