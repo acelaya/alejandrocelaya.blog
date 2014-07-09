@@ -91,7 +91,7 @@ body, html {
     color: #666;
     cursor: pointer;
 }
-#search-form input[type=text] {
+#search-form input[type=search] {
     background-color: #444;
     border-color: #222;
     padding-right: 40px;
@@ -101,15 +101,15 @@ body, html {
     -o-transition: background-color ease-in-out .3s, width ease-in-out .3s;
     transition: background-color ease-in-out .3s, width ease-in-out .3s;
 }
-#search-form input[type=text]:focus {
+#search-form input[type=search]:focus {
     background-color: #ffffff;
     border-color: #222;
 }
 @media (min-width: 768px) {
-    .navbar input[type=text] {
+    .navbar input[type=search] {
         width: 200px;
     }
-    .navbar input[type=text]:focus {
+    .navbar input[type=search]:focus {
         width: 300px;
     }
 }
@@ -225,4 +225,8 @@ body, html {
 }
 .post .post-title {
     text-align: justify;
+}
+
+.search-section .hfeed {
+    margin-top: 20px;
 }

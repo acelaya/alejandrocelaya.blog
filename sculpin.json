@@ -13,6 +13,11 @@
     "require": {
         "components/highlightjs": "~7.3.0"
     },
+    "autoload": {
+        "psr-0": {
+            "AndrewShell": "app/src"
+        }
+    },
     "config": {
         "component-dir": "source/components"
     }
