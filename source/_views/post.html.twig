@@ -5,22 +5,26 @@
             <h2 class="post-title">{{ page.title }} <small>post</small></h2>
         </header>
         <div>
-            {{ page.blocks.content|raw }}
+            {{ page.blocks.content | raw }}
         </div>
 
         <fieldset class="share">
             <legend><small class="text-muted">If you liked this article, share it</small></legend>
             <div class="buttons">
-                <a href="#" class="btn btn-sm btn-social btn-facebook">
+                <a href="http://www.facebook.com/sharer.php?u={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/" target="_blank"
+                   class="btn btn-sm btn-social btn-facebook">
                     <i class="fa fa-facebook"></i> Facebook
                 </a>
-                <a href="#" class="btn btn-sm btn-social btn-twitter">
+                <a href="https://twitter.com/share?url={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/" target="_blank"
+                   class="btn btn-sm btn-social btn-twitter">
                     <i class="fa fa-twitter"></i> Twitter
                 </a>
-                <a href="#" class="btn btn-sm btn-social btn-google-plus">
+                <a href="https://plus.google.com/share?url={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/" target="_blank"
+                   class="btn btn-sm btn-social btn-google-plus">
                     <i class="fa fa-google-plus"></i> Google+
                 </a>
-                <a href="#" class="btn btn-sm btn-social btn-linkedin">
+                <a href="http://www.linkedin.com/shareArticle?mini=true&url={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/&title={{ page.title }}&source={{ site.url }}" target="_blank"
+                   class="btn btn-sm btn-social btn-linkedin">
                     <i class="fa fa-linkedin"></i> LinkedIn
                 </a>
             </div>
