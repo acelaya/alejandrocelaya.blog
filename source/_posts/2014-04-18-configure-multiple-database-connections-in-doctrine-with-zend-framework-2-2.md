@@ -4,7 +4,7 @@ tags:
     - database
     - doctrine
     - mysql
-    - zend framework 2
+    - zend-framework-2
     - zf2
 categories:
     - php

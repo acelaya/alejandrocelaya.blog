@@ -2,13 +2,13 @@
 title: Simulate Zend Framework preDispatch and postDispatch in a Zend Framework 2 application
 tags:
     - dispatch
-    - event manager
+    - event-manager
     - events
     - postdispatch
     - predispatch
     - zf2
-    - zend framework
-    - zend framework 2
+    - zend-framework
+    - zend-framework-2
 categories:
     - php
 

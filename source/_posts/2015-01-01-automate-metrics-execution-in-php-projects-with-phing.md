@@ -7,9 +7,9 @@ categories:
 tags:
     - phing
     - building
-    - dependency management
-    - continuous integration
-    - code style
+    - dependency-management
+    - continuous-integration
+    - code-style
     - metrics
 
 ---

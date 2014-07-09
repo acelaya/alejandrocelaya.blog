@@ -3,10 +3,10 @@ title: How to prepare the Zend Framework 2 Certified Architect exam
 tags:
     - certification
     - exam
-    - zend framework 2
+    - zend-framework-2
     - zf2
-    - zend certified engineer
-    - zend framework 2 certified architect
+    - zend-certified-engineer
+    - zend-framework-2-certified-architect
 categories:
     - php
     - tools

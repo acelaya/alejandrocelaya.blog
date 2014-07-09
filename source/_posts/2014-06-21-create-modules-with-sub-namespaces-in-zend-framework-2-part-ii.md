@@ -5,7 +5,7 @@ tags:
     - module
     - namespace
     - sub-namespace
-    - zend framework 2
+    - zend-framework-2
     - zf2
 categories:
     - php

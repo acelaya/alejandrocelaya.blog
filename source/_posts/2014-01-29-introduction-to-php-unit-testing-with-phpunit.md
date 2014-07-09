@@ -5,7 +5,7 @@ tags:
     - php
     - phpunit
     - tdd
-    - unit testing
+    - unit-testing
 categories:
     - php
 

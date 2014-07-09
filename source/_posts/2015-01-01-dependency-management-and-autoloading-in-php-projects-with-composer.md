@@ -7,8 +7,8 @@ categories:
 tags:
     - composer
     - building
-    - dependency management
-    - continuous integration
+    - dependency-management
+    - continuous-integration
 
 ---
 

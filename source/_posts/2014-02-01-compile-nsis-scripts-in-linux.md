@@ -2,7 +2,7 @@
 title: Compile NSIS scripts in Linux
 tags:
     - building
-    - continuous integration
+    - continuous-integration
     - deployment
     - installer
     - linux
