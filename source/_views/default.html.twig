@@ -39,9 +39,9 @@
                             <li><a href="{{ site.url }}/category/web/">Web</a></li>
                             <li><a href="{{ site.url }}/category/tools/">Tools</a></li>
                         </ul>
-                        <form class="navbar-form navbar-right" id="search-form" role="search" method="get">
+                        <form class="navbar-form navbar-right" id="search-form" role="search" method="get" action="{{ site.url }}/search/">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search" name="search">
+                                <input type="search" class="form-control" placeholder="Search" name="q">
                                 <i class="fa fa-search"></i>
                             </div>
                         </form>
@@ -127,8 +127,22 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script src="{{ site.url }}/assets/js/main.js"></script>
         {% block scripts %}{% endblock %}
+        <script src="{{ site.url }}/assets/js/lunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ site.url }}/assets/js/mustache.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ site.url }}/assets/js/uri.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ site.url }}/assets/js/jquery.lunr.search.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript">
+            $(function() {
+                $('#search-query').lunrSearch({
+                    indexUrl: '/search.json',             // URL of the `search.json` index data for your site
+                    results:  '#search-results',          // jQuery selector for the search results container
+                    entries:  '.hfeed',                 // jQuery selector for the element to contain the results list, must be a child of the results element above.
+                    template: '#search-results-template'  // jQuery selector for the Mustache.js template
+                });
+            });
+        </script>
+        <script src="{{ site.url }}/assets/js/main.js"></script>
 
         {% if site.google_analytics_tracking_id %}
             <script type="text/javascript">

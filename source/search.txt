@@ -1,0 +1,5 @@
+---
+use: ["posts"]
+permalink: search.json
+---
+{{ lunr(data.posts) | raw }}
