@@ -45,7 +45,7 @@
                 <li class="tags">
                     <span class="text-muted">Tags:</span>
                     {% for tag in page.tags %}
-                        <a href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag }}</a>{% if not loop.last %}, {% endif %}
+                        <a href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </li>
             {% endif %}
