@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Delete the old production folder
-rm - rf output_prod
+rm -rf output_prod
 
 # Run pre-generate grunt tasks
 npm install
