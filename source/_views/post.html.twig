@@ -1,4 +1,10 @@
 {% extends "default" %}
+{% block meta %}
+    <meta property="og:title" content="{{ page.title }}" />
+    <meta property="og:type" content="development" />
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}/" />
+    <meta property="og:image" content="{{ site.url }}/assets/img/me.jpg" />
+{% endblock %}
 {% block content_wrapper %}
     <article class="post">
         <header>
