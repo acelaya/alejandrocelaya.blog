@@ -69,6 +69,6 @@ The `psr-0` part tells composer how to load the classes in the src folder. The `
 
 Even so, I would recommend to register  the module at the same folder where the Module class is, that is to say, in our exampple, the WebService folder, instead of the HappyFactory folder.
 
-Here is an example of a real module with subnamespaces you can install with composer https://github.com/zasDev/common. The module is in the namespace `ZasDev\Commons`. You can install it in your project by adding `"zasdev/commons" : "0.*"` to your composer.json file.
+Here is an example of a real module with subnamespaces you can install with composer [https://github.com/zasDev/common](https://github.com/zasDev/common). The module is in the namespace `ZasDev\Commons`. You can install it in your project by adding `"zasdev/commons" : "0.*"` to your composer.json file.
 
 And that’s all. Nice and easy.
