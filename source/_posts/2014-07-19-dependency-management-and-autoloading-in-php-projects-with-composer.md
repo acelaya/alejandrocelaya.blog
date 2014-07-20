@@ -19,7 +19,7 @@ One could think the easier solution is to download all the libraries we are goin
 The main problems of using this practice are this.
 
 * **Dependencies of dependencies:** Our dependencies may have their own dependencies that we will also need to download.
-* **Updates:** What happens if we need a new feature in the last version of one dependendepncy? We are going to have to update it manually, and that can be a hard task. Baybe even the new version has new dependencies of its own that we will need to download.
+* **Updates:** What happens if we need a new feature in the last version of one dependendency? We are going to have to update it manually, and that can be a hard task. Baybe even the new version has new dependencies of its own that we will need to download.
 * **Autoloading:** How do we deal with autoloading the classes in the dependencies? Some of them may have its own autoloading system, but anyway, we are going to need to `include` all the autoloaders of each dependency.
 
 How do we solve all of this? The answer is [Composer](http://getcomposer.org).
@@ -112,6 +112,7 @@ After this it's enough with a single `include` statement to `vendor/autoload.php
 If later in the project we need to update an existing dependency, add new dependencies or change the autoloading, we just need to update the information in the `composer.json` file and run `php composer.phar update` to update dependencies and autoloader.
 
 **Tip:** It is recommended to include the composer binary in the PATH to be able to run `composer` instead of `php composer.phar`.
+
 **Tip 2:** If you are using a VCS like [git](http://git-scm.com/) in your project you will probably want to _ignore_ the `vendor` folder.
 
 ### Advanced usages
