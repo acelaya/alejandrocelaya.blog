@@ -16,7 +16,7 @@ use:
             {{ post.blocks.content|raw }}
         </div>
         {% if post.meta.tags %}
-            <p class="tags">
+            <p class="text-right">
                 {% for tag in post.meta.tags %}
                     <a class="label label-primary" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
                 {% endfor %}
