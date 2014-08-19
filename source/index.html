@@ -17,10 +17,9 @@ use:
         </div>
         {% if post.meta.tags %}
             <p class="tags">
-            <span class="text-muted">Tags:</span>
-            {% for tag in post.meta.tags %}
-            <a href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>{% if not loop.last %}, {% endif %}
-            {% endfor %}
+                {% for tag in post.meta.tags %}
+                    <a class="label label-primary" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
+                {% endfor %}
             </p>
         {% endif %}
     </article>
