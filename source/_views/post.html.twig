@@ -8,7 +8,7 @@
 {% block content_wrapper %}
     <article class="post">
         <header>
-            <h2 class="post-title">{{ page.title }} <small>post</small></h2>
+            <h2 class="post-title">{{ page.title }}</h2>
         </header>
         <div>
             {{ page.blocks.content | raw }}
@@ -39,22 +39,16 @@
         <hr>
 
         <ul class="list-unstyled">
-            {% if page.categories %}
-                <li class="categories">
-                    <span class="text-muted">Categories:</span>
+            <li class="text-right">
+                {% if page.tags or page.categories %}
                     {% for category in page.categories %}
-                        <a href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>{% if not loop.last %}, {% endif %}
+                        <a class="label label-info" href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>
                     {% endfor %}
-                </li>
-            {% endif %}
-            {% if page.tags %}
-                <li class="tags">
-                    <span class="text-muted">Tags:</span>
                     {% for tag in page.tags %}
-                        <a href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>{% if not loop.last %}, {% endif %}
+                        <a class="label label-primary" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
                     {% endfor %}
-                </li>
-            {% endif %}
+                {% endif %}
+            </li>
         </ul>
 
         {% if page.previous_post or page.next_post %}
