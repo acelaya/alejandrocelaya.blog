@@ -55,7 +55,7 @@ After this I just needed to get the articles from wordpress.
 
 Sculpin uses [twig](http://twig.sensiolabs.org/) templates and/or [markdown](http://es.wikipedia.org/wiki/Markdown) to write articles, so it's easy to copy-paste html documents on them. That's what I did. A little customization and done.
 
-Keepeing the URLs was easy, because I was using the y/m/d/foobar form in wordpress, and the Sculpin skeleton uses that format by default.
+Keeping the URLs was easy, because I was using the y/m/d/foobar form in wordpress, and the Sculpin skeleton uses that format by default.
 
 Finally I was considering to host the blog in Github, but I decided to use my VPS, to use some htaccess tricks, like some rewrite rules in order to redirect old URLs to new ones and set a customized 404 page.
 
