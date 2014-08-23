@@ -1,5 +1,5 @@
 ---
-title: Managing authentication with Zend\Auth in php projects
+title: Managing authentication with Zend\Auth in PHP projects
 categories:
     - php
 tags:
