@@ -28,6 +28,16 @@ body, html {
     color: #333;
 }
 
+blockquote {
+    background-color: #f9f9f9;
+}
+
+blockquote footer:before,
+blockquote small:before,
+blockquote .small:before {
+    content: '';
+}
+
 .navbar-form {
     margin-right: -15px;
 }
@@ -210,6 +220,9 @@ body, html {
 }
 .post h3 {
     color: #31708f;
+}
+.post h4 {
+    margin-top: 20px;
 }
 .post img {
     display: block;
