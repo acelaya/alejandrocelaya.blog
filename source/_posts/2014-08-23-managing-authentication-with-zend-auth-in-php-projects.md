@@ -7,6 +7,7 @@ tags:
     - zf2
     - zend-framework-2
     - adapter-pattern
+    - composer
 
 ---
 
@@ -20,11 +21,16 @@ Zend Framework 2 implements that in the [Zend\Auth component](http://framework.z
 
 ### Installation
 
-The easiest and recommended way to install this component is by using composer
+The easiest and recommended way to install this component is by using [composer](https://getcomposer.org/)
+
+Just run `php composer.phar require zendframework/zend-authentication:2.3.*` to get the dependency installed.
+
+<span class="text-muted">For more information on how to use composer, read [this](http://blog.alejandrocelaya.com/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/)</span>
 
 ### The Zend\Auth component
 
 This component has a main class, the `Zend\Auth\AuthenticationService`, which encapsulates two adapters:
+
 * The authentication adapter, which is responsoble of performing the authentication itself
 * The storage adapter, wich is responsible of storing the identity returned by the authentication adapter after a successful authentication. That identity could be any kind of data, from a simple array to a complex object.
 
