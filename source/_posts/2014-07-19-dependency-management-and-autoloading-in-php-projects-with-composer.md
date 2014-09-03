@@ -99,7 +99,9 @@ The **require-dev** property allows us to define other dependencies that won't b
 
 Finally the **autoload** property is where we define how our own classes are loaded. It is very easy to define a `psr-0` or `psr-4` autoloading strategy, but we can even define a `classmap` with a list of paths to files.
 
-**Tip:** You don't have to remember the `composer.json` schema. You can interactively create it by running `php composer.phar init`.
+<blockquote>
+    <small>You don't have to remember the <code>composer.json</code> schema. You can interactively create it by running <code>php composer.phar init</code></small>
+</blockquote>
 
 ### Installing dependencies
 
@@ -111,9 +113,13 @@ After this it's enough with a single `include` statement to `vendor/autoload.php
 
 If later in the project we need to update an existing dependency, add new dependencies or change the autoloading, we just need to update the information in the `composer.json` file and run `php composer.phar update` to update dependencies and autoloader.
 
-**Tip:** It is recommended to include the composer binary in the PATH to be able to run `composer` instead of `php composer.phar`.
+<blockquote>
+    <small>It is recommended to include the composer binary in the PATH to be able to run <code>composer</code> instead of <code>php composer.phar</code></small>
+</blockquote>
 
-**Tip 2:** If you are using a VCS like [git](http://git-scm.com/) in your project you will probably want to _ignore_ the `vendor` folder.
+<blockquote>
+    <small>If you are using a VCS like <a href="http://git-scm.com/">git</a> in your project you will probably want to <i>ignore</i> your <code>vendor</code> folder</small>
+</blockquote>
 
 ### Advanced usages
 
