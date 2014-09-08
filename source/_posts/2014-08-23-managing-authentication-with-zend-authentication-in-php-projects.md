@@ -121,9 +121,9 @@ In any case, if authentication was valid, the AuthenticationService will automat
 The identity data contents will depend on the adapter implementation. In the case of the DbTable adapter, it is an array with information of the user's table row.
 
 <blockquote>
-    <small>For this tutorial I have avoided the database connection configuration and how we get the username and password the user provided.</small>
+    <small>For this tutorial I have avoided the database connection configuration and how we get the username and password.</small>
 
-    <small>If you wan't to know how to create a database adapter (<code>Zend\Db\Adapter\Adapter</code>) in Zend Framework 2, just read <a href="http://framework.zend.com/manual/2.3/en/modules/zend.db.adapter.html">this article</a>.</small>
+    <small>If you want to know how to create a database adapter (<code>Zend\Db\Adapter\Adapter</code>) in Zend Framework 2, just read <a href="http://framework.zend.com/manual/2.3/en/modules/zend.db.adapter.html">this article</a>.</small>
 </blockquote>
 
 #### Checking a stored identity
