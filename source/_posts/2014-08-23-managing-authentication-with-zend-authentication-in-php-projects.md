@@ -58,7 +58,7 @@ This could be the creation of the AuthenticationService.
 
 // We have passwords hashed with password_hash in the database,
 // so we need some application level logic to compare hased and plain passwords
-$credentialCallbak = function ($passwordInDatabase, $passwordProvided) {
+$credentialCallback = function ($passwordInDatabase, $passwordProvided) {
     return password_verify($passwordProvided, $passwordInDatabase);
 };
 
@@ -69,7 +69,7 @@ $adapter = new \Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter(
     'users', // Table name
     'username', // Identity column
     'password', // Credential column
-    $credentialCallbak // This adapter will run this function in order to check the password
+    $credentialCallback // This adapter will run this function in order to check the password
 );
 
 // Create the storage adapter
