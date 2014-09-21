@@ -46,9 +46,19 @@ var acelayablog = {
         var btn = $(".to-top");
         btn.click(function(e) {
             e.preventDefault();
-            $("body", "html").animate({
+            $("body, html").animate({
                 scrollTop : 0
             })
+        });
+
+        // Make the button to be displayed on scroll
+        $(window).scroll(function() {
+            var top = $('body').scrollTop();
+            if (top >= 300) {
+                btn.removeClass('hidden');
+            } else {
+                btn.addClass('hidden');
+            }
         });
     }
 
