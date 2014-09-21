@@ -2,6 +2,10 @@
     outline: none !important;
 }
 
+body {
+    overflow-y: scroll;
+}
+
 h4 small {
     display: block;
     font-size: 60%;
@@ -214,6 +218,9 @@ blockquote .small:before {
 .post:last-child {
     border-bottom: none;
     padding-bottom: 0;
+}
+.post h2 {
+    margin-bottom: 20px;
 }
 .post h2 a {
     text-decoration: none;
