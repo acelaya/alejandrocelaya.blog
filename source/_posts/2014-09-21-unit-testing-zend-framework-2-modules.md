@@ -298,4 +298,4 @@ In the case of controller tests there is a Zend Framework 2 component that is wo
 
 As you can see, testing Zend Framework modules is not harder than testing any other PHP application. The key is using composer to easily bootstrapping the test suits and keeping classes simple and decoupled so that unit tests are really unit.
 
-If you want to run this examples, clone the [example repository](https://github.com/acelaya-blog/zf2-testing), run `php composer.phar install` to install all dependencies and the run `vendor/bin/phpunit -c tests/phpunit.xml` to run both tests.
+If you want to run this examples, clone the [example repository](https://github.com/acelaya-blog/zf2-testing), run `php composer.phar install` to install all dependencies and then run `vendor/bin/phpunit -c tests/phpunit.xml` to run both tests.
