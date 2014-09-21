@@ -13,7 +13,7 @@ tags:
 
 ---
 
-One of the first articles I wrote in this blog was an introduction to unit testing PHP applications. You can find it [here](/2014/01/29/introduction-to-php-unit-testing-with-phpunit/) in case you need the first steps.
+One of the first articles I wrote in this blog was an introduction to unit testing PHP applications. You can find it [here](/2014/01/29/introduction-to-php-unit-testing-with-phpunit/) in case you need to know the first steps and the theory.
 
 On this article I'm going to explain how to get a Zend Framework 2 module tested. It is indeed very similar to test any PHP application, we just have to be sure the framework classes are properly loaded.
 
@@ -60,11 +60,10 @@ In the [Zend Skeleton Module](https://github.com/zendframework/ZendSkeletonModul
 
 In the getting started documentation used to be a different approach, but it seems it has been removed in one of the last versions. It was also too confusing, trying to load all the framework stuff.
 
-The thing is that when I make a unit test I just want to test one class, one tiny component, and don't need to load everythiug else. That's why I prefer to use the composer's autoloader, which makes the bootstrap script much simpler.
+The thing is that when I make a unit test I just want to test one class, one tiny component, and don't need to load everything else. That's why I prefer to use the composer's autoloader, which makes the bootstrap script much simpler.
 
 ~~~php
 <?php
-
 $vendorDir = findParentPath('vendor');
 
 if (file_exists($file = $vendorDir . '/autoload.php')) {
@@ -101,10 +100,11 @@ For our example, the composer.json autoloading could be something like this:
 
 "autoload": {
     "psr-4": {
-        "MyModule\\": "src/"
+        "MyModule\\": "src/",
         "MyModuleTest\\": "tests/"
-    }
-},
+    },
+    "classmap": ["./Module.php"]
+}
 
 [...]
 ~~~
@@ -148,3 +148,154 @@ Once the bootstrap script is clear, we need to define the phpunit config file. I
 
 </phpunit>
 ~~~
+
+### Writing tests
+
+Our example module has two classes, a service and a controller. Let's write the tests for both of them.
+
+The subjects under test (both classes we are going to test) can be found in the example repository. [MyService](https://github.com/acelaya-blog/zf2-testing/blob/master/src/Service/MyService.php) and [IndexController](https://github.com/acelaya-blog/zf2-testing/blob/master/src/Controller/IndexController.php).
+
+**MyServiceTest**:
+
+~~~php
+<?php
+namespace MyModuleTest\Service;
+
+use MyModule\Service\MyService;
+use PHPUnit_Framework_TestCase as TestCase;
+use Zend\EventManager\Event;
+use Zend\EventManager\EventManager;
+
+class MyServiceTest extends TestCase
+{
+    /**
+     * @var MyService
+     */
+    private $myService;
+
+    public function setUp()
+    {
+        $this->myService = new MyService();
+        $this->myService->setEventManager(new EventManager());
+    }
+
+    public function testFooEventIsTriggeredWhenCallingFoo()
+    {
+        // With no event handler the event is not triggered
+        $fooIsTriggered = false;
+        $this->myService->foo();
+        $this->assertFalse($fooIsTriggered);
+
+        // Add an event handler
+        $test = $this;
+        $this->myService->getEventManager()->attach(
+            'foo',
+            function (Event $e) use (&$fooIsTriggered, $test) {
+                $fooIsTriggered = true;
+                // Check the param 'argument' exists with the correct value
+                $test->assertEquals('foo', $e->getParam('argument'));
+            }
+        );
+        $this->myService->foo();
+        // Check the event was triggered
+        $this->assertTrue($fooIsTriggered);
+    }
+
+    public function testBarEventIsTriggeredWhenCallingBar()
+    {
+        // With no event handler the event is not triggered
+        $barIsTriggered = false;
+        $this->myService->bar();
+        $this->assertFalse($barIsTriggered);
+
+        // Add an event handler
+        $test = $this;
+        $this->myService->getEventManager()->attach(
+            'bar',
+            function (Event $e) use (&$barIsTriggered, $test) {
+                $barIsTriggered = true;
+                // Check the param 'argument' exists with the correct value
+                $test->assertEquals('bar', $e->getParam('argument'));
+            }
+        );
+        $this->myService->bar();
+        // Check the event was triggered
+        $this->assertTrue($barIsTriggered);
+    }
+}
+~~~
+
+The MyService class just wraps an EventManager which handles two events. When we call MyService::foo, the event manager triggers the foo event, passing a param to it called argument with the value foo. When we call MyService::bar the same happens, but both the event triggered and the param are bar instead of foo.
+
+In the test we check that the events are triggered if an event handler was previously attached, and that the arguments passed to the event handler are correct.
+
+As you can see it is a simple PHPUnit test which extends `PHPUnit_Framework_TestCase`. We use some ZF2 classes just because the subject under test depends on them.
+
+**IndexController**:
+
+~~~php
+<?php
+namespace MyModuleTest\Controller;
+
+use MyModule\Controller\IndexController;
+use PHPUnit_Framework_TestCase as TestCase;
+use Zend\Http;
+
+class IndexControllerTest extends TestCase
+{
+    /**
+     * @var IndexController
+     */
+    private $indexController;
+
+    public function setUp()
+    {
+        $this->indexController = new IndexController();
+    }
+
+    public function testIndexAction()
+    {
+        $resp = $this->indexController->indexAction();
+        $this->assertTrue(is_array($resp));
+        $this->assertArrayHasKey('foo', $resp);
+        $this->assertEquals('bar', $resp['foo']);
+    }
+
+    public function testModelAction()
+    {
+        $resp = $this->indexController->modelAction();
+        $this->assertInstanceOf('Zend\View\Model\ViewModel', $resp);
+        $this->assertEquals('foo', $resp->getVariable('bar'));
+        // Check a nonexistent variable in the model
+        $this->assertNull($resp->getVariable('nonexistent'));
+    }
+
+    public function testDeniedResponseAction()
+    {
+        $resp = $this->indexController->deniedResponseAction();
+        $this->assertInstanceOf('Zend\Http\Response', $resp);
+        $this->assertEquals(Http\Response::STATUS_CODE_403, $resp->getStatusCode());
+        $this->assertEquals('Permission denied', $resp->getContent());
+    }
+
+    public function testRedirectResponseAction()
+    {
+        $resp = $this->indexController->redirectResponseAction();
+        $this->assertInstanceOf('Zend\Http\Response', $resp);
+        $this->assertEquals(Http\Response::STATUS_CODE_302, $resp->getStatusCode());
+        $headers = $resp->getHeaders()->toArray();
+        $this->assertArrayHasKey('Location', $headers);
+        $this->assertEquals('/home', $headers['Location']);
+    }
+}
+~~~
+
+Once again this is a simple PHPUnit test which checks every method in the IndexController class does what it's intended to do.
+
+In the case of controller tests there is a Zend Framework 2 component that is worth the mention, `Zend\Test`. It includes a class designed to test HTTP controllers, the `Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase`. It extends `PHPUnit_Framework_TestCase` so it can be used as a regular test case, but it adds some new methods to check headers, routes and even CSS selectors in returned views. Complete documentation can be found [here](http://framework.zend.com/manual/2.3/en/modules/zend.test.phpunit.html).
+
+### Conclusions
+
+As you can see, testing Zend Framework modules is not harder than testing any other PHP application. The key is using composer to easily bootstrapping the test suits and keeping classes simple and decoupled so that unit tests are really unit.
+
+If you want to run this examples, clone the [example repository](https://github.com/acelaya-blog/zf2-testing), run `php composer.phar install` to install all dependencies and the run `vendor/bin/phpunit -c tests/phpunit.xml` to run both tests.
