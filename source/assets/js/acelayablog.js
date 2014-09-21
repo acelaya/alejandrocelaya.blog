@@ -53,7 +53,7 @@ var acelayablog = {
 
         // Make the button to be displayed on scroll
         $(window).scroll(function() {
-            var top = $('body').scrollTop();
+            var top = $('body').scrollTop() | $('html').scrollTop();
             if (top >= 300) {
                 btn.removeClass('hidden');
             } else {
