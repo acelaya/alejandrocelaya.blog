@@ -112,7 +112,7 @@ class MyController
 }
 ~~~
 
-As you can see, we have to set the identity (usually a username) and the credential (the password) to the adapter wrapped by the AuthenticationService, and the call to the method authenticate.
+As you can see, we have to set the identity (usually a username) and the credential (the password) to the adapter wrapped by the AuthenticationService, and then call to the method authenticate.
 
 That method will return a `Zend\Authentication\Result` object which can be used to know if authentication was OK (by calling the `isValid()` method) and get the identity data (by calling `getIdentity()`).
 
@@ -184,4 +184,4 @@ class MyController
 }
 ~~~
 
-And that's pretty much all you can (and provably need) to do with the AuthenticationService.
+And that's pretty much all you can (and probably need) to do with the AuthenticationService.
