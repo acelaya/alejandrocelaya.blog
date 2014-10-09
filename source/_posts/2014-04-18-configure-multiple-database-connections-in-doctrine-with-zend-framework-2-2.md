@@ -8,6 +8,7 @@ tags:
     - zf2
 categories:
     - php
+    - zf2
 
 ---
 

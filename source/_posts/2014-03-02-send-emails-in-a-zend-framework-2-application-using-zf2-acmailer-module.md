@@ -9,6 +9,7 @@ tags:
     - zf2-acmailer
 categories:
     - php
+    - zf2
 
 ---
 
