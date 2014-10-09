@@ -13,15 +13,26 @@ use:
             <h2 class="post-title"><a href="{{ site.url }}{{ post.url }}/">{{ post.title }}</a></h2>
         </header>
         <div>
-            {{ post.blocks.content|raw }}
+            {{ post.blocks.content | raw }}
         </div>
-        {% if post.meta.tags %}
-            <p class="text-right">
-                {% for tag in post.meta.tags %}
-                    <a class="label label-primary" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
+
+        <ul class="list-unstyled">
+            {% if post.meta.categories %}
+            <li class="pull-left">
+                {% for category in post.meta.categories %}
+                <a class="label label-info" href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>
                 {% endfor %}
-            </p>
-        {% endif %}
+            </li>
+            {% endif %}
+            {% if post.meta.tags %}
+            <li class="pull-right text-right">
+                {% for tag in post.meta.tags %}
+                <a class="label label-primary" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
+                {% endfor %}
+            </li>
+            {% endif %}
+            <li class="clearfix"></li>
+        </ul>
     </article>
 {% endfor %}
 <ul class="pager">
