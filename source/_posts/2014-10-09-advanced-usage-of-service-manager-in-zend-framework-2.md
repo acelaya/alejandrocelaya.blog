@@ -21,7 +21,7 @@ But it's easy to finish creating new factories for every object, which will lead
 
 I'll try to explain all the ways the `ServiceManager` can create objects so that we can optimize our code and avoid duplication.
 
-By now, let's see all the possibilities of a service_manager configuration.
+By now, let's see all the possibilities of a **service_manager** configuration.
 
 ~~~php
 <?php
@@ -41,9 +41,9 @@ return [
 
 ### Services and invokables
 
-The two most simple ways to create services is by defining them in the **services** or in the **invokables** blocks.
+The two most simple ways to create services is by defining them in the **services** or the **invokables** blocks.
 
-Services defined in **services** are just instances of objects that are created inline. This is not recommended, since we are creating many objects that could never be used.
+Services defined in **services** are just instances of objects that are created inline. This is not recommended, since we are creating objects that could not be used.
 
 ~~~php
 <?php
@@ -116,9 +116,6 @@ Services created by factories are defined in the **factories** block, and you ju
 <?php
 return [
     'service_manager' => [
-        'invokables' => [
-            'Application\Service\ServiceOne' => 'Application\Service\ServiceOne',
-        ],
         'factories' => [
             'Application\Service\MyService' => 'Application\Service\Factory\MyServiceFactory',
         ],
@@ -270,7 +267,7 @@ This factory will be able to create a service as long as the class of the reques
 
 The difference between the `$name` and the `$requestedName` arguments are that the second is the name as we requested it (for example **Application\Mapper\UserMapper**) and the first is the name after the `ServiceManager` has resolved it (for example **applicationmapperusermapper**). It depends on your needs which one you use to check if the service can be created.
 
-Finally the service is created by using the `$requestedName` as the class name to create the object and injecting the database adapter and the hydrator on it. Any other mapper will be created the same way as lomng as the constructor is compatible, so that we don't need to duplicate this code.
+Finally the service is created by using the `$requestedName` as the class name to create the object and injecting the database adapter and the hydrator on it. Any other mapper will be created the same way as long as the constructor is compatible, so that we don't need to duplicate this code.
 
 The configuration goes in the **abstract_factories** block, and as well as the initializers, they dont need a key name, because the `ServiceManager` will use all the abstract factories to create non-defined services until one of them is able to create it.
 
@@ -298,7 +295,7 @@ We could create our own factory and override the service in the **service_manage
 
 Delegator factories are _called_ after a service is created (indeed the delegator is called and we decide if we call the original implementation inside of it), allowing us to customize it at one single point before returning it, so we only need to define the customization itself and don't repeat the original code.
 
-They work in a similar way as initializers, allowing us to update a service that has been already created, but they affects only a concrete service which is much more efficient.
+They work in a similar way as initializers, allowing us to update a service that has been already created, but they affect only a concrete service which is much more efficient.
 
 I like to combine abstract factories and delegators so that the abstract factory creates any object extending a common abstract class with their hard dependencies and each delegator then customizes those parts that are different on each concrete service.
 
@@ -330,7 +327,7 @@ class MyServiceDelegator implements DelegatorFactoryInterface
 }
 ~~~
 
-The callback argument is a callable that will return the original service regardless how it is created. Then we can update it and return the updated service.
+The `$callback` argument is a callable that will return the original service regardless how it is created. Then we can update it and return the updated service.
 
 Delegator factories are _attached_ to a certain service and are only invoked when that concrete service is requested, but more than one delegator can be defined for each service.
 
@@ -375,7 +372,7 @@ return [
 ];
 ~~~
 
-With this configuration both the `MyService` and the `AliasService` will return the same service, created by instantiating a `Application\Service\MyService` object.
+With this configuration both the `MyService` and the `AliasService` will return the same service, created by instantiating an `Application\Service\MyService` object.
 
 This is very useful when you don't want certain component to be coupled with a concrete service.
 
