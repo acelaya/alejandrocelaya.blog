@@ -190,9 +190,9 @@ return [
 
 Sometimes we have many services that are created in a very similar way because, for example, they have the same dependencies or they extend the same base abstract class.
 
-Abstract factories are used when we try to get a service from the `ServiceManager` that is not been explicitly defined, so it can create multiple services at once.
+Abstract factories are used when we try to get a service from the `ServiceManager` that is not been explicitly defined, so they can create multiple services at once.
  
-Abstract factories must implement `Zend\ServiceManager\AbstractFactoryInterface` which gives us two methods, the `canCreateServiceWithName` which tells us if this factory is able to create certain type of service, and `createServiceWithName` which creates the service if the first method returned true.
+Abstract factories must implement `Zend\ServiceManager\AbstractFactoryInterface` which gives us two methods, the `canCreateServiceWithName` that tells us if this factory is able to create certain type of service, and `createServiceWithName` that creates the service if the first method returned true.
 
 For example, let's imagine we have multiple classes extending the ZfcBase's [AbstractDbMapper](https://github.com/ZF-Commons/ZfcBase/blob/master/src/ZfcBase/Mapper/AbstractDbMapper.php). All of them will need at least a database adapter, an hydrator, an entity prototype and a table name. The entity and the table name can depend on the service itself, and so, be optional arguments with a default value, so this leaves us with just the two first dependencies.
 
@@ -249,8 +249,11 @@ class MappersAbstractFactory implements AbstractFactoryInterface
             && is_subclass_of($requestedName, AbstractDbMapper::class);
     }
     
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
-    {
+    public function createServiceWithName(
+        ServiceLocatorInterface $serviceLocator,
+        $name,
+        $requestedName
+    ) {
         $dbAdapter = $serviceLocator->get('Zend\Db\Adapter\Adapter');
         $hydrator = new ClassMethodsHydrator();
         
@@ -267,7 +270,7 @@ This factory will be able to create a service as long as the class of the reques
 
 The difference between the `$name` and the `$requestedName` arguments are that the second is the name as we requested it (for example **Application\Mapper\UserMapper**) and the first is the name after the `ServiceManager` has resolved it (for example **applicationmapperusermapper**). It depends on your needs which one you use to check if the service can be created.
 
-Finally the service is created by using the `$requestedName` as the class name to create the object and injecting the database adapter and the hydrator on it. Any other mapper will be created the same way so that we don't need to duplicate this code.
+Finally the service is created by using the `$requestedName` as the class name to create the object and injecting the database adapter and the hydrator on it. Any other mapper will be created the same way as lomng as the constructor is compatible, so that we don't need to duplicate this code.
 
 The configuration goes in the **abstract_factories** block, and as well as the initializers, they dont need a key name, because the `ServiceManager` will use all the abstract factories to create non-defined services until one of them is able to create it.
 
@@ -277,7 +280,74 @@ return [
     'service_manager' => [
         'abstract_factories' => [
             'Application\Service\Factory\MappersAbstractFactory',
-            'Application\Service\Factory\AbstractServicesFactiory',
+            'Application\Service\Factory\AnotherAbstractFactiory',
+        ],
+        
+        // [...]
+    ]
+];
+~~~
+
+### Delegator factories
+
+Delegator factories allow us to override the behavior of certain factories without code duplication. [Here](http://ocramius.github.io/blog/zend-framework-2-delegator-factories-explained/) is an excelent article about delegator factories by [Marco Pivetta](https://twitter.com/Ocramius), who originally created the implementation in Zend Framework 2.
+
+It could happen we have a service that is created in a third party factory and we need to update the way it is created because we don't need some of the soft dependencies injected on it but instead we need to do "whatever" before returning it.
+
+We could create our own factory and override the service in the **service_manager** configuration, but that will force us to duplicate the code that we do need from the original factory.
+
+Delegator factories are _called_ after a service is created (indeed the delegator is called and we decide if we call the original implementation inside of it), allowing us to customize it at one single point before returning it, so we only need to define the customization itself and don't repeat the original code.
+
+They work in a similar way as initializers, allowing us to update a service that has been already created, but they affects only a concrete service which is much more efficient.
+
+I like to combine abstract factories and delegators so that the abstract factory creates any object extending a common abstract class with their hard dependencies and each delegator then customizes those parts that are different on each concrete service.
+
+A delegator factory must implement `Zend\ServiceManager\DelegatorFactoryInterface` which will provide the `createDelegatorWithName` method.
+
+~~~php
+<?php
+namespace Application\Service\Delegator;
+
+use Zend\ServiceManager\DelegatorFactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
+class MyServiceDelegator implements DelegatorFactoryInterface
+{
+    public function createDelegatorWithName(
+        ServiceLocatorInterface $serviceLocator,
+        $name,
+        $requestedName,
+        $callback
+    ) {
+        $myService = $callback();
+        
+        $myService->setFoo('');
+        $myService->setBar(123);
+        // Do something else with the service before returning it...
+        
+        return $myService;
+    }
+}
+~~~
+
+The callback argument is a callable that will return the original service regardless how it is created. Then we can update it and return the updated service.
+
+Delegator factories are _attached_ to a certain service and are only invoked when that concrete service is requested, but more than one delegator can be defined for each service.
+
+Delegators are defined in the **delegators** block of the **service_manager** configuration.
+
+~~~php
+<?php
+return [
+    'service_manager' => [
+        'factories' => [
+            'Application\Service\MyService' => 'Application\Service\Factory\MyServiceFactory',
+        ],
+        'delegators' => [
+            'Application\Service\MyService' => [
+                'Application\Service\Delegator\MyServiceDelegator',
+                'Application\Service\Delegator\AnotherDelegatorForMyService',
+            ]
         ],
         
         // [...]
