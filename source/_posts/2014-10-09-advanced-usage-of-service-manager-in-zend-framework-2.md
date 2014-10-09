@@ -355,9 +355,58 @@ return [
 ];
 ~~~
 
-### Getting a service
+### Aliases
 
-    $sm->get('ServiceName');
+The aliases configuration block is just used to define service names that will resolve other services.
+
+~~~php
+<?php
+return [
+    'service_manager' => [
+        'invokables' => [
+            'MyService' => 'Application\Service\MyService'
+        ],
+        'aliases' => [
+            'AliasName' => 'MyService'
+        ]
+        
+        // [...]
+    ]
+];
+~~~
+
+With this configuration both the `MyService` and the `AliasService` will return the same service, created by instantiating a `Application\Service\MyService` object.
+
+This is very useful when you don't want certain component to be coupled with a concrete service.
+
+For example, my [AcMailer](https://github.com/acelaya/ZF2-AcMailer) module uses the `viewrenderer` service which returns a `Zend\View\Renderer\PhpRenderer` object in order to compose emails from templates, but it doesn't really uses the `viewrenderer`, it uses the `mailviewrenderer` service, which is an alias for the `viewrenderer` service.
+
+This way, if anyone needs to use another third party renderer (twig, blade, etc) he just needs to override the `mailviewrenderer` service. You can see that the mail module is not coupled with the default renderer defined by Zend Framework 2 (thanks to [Adam Kuśmierz](https://github.com/kusmierz) for the pull request).
+
+### Shared services
+
+By default, the `ServiceManager` allways returns the same instance of a service when you request it multiple times. It is created the first time and cached during the request. That's what a **shared** service is. A non-shared service will create a new instance every time it is requested.
+
+The **shared** block is just meant to define which services are shared and which are not. Of course setting a service as shared is redundant because that's the default behavior, but you might want to override the configuration of another module which set it to non-shared.
+
+~~~php
+<?php
+return [
+    'service_manager' => [
+        'invokables' => [
+            'MyService' => 'Application\Service\MyService',
+            'AnotherService' => 'Application\Service\AnotherService',
+        ],
+        'shared' => [
+            'MyService' => false,
+            'AnotherService' => false,
+            'ThirdPartyService' => true,
+        ],
+        
+        // [...]
+    ]
+];
+~~~
     
 ### Conclusion
 
