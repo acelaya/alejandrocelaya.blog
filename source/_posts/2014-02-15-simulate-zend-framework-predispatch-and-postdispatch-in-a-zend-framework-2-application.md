@@ -11,6 +11,7 @@ tags:
     - zend-framework-2
 categories:
     - php
+    - zf2
 
 ---
 
