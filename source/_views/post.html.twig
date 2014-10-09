@@ -39,16 +39,21 @@
         <hr>
 
         <ul class="list-unstyled">
-            <li class="text-right">
-                {% if page.tags or page.categories %}
+            {% if page.categories %}
+                <li class="pull-left">
                     {% for category in page.categories %}
                         <a class="label label-info" href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>
                     {% endfor %}
+                </li>
+            {% endif %}
+            {% if page.tags %}
+                <li class="pull-right text-right">
                     {% for tag in page.tags %}
                         <a class="label label-primary" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
                     {% endfor %}
-                {% endif %}
-            </li>
+                </li>
+            {% endif %}
+            <li class="clearfix"></li>
         </ul>
 
         {% if page.previous_post or page.next_post %}
