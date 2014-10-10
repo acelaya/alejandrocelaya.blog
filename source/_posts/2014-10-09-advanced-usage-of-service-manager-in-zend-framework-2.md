@@ -134,7 +134,7 @@ return [
 
 Initializers don't really create new objects, they are called after any service is created to make some updates on the state of the object.
 
-For example, we could have an initializer that every time we create an object that implements `Zend\EventManager\EventManagerAwareInterface`, attaches an event handler to the `EventManager` wraped by that service.
+For example, we could have an initializer that every time we create an object that implements `Zend\EventManager\EventManagerAwareInterface`, attaches an event handler to the `EventManager` wrapped by that service.
 
 Initializers must implement the `Zend\ServiceManager\InitializerInterface`.
 
