@@ -110,6 +110,28 @@ In each case, the proper `PluginManager` is injected, given that all of them imp
 
 It is very useful to get a `ServiceLocator` injected in the `createService` method, so that we can fetch other services to inject on the object that we are creating.
 
+**Update 2014-10-11:** As [Matthew Weier](https://mwop.net/) mentioned in the [comments](#disqus_thread), instead of implementing `Zend\ServiceManager\FactoryInterface`, factories can be defined as invokable objects, for example by implementing the `__invoke()` method. This will leave us with a much simpler class that could be reused with other service containers.
+
+The above example using an invokable object would be like this:
+
+~~~php
+<?php
+namespace Application\Service\Factory;
+
+use Application\Service\MyService;
+
+class MyServiceFactory
+{
+    public function __invoke($serviceLocator)
+    {
+        $dependencyService = $serviceLocator->get('Application\Service\ServiceOne');
+        $translator = $serviceLocator->get('Translator');
+        
+        return new MyService($dependencyService, $translator);
+    }
+}
+~~~
+
 Services created by factories are defined in the **factories** block, and you just need to provide a unique identifier for the service (for example the fully qualified name of the object it is going to return) and the fully qualified name of the factory that is responsible of creating it.
 
 ~~~php
