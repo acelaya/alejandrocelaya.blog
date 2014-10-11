@@ -126,11 +126,18 @@ blockquote .small:before {
     border-color: #222;
 }
 @media (min-width: 768px) {
-    .navbar input[type=search] {
-        width: 200px;
+    #search-form input[type=search] {
+        width: 180px;
     }
-    .navbar input[type=search]:focus {
+}
+@media (min-width: 992px) {
+    #search-form input[type=search]:focus {
         width: 300px;
+    }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    #search-form input[type=search]:focus {
+        width: 250px;
     }
 }
 
