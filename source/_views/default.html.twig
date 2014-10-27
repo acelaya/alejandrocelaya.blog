@@ -30,41 +30,7 @@
     </head>
     <body>
         <header>
-            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                <div class="container header-container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand async" href="{{ site.url }}/">Blog</a>
-                        <div class="preloader"></div>
-                    </div>
-                    <div class="collapse navbar-collapse navbar-ex1-collapse">
-                        <ul class="nav navbar-nav">
-                            <li><a href="{{ site.url }}/category/php/">PHP</a></li>
-                            <li><a href="{{ site.url }}/category/zf2/">ZF2</a></li>
-                            <li><a href="{{ site.url }}/category/web/">Web</a></li>
-                            <li><a href="{{ site.url }}/category/java/">Java</a></li>
-                            <li><a href="{{ site.url }}/category/tools/">Tools</a></li>
-                        </ul>
-                        <form class="navbar-form navbar-right" id="search-form" role="search" method="get" action="{{ site.url }}/search/">
-                            <div class="form-group">
-                                <input type="search" class="form-control" placeholder="Search" name="q">
-                                <i class="fa fa-search"></i>
-                            </div>
-                        </form>
-                        <ul class="nav navbar-nav navbar-right hidden-xs">
-                            <li>
-                                <a href="#top" class="to-top hidden">
-                                    <i class="fa fa-arrow-up"></i> To top
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            {% include 'partials/nav.html.twig' %}
         </header>
 
         <div id="wrap">
@@ -79,55 +45,7 @@
                         {% block content_wrapper %}{% block content %}{% endblock %}{% endblock %}
                     </div>
                     <div class="col-md-3 sidebar">
-                        <a target="_blank" href="http://www.alejandrocelaya.com">
-                            <img src="{{ site.url }}/assets/img/me.jpg" class="thumbnail">
-                        </a>
-                        <ul class="list-unstyled social-list">
-                            <a target="_blank" href="https://www.linkedin.com/pub/alejandro-celaya-alastru%C3%A9/63/552/257">
-                                <li class="social-element" id="linkedin">
-                                    <i class="fa fa-linkedin"></i>
-                                </li>
-                            </a>
-                            <a target="_blank" href="http://www.zend.com/en/yellow-pages/ZEND021590">
-                                <li class="social-element" id="php">
-                                    <i class="fa fa-code"></i>
-                                </li>
-                            </a>
-                            <a target="_blank" href="https://github.com/acelaya/">
-                                <li class="social-element" id="github">
-                                    <i class="fa fa-github-alt"></i>
-                                </li>
-                            </a>
-                            <a target="_blank" href="https://plus.google.com/+AlejandroCelaya?rel=author">
-                                <li class="social-element" id="google">
-                                    <i class="fa fa-google-plus"></i>
-                                </li>
-                            </a>
-                            <a target="_blank" href="https://twitter.com/acelayaa">
-                                <li class="social-element" id="twitter">
-                                    <i class="fa fa-twitter"></i>
-                                </li>
-                            </a>
-                            <a href="{{ site.url }}/feed/">
-                                <li class="social-element" id="rss">
-                                    <i class="fa fa-rss"></i>
-                                </li>
-                            </a>
-                        </ul>
-
-                        <div class="well">
-                            <h4>
-                                <p>{{ site.title }}</p>
-                                {% if site.subtitle %}<small>{{ site.subtitle }}</small>{% endif %}
-                            </h4>
-                        </div>
-                        <div class="well">
-                            <h4>Contents</h4>
-                            <ul class="nav">
-                                <li><a href="{{ site.url }}/categories/">Categories</a></li>
-                                <li><a href="{{ site.url }}/tags/">Tags</a></li>
-                            </ul>
-                        </div>
+                        {% include 'partials/sidebar.html.twig' %}
                     </div>
                 </div>
             </div>
@@ -135,12 +53,7 @@
         </div>
 
         <footer id="footer">
-            <div class="container">
-                &copy; {{ "now" | date("Y") }} <a target="_blank" href="http://www.alejandrocelaya.com">{{ site.my_full_name}}</a>
-                <span class="pull-right">
-                    Powered by <a target="_blank" href="https://sculpin.io">Sculpin</a>
-                </span>
-            </div>
+            {% include 'partials/footer.html.twig' %}
         </footer>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
