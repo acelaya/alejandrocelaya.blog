@@ -108,12 +108,12 @@ blockquote .small:before {
     height: 34px;
     line-height: 32px;
     font-size: 20px;
-    color: #666;
+    color: #6a94b7;
     cursor: pointer;
 }
 #search-form input[type=search] {
-    background-color: #444;
-    border-color: #222;
+    background-color: #1f5787;
+    border-color: #1f5787;
     padding-right: 40px;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -123,15 +123,30 @@ blockquote .small:before {
 }
 #search-form input[type=search]:focus {
     background-color: #ffffff;
-    border-color: #222;
 }
 @media (min-width: 768px) {
-    .navbar input[type=search] {
-        width: 200px;
+    #search-form input[type=search] {
+        width: 180px;
     }
-    .navbar input[type=search]:focus {
+}
+@media (min-width: 992px) {
+    #search-form input[type=search]:focus {
         width: 300px;
     }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    #search-form input[type=search]:focus {
+        width: 250px;
+    }
+}
+#search-form input[type=search]::-webkit-input-placeholder {
+    color: #6a94b7;
+}
+#search-form input[type=search]::-moz-placeholder {
+    color: #6a94b7;
+}
+#search-form input[type=search]:-ms-input-placeholder {
+    color: #6a94b7;
 }
 
 .sidebar .thumbnail {

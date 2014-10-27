@@ -11,3 +11,7 @@ services:
         class: AndrewShell\Twig\Extensions\Text
         tags:
             - { name: twig.extension }
+    truncatehtml.twig.extension:
+        class: Acelaya\Twig\Extension\TruncateHtmlExtension
+        tags:
+            - { name: twig.extension }
