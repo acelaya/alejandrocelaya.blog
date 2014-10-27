@@ -12,7 +12,8 @@
     ],
     "autoload": {
         "psr-0": {
-            "AndrewShell": "app/src"
+            "AndrewShell": "app/src",
+            "Acelaya": "app/src"
         }
     },
     "config": {
