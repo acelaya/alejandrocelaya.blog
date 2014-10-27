@@ -27,6 +27,7 @@ module.exports = function(grunt) {
             combine: {
                 files : {
                     'output_prod/assets/css/main.min.css' : [
+                        'output_prod/assets/css/bootstrap.min.css',
                         'output_prod/assets/css/bootstrap-social.min.css',
                         'output_prod/assets/css/highlightjs-github.min.css',
                         'output_prod/assets/css/main.min.css'
