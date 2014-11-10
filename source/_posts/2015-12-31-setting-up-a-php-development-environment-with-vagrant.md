@@ -69,7 +69,7 @@ Extract downloaded file wherever you want, open a console and go to the extracte
 
 After a while, the virtual machine will be up an running. You can take a look at the extracted Vagrantfile and see that it is a little more complex than the first example.
  
-If you include the Vagrantfile and the puphpet folder in your project you will be able to reproduce the same environment anywhere you go just by clonning the repository.
+If you include the Vagrantfile and the puphpet folder in your project's VCS you will be able to reproduce the same environment anywhere you go just by clonning the repository.
 
 ### Guest and host machine integrations
 
@@ -83,8 +83,24 @@ To define a folder that should be synced, just place a line like this in your Va
 config.vm.synced_folder "subfolder/", "/anywhere/else/in/the/virtual/machine"
 ```
 
-
+**Port forwarding**: This was seen in the first example. We could map a port in the host machine to another port in the virtual machine so that requests to the first one are forwarded to the other. We could also access the virtual machine IP or hostname directly, that depends on our needs.
 
 ### Managing virtual machines
 
+After some time working with vagrant you'll probably have more than one virtual machine created and vagrant also provides some commands to handle them. By the way, the virtual machines in vagrant are called boxes.
 
+We have seen that the `vagrant up` command creates a virtual machine, but it also turns on a previously halted box. To safely halt a virtual machine, just run `vagrant halt` and all the resources will be freed. We have also the `vagrant suspend` which, as you can guess, is used to suspend a box and `vagrant resume`, which resumes a suspended box.
+
+Sometimes we will need to update a virtual machine. Updating the Vagrantfile and running the `vagrant up` command is not enugh for already created boxes, you will need to run `vagrant reload` so that the Vagrantfile is processed again. If you also need to refresh the provisions (the bootstrap.sh script in our first example) either run `vagrant provision` or `vagrant reload --provision` which will both reload the configuration and provision the machine.
+
+Finally, when you need to delete a virtual machine, just run `vagrant destroy`.
+
+You can also manage all the boxes you have installed, without having to be in the directory of a specific machine, by using the commands under `vagrant box`. Try `vagrant box help` to see what's available.
+
+### Conclusion
+
+This is pretty much it. This will let you encapsulate a PHP project inside a virtual machine, allowing you to use different applications and services on each one of them and "tracking" the state of the machine itself so that any collaborator can work in the same environment as you.
+
+Of course there are other advanced usages for Vagrant, like deployment of machines to virtualization systems like Amazon Web Services, but that's another articles subject.
+
+For a complete vagrant documentation, follow this [link](https://docs.vagrantup.com/v2/getting-started/index.html).
