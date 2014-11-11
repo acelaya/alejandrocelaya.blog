@@ -15,7 +15,7 @@ One of those features is a group of new HTML tag attributes, really useful to so
 
 ### Autofocus
 
-This attribute makes an element to gain focus once te page has been loaded. Can be used with either an `<input>`, a `<textarea>` or a `<button>`
+This attribute makes an element to gain focus once te page has been loaded. Can be used with either an `input`, a `textarea` or a `button`
 
 This is a boolean attribute, which means any value assigned to it is a valid value, it only needs to be present. Also, HTML5 specifications allows attributes without values, so it would be only necessary to attach the attribute to the element.
 
@@ -44,7 +44,7 @@ The placeholder attribute allows us to define a helper text or default value in 
 <textarea placeholder="Comments"></textarea>
 ~~~
 
-This attribute is very useful in <input[type=password]> elements, where the placeholder value will be displayed despite that the user input will be hidden.
+This attribute is very useful in `<input[type=password]>` elements, where the placeholder value will be displayed despite that the user input will be hidden.
 
 Internet Explorer 10+, Google Chrome, Mozilla Firefox, Safari and Opera do support this attribute.
 
@@ -171,4 +171,4 @@ This attribute is compatible with all major browsers.
 
 **Example:**
 
-<p><div contenteditable>This content is editable. Try it!</div></p>
+<div contenteditable>This content is editable. Try it!</div>

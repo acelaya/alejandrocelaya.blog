@@ -14,7 +14,7 @@ class TruncateHtmlExtension extends \Twig_Extension
     public function truncatehtml($html, $minimum) {
         $oldDocument = new \DomDocument();
         $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
-        $oldDocument->loadHTML('<div>'.$html.'</div>');
+        $oldDocument->loadHTML('<div>' . $html . '</div>');
 
         // remove DOCTYPE, HTML and BODY tags
         $oldDocument->removeChild($oldDocument->firstChild);

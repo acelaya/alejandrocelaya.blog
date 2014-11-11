@@ -27,6 +27,8 @@ Vagrant is a command line tool which eases the interaction with the virtual mach
 
 There are packages for every major operating system that can be downloaded from [here](https://www.vagrantup.com/downloads.html).
 
+You will also need to install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) to handle virtual machines. Others are supported too.
+
 ### Creating the Vagrantfile
 
 The Vagrantfile is the main configuration file for the virtual machine. It defines the operating system to be used, the system packages to be installed and how to do it, ports to be mapped to the host machine, folders to be shared, etc.
