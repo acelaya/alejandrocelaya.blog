@@ -1,6 +1,5 @@
 ---
 title: File uploads with Zend Framework 2 and jQuery
-draft: true
 categories:
     - zf2
     - web
