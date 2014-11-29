@@ -26,7 +26,7 @@ You will need a modern browser to do this, since asynchronous file uploads are n
 I have created a project which is fully functional. I'm going to use it across this article so feel free to clone it from here [https://github.com/acelaya-blog/file-uploads](https://github.com/acelaya-blog/file-uploads).
 
 <blockquote>
-    <small>Notice that I've simplified the usual project structure. It's enough for this example, but maybe difficult to maintain if your project grows, so better use the <a href="https://github.com/zendframework/ZendSkeletonApplication">Skeleton Application</a> structure in real applications.</small>
+    <small>Notice that I've simplified the usual Zend Framework 2 project structure. It's enough for this example, but maybe difficult to maintain if your project grows, so better use the <a href="https://github.com/zendframework/ZendSkeletonApplication">Skeleton Application</a> structure in real applications.</small>
 </blockquote>
 
 Once you have it, open a terminal, go to the directory and run `php composer.phar selfupdate && php composer.phar install`.
@@ -45,11 +45,11 @@ I assume you are familiar with file uploads in web environments. All we need is 
 </form>
 ```
 
-It's important to add brakets to the name attribute, so that the content is treated like an array and the server can properly manage all the files.
+It's important to add brackets to the name attribute in the file input, so that the content is treated like an array and the server can properly manage all the files.
 
 In this example I captured the form submit with javascript event handlers so that we can track the progress of the upload. It's been set in `public/js/main.js`. In the `acelaya.uploadFiles` function I have defined what has to be done when the form is sent.
 
-```js
+```javascript
 // [..]
 
 uploadFiles: function ($form) {
@@ -82,6 +82,17 @@ uploadFiles: function ($form) {
 
             return myXhr;
         }
+    }).done(function (resp) {
+        if (resp.code === 'success') {
+            acelaya.refreshFilesList();
+        } else {
+            $form.after(
+                '<div class="alert alert-danger alert-dismissable" style="margin-top: 20px">' +
+                    '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                    '<div>An error occurred with uploaded files</div>' +
+                '</div>'
+            )
+        }
     });
 },
 
@@ -96,7 +107,7 @@ By default the `ajax` method creates a `jqXHR` object (a wrapper of the native `
 
 What we do is to add a `progress` event listener which will increase a [bootstrap styled](http://getbootstrap.com/components/#progress) progress bar as long as the content is sent to the server. The method `acelaya.createProgressBar` will create that progress bar and add it to the DOM.
 
-```js
+```javascript
 handleUploadProgress: function (e, progressBar) {
     if (! e.lengthComputable) {
         return;
@@ -117,6 +128,8 @@ In the method `acelaya.handleUploadProgress` we calculate the percentage of the 
 <blockquote>
     <small>When you test this application, make sure to use big files, at least 1 GB in total, since you are going to "upload" them to your local machine, which is pretty fast. I already managed the server side to allow up to 1.5GB of POST data.</small>
 </blockquote>
+
+Once files are uploaded, if the server returns a success response, we refresh the list of files, otherwise an error message is displayed.
 
 And this is everything for the front-end, but this is not enough to make a usable application since files uplaoded will be discarded at the end of the request if the server does nothing with them.
 
@@ -149,12 +162,75 @@ public function persistFiles(array $files)
 
 As you can see, it is pretty simple. It just iterates the list of files and performs a `move_uploaded_file` over each one of them. The options object wrapps the base path, which can be set at `config/config.php` by changing the `files.base_path` directive, and it is the `files` directory by default.
 
-This is functional, but we could need to validate something, like filesizes, mimetypes and such. We could even want to apply a hash to ensure an uploaded file's integrity or check the resolution of an uploaded image.
+This is functional, but we could need to validate something, like filesizes, mimetypes and such. We could even want to apply a hash to ensure an uploaded file's integrity or check an uploaded image resolution.
 
 Zend Framework 2 comes with a full set of file validators that we can use on this example. 
 
-### Validation
+### Filtering and validation
 
+Let's imagine we don't want to allow files greater than 1.5GB (which is actually the maximum I've set by php configuration, but they don't need to coincide) and that a file with the same name doesn't exist yet. We are also going to ensure the file has been uploaded.
 
+We need now to define an `InputFilter` object that the `FileService` will apply to all the files. If any one of them fails validation, an error will be returned.
 
-### PRG
+```php
+<?php
+namespace Acelaya\Files;
+
+use Zend\Filter\File\RenameUpload;
+use Zend\InputFilter\FileInput;
+use Zend\InputFilter\InputFilter;
+use Zend\Validator\File\Size;
+
+class FilesInputFilter extends InputFilter
+{
+    const FILE = 'file';
+
+    public function __construct(FilesOptions $options)
+    {
+        $input = new FileInput(self::FILE);
+        $input->getValidatorChain()->attach(new Size(['max' => $options->getMaxSize()]));
+        $input->getFilterChain()->attach(new RenameUpload([
+            'overwrite'         => false,
+            'use_upload_name'   => true,
+            'target'            => $options->getBasePath()
+        ]));
+
+        $this->add($input);
+    }
+}
+```
+
+This filter will check each file has a file size no greater than what we defined in our configuration by using the `Size` validator.
+
+Also, the `RenameUpload` filter will try to move the file to our previously defined base path by calling the `move_uploaded_file` function, which will only work with uploaded files, and throw an exception if we try to override an existing file.
+
+We just need to adapt our `FilesService::persistFiles` method to use this `InputFilter`.
+
+```php
+public function persistFiles(array $files)
+{
+    foreach ($files as $file) {
+        $filter = clone $this->getInputFilter();
+        $filter->setData([FilesInputFilter::FILE => $file]);
+        try {
+            if (! $filter->isValid()) {
+                return self::CODE_ERROR;
+            }
+            $data = $filter->getValues();
+        } catch (InvalidArgumentException $e) {
+            return self::CODE_ERROR;
+        }
+    }
+    return self::CODE_SUCCESS;
+}
+```
+
+The `getInputFilter()` method returns an instance of our `FilesInputFilter`. After that we apply validation and if no exception is thrown and the method `isValid()` returns true, then everything worked and we can continue with the next file. If an error occurred we return the ERROR code.
+
+It is **important** to call `$filter->getValues()` even if we are not going to use them, because that is what makes the function `move_uploaded_file` to be called, otherwise we won't get the files moved to their final directory.
+
+Now the application keeps working, but our uploaded files are filtered and validated.
+
+Zend Framework 2 has other [filters](http://zf2.readthedocs.org/en/latest/modules/zend.filter.file.html) and [validators](http://zf2.readthedocs.org/en/latest/modules/zend.validator.file.html) you can use with files. Take a look at them.
+
+And this is it. We have our fully functional file uploading application.
