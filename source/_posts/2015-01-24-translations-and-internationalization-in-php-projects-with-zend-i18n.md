@@ -8,6 +8,7 @@ tags:
     - translations
     - zf2
     - zend-framework-2
+    - zf2-component
 
 ---
 
