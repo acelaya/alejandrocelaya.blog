@@ -3,6 +3,7 @@ title: Managing objects creation and dependency injection with Zend\ServiceManag
 draft: true
 categories:
     - php
+    - zf2
     - tools
 tags:
     - zf2
@@ -12,13 +13,14 @@ tags:
     - dependency-injection-container
     - di
     - dic
+    - inversion-of-control
     - service-manager
 
 ---
 
 Some time ago I wrote the most successful article of this blog, [Advanced usage of ServiceManager in Zend Framework 2](/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/), explaining all the ways a service can be created by making use of the Zend\ServiceManager, the service container component in Zend Framework 2.
 
-On this article I'm going to show an example where objects and services are all managed and created with a `ServiceManager` instance, which makes decoupling and dependency injection very easy.
+On this article I'm going to show a real example where objects and services are all managed and created with a `ServiceManager` instance, which makes decoupling components and dependency injection very easy.
  
 It is not a Zend Framework 2 application, because the `ServiceManager` is so integrated there that its power could go unnoticed. Instead, I'm using a Slim framework based application, which solves some common problems that has nothing to do with this article (like routing and request dispatch) and allows me to concentrate on what's important.
 
@@ -31,3 +33,33 @@ As usual, I have hosted the example application on github. Clone it from [here](
 </blockquote>
 
 ### The structure
+
+### Dependency injection
+
+In the past, when I had to learn dependency injection, I found out that many tutorials just explain that it is important to decouple componentes from the application, and pass elements from one object to another instead of creating them inside each object.
+
+That's a good theory, but introduces another problem. Without dependency injection, creating an object is as easy as `new FooBar()`, but with dependency ibjection I could end with something like this.
+
+```php
+$logger = new Logger('/var/log/mylogs.log');
+$serviceOne = new ServiceOne('foo', 'bar');
+
+$config = include __DIR__ . '/config/config_file.php');
+$serviceTwo = new ServiceTwo($serviceOne, $config['param'], $config['another_param']);
+
+$fooBar = new FooBar($serviceTwo, $logger);
+```
+
+Now I have to pass two dependencies to by `FooBar` object. One of them also dependes on another object and a raw configuration. And this process could even be more complex.
+
+When I try to explain dependency injection, people usually tries to mentally adapt their code and substitute the `new FooBar()` with the previous code snippet, and their reaction is usually "*Dependency injection is hard! I will need to duplicate a lot of code!*".
+
+What those tutorials does not explain is how to solve this new problem, and that we now should define the way the object is created just in one place, and have some mechanism to access to that object once created anywhere else.
+
+That task is usually performed by an object, the "inversion of control container", in plenty of forms (a service locator, service container, dependency injection container...).
+
+### Solving the problem
+
+Now that we have identified the problem, let's take a look at the example, and how the `ServiceManager` is capable of managing the whole application, making the task of creating objects much easier and without code duplication.
+
+### Unit tests
