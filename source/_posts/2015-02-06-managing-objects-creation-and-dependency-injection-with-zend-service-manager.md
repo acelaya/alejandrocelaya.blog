@@ -1,6 +1,5 @@
 ---
 title: Managing objects creation and dependency injection with Zend\ServiceManager
-draft: true
 categories:
     - php
     - zf2
@@ -18,7 +17,7 @@ tags:
 
 ---
 
-Some time ago I wrote the most successful article of this blog, [Advanced usage of ServiceManager in Zend Framework 2](/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/), explaining all the ways a service can be created by making use of `Zend\ServiceManager`, the service container component in Zend Framework 2.
+Some time ago I wrote the most successful article of this blog, [Advanced usage of ServiceManager in Zend Framework 2](http://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/), explaining all the ways a service can be created by making use of `Zend\ServiceManager`, the service container component in Zend Framework 2.
 
 On this article I'm going to show a real example where objects and services are all managed and created with a `ServiceManager` instance, which makes decoupling components and dependency injection very easy.
  
@@ -38,9 +37,11 @@ If you are used to modern PHP applications, the project structure shouldn't be a
 
 ### Dependency injection
 
-In the past, when I had to learn dependency injection, I found out that many tutorials just explain that it is important to decouple componentes from the application, and pass elements objects instead of letting them to create those elements inside themselves.
+Let's start with some thoughts about dependency injection.
 
-That's a good theory, but introduces another problem. Without dependency injection, creating an object is as easy as `new FooBar()`, and all dependencies will be automatically created on the inside, but with dependency ibjection I could end with something like this.
+In the past, when I had to learn dependency injection, I found out that many tutorials just explain that it is important to decouple componentes from the application, and pass elements to objects instead of letting them to create those elements inside themselves.
+
+That's a good theory, but introduces another problem. Without dependency injection, creating an object is as easy as `new FooBar()`, and all dependencies will be automatically created on the inside, but with dependency injection I could end with something like this.
 
 ```php
 $logger = new Logger('/var/log/mylogs.log');
@@ -56,7 +57,7 @@ Now I have to pass two dependencies to my `FooBar` object. One of them also depe
 
 When I try to explain dependency injection, people usually tries to mentally adapt their old code and substitute the `new FooBar()` with the previous code snippet, and their reaction is usually "*Dependency injection is hard! I will need to duplicate a lot of code!*".
 
-What those tutorials does not explain is how to solve this new problem, and that we now should define the way the objects are created just in one place, and have some mechanism to access to that objects once created anywhere else.
+What those tutorials don't explain is how to solve this new problem, and that we now should define the way the objects are created just in one place, and have some mechanism to access to that objects anywhere else once created.
 
 That task is usually performed by an object, the "inversion of control" container, in plenty of forms, a service locator, service container, dependency injection container...
 
@@ -68,7 +69,7 @@ Now that we have identified the problem, let's take a look at the example, and h
 
 #### Bootstrapping
 
-The project's front controller is the `public/index.php` file, which only includes the `src/bootstrap.php` file. The first thing we do is create the `Serviceanager` instance (there is no need for more than one in the whole project) by consuming the configuration in `config/services.php`.
+The project's front controller is the `public/index.php` file, which only includes the `src/bootstrap.php` file. The first thing we do is create the `ServiceManager` instance (there is no need for more than one in the whole project) by consuming the configuration in `config/services.php`.
 
 ```php
 $sm = new ServiceManager(new Config(include __DIR__ . '/../config/services.php'));
@@ -93,7 +94,7 @@ If we go to the `config/services.php` file, we'll see that there is an 'app' ser
 
 But we said that the object has been customized. Where did that happen?
 
-If we go to the delegators block, we'll see that there is defined one delegator for the `Slim::class` service. Delegators are called by the `ServiceManager`, allowing us to customize certain service when it is going to be created.
+If we go to the **delegators** block, we'll see that there is defined one delegator for the `Slim::class` service. Delegators are called by the `ServiceManager`, allowing us to customize certain service when it is going to be created.
 
 Our SlimDelegator sets some configuration options in the Slim instance after it is created and before it is returned by the `ServiceManager`.
 
@@ -203,7 +204,7 @@ If we go to the `config/services.php` file we won't find those services defined,
 
 In the **abstract_factories** block, we have defined a ServiceAbstractFactory. Abstract factories are used as last resort to create services that are not explicitly defined.
 
-In our case both services extends the `AbstractService` and have the same dependencies. This abstract factory checks if the service that is going to be created extends that class, and in that case creates it by injecting another two dependencies fetched from the `ServiceManager` again (recursivity is awesome!), which will run their own factories.
+In our case both services extend the `AbstractService` and have the same dependencies. This abstract factory checks if the service that is going to be created extends that class, and in that case creates it by injecting another two dependencies fetched from the `ServiceManager` again (recursivity is awesome!), which will run their own factories.
 
 This abstract factory is in `src/Service/ServiceAbstractFactory.php`, if you want to take a look at its implementation.
 
@@ -211,7 +212,7 @@ This abstract factory is in `src/Service/ServiceAbstractFactory.php`, if you wan
 
 And thats all the theory. The application works now in theory. Check it.
 
-The important thing is that objects are recursively created in different ways by the `ServiceManager`. The creation implementation is defined just in one place without code duplication.
+The most powerful aspect of the `ServiceManager` is that objects are recursively created in different ways. The creation implementation is defined just in one place without code duplication.
 
 We have performed dependency injection and the code wasn't harder to handle.
 
@@ -219,7 +220,7 @@ We have performed dependency injection and the code wasn't harder to handle.
 
 The project now works, but we can't remember to manually test everything every time we refactor the code or add new features. That's where unit tests come.
 
-Having a good test suite is hard, but it is harder without dependency injection. Tests end running almost the whole application, with too many objects created under the hood when the subject under test is created.
+Having a good test suite is hard, but it is even harder without dependency injection. Tests end running almost the whole application, with too many objects created under the hood when the subject under test is created.
  
 With dependency injection, we can inject fake harmless objects in the subject under test, making sure we are going to test just a small piece of code. Indeed, one of the most important reasons to use dependency injection is to be able to test your code without wanting to kill yourself.
  
@@ -227,4 +228,47 @@ For example. On this project, both UserService and ItemService depend on an inst
 
 If you take a look at `tests/Service/UserServiceTest.php` you will see how the EntityManager is faked by using phpunit's mocks API.
 
-If I wasn't injecting the EntityManager, the UserService would be tight coupled with the database. Instead, the UserService expects an object of an abstract type to be injected on it, so it is decoupled with the system that saves the data.
+```php
+// ...
+
+public function setUp()
+{
+    $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+    $repository->expects($this->any())
+               ->method('findAll')
+               ->willReturn([]);
+
+    $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+    $objectManager->expects($this->any())
+                  ->method('getRepository')
+                  ->willReturn($repository);
+    $objectManager->expects($this->any())
+                  ->method('persist')
+                  ->willReturn(null);
+    $objectManager->expects($this->any())
+                  ->method('flush')
+                  ->willReturn(null);
+    $objectManager->expects($this->any())
+                  ->method('find')
+                  ->willReturn(new User());
+
+    $this->userService = new UserService(
+        $objectManager,
+        new Logger(new Filesystem(new NullAdapter()), 'fake.log')
+    );
+}
+
+// ...
+```
+
+If I wasn't injecting the EntityManager, the UserService would be tightly coupled with the database. Instead, the UserService expects an object of an abstract type to be injected on it, so it is decoupled with the system that saves the data.
+
+### Conclusion
+
+You have seen a real example which uses the `ServiceManager`. There is no theory, you can check it yourself. I have used each object creation strategy at least once (invokables, factories, initializers, abstract_factories and delegators) so that you can see how it works.
+
+As I mentioned earlier, I already wrote a more theoretical article on the `ServiceManager` subject a while ago. You can find it [here](http://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/) if you need it (indeed I recommend you to read it).
+
+I hope you use dependency injection in your projects from now on. There is no excuse not to do it, you just need to change your point of view.
+
+By the way, I have not explained everything of this project. If you start digging into the code and have any comment, feel free to post it here.
