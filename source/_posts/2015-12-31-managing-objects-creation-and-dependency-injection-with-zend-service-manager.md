@@ -54,7 +54,7 @@ Now I have to pass two dependencies to my `FooBar` object. One of them also depe
 
 When I try to explain dependency injection, people usually tries to mentally adapt their old code and substitute the `new FooBar()` with the previous code snippet, and their reaction is usually "*Dependency injection is hard! I will need to duplicate a lot of code!*".
 
-What those tutorials does not explain is how to solve this new problem, and that we now should define the way the object is created just in one place, and have some mechanism to access to that object once created anywhere else.
+What those tutorials does not explain is how to solve this new problem, and that we now should define the way the objects are created just in one place, and have some mechanism to access to that objects once created anywhere else.
 
 That task is usually performed by an object, the "inversion of control" container, in plenty of forms, a service locator, service container, dependency injection container...
 
@@ -63,5 +63,57 @@ The `ServiceManager` is going to act as the "inversion of control" container of 
 ### Solving the problem
 
 Now that we have identified the problem, let's take a look at the example, and how the `ServiceManager` is capable of managing the whole application, making the task of creating objects much easier and without code duplication.
+
+The project's front controller is the `public/index.php` file, which only includes the `src/bootstrap.php` file. The first thing we do is create the `Serviceanager` instance (there is no need for more than one in the whole project) by consuming the configuration in `config/services.php`.
+
+```php
+$sm = new ServiceManager(new Config(include __DIR__ . '/../config/services.php'));
+```
+
+After that, we use the `ServiceManager` to get the **app** instance, the main object in Slim framework, and register a couple routes.
+
+```php
+/** @var Slim $app */
+$app = $sm->get('app');
+
+// Homepage
+$app->get('/', function () use ($app) {
+    $app->render('home.phtml');
+})->name('home');
+
+// Users pages
+$app->group('/users', function () use ($app, $sm) {
+    $app->addControllerRoute('/list', UserController::class . ':list')
+        ->name('users-list')
+        ->via('GET');
+    
+    // ...
+});
+
+// Items pages
+$app->group('/items', function () use ($app, $sm) {
+    $app->addControllerRoute('/list', ItemController::class . ':list')
+        ->name('items-list')
+        ->via('GET');
+        
+    // ...
+});
+```
+
+Thanks to the `ServiceManager`, we have obtained the **app** object with just one instruction `$sm->get('app')`, as easy as doing `new \Slim\Slim()`, but the `ServiceManager` has customized and cached our object, we just had to previously tell it how to do it.
+
+If we go to the `config/services.php` file, we'll see that there is an 'app' service defined as an alias of the `Slim::class` service, which in turn is an invokable, which means that it will be constructed by the `ServiceManager` just by instantiating the object with no arguments in the constructor.
+
+But we said that the object has been customized. Where did that happen?
+
+If we go to the delegators block, we'll see that there is defined one delegator for the `Slim::class` service. Delegators are called by the `ServiceManager`, allowing us to customize certain service when it is going to be created.
+
+Our SlimDelegator sets some configuration options in the Slim instance after it is created and before it is returned by the `ServiceManager`.
+
+<blockquote>
+    <small>The name of a service can be anything as long as it is unique. Using the fully qualified class name is just a convention when there is only one way to create the object returned.</small>
+</blockquote>
+
+
 
 ### Unit tests
