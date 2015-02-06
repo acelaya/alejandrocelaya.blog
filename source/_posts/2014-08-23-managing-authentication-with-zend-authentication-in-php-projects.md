@@ -9,6 +9,7 @@ tags:
     - zend-framework-2
     - adapter-pattern
     - composer
+    - zf2-component
 
 ---
 

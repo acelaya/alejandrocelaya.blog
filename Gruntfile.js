@@ -19,7 +19,6 @@ module.exports = function(grunt) {
                 expand: true,
                 src: [
                     'output_prod/assets/css/bootstrap-social.css',
-                    'output_prod/assets/css/highlightjs-github.css',
                     'output_prod/assets/css/main.css'
                 ],
                 ext: '.min.css'
@@ -29,7 +28,7 @@ module.exports = function(grunt) {
                     'output_prod/assets/css/main.min.css' : [
                         'output_prod/assets/css/bootstrap.min.css',
                         'output_prod/assets/css/bootstrap-social.min.css',
-                        'output_prod/assets/css/highlightjs-github.min.css',
+                        'output_prod/assets/css/highlightjs-github.css',
                         'output_prod/assets/css/main.min.css'
                     ]
                 }
