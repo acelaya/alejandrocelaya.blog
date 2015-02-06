@@ -218,3 +218,13 @@ We have performed dependency injection and the code wasn't harder to handle.
 ### Unit tests
 
 The project now works, but we can't remember to manually test everything every time we refactor the code or add new features. That's where unit tests come.
+
+Having a good test suite is hard, but it is harder without dependency injection. Tests end running almost the whole application, with too many objects created under the hood when the subject under test is created.
+ 
+With dependency injection, we can inject fake harmless objects in the subject under test, making sure we are going to test just a small piece of code. Indeed, one of the most important reasons to use dependency injection is to be able to test your code without wanting to kill yourself.
+ 
+For example. On this project, both UserService and ItemService depend on an instance of `Doctrine\ORM\EntityManager`. That object performs operations against a database, but we don't want to connect to the database every time we run our tests.
+
+If you take a look at `tests/Service/UserServiceTest.php` you will see how the EntityManager is faked by using phpunit's mocks API.
+
+If I wasn't injecting the EntityManager, the UserService would be tight coupled with the database. Instead, the UserService expects an object of an abstract type to be injected on it, so it is decoupled with the system that saves the data.
