@@ -89,7 +89,7 @@ $app = $sm->get('app');
 
 Thanks to the `ServiceManager`, we have obtained the **app** object with just one instruction, `$sm->get('app')`, as easy as doing `new \Slim\Slim()`, but the `ServiceManager` has customized and cached our object, we just had to previously tell it how to do it.
 
-If we go to the `config/services.php` file, we'll see that there is an 'app' service defined as an alias of the `Slim::class` service, which in turn is an invokable, which means that it will be constructed by the `ServiceManager` just by instantiating the object with no arguments in the constructor.
+If we go to the `config/services.php` file, we'll see that there is an 'app' service defined as an alias of the `Slim::class` service, which in turn is an **invokable**, which means that it will be constructed by the `ServiceManager` just by instantiating the object with no arguments in the constructor.
 
 But we said that the object has been customized. Where did that happen?
 
@@ -124,19 +124,19 @@ $app->addControllerRoute('/items/list', ItemController::class . ':list')
 // ...
 ```
 
-#### Controllers
-
 The first route is the home page, which is only used to select between *users* and *items*.
 
 The rest of the routes are endpoints to perform each operation of both *users* and *items* CRUDs. They are resolved to a controller's action.
+
+#### Controllers
 
 Since Slim does not support controllers I've used the [slimcontroller](https://github.com/fortrabbit/slimcontroller) package which allows us to dynamically load controllers from Slim's container.
  
 I've also used this useful [package](https://github.com/acelaya/slim-container-sm) I created some days ago, which replaces Slim's container with another object which wraps a `ServiceManager` which is similar but much more powerful. In combination with **slimcontroller** makes controllers to be loaded from the `ServiceManager`.
 
-That is to say, the last two routes will fetch a `UserController::class` or `ItemController::class` service fom the `ServiceManager` and use it as the controller for that route.
+That is to say, the last two routes will fetch a `UserController::class` or `ItemController::class` service from the `ServiceManager` and use it as the controller for that route.
 
-Those two controllers are defined in `config/services.php` as factories. A factory is the easiest way to perform dependency injection in a service.
+Those two controllers are defined in `config/services.php` as factories. A **factory** is the easiest way to perform dependency injection in a service.
 
 For example, the UserControllerFactory looks like this.
 
@@ -167,14 +167,54 @@ At this point we don't need to know how the `UserService::class` service is crea
 
 The ItemController is created in a very similar way. You can take a look at the class `src/Controller/ItemControllerFactory.php`.
 
-Now we know that any route starting with **/users** will end with a UserController fetched form the `ServiceManager`, and any route starting with **/items** will do the same with an ItemController.
+But this is not all. Controllers extending the AbstractController depend also on a `Slim\Http\Request`, a `Slim\Http\Response` and a `Slim\View` that are not injected on their respective factories.
+
+For this purpose we have defined three **initializers** in the `config/services.php` file, which will inject those objects on any instance implementing certain interfaces. The AbstractController implements all the interfaces, so creating a UserController or ItemController will result in all the initializers to inject those dependencies via setters.
+
+This is one of the initializers, but the rest are very similar.
+
+```php
+namespace Acelaya\Mvc;
+
+use Zend\ServiceManager\InitializerInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
+class RequestAwareInitializer implements InitializerInterface
+{
+    public function initialize($instance, ServiceLocatorInterface $serviceLocator)
+    {
+        if ($instance instanceof RequestAwareInterface) {
+            $app = $serviceLocator->get('app');
+            $instance->setRequest($app->request);
+        }
+    }
+}
+```
+
+We are fetching the **app** here. Since it is already created at this point, the `ServiceManager` will return the same instance.
+
+Now we know that any route starting with **/users** will end with a fully configured UserController fetched from the `ServiceManager`, and any route starting with **/items** will do the same with an ItemController.
  
 #### Other services
 
 We saw that creating any controller will fetch another service from the `ServiceManager`. Those are the `UserService::class` or the `ItemService::class` respectively.
 
-If we go to the `config/services.php` file we won't find those services defined, but that `ServiceManager` is capable of creating them. And how is that?
+If we go to the `config/services.php` file we won't find those services defined, but the `ServiceManager` is capable of creating them. And how is that?
 
-In the abstract_factories block, we have defined a ServiceAbstractFactory. Abstract factories are used as last resort to create services that are not 
+In the **abstract_factories** block, we have defined a ServiceAbstractFactory. Abstract factories are used as last resort to create services that are not explicitly defined.
+
+In our case both services extends the `AbstractService` and have the same dependencies. This abstract factory checks if the service that is going to be created extends that class, and in that case creates it by injecting another two dependencies fetched from the `ServiceManager` again (recursivity is awesome!), which will run their own factories.
+
+This abstract factory is in `src/Service/ServiceAbstractFactory.php`, if you want to take a look at its implementation.
+
+#### Everything is running
+
+And thats all the theory. The application works now in theory. Check it.
+
+The important thing is that objects are recursively created in different ways by the `ServiceManager`. The creation implementation is defined just in one place without code duplication.
+
+We have performed dependency injection and the code wasn't harder to handle.
 
 ### Unit tests
+
+The project now works, but we can't remember to manually test everything every time we refactor the code or add new features. That's where unit tests come.
