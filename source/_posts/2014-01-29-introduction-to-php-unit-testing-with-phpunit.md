@@ -224,7 +224,7 @@ With all this set up we are ready to run the tests. In the console we need to be
 
 After running the test we will see something like this:
 
-![Red light screenshot](/assets/img/red-light.png)
+![Red light screenshot](http://blog.alejandrocelaya.com/assets/img/red-light.png)
 
 As we can see all the tests failed. They all returned zero instead of expected result. Finally a resume line tells there were 4 tests, 4 assertions and all of them failed.
 
@@ -292,7 +292,7 @@ class Calculator
 
 All the methods do now what they suggest they do. If we run again the tests with the phpunit command the result is this.
 
-![Green light screenshot](/assets/img/green-light.png)
+![Green light screenshot](http://blog.alejandrocelaya.com/assets/img/green-light.png)
 
 All the tests are now working and a green light is returned.
 

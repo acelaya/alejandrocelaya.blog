@@ -152,7 +152,7 @@ They will be properly loaded with the rest of the company modules and third-part
 
 **UPDATE 2014-06-21**
 
-You can continue reading [the second part](/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/) where I’m explaining how to create, install and enable vendor modules with sub-namespaces.
+You can continue reading [the second part](http://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/) where I’m explaining how to create, install and enable vendor modules with sub-namespaces.
 
 **UPDATE 2014-06-23**
 
