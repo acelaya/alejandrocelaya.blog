@@ -431,4 +431,6 @@ return [
 
 It is proven how versatile the `ServiceManager` is. Try to take full advantage of it in your projects.
 
-Even if your project is not based on Zend Framework 2, using this component is a good way to get a powerful service container implementation (or dependency injection container or whatever name you want to give to it), that will do a great job decoupling your classes and making your code clean. 
+Even if your project is not based on Zend Framework 2, using this component is a good way to get a powerful service container implementation (or dependency injection container or whatever name you want to give to it), that will do a great job decoupling your classes and making your code clean.
+
+**Update 2015-02-07:** If you want to see a real example where the `ServiceManager` is used to handle an application, read this new article, [Managing objects creation and dependency injection with Zend\ServiceManager](http://blog.alejandrocelaya.com/2015/02/06/managing-objects-creation-and-dependency-injection-with-zend-service-manager/)

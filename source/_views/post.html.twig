@@ -17,19 +17,20 @@
         <fieldset class="share">
             <legend><small class="text-muted">If you liked this article, share it</small></legend>
             <div class="buttons">
-                <a href="http://www.facebook.com/sharer.php?u={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/" target="_blank"
+                {% set encodedUrl = (site.url ~ page.url ~ '/') | url_encode(true) %}
+                <a href="http://www.facebook.com/sharer.php?u={{ encodedUrl }}/" target="_blank"
                    class="btn btn-sm btn-social btn-facebook">
                     <i class="fa fa-facebook"></i> Facebook
                 </a>
-                <a href="https://twitter.com/share?text={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/&via=acelayaa" target="_blank"
+                <a href="https://twitter.com/share?url={{ encodedUrl }}&text={{ page.title | url_encode(true) }}&via=acelayaa" target="_blank"
                    class="btn btn-sm btn-social btn-twitter">
                     <i class="fa fa-twitter"></i> Twitter
                 </a>
-                <a href="https://plus.google.com/share?url={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/" target="_blank"
+                <a href="https://plus.google.com/share?url={{ encodedUrl }}" target="_blank"
                    class="btn btn-sm btn-social btn-google-plus">
                     <i class="fa fa-google-plus"></i> Google+
                 </a>
-                <a href="http://www.linkedin.com/shareArticle?mini=true&url={{ site.url | url_encode(true) }}{{ page.url | url_encode(true) }}/&title={{ page.title }}&source={{ site.url }}" target="_blank"
+                <a href="http://www.linkedin.com/shareArticle?mini=true&url={{ encodedUrl }}&title={{ page.title }}&source={{ site.url }}" target="_blank"
                    class="btn btn-sm btn-social btn-linkedin">
                     <i class="fa fa-linkedin"></i> LinkedIn
                 </a>
