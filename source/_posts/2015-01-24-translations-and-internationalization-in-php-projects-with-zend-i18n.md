@@ -67,7 +67,7 @@ return Translator::factory([
         ],
         [
             'base_dir' => __DIR__ . '/../more_languages',
-            'type'     => 'array',
+            'type'     => 'phpArray',
             'pattern'  => '%s.lang.php',
         ],
     ],
