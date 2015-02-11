@@ -19,6 +19,7 @@ module.exports = function(grunt) {
                 expand: true,
                 src: [
                     'output_prod/assets/css/bootstrap-social.css',
+                    'output_prod/assets/css/highlightjs-monokai-sublime.css',
                     'output_prod/assets/css/main.css'
                 ],
                 ext: '.min.css'
@@ -28,7 +29,6 @@ module.exports = function(grunt) {
                     'output_prod/assets/css/main.min.css' : [
                         'output_prod/assets/css/bootstrap.min.css',
                         'output_prod/assets/css/bootstrap-social.min.css',
-                        'output_prod/assets/css/highlightjs-github.css',
                         'output_prod/assets/css/main.min.css'
                     ]
                 }
@@ -69,9 +69,9 @@ module.exports = function(grunt) {
             production : [
                 'output_prod/assets/css/main.css',
                 'output_prod/assets/css/bootstrap-social.css',
-                'output_prod/assets/css/highlightjs-github.css',
                 'output_prod/assets/css/bootstrap-social.min.css',
-                'output_prod/assets/css/highlightjs-github.min.css',
+                'output_prod/assets/css/highlightjs-monokai-sublime.css',
+                'output_prod/assets/css/highlightjs-monokai-sublime.min.css',
                 'output_prod/assets/js/mustache.js',
                 'output_prod/assets/js/jquery.lunr.search.js',
                 'output_prod/assets/js/acelayablog.js',
