@@ -29,6 +29,7 @@ module.exports = function(grunt) {
                     'output_prod/assets/css/main.min.css' : [
                         'output_prod/assets/css/bootstrap.min.css',
                         'output_prod/assets/css/bootstrap-social.min.css',
+                        'output_prod/assets/css/highlightjs-monokai-sublime.min.css',
                         'output_prod/assets/css/main.min.css'
                     ]
                 }
