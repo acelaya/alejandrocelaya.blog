@@ -15,13 +15,13 @@ tags:
 
 Some time ago I published an [article](http://blog.alejandrocelaya.com/2014/04/18/configure-multiple-database-connections-in-doctrine-with-zend-framework-2-2/) talking about different Doctrine configurations when using the `DoctrineORMModule` in Zend Framework 2 applications, so that you can create multiple database connections, either by using one entity manager or more than one.
 
-Since then, many people have asked me how to configure the entity manager when the database connection configuration has to be generated dynamically, for example because you have more than one database and you need to choose one of them based on the group of a user.
+Since then, many people have asked me how to configure the entity manager when the database connection configuration has to be generated dynamically, for example because you have more than one database and you need to choose one of them based on some external element.
 
 I'm going to explain one possible approach to this problem.
 
 ### Introduction
 
-Let's assume we have one default database with a couple tables, one *users* which we will use to perform authentication, and another *groups* table that contains the name of the database for each one of those groups.
+Let's assume we have one default database with a couple tables, one *users* table which we will use to perform authentication, and another *groups* table that contains the name of the database for each one of those groups.
 
 To access this database we are going to use the default `EntityManager`, with a configuration like this.
 
@@ -180,13 +180,13 @@ class DynamicEMFactory implements FactoryInterface
 
 Let's see what this factory does.
 
-The first thing we do is to make sure that a user has logged in the system. In case it is not, we throw an exception. Usually, our ACL system will prevent any endpoint that depends on this dynamic `EntityManager` to be hit before that happens, but any unexpected error will be easier to debug this way.
+The first thing we do is to make sure that a user is logged in the system. In case it is not, we throw an exception. Usually, our ACL system will prevent any endpoint that depends on this dynamic `EntityManager` to be hit before that happens, but any unexpected error will be easier to debug this way.
 
 Then we get the global configuration service, update the database name for the dynamic_orm and overwrite the updated configuration service.
 
-We have to make sure that we are able to override services in the `ServiceManager` before doing it, because its default behavior is to throw an exception if we try to do that. Then we reset the 'allow override' state to its previous state, to prevent unexpected bugs.
+We have to make sure that we are able to override services in the `ServiceManager` before doing it, because its default behavior is to throw an exception if we try to do that. Then we reset the 'allow override' state to its previous one, to prevent unexpected bugs.
 
-Finally we use the DoctrineModule's standard factories to create our `EntityManager` and return it.
+Finally we use the DoctrineModule's standard factories to create our `EntityManager` and return it. It should properly work, since the configuration is now complete.
 
 The last thing to do would be to define a custom name for this service.
 
@@ -200,4 +200,14 @@ return [
 ];
 ~~~
 
-And that should be it. 
+And that should be it. Once you fetch this service from the `ServiceManager` (`$sm->get('DynamicEntityManager')`), it will dynamically update the configuration and create the entity manager.
+
+### Conclusion
+
+It is not hard to get this working, but we have had to bypass some of the default behaviors of Doctrine and Zend Framework 2, so you will need to be careful not to break anything.
+
+For example, an error could happen if you access the `doctrine.entitimanager.dynamic_orm` service directly instead of using our factory.
+
+It could also fail if in your case you don't rely on a logged in user, but on something harder to control.
+
+Also, I have assumed that the only thing that is dynamic is the database name. In case credentials or hosts could dynamically change too, you will need to have a helper table with conneciton configurations, or at least a configuration file where you can locate different connection configuraitons.
