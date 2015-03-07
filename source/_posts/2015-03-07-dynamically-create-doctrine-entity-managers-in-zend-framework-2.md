@@ -1,6 +1,5 @@
 ---
 title: Dynamically create doctrine entity managers in Zend Framework 2
-draft: true
 categories:
     - php
     - zf2
