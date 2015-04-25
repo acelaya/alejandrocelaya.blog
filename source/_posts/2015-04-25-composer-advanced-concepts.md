@@ -50,4 +50,37 @@ The best practice to add dependencies to your composer.json file is to run the c
 
 If you don't include the version name, composer will try to find out what's the best version to use, by following [Semantic Versioning](http://semver.org/). If it is not able to know which version to use, it will ask you to decide.
 
+### Production environments
 
+The management of dependencies and new classes is not the same in our development environment and production. In development we need new classes to be automatically autoloaded, and we want to have certain dependencies, like phpunit or php code sniffer that are not of any use in production.
+
+In development we will usually install or update dependencies by running `composer install` or `composer update`. That will include all dependencies in **require** and **require-dev** blocks, and generate an autoloader by following different strategies. Some of those autoloading strategies imply the iteration of directories in order to find class files.
+ 
+That is ok for development, but in production we need something more efficient than that, and also, we don't want **require-dev** dependencies to be installed.
+ 
+To get this done, in a deployment process, we should run this command instead.
+
+~~~bash
+composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
+~~~
+
+This is what each flag makes:
+
+* **`--no-dev`**: excludes those dependencies defined in the **requre-dev** block.
+* **`--optimize-autoloader`**: generates a classmap autoloader, that will map each class with the file that contains it, preventing unnecessary directory iterations.
+* **`--prefer-dist`**: installs distributable versions of the libraries, instead of source code, when possible.
+* **`--no-interaction`**: will always try to make the proper decission in case any "conflict" is produced, so that the process is completly unatended.
+
+This is the command you should use when deploying a project, just after clonning a clean repository.
+
+### Private repositories
+
+This is probably one of the most important features while working on many private projects that depend on each other.
+
+By default, composer fetches dependencies from a single repository, packagist, which needs to have access to a public repository (usually github). But what happens if my code is private, and I don't want to open source it. May I use composer to install private dependencies? The answer is yes.
+
+### CLI scripts
+
+### Events
+
+### Projects installation
