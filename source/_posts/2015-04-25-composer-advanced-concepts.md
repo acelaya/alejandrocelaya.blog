@@ -13,7 +13,7 @@ tags:
 
 [Composer](https://getcomposer.org/) is **The Tool** in any modern PHP project. Nowadays I can't imagine to work without it.
 
-It is much more powerful than some people could think, easily solving the integration of third party components in our projects, but there are edge cases where standard solutions are not enough.
+It is much more powerful than some people thinks, easily solving the integration of third party components in our projects, but there are edge cases where standard solutions are not enough.
 
 I'm going to try to explain some of the best practices and mechanisms bundled with composer.
 
@@ -81,6 +81,60 @@ By default, composer fetches dependencies from a single repository, packagist, w
 
 ### CLI scripts
 
+Sometimes a library includes some command line interface scripts that the user can use to automate configuring some stuff.
+
+If you want to include your own CLI scripts and allow any user to find them when installing your library as a dependency, you will want to define them in the **bin** block.
+
+~~~javascript
+{
+    "bin": [
+        "scripts/generate-foo",
+        "scripts/create-bar",
+        "scripts/do-something"
+    ]
+}
+~~~
+
+It is just a list of script paths that composer will "copy" to the `vendor/bin` directory after installation (it doesn't really copy them, it creates symlinks in UNIX systems and generates bat files under Windows).
+
+This makes all the CLI scripts of all dependencies to be "placed" in the same location, so it is easier to find them.
+
+This makes sense only in non-root projects (those that will be installed as dependencies and are not base applications).
+
 ### Events
 
-### Projects installation
+Composer will trigger some "events" during the process of installing dependencies, generating autoloaders and such. You can define some scripts or code snippets that will be automatically executed when those events are triggered.
+
+These event listeners are defined in the **scripts** block. They can be either CLI scripts or static class methods.
+ 
+~~~javascript
+{
+    "scripts": {
+        "post-package-install": "Acelaya\\MyClass::postPkgInstall",
+        "post-install-cmd": [
+            "Acelaya\\MyClass::postInstall",
+            "phpunit -c app/"
+        ]
+    }
+}
+~~~
+
+The complete list of events can be found in composer's [documentation](https://getcomposer.org/doc/articles/scripts.md#event-names). Take a look at them and see of you can optimize your workflow.
+
+### Applications installation
+
+At this point we all know that we can use composer to install libraries at project level, but what happens with applications, known as **root projects** in composer's terms.
+
+We can also use composer to distribute complete applications, allowing them to be easily installed by using this command.
+
+~~~bash
+composer create-project vendor-name/app-name
+~~~
+
+This will download the application (as if we would have cloned the repository) and then install its dependencies. We could even take advantage of composer's events, and initialize a database or create some non-tracked directories.
+
+### Conclusion
+
+And that's pretty much all.
+
+Use composer, it will improve your PHP projects.
