@@ -131,3 +131,5 @@ This should be enough to start working with composer, but it is a much more powe
 * **Global packages:** If you want to install dependencies globally, just add the `global` keyword before the `install` or `update`. That will install the dependencies in the `~/.composer/vendor` directory instead of installing them in the local `vendor` directory. For example `composer global update`.
 
 And that's all you need to know to start working with composer.
+
+**Update 2015-04-25**: I've written an article addressing advanced concepts that is a good continuation to this one. [Composer advanced concepts](http://blog.alejandrocelaya.com/2015/04/25/composer-advanced-concepts/).
