@@ -23,7 +23,7 @@ With this article I'm going to explain all the new features of the module.
 
 One of the main changes is that [composer](https://getcomposer.org/) is now the only supported installation method. The ZF2 autoloading files have been removed, and it no longer depends on the Zend\Load component, so it is not possible to use it (or at least, it is very hard) without using composer.
 
-It is also important to know that the minimum PHP version is now PHP 5.4. I've dropped support for PHP 5.3 because it is no longer maintained by Zend, and it's safer to stick with latest versions.
+It is also important to know that the minimum PHP version is now PHP 5.4. I've dropped support for PHP 5.3 because it is no longer maintained, and it's safer to stick with the latest versions.
 
 This said, in a composer-based project, installing this module is as easy as running the command `composer require acelaya/zf2-acmailer`, and the last version will be installed.
 
@@ -48,7 +48,7 @@ That was hard to achieve with earlier versions, because you had to update the co
 
 This version now allows to configure multiple services, in a similar way as the [DoctrineORMModule](https://github.com/doctrine/DoctrineORMModule) creates multiple `EntityManagers`, by using composed configuration blocks consumed by abstract factories instead of concrete factories.
 
-This made me change the configuration structure, in order to wrap each spceific configuration under the service name, so that the factory was able to know which block to consume.
+This made me change the configuration structure, in order to wrap each specific configuration under the service name, so that the factory was able to know which block to consume.
 
 Since I was going to change that, I took the opportunity to make other naming changes and refactor everything, wrapping related configuration keys under common blocks, and dropping custom `AbstractOptions` objects in order to use standard ZF2 options objects.
 
@@ -147,7 +147,7 @@ There are 5 main configuration blocks.
 * **message_options**: This block defines how the message is going to be created, from simple headers like the recipients, the sender and the subject, to the way to create the body. The body can be defined as a raw content using the **'content'** configuration, but it can be rendered from a template too using the **'template'** configuration, which is disabled by default, but will overwrite the **'content'** if enabled using the **'use_template'** configuration.
     * *template*: The template config wraps the information to create the body from templates that will be rendered at runtime. It can define a simple template with no children, or a layout with nested children that will be recursively rendered inside of it. Also, a **'default_layout'** can be difined that will be used as the parent template for all the emails sent with this service.
     * *attachments*: Defines a list of files or a directory containing files that will be attached to the email at runtime.
-* **mail_listeners**: It is a list of mail listeners that will we attached to the mail service at creation time. They can be either `AcMailer\Event\MailListenerInterface` instances, fully qualified class names as string, or service names as string that return `AcMailer\Event\MailListenerInterface` instances.
+* **mail_listeners**: It is a list of mail listeners that will be attached to the mail service at creation time. They can be either `AcMailer\Event\MailListenerInterface` instances, fully qualified class names as string, or service names as string that return `AcMailer\Event\MailListenerInterface` instances.
 
 There is another new configuration block, the **extends**. It defines another configuration block from wich this one should extend its configuration. This way, there is no need to repeat the same configuration over and over if it is going to be the same in more than one mail service.
 
@@ -179,7 +179,7 @@ To directly dump the configuration into a config file, use the `outputFile` valu
 php public/index.php acmailer parse-config --outputFile="config/autoload/new_mail.global.php"
 ~~~
 
-Take into account that you will loose any value dynamically generated. If you are reading a password from an environment variable, you will have to manually check the output of this command to fix that, because the password will be now hardcoded in your new config file.
+Take into account that you will loose any business logic in your config files, since this consumes the generated configuration. For example, if you are reading a password from an environment variable, you will have to manually check the output of this command to fix that, because the password will be now hardcoded in your new config file.
 
 Also, since this version supports multiple mail services, the old configuration will be wrapped into the **'default'** mail service.
 
