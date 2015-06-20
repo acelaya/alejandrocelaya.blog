@@ -1,6 +1,5 @@
 ---
 title: Emails in Zend Framework 2 with ZF2-AcMailer version 5
-draft: true
 tags:
     - github
     - modules
@@ -158,6 +157,190 @@ Any configuration that is redefined will overwrite the extended configuration.
 
 #### Migrate from old configurations
 
+In order to ease the migration from older versions, it is possible to automatically generate the new configuration from the old one by using a CLI entry point.
+
+You just have to have the old **'mail_options'** configuration in the global config, so that it can be read from there, and then, this tool will output the result with the new structure, in phpArray, json, ini or xml format. It can be directly dumped into a file if you prefer so.
+
+Just run this command:
+
+~~~bash
+php public/index.php acmailer parse-config
+~~~
+
+This will output the new configuration in phpArray format. To define another format, use the `format` value flag. like this.
+
+~~~bash
+php public/index.php acmailer parse-config --format=ini
+~~~
+
+To directly dump the configuration into a config file, use the `outputFile` value flag.
+
+~~~bash
+php public/index.php acmailer parse-config --outputFile="config/autoload/new_mail.global.php"
+~~~
+
+Take into account that you will loose any value dynamically generated. If you are reading a password from an environment variable, you will have to manually check the output of this command to fix that, because the password will be now hardcoded in your new config file.
+
+Also, since this version supports multiple mail services, the old configuration will be wrapped into the **'default'** mail service.
+
 ### Fetch mail services
 
+As I've mentioned earlier in this article, it is possible to define multiple mail services now. With previous versions, there was just one mail service under the `AcMailer\Service\MailService` key.
+
+Now, there is a simple namespaced syntax to fetch any mail service from the `ServiceManager`. Use the `acmailer.mailservice.` prefix followed by the concrete mail service name.
+
+For example, `acmailer.mailservice.default` or `acmailer.mailservice.christmas`.
+
+If you try to use a name that wasn't defined in the configuration, the `ServiceManager` will throw an exception.
+
+Additionally, the `AcMailer\Service\MailService` will keep working as an alias of the `acmailer.mailservice.default` service, to make migration easier.
+
+### Using mail services
+
+Once you have fetched a mail service, any configuration automatically set at creation time can be overwritten by any dynamically generated value. Also, there is a public `send()` method that will send the final message by using the configured transport.
+
+#### Send the email
+
+In order to send the email, just fetch the service and call to the `send()` method. It will return a `AcMailer\Result\MailResult` instance.
+
+~~~php
+$mailService = $sm->get('acmailer.mailservice.default');
+$mailService->setBody('This is the body');
+
+$result = $mailService->send();
+if ($result->isValid()) {
+    echo 'Message sent. Congratulations!';
+} else {
+    if ($result->hasException()) {
+        echo sprintf(
+            'An error occurred. Exception: \n %s',
+            $result->getException()->getTraceAsString()
+        );
+    } else {
+        echo sprintf('An error occurred. Message: %s', $result->getMessage());
+    }
+}
+~~~
+
+#### Customize the message
+
+It is very probable that the recipients of the message (for example) have to be dynamically set from the information of a form.
+
+Use the `getMessage()` method to get the wrapped `Zend\Mail\Message` instance and customize it.
+
+~~~php
+$mailService = $sm->get('acmailer.mailservice.default');
+
+$message = $mailService->getMessage();
+$message->setSubject('This is the subject')
+        ->addTo('foobar@example.com')
+        ->addTo('another@example.com')
+        ->addBcc('hidden@domain.com');
+~~~
+
+#### Customize the body
+
+The recommended way to set the body is by using the `setBody()` or `setTemplate()` methods of the mail service, depending if you want to set a raw body or a template to be rendered.
+
+In any case, the charset can be provided.
+
+Raw bodies:
+
+~~~php
+$mailService->setBody('Hello!!');
+$mailService->setBody('Hello!!', 'utf-8');
+$mailService->setBody('<h1>Hello!!</h1>', 'utf-8');
+
+$part = new \Zend\Mime\Part();
+$part->charset = 'utf-8';
+$mailService->setBody($part);
+
+$mailService->setBody($part, 'utf-8');
+~~~
+
+Templates:
+
+~~~php
+$mailService->setTemplate(new Zend\View\Model\ViewModel(), ['charset' => 'utf-8']);
+$mailService->setTemplate('application/emails/my-template', [
+    'charset' => 'utf-8',
+    'date' => date('Y-m-d'),
+    'foo' => 'bar',
+]);
+~~~
+
+Complex templates:
+
+~~~php
+$layout = new \Zend\View\Model\ViewModel([
+    'name' => 'John Doe',
+    'date' => date('Y-m-d')
+]);
+$layout->setTemplate('application/emails/merry-christmas');
+
+$footer = new \Zend\View\Model\ViewModel();
+$footer->setTemplate('application/emails/footer');
+
+$layout->addChild($footer, 'footer');
+
+$mailService->setTemplate($layout);
+~~~
+
+There is also a `setSubject()` public method, but it is marked as deprecated in this version and will be removed in the future. Use the `$message->setSubject()` method instead.
+
+#### Set attachments
+
+It is possible to add attachments or clean the attachments list before sending the message, by using the setter and adder methods.
+
+~~~php
+$mailService->addAttachment('data/mail/attachments/file1.pdf');
+$mailService->addAttachment('data/mail/attachments/file2.pdf', 'different-filename.pdf');
+
+// Add two more attachments to the list
+$mailService->addAttachments([
+    'another-name.pdf' => 'data/mail/attachments/file3.pdf',
+    'data/mail/attachments/file4.zip'
+]);
+// At this point there are 4 attachments ready to be sent with the email
+
+// If we call this, all previous attachments will be discarded
+$mailService->setAttachments([
+    'data/mail/attachments/another-file1.pdf',
+    'name-to-be-displayed.png' => 'data/mail/attachments/another-file2.png'
+]);
+
+// A good way to remove all attachments is to call this
+$mailService->setAttachments([]);
+~~~
+
+### Events layer
+
+This module comes with its own events layer.
+
+The mail services wrap a list of event managers that listen to three different events in the send process. When you call the method `send()`, just after trying to use the transport to send the message, the event `MailEvent::EVENT_MAIL_PRE_SEND` is triggered.
+
+If everything works fine and the message is dispatched, the event `MailEvent::EVENT_MAIL_POST_SEND` is triggered. In this case, the result will be valid.
+
+Finally, if an error occurs and an exception is thrown, the event `MailEvent::EVENT_MAIL_SEND_ERROR` is triggered. In this case the result won't be valid, and it will wrap the produced exception.
+
+The mail listeners are attached and detached with two simple methods.
+
+~~~php
+$mailListener = new \Application\Event\MyMailListener();
+$mailService->attachMailListener($mailListener);
+
+if ($foo) {
+    // If foo, I want to detach the listener
+    $mailService->detachMailListener($mailListener);
+}
+
+$mailService->send();
+~~~
+
+This module doesn't come with any built-in mail listener, you will have to create your own listeners by extending `AcMailer\Event\AbstractMailListener` and implementing the `onPreSend`, `onPostSend` and `onSendError` methods, which receive a `AcMailer\Event\MailEvent` object as an argument, which in turn wraps the mail service itself, so that you can customize anything at any of those points.
+
 ### Others
+
+Other minor changes are that the license has been changed from BSD to MIT, and that the build is running under PHP7, as well as 5.4, 5.5, 5.6 and hhvm. It is currently passing, so the module should theoretically work in all of those environments.
+
+This is not the best module in the world, but it will help you send emails from Zend Framework 2 based applications.
