@@ -44,7 +44,7 @@ class Action extends Enum
 }
 ~~~
 
-We also have an entity with a column of type `Acelaya\Enum\Action`.
+We also have this entity with a column of type `Acelaya\Enum\Action`.
 
 ~~~php
 <?php
@@ -156,11 +156,11 @@ At your application's bootstrap, make this call.
 // [...]
 
 use Doctrine\DBAL\Types\Type;
-use Acelaya\Enum\Action;
+use Acelaya\Type\ActionEnumType;
 
 // [...]
 
-Type::addType('php_enum_action', Action::class);
+Type::addType('php_enum_action', ActionEnumType::class);
 ~~~
 
 And that's it! You can use your custom type wherever you want, and be sure that your entity properties will be objects properly persisted into the database.
