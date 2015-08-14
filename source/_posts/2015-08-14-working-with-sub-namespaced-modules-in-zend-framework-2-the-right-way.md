@@ -15,9 +15,9 @@ categories:
 
 About a year ago I wrote two articles discussing the best way to work with modules with sub-namespaces in Zend Framework 2.
 
-[Part 1](http://blog.alejandrocelaya.com/2014/05/21/create-modules-with-sub-namespaces-in-zend-framework-2/) and [Part 2](http://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/)
+Here you can find [Part 1](http://blog.alejandrocelaya.com/2014/05/21/create-modules-with-sub-namespaces-in-zend-framework-2/) and [Part 2](http://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/)
 
-The solution provided in both those articles was functional, but it introduced some now problems to deal with. It happens that after some time working with sub-namespaced modules I have found the best way to solve those new problems, and I wanted to write this new article explaining it.
+The solution provided in those articles was functional, but it introduced some new problems to deal with. It happens that after some time working with sub-namespaced modules I have found the best way to solve those new problems, and I wanted to write this new article explaining it.
 
 For this article I'm going to use the example namespace `ZasDev\AtomicReader`, which belongs to a real [application](http://www.atomic-reader.com) I'm working on. For example, in my `Auth` module, a real fully qualified class name could be `ZasDev\AtomicReader\Auth\Controller\LoginController`.
 
@@ -51,11 +51,11 @@ modules
             └── Module.php
 ~~~
 
-There are people that think that is the correct way to work, but I don't like to have so many empty folders.
+There are people that think that is the correct way to work, but I don't like to have so many "empty" folders.
 
 #### View scripts resolution
 
-As I mentioned in previous articles, the automatic view script resolution in Zend Framework 2 when a controller's action returns a `ViewModel` instance is to use the action's name as the script name, the controllers' class name as the parent folder, and the first level namespace as the root folder. That is a problem when all the modules have a common first-level namespace.
+As I mentioned in previous articles, the automatic view script resolution in Zend Framework 2 when a controller's action returns a `ViewModel` instance is to use the action's name as the script name, the controllers' class name as the parent folder, and the first level namespace as the root folder. That is a problem when all the modules have a common top-level namespace.
  
 In the original articles we found that the solution was to use the `controller_map` option for the `view_manager` configuration like this.
 
@@ -70,7 +70,7 @@ return [
 ];
 ~~~
 
-That will make the view resolver to use all the controller's namespace levels as folder, which solves the original problem but generates a similar problem as in the autoloading, by making us to have a lot of empty folders.
+That will make the view resolver to use all the controller's namespace levels as folders, which solves the original problem but generates a similar problem as in the autoloading case, by making us to have a lot of empty folders.
 
 The last example would produce this folder structure for view scripts.
 
@@ -96,9 +96,9 @@ modules
 
 It turns out that the solution to both problems is really easy.
 
-This days everybody uses [composer](https://getcomposer.com) on their PHP projects. Using composer's autoloading we can resolve the first problem.
+This days everybody uses [composer](https://getcomposer.org/) on their PHP projects. Using composer's autoloading we can solve the first problem.
  
-By having this folder structure, which is much more usable
+By having this module's folder structure, which is much more usable.
 
 ~~~
 modules
@@ -107,12 +107,76 @@ modules
     │   └── ...
     ├── view
     │   └── ...
-    ├── src
-    │   ├── Controller
-    │   │   └── LoginController.php
-    │   ├── Form
-    │   │   └── ...
-    │   └── Service
-    │       └── ...
-    └── Module.php
+    └── src
+        ├── Controller
+        │   └── LoginController.php
+        ├── Form
+        │   └── ...
+        ├── Service
+        │   └── ...
+        └── Module.php
 ~~~
+
+We just need to define this psr-4 autoloading strategy in our composer.json and all the classes will be properly loaded.
+
+~~~javascript
+// composer.json
+{
+    "autoload" : {
+        "psr-4" : {
+            "ZasDev\\AtomicReader\\Auth" : "modules/Auth/src"
+        }
+    }
+}
+~~~
+
+Repeat that for each module and that's it. Also you won't need to define the module's autoloading in the `Module` class.
+
+The problem with the view scripts resolution can be fixed by changing the `controller_map` configuration a little bit. It turns out that it allows to map module namespaces to folder structures, so that not all the levels are replaced by folders in the path resolution.
+
+With this configuration, we will get controllers in the `ZasDev\AtomicReader\Auth` namespace to be resolved to the `auth` folder.
+
+~~~php
+<?php
+return [
+    'view_manager' => [
+        'controller_map' => [
+            'ZasDev\AtomicReader\Auth' => 'auth',
+            // ...
+        ]
+    ]
+];
+~~~
+
+And our complete module's folder structure will end like this.
+
+~~~
+modules
+└── Auth
+    ├── config
+    │   └── ...
+    ├── view
+    │   └── auth
+    │       └── login
+    │           └── index.phtml
+    └── src
+        ├── Controller
+        │   └── LoginController.php
+        ├── Form
+        │   └── ...
+        ├── Service
+        │   └── ...
+        └── Module.php
+~~~
+
+### Other approaches
+
+Of course, even though I think this is the best solution, it is not the only one.
+ 
+For the templates problem, you could use a `template_map` to get view scripts resolved, but during development that's not the best scenario, since you will be forced to update that map every time you create a new template file.
+
+Also, you could think that the first approach with a lot of folders is the best one. Be free to use it if you are more confortable with it.
+
+Another solution would be to "pack" all the namespaces in a unique namespace that includes the vendor name, the applicaton name and the module name, like `ZasDevAtomicReaderAuth`, with classes like `ZasDevAtomicReaderAuth\Controller\LoginController`, but I don't think that's the best solution either.
+
+Anyway, following this rules, you will be able to use sub-namespaces in modules in a very easy way. 
