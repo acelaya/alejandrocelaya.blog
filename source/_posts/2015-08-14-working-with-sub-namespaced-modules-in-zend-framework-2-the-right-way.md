@@ -124,7 +124,7 @@ We just need to define this psr-4 autoloading strategy in our composer.json and 
 {
     "autoload" : {
         "psr-4" : {
-            "ZasDev\\AtomicReader\\Auth" : "modules/Auth/src"
+            "ZasDev\\AtomicReader\\Auth\\" : "modules/Auth/src"
         }
     }
 }
