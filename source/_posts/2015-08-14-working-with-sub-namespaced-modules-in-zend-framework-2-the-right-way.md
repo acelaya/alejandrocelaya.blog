@@ -130,6 +130,8 @@ We just need to define this psr-4 autoloading strategy in our composer.json and 
 }
 ~~~
 
+And then just refresh the autoloader by running `composer dumpautoload`.
+
 Repeat that for each module and that's it. Also you won't need to define the module's autoloading in the `Module` class.
 
 The problem with the view scripts resolution can be fixed by changing the `controller_map` configuration a little bit. It turns out that it allows to map module namespaces to folder structures, so that not all the levels are replaced by folders in the path resolution.
