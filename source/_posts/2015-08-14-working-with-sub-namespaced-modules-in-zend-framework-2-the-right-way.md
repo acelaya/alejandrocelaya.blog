@@ -124,11 +124,13 @@ We just need to define this psr-4 autoloading strategy in our composer.json and 
 {
     "autoload" : {
         "psr-4" : {
-            "ZasDev\\AtomicReader\\Auth" : "modules/Auth/src"
+            "ZasDev\\AtomicReader\\Auth\\" : "modules/Auth/src"
         }
     }
 }
 ~~~
+
+And then just refresh the autoloader by running `composer dumpautoload`.
 
 Repeat that for each module and that's it. Also you won't need to define the module's autoloading in the `Module` class.
 
