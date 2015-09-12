@@ -276,6 +276,23 @@ blockquote .small:before {
     text-align: justify;
 }
 
+.post .categories-list {
+    float: left;
+}
+.post .tags-list {
+    float: right;
+    text-align: right;
+}
+@media (max-width: 767px) {
+    .post .categories-list {
+        margin-bottom: 10px;
+    }
+    .post .categories-list, .post .tags-list {
+        float: none;
+        text-align: center;
+    }
+}
+
 .search-section .hfeed {
     margin-top: 20px;
 }
