@@ -21,14 +21,14 @@ use:
 
         <ul class="list-unstyled">
             {% if post.meta.categories %}
-            <li class="pull-left">
+            <li class="categories-list">
                 {% for category in post.meta.categories %}
                 <a class="label label-info" href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>
                 {% endfor %}
             </li>
             {% endif %}
             {% if post.meta.tags %}
-            <li class="pull-right text-right">
+            <li class="tags-list">
                 {% for tag in post.meta.tags %}
                 <a class="label label-primary" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
                 {% endfor %}
