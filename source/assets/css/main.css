@@ -46,6 +46,12 @@ blockquote .small:before {
     content: '';
 }
 
+@media (max-width: 767px) {
+    code {
+        word-break: break-all;
+    }
+}
+
 .navbar-form {
     margin-right: -15px;
 }
