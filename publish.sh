@@ -17,7 +17,7 @@ git checkout -- source/_views/default.html.twig
 grunt postgenerate
 
 # Deploy blog
-blogpath='/home/alejandro/web_projects/alejandrocelaya/blog'
+blogpath='/home/alejandro/apps/alejandrocelaya/blog'
 now=`date +'%Y-%m-%d_%T'`
 ssh root@alejandrocelaya.com "mv $blogpath $blogpath-$now"
 ssh root@alejandrocelaya.com "mkdir $blogpath"
