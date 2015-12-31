@@ -222,3 +222,5 @@ return [
 I have used factories as an example, but you can use any valid strategy you want.
 
 You can see a small example application [here](https://github.com/acelaya-blog/di-with-plugin-manager). The concrete social connector doesn't do nothing, but you can see how they work.
+
+The plugin managers are widely used in `Zend\Mvc` for tasks like this. The controller plugins, view helpers, form elements and such can all be managed by its own plugin managers.
