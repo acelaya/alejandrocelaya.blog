@@ -48,6 +48,12 @@ That service abstracts the concrete implementation for each social network, and 
 It could look like this:
 
 ~~~php
+namespace Acelaya\Social;
+
+use Acelaya\Social\Connector\FacebookConnector;
+use Acelaya\Social\Connector\LinkedinConnector;
+use Acelaya\Social\Connector\TwitterConnector;
+
 class SocialUsers
 {
     public function __construct(
@@ -90,4 +96,124 @@ class SocialUsers
 
 The service methods call to the proper connector based on the social network we specify. Apparently, it's a simple implementation.
 
-But there is a problem
+But there is a problem. If the number of social networks we support grows too much, at some point this service is going to have too many dependencies, and that's a code smell. Also, having a lot of `if` statements per method is not very clean either.
+
+The solution would be to create a `SocialPluginManager`, an object that extends `Zend\ServiceManager\AbstractPluginManager` and manages and creates each social connector transparently. Then, we just need to make the `SocialUsers` service to depend on the `SocialPluginManager`.
+
+Each social connector should implement an interface like this.
+
+~~~php
+namespace Acelaya\Social\Connector;
+
+interface SocialConnectorInterface
+{
+    /**
+     * @return string
+     */
+    public function getLoginUrl();
+    
+    /**
+     * @return array
+     */
+    public function getUserData($authToken);
+}
+~~~
+
+Then the `SocialPluginManager` will just need to check if any created object implements it.
+
+~~~php
+namespace Acelaya\Social;
+
+use Acelaya\Social\Connector\SocialConnectorInterface;
+use Zend\ServiceManager\AbstractPluginManager;
+
+class SocialPluginManager extends AbstractPluginManager
+{
+    /**
+     * Validate the plugin
+     *
+     * Checks that the filter loaded is either a valid callback or an instance
+     * of FilterInterface.
+     *
+     * @param  mixed $plugin
+     * @return void
+     * @throws Exception\RuntimeException if invalid
+     */
+    public function validatePlugin($plugin)
+    {
+        if ($plugin instanceof SocialConnectorInterface) {
+            return;
+        }
+        throw new Exception\RuntimeException(sprintf(
+            'Plugins managed by "%s" must implement "%s". "%s" provided',
+            __CLASS__,
+            SocialConnectorInterface::class,
+            is_object($plugin) ? get_class($plugin) : gettype($plugin)
+        ));
+    }
+}
+~~~
+
+We now need to refactor the `SocialUsers` service to get the `SocialPluginManager`.
+
+~~~php
+namespace Acelaya\Social;
+
+use Acelaya\Social\Connector\SocialConnectorInterface;
+use Acelaya\Social\Exception\InvalidSocialNetworkException;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
+class SocialUsers
+{
+    public function __construct(ServiceLocatorInterface $socialPlugins)
+    {
+        // [...]
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLoginUrl($socialNetwork)
+    {
+        return $this->getSocialConnector($socialNetwork)->getLoginUrl();
+    }
+    
+    /**
+     * @return array
+     */
+    public function getUserData($socialNetwork, $authToken)
+    {
+        return $this->getSocialConnector($socialNetwork)->getUserData($authToken);
+    }
+    
+    /**
+     * @return SocialConnectorInterface
+     */
+    protected function getSocialConnector($socialNetwork)
+    {
+        if (! $this->socialPlugins->has($socialNetwork)) {
+            throw new InvalidSocialNetworkException($socialNetwork);
+        }
+        
+        return $this->socialPlugins->get($socialNetwork);
+    }
+}
+~~~
+
+The resulting code is much cleaner, and now we can add any new social network without having to change the `SocialUsers` service. We just need to create and register the new social connector.
+
+The last thing we have to do is defining the `SocialPluginManager` configuration. Since the `AbstractPluginManager` extends the `ServiceManager`, it is exactly the same as the one used for it. To make the previous code work, we have to use the social network name as the service name for each connector, so the configuration could look like this.
+
+~~~php
+use Acelaya\Social\Connector;
+
+return [
+    'factories' => [
+        'facebook' => Connector\FacebookConnectorFactory::class,
+        'twitter' => Connector\TwitterConnectorFactory::class,
+        'linkedin' => Connector\LinkedinConnectorFactory::class,
+    ]
+];
+~~~
+
+I have used factopries as an example, but you can use any valid strategy you want.
