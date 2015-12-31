@@ -14,11 +14,13 @@ categories:
 ---
 
 I have spoken many times at this blog about dependency injection, and how the ZF2 ServiceManager is one of the best tools to solve it.
-You can find related articles here:
+You can read these related articles to know more:
 
+- [How to properly use the Zend framework 2 service manager as a dependency injection container](http://blog.alejandrocelaya.com/2014/07/03/how-to-properly-use-the-zend-framework-2-service-manager-as-a-dependency-injection-container/)
+- [Advanced usage of ServiceManager in Zend Framework 2](http://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/)
+- [Managing objects creation and dependency injection with Zend\ServiceManager](http://blog.alejandrocelaya.com/2015/02/06/managing-objects-creation-and-dependency-injection-with-zend-service-manager/)
 
-
-In this article I'm going to speak about another utility that comes with the `Zend\ServiceManager package, the AbstractPluginManager.
+In this article I'm going to speak about another utility that comes with the `Zend\ServiceManager` package, the `AbstractPluginManager`.
 
 ### Injecting a service container
 
@@ -36,9 +38,9 @@ In this situation, the connection pool is some kind of service container, but in
 
 Once we know the theory, we can see how to implement it. 
 
-The AbstractPluginManager is a class that extends the ServiceManager, but includes an abstract method validatePlugin that implementors should use to validate objects when they are created. It just needs to throw an exception if it is not valid, for example because it doesn't implement certain interface.
+The AbstractPluginManager is a class that extends the ServiceManager, but includes an abstract method `validatePlugin` that implementors should use to validate objects when they are created. It just needs to throw an exception if it is not valid, for example because it doesn't implement certain interface.
 
-This way we can be sure that all the services managed by it can be used for a specific task. In the connection pool example, all the managed objects soul be capable of connecting to a database.
+This way we can be sure that all the services managed by it can be used for a specific task. In the connection pool example, all the managed objects should be capable of connecting to a database.
 
 ### A real example
 
@@ -144,6 +146,7 @@ class SocialPluginManager extends AbstractPluginManager
         if ($plugin instanceof SocialConnectorInterface) {
             return;
         }
+        
         throw new Exception\RuntimeException(sprintf(
             'Plugins managed by "%s" must implement "%s". "%s" provided',
             __CLASS__,
@@ -154,7 +157,7 @@ class SocialPluginManager extends AbstractPluginManager
 }
 ~~~
 
-We now need to refactor the `SocialUsers` service to get the `SocialPluginManager`.
+We now need to refactor the `SocialUsers` service so that it depends on the `SocialPluginManager`.
 
 ~~~php
 namespace Acelaya\Social;
@@ -216,4 +219,6 @@ return [
 ];
 ~~~
 
-I have used factopries as an example, but you can use any valid strategy you want.
+I have used factories as an example, but you can use any valid strategy you want.
+
+You can see a small example application [here](https://github.com/acelaya-blog/di-with-plugin-manager). The concrete social connector doesn't do nothing, but you can see how they work.
