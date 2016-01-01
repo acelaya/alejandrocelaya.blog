@@ -73,9 +73,9 @@ class SocialUsers
     {
         if ($socialNetwork === 'facebook') {
             return $this->fConnector->getLoginUrl();
-        } if ($socialNetwork === 'twitter') {
+        } elseif ($socialNetwork === 'twitter') {
             return $this->tConnector->getLoginUrl();
-        } if ($socialNetwork === 'linkedin') {
+        } elseif ($socialNetwork === 'linkedin') {
             return $this->lConnector->getLoginUrl();
         }
     }
@@ -87,9 +87,9 @@ class SocialUsers
     {
         if ($socialNetwork === 'facebook') {
             return $this->fConnector->getUserData($authToken);
-        } if ($socialNetwork === 'twitter') {
+        } elseif ($socialNetwork === 'twitter') {
             return $this->tConnector->getUserData($authToken);
-        } if ($socialNetwork === 'linkedin') {
+        } elseif ($socialNetwork === 'linkedin') {
             return $this->lConnector->getUserData($authToken);
         }
     }
@@ -165,11 +165,10 @@ namespace Acelaya\Social;
 
 use Acelaya\Social\Connector\SocialConnectorInterface;
 use Acelaya\Social\Exception\InvalidSocialNetworkException;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class SocialUsers
 {
-    public function __construct(ServiceLocatorInterface $socialPlugins)
+    public function __construct(SocialPluginManager $socialPlugins)
     {
         // [...]
     }
