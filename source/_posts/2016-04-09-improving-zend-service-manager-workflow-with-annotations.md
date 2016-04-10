@@ -1,10 +1,10 @@
 ---
 title: Improving Zend\ServiceManager workflow with annotations
 tags:
-    - login
-    - cookie
-    - persistent-login
-    - persistent-session
+    - annotations
+    - service-manager
+    - services
+    - factories
 categories:
     - php
     - zf2
