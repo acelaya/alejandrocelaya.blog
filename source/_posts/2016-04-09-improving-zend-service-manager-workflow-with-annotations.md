@@ -129,7 +129,7 @@ Also, the package has currently some limitations. Some of them will probably get
  
 * It is not possible to perform setter or property injection, just constructor injection. Since setter injection is not a good practice, I'm not sure if this is going to change.
 * It is not possible to inject something that is not registered in the container. All the dependencies need to be services themselves.
-* If a service returns an array, you cannot pick just a key from it, but I will probably support this in future versions.
+* <del>If a service returns an array, you cannot pick just a key from it, but I will probably support this in future versions.</del><br>**Update 2016-04-10.** As of v0.2, it is already possible to fetch just one part of an array by using dot notation. For example, **config.mail.smtp**
 * The `AnnotatedFactory` cannot create services that are not identified by their fully qualified class names.
 
 Anyway, if there is a service complex enough that you can't create with annotations, you can always use regular factories.
