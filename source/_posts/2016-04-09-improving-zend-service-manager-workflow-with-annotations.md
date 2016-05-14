@@ -11,7 +11,7 @@ categories:
 
 ---
 
-Everyone who regularly visits my blog knows that I'm a complete fan of the [Zend\ServiceManager](http://zendframework.github.io/zend-servicemanager/) component.
+Everyone who regularly visits my blog knows that I'm an absolute fan of the [Zend\ServiceManager](http://zendframework.github.io/zend-servicemanager/) component.
 
 It is always my choice to deal with dependency injection in any kind of project, more now that v3 has been released, which is faster and has a better public API.
 
@@ -133,3 +133,17 @@ Also, the package has currently some limitations. Some of them will probably get
 * The `AnnotatedFactory` cannot create services that are not identified by their fully qualified class names.
 
 Anyway, if there is a service complex enough that you can't create with annotations, you can always use regular factories.
+
+### Performance improvements
+
+**Update 2016-05-15**
+
+Since I published this article, we have started to use this library in one of my company's biggest projects, and this is the result.
+
+At the beginning, I started benchmarking the library by checking how much time was used to create thousands of services with or without it, and the result was that it was a very little bit slower with the `AnnotatedFactory`.
+
+However, when a project grows, maintainability is also important, not only performance. Also, my benchmarks were made against a non-shared service, but always the same one, which was being created by the same factory.
+
+My surprise was that after performing an important refactoring which allowed us to replace more than 150 factories by the same `AnnotatedFactory`, performance was improved by about a 20% (while using cache, of course).
+
+I suppose this is due to the fact that the same factory instance is used to create many objects, which reduces the number of autoloader hits, the number of factories instantiated and the number of files included per request.
