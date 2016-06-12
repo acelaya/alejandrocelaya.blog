@@ -9,7 +9,7 @@ tags:
     - zend-framework-2-certified-architect
 categories:
     - php
-    - zf2
+    - zf
     - tools
 
 ---

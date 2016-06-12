@@ -2,7 +2,7 @@
 title: Unit testing Zend Framework 2 modules
 categories:
     - php
-    - zf2
+    - zf
 tags:
     - zf2
     - zend-framework-2

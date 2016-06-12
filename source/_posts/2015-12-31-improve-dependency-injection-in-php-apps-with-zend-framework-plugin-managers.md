@@ -9,7 +9,7 @@ tags:
     - plugin-manager
 categories:
     - php
-    - zf2
+    - zf
 
 ---
 

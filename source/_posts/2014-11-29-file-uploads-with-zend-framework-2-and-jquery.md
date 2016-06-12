@@ -1,7 +1,7 @@
 ---
 title: File uploads with Zend Framework 2 and jQuery
 categories:
-    - zf2
+    - zf
     - web
 tags:
     - zf2

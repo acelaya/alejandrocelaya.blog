@@ -2,7 +2,7 @@
 title: Advanced usage of ServiceManager in Zend Framework 2
 categories:
     - php
-    - zf2
+    - zf
 tags:
     - service-manager
     - services

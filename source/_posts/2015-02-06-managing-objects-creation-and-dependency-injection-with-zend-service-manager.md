@@ -2,7 +2,7 @@
 title: Managing objects creation and dependency injection with Zend\ServiceManager
 categories:
     - php
-    - zf2
+    - zf
     - tools
 tags:
     - zf2
