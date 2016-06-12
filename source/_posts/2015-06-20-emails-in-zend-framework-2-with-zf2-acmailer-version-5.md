@@ -9,7 +9,7 @@ tags:
     - emails
 categories:
     - php
-    - zf2
+    - zf
 
 ---
 

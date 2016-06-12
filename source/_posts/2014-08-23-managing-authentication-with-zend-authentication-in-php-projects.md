@@ -2,7 +2,7 @@
 title: Managing authentication with Zend\Authentication in PHP projects
 categories:
     - php
-    - zf2
+    - zf
 tags:
     - authentication
     - zf2

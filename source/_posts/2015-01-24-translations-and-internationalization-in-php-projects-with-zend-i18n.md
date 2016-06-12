@@ -2,7 +2,7 @@
 title: Translations and internationalization in PHP projects with Zend\I18n
 categories:
     - php
-    - zf2
+    - zf
 tags:
     - i18n
     - translations

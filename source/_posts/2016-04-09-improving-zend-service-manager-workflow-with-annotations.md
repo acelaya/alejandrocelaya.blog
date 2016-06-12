@@ -7,7 +7,7 @@ tags:
     - factories
 categories:
     - php
-    - zf2
+    - zf
 
 ---
 

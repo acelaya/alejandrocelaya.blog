@@ -10,7 +10,7 @@ tags:
     - service-manager
 categories:
     - php
-    - zf2
+    - zf
 
 ---
 
