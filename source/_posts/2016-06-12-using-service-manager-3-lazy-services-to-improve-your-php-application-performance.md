@@ -55,7 +55,7 @@ $sm = new ServiceManager([
     ],
 
     'lazy_services' => [
-        'class_amp' => [
+        'class_map' => [
             'db_connection' => \PDO::class,
             MyExpensiveService::class => MyExpensiveService::class,
         ],
