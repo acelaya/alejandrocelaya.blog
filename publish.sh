@@ -7,8 +7,11 @@ rm -rf output_prod
 npm install
 grunt
 
+# Install composer dependencies
+composer update
+
 # Generate production site
-sculpin generate --env=prod
+vendor/bin/sculpin generate --env=prod
 
 # Undo change sin the layout made by grunt
 git checkout -- source/_views/default.html.twig
