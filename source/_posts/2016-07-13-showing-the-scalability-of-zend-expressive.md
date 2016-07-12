@@ -65,7 +65,7 @@ Zend Expressive allows the previous approach, but also other approaches which re
 
 ### Choosing implementations
 
-The first thing that make Expressive different from other frameworks is that it doesn't come with its own implementation for everything. They don't try to reinvent the wheel, instead, they rely on interfaces so that you can use the component of your choice for routing, templating and dependency injection. You could also implement your own if you prefer.
+The first thing that makes Expressive different from other frameworks is that it doesn't come with its own implementation for everything. They don't try to reinvent the wheel, instead, they rely on interfaces so that you can use the component of your choice for routing, templating and dependency injection. You could also implement your own if you prefer.
 
 For example, by default expressive supports three routers. FastRoute, Aura router and ZF2 router. In my website I needed a router with support for optional parameters at the beginning of the route, and none of them supports it.
 
@@ -140,7 +140,21 @@ I've already said that Zend Expressive allows you to use the implementation of y
 
 In a medium project you can use a simple DI container, like pimple or aura DI. However, in a bigger project you will probably need a more advanced container, like php-di or Zend\ServiceManager. Expressive allows you to use any container that implements `Interop\Container\ContainerInterface`.
 
+If none is defined, the static `AppFactory` uses a Zend\ServiceManager instance, and the `ApplicationFactory` injects into the application the same container that was used to invoke it.
+
 ### Modular applications
+
+For big projects, modularity is very useful.
+
+You can wrap classes, configuration, language files, templates, etc, in a self-contained package that can be installed in other projects.
+
+Other frameworks like ZF2 and Symfony provide great solutions for this (modules and bundles), and it is easy to do this with Expressive too, while you can still work in a single-module way if the project doesn't need more complexity.
+
+In order to add modularity to an Expressive project, you can use the [mtymek/expressive-config-manager](https://github.com/mtymek/expressive-config-manager) package. It includes a simple class that is able to merge the configuration from many modules (while working with the configuration-driven approach), so that the application is created by being aware of all of those modules.
+
+You just need to define the configuration of every module and an invokable class that provides the configuration itself.
+
+Indeed, that package can be used in any project, not just Expressive projects, but it was built with Zend Expressive in mind.
 
 ### The middleware approach
 
