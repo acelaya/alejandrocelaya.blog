@@ -65,20 +65,80 @@ Zend Expressive allows the previous approach, but also other approaches which re
 
 ### Choosing implementations
 
+The first thing that make Expressive different from other frameworks is that it doesn't come with its own implementation for everything. They don't try to reinvent the wheel, instead, they rely on interfaces so that you can use the component of your choice for routing, templating and dependency injection. You could also implement your own if you prefer.
+
+For example, by default expressive supports three routers. FastRoute, Aura router and ZF2 router. In my website I needed a router with support for optional parameters at the beginning of the route, and none of them supports it.
+
+My solution was integrating Slim 2 router, which allows that. https://github.com/acelaya/expressive-slim-router
+
 ### Configuration driven applications
 
 One of the best things about Zend Expressive is that you can move all the configuration to dynamic configuration files, including:
 
 * Definition of routes
-* Definition of middlewares
+* Definition of middlewares to pipe
 * Definition of template renderer, router and container implementations
 * Definition of configurations consumed by other services
 
-In order to achive this, instead of creating the application with the static factory (`Zend\Expressive\AppFactory`), you have to use the container factory (`Zend\Expressive\Container\ApplicationFactory`).
+In order to achieve this, instead of creating the application with the static factory (`Zend\Expressive\AppFactory`), you have to use the container factory (`Zend\Expressive\Container\ApplicationFactory`).
 
 It is intended to be used with a dependency injection container, and a more complex process is used while creating the application.
 
+It fetches the configuration of the application itself from a `config` service, which should contain an array with keys like `routes` or `middleware-pipeline`.
+
+For example, if we want to register the same routes defined in the first example via configuration, we need to define something like this.
+
+```php
+return [
+
+    'routes' => [
+        [
+            'name' => 'greet',
+            'path' => '/greet/{name}',
+            'middleware' => function ($request, $response, $out = null) {
+                $response->getBody()->write(sprintf('Hello %s!!', $request->getAttribute('name')));
+                return $response;
+            },
+            'allowed_methods' => ['GET'],
+        ],
+        [
+            'name' => 'about',
+            'path' => '/about',
+            'middleware' => function ($request, $response, $out = null) {
+                ob_start();
+                include 'templates/about.html';
+                $response->getBody()->write(ob_get_clean());
+                return $response;
+            },
+            'allowed_methods' => ['GET'],
+        ],
+    ],
+
+];
+```
+
+With this, the `ApplicationFactory` preregisters all the routes before returning the `Application` instance.
+
+The same happens with non-routable middleware (we'll talk about middleware later), and other configurations.
+
+With this approach, the first thing we need to do is create the dependency injection container, which will be responsible of creating the application object. Something like this:
+
+```php
+use Interop\Container\ContainerInterface;
+use Zend\Expressive\Application;
+
+/** @var ContainerInterface $container */
+$container = include __DIR__ . '/../config/container.php';
+/** @var Application $app */
+$app = $container->get(Application::class);
+$app->run();
+```
+
 ### Complex dependency injection
+
+I've already said that Zend Expressive allows you to use the implementation of your choice for dependency injection.
+
+In a medium project you can use a simple DI container, like pimple or aura DI. However, in a bigger project you will probably need a more advanced container, like php-di or Zend\ServiceManager. Expressive allows you to use any container that implements `Interop\Container\ContainerInterface`.
 
 ### Modular applications
 
