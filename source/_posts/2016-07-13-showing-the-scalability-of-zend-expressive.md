@@ -4,6 +4,9 @@ tags:
     - zend-expressive
     - microframework
     - scalable
+    - programmatic
+    - configuration
+    - dependency-injection
     - zf3
 categories:
     - php
@@ -42,9 +45,9 @@ $app->pipeDispatchMiddleware();
 $app->run();
 ```
 
-This is a super simple example. The best approach for prototyping and small applications. You can write the whole app in hours.
+This is a super simple example, the best approach for prototyping and small applications. You can write the whole app in hours.
 
-This same approach is used by other microframeworks.
+This is the so called "programmatic approach", and you can read more about it [here](https://mwop.net/blog/2016-05-16-programmatic-expressive.html). This same approach is used by other microframeworks.
 
 However, if your application grows, this could be hard to maintain.
 
@@ -69,7 +72,11 @@ The first thing that makes Expressive different from other frameworks is that it
 
 For example, by default expressive supports three routers. FastRoute, Aura router and ZF2 router. In my website I needed a router with support for optional parameters at the beginning of the route, and none of them supports it.
 
-My solution was integrating Slim 2 router, which allows that. https://github.com/acelaya/expressive-slim-router
+My solution was integrating Slim 2 router, which allows that. https://github.com/acelaya/expressive-slim-router.
+
+Something similar is possible while choosing the templates renderer. Expressive comes with built-in support for Twig, Plates and Zend\View, but you can use whichever renderer you like. It shouldn't be hard to integrate Blade, for example.
+
+For dependency injection, Zend Expressive supports any container implementing `Interop\Container\ContainerInterface`, so there are plenty of options to choose.
 
 ### Configuration driven applications
 
@@ -142,11 +149,13 @@ In a medium project you can use a simple DI container, like pimple or aura DI. H
 
 If none is defined, the static `AppFactory` uses a Zend\ServiceManager instance, and the `ApplicationFactory` injects into the application the same container that was used to invoke it.
 
+Other microframeworks assume that you are working on a small project, and you are a little bit limited by their DI implementation. Expressive gives you the freedom to use the implementation that best suits your needs.
+
 ### Modular applications
 
 For big projects, modularity is very useful.
 
-You can wrap classes, configuration, language files, templates, etc, in a self-contained package that can be installed in other projects.
+You can wrap classes, configuration, language files, templates, tests, etc, in a self-contained package that can be installed in other projects.
 
 Other frameworks like ZF2 and Symfony provide great solutions for this (modules and bundles), and it is easy to do this with Expressive too, while you can still work in a single-module way if the project doesn't need more complexity.
 
@@ -154,8 +163,75 @@ In order to add modularity to an Expressive project, you can use the [mtymek/exp
 
 You just need to define the configuration of every module and an invokable class that provides the configuration itself.
 
-Indeed, that package can be used in any project, not just Expressive projects, but it was built with Zend Expressive in mind.
+Indeed, that package can be used in any project, not just Expressive-based projects, but it was built with Zend Expressive in mind.
 
-### The middleware approach
+### The middleware paradigm
+
+New microframeworks are working with the middleware paradigm. Expressive is one of them.
+
+Middleware is a great way of defining pieces of code that are easy to test and reuse in other middleware-based projects.
+
+If you need to learn more about middleware, this is a great article to read now https://mwop.net/blog/2015-01-08-on-http-middleware-and-psr-7.html
+
+Expressive uses middleware not only before dispatching a route, but also for the route itself, so in the end everything is middleware.
+
+Also, unlike other microframeworks where you need to provide callables every time you need a middleware, Expressive supports passing service names, which makes it use the DI container in order to get the middleware instance. This improves performance and eases dependency injection.
+
+This approach can be used both in the programmatic and the config-driven approaches.
+
+```php
+use Zend\ServiceManager\ServiceManager;
+
+$sm = new ServiceManager([
+    'invokables' => [
+         \MyMiddleware::class => MyMiddleware::class,
+    ],
+]);
+
+$app = AppFactory::create($sm);
+$app->get('/home', \MyMiddleware::class);
+
+// [...]
+```
+
+When this app is run and the "/home" route is dispatched, the middleware used to dispatch the request will be lazily fetched from the DI container and invoked.
+
+This same thing could be done with the config-driven approach like this.
+
+```php
+use Zend\Expressive\Application,
+use Zend\ServiceManager\ServiceManager;
+
+$sm = new ServiceManager([
+    'services' => [
+        'config' => [
+            'routes' => [
+                [
+                    'name' => 'home',
+                    'middleware' => \MyMiddleware::class,
+                    'path' => '/home',
+                    'allowed_methods' => ['GET'],
+                ],
+            ],
+        ],
+    ],
+    'invokables' => [
+         \MyMiddleware::class => MyMiddleware::class,
+    ],
+    'factories' => [
+        Application::class => Zend\Expressive\Container\ApplicationFactory::class,
+    ],
+]);
+
+$app = $sm->get(Application::class);
+
+// [...]
+```
 
 ### Controller-style dispatch
+
+The last thing we need to have Expressive be as similar as possible to bigger frameworks is being able to dispatch similar requests with the same controller class, allowing us to share dependencies and not having to repeat the same creation process for different middlewares.
+
+This is also possible by using [Abdul](https://twitter.com/samsonasik)'s implementation, which is now part of the official [Expressive cookbook](https://docs.zendframework.com/zend-expressive/cookbook/using-routed-middleware-class-as-controller/).
+
+This reminds to a classic MVC actions controller.
