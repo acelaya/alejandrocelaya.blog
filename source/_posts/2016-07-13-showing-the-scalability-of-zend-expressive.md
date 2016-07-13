@@ -14,13 +14,13 @@ categories:
 
 ---
 
-I've been working with some different frameworks lately. One of them is [Zend Expressive](https://docs.zendframework.com/zend-expressive/), and I've come to the conclusion that I don't need to use one or another framework depending on the project, Expressive always fits my needs and scales from small projects to bigger applications.
+I've been working with some different frameworks lately. One of them is [Zend Expressive](https://docs.zendframework.com/zend-expressive/), and I've come to the conclusion that I don't need to choose between different frameworks depending on the project, Expressive always fits my needs and scales from small projects to bigger applications.
 
 ### The Microframework approach
 
-The first thing that one could see on the "Hello world" example is that Expressive is a usual microframework.
+The first thing that one could see on the ["Hello world" example](https://docs.zendframework.com/zend-expressive/getting-started/standalone/) is that Expressive seems like a usual microframework.
 
-You create the app object and programatically register some routes. Something like this:
+You create the app object and register some routes. Something like this:
 
 ```php
 use zend\Expressive\AppFactory;
@@ -59,7 +59,7 @@ In the past you had to take this into account. A microframework was good for sma
 
 Zend Expressive allows the previous approach, but also other approaches which remind to these bigger frameworks. Some of the features that make Zend Expressive my framework of choice for any kind of project are:
 
-* Not coupled to a specific implementation for dependency injection, templating or routing
+* Decoupled from specific implementations for dependency injection, templating or routing
 * Supports configuration-driven approach
 * Supports complex dependency injection by using advanced dependency injection containers like Zend\ServiceManager
 * Supports modular applications, easing code reuse
@@ -72,9 +72,9 @@ The first thing that makes Expressive different from other frameworks is that it
 
 For example, by default expressive supports three routers. FastRoute, Aura router and ZF2 router. In my website I needed a router with support for optional parameters at the beginning of the route, and none of them supports it.
 
-My solution was integrating Slim 2 router, which allows that. https://github.com/acelaya/expressive-slim-router.
+My solution was integrating [Slim 2 router](https://github.com/acelaya/expressive-slim-router), which allows that.
 
-Something similar is possible while choosing the templates renderer. Expressive comes with built-in support for Twig, Plates and Zend\View, but you can use whichever renderer you like. It shouldn't be hard to integrate Blade, for example.
+Something similar is possible while choosing the templates renderer. Expressive comes with built-in support for Twig, Plates and Zend\View, but you can use whichever renderer you like. It shouldn't be hard to integrate Laravel's Blade, for example.
 
 For dependency injection, Zend Expressive supports any container implementing `Interop\Container\ContainerInterface`, so there are plenty of options to choose.
 
@@ -91,7 +91,7 @@ In order to achieve this, instead of creating the application with the static fa
 
 It is intended to be used with a dependency injection container, and a more complex process is used while creating the application.
 
-It fetches the configuration of the application itself from a `config` service, which should contain an array with keys like `routes` or `middleware-pipeline`.
+It fetches the configuration of the application itself from a `config` service, which should contain an array (or ArrayObject) with keys like `routes` or `middleware-pipeline`.
 
 For example, if we want to register the same routes defined in the first example via configuration, we need to define something like this.
 
@@ -143,7 +143,7 @@ $app->run();
 
 ### Complex dependency injection
 
-I've already said that Zend Expressive allows you to use the implementation of your choice for dependency injection.
+We have already seen that Zend Expressive allows you to use the implementation of your choice for dependency injection.
 
 In a medium project you can use a simple DI container, like pimple or aura DI. However, in a bigger project you will probably need a more advanced container, like php-di or Zend\ServiceManager. Expressive allows you to use any container that implements `Interop\Container\ContainerInterface`.
 
@@ -153,13 +153,13 @@ Other microframeworks assume that you are working on a small project, and you ar
 
 ### Modular applications
 
-For big projects, modularity is very useful.
+For big projects, modularity is very important.
 
 You can wrap classes, configuration, language files, templates, tests, etc, in a self-contained package that can be installed in other projects.
 
 Other frameworks like ZF2 and Symfony provide great solutions for this (modules and bundles), and it is easy to do this with Expressive too, while you can still work in a single-module way if the project doesn't need more complexity.
 
-In order to add modularity to an Expressive project, you can use the [mtymek/expressive-config-manager](https://github.com/mtymek/expressive-config-manager) package. It includes a simple class that is able to merge the configuration from many modules (while working with the configuration-driven approach), so that the application is created by being aware of all of those modules.
+In order to add modularity to an Expressive project, you can use the [mtymek/expressive-config-manager](https://github.com/mtymek/expressive-config-manager) package. It includes a simple class that is able to merge the configuration from many sources (while working with the configuration-driven approach), so that the application is created by being aware of all of those modules, and thus, get preconfigured services or override other configurations.
 
 You just need to define the configuration of every module and an invokable class that provides the configuration itself.
 
@@ -230,8 +230,18 @@ $app = $sm->get(Application::class);
 
 ### Controller-style dispatch
 
-The last thing we need to have Expressive be as similar as possible to bigger frameworks is being able to dispatch similar requests with the same controller class, allowing us to share dependencies and not having to repeat the same creation process for different middlewares.
+The last thing we need so that Expressive is as similar as possible to bigger frameworks, is being able to dispatch similar requests with the same controller class, allowing us to share dependencies and not having to repeat the same creation process for different middlewares.
 
 This is also possible by using [Abdul](https://twitter.com/samsonasik)'s implementation, which is now part of the official [Expressive cookbook](https://docs.zendframework.com/zend-expressive/cookbook/using-routed-middleware-class-as-controller/).
 
 This reminds to a classic MVC actions controller.
+
+You can also easily define rest controllers as [I explained in my blog](http://blog.alejandrocelaya.com/2016/06/24/dispatch-rest-like-requests-with-a-single-controller-class-in-zend-expressive/) not so long ago.
+
+### Conclusion
+
+What I was trying to show with this article is that the Zend people has reached an important achievement with Zend Expressive.
+
+They have developed a microframework with a low learning curve that can be used in small applications, but it grows as your project does, allowing you to change some pieces in order to get a maintainable application.
+
+That's what I call **scalability**.
