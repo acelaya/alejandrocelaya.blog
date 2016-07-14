@@ -87,6 +87,8 @@ One of the best things about Zend Expressive is that you can move all the config
 * Definition of template renderer, router, and container implementations
 * Definition of configuration consumed by other services
 
+This approach also allows to define environment-specific configuration, and override production configurations with local configurations, like disabling cache or having a more verbose error handler (which is not desired in production but will help during development).
+
 In order to achieve this, instead of creating the application with the static factory (`Zend\Expressive\AppFactory`), you have to use the container factory (`Zend\Expressive\Container\ApplicationFactory`).
 
 It is intended to be used with a dependency injection container, and a more complex process is used while creating the application.
@@ -146,8 +148,28 @@ $app->run();
 ```
 
 <blockquote>
-<small>Note that Expressive projects can be easily created from scratch by using the <a href="https://docs.zendframework.com/zend-expressive/getting-started/skeleton/">skeleton installer</a>, which in the process will ask you for the concrete implementations to use and initialize the code above.</small>
+<small>Note that Expressive projects can be easily created from scratch by using the <a href="https://docs.zendframework.com/zend-expressive/getting-started/skeleton/">skeleton installer</a>, which in the process will ask you for the concrete implementations to use and initialize all the code above, including base configuration files.</small>
 </blockquote>
+
+While the configuration-driven approach would be my choice, it is also possible to take a hybrid approach between the programmatic and the config-driven options.
+
+You can use the container factory so that the environment-specific configuration system is applied, and dependencies and service-specific configs are properly loaded, but still define routes programmatically.
+
+```php
+use Interop\Container\ContainerInterface;
+use Zend\Expressive\Application;
+
+/** @var ContainerInterface $container */
+$container = include __DIR__ . '/../config/container.php';
+/** @var Application $app */
+$app = $container->get(Application::class);
+
+// After getting the application from the container, it is still possible to define routes
+$app->get('/home', ...);
+$app->post('/contact', ...);
+
+$app->run();
+```
 
 ### Complex dependency injection
 
