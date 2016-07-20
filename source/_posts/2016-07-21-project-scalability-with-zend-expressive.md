@@ -1,5 +1,5 @@
 ---
-title: Project scalability with Zend Expressive
+title: Project Scalability with Zend Expressive
 tags:
     - zend-expressive
     - microframework
@@ -13,6 +13,8 @@ categories:
     - zf
 
 ---
+
+**This article was first published at [Zend Developer Zone](https://devzone.zend.com/7245/project-scalability-with-zend-expressive/)**
 
 I've been working with some different frameworks lately. One of them is [Zend Expressive](https://docs.zendframework.com/zend-expressive/), and I've come to the conclusion that I don't need to choose between different frameworks; depending on the project, Expressive always fits my needs and scales from small projects to bigger applications.
 
