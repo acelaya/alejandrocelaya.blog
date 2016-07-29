@@ -39,6 +39,12 @@ body, html {
 blockquote {
     background-color: #f9f9f9;
 }
+.twitter-tweet {
+    background: transparent;
+    border: none;
+    margin: 20px auto !important;
+}
+
 
 blockquote footer:before,
 blockquote small:before,
