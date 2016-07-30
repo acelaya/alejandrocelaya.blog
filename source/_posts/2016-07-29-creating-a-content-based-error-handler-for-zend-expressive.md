@@ -55,11 +55,11 @@ This is my implementation. It is an early version and there is probably some way
 
 ```php
 <?php
-namespace Shlinkio\Shlink\Rest\Expressive;
+namespace Shlinkio\Shlink\Rest\ErrorHandler;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Shlinkio\Shlink\Common\Expressive\ErrorHandlerInterface;
+use Shlinkio\Shlink\Common\ErrorHandler\ErrorHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Expressive\Router\RouteResult;
 
@@ -120,31 +120,36 @@ My final solution was using the [strategy design pattern](https://en.wikipedia.o
 
 For my implementation I've used a [zend-servicemanager PluginManager](https://docs.zendframework.com/zend-servicemanager/plugin-managers/), but this could be easily done without it.
 
+<blockquote>
+    <p><small><b>Update 2016-07-30:</b> In the first version of this article, the <code>ContentBasedErrorHandler</code> was a <code>PluginManager</code> itself. If you read the comments, Nikola Poša suggested to split it into two elements, the ErrorHandler and the PluginManager, and make the first one encapsulate the second.</small></p>
+
+    <div><small>It is a much cleaner approach, and properly segregates the two responsibilities, so I have updated the example.</small></div>
+</blockquote>
+
 ```php
 <?php
-namespace Shlinkio\Shlink\Common\Expressive;
+namespace Shlinkio\Shlink\Common\ErrorHandler;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Shlinkio\Shlink\Common\Exception\InvalidArgumentException;
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
 
-class ContentBasedErrorHandler extends AbstractPluginManager implements ErrorHandlerInterface
+class ContentBasedErrorHandler implements ErrorHandlerInterface
 {
     const DEFAULT_CONTENT = 'text/html';
 
-    public function validate($instance)
-    {
-        if (is_callable($instance)) {
-            return;
-        }
+    /**
+     * @var ErrorHandlerManagerInterface
+     */
+    private $errorHandlerManager;
 
-        throw new InvalidServiceException(sprintf(
-            'Only callables are valid plugins for "%s". "%s" provided',
-            __CLASS__,
-            is_object($instance) ? get_class($instance) : gettype($instance)
-        ));
+    /**
+     * ContentBasedErrorHandler constructor.
+     * @param ErrorHandlerManager $errorHandlerManager
+     */
+    public function __construct(ErrorHandlerManager $errorHandlerManager)
+    {
+        $this->errorHandlerManager = $errorHandlerManager;
     }
 
     /**
@@ -176,16 +181,16 @@ class ContentBasedErrorHandler extends AbstractPluginManager implements ErrorHan
             : self::DEFAULT_CONTENT;
         $accepts = explode(',', $accepts);
         foreach ($accepts as $accept) {
-            if (! $this->has($accept)) {
+            if (! $this->errorHandlerManager->has($accept)) {
                 continue;
             }
 
-            return $this->get($accept);
+            return $this->errorHandlerManager->get($accept);
         }
 
         // If it wasn't possible to find an error handler for accepted content type, use default one if registered
-        if ($this->has(self::DEFAULT_CONTENT)) {
-            return $this->get(self::DEFAULT_CONTENT);
+        if ($this->errorHandlerManager->has(self::DEFAULT_CONTENT)) {
+            return $this->errorHandlerManager->get(self::DEFAULT_CONTENT);
         }
 
         // It wasn't possible to find an error handler
@@ -199,9 +204,33 @@ class ContentBasedErrorHandler extends AbstractPluginManager implements ErrorHan
 }
 ```
 
-This error handler is just a plugin manager that delegates the management of the error itself into another error handler.
+```php
+<?php
+namespace Shlinkio\Shlink\Common\ErrorHandler;
 
-When created it has to receive the plugins configuration, which maps different content types to the error handler that will manage that content type.
+use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Exception\InvalidServiceException;
+
+class ErrorHandlerManager extends AbstractPluginManager
+{
+    public function validate($instance)
+    {
+        if (is_callable($instance)) {
+            return;
+        }
+
+        throw new InvalidServiceException(sprintf(
+            'Only callables are valid plugins for "%s". "%s" provided',
+            __CLASS__,
+            is_object($instance) ? get_class($instance) : gettype($instance)
+        ));
+    }
+}
+```
+
+This error handler delegates the management of the error itself into another error handler by composing a plugin manager.
+
+When the plugin manager is created, it has to receive the plugins configuration, which maps different content types to the error handler that will manage that specific content type.
 
 For example, for text/html we will use the built-in `Zend\Expressive\TemplatedErrorHandler` (or the `Zend\Expressive\WhoopsErrorHandler` if we are in a development environment), but for application/json we will use the `JsonErrorHandler`.
 
@@ -209,8 +238,8 @@ For example, for text/html we will use the built-in `Zend\Expressive\TemplatedEr
 
 ```php
 <?php
-use Shlinkio\Shlink\Common\Expressive\ContentBasedErrorHandler;
-use Shlinkio\Shlink\Rest\Expressive\JsonErrorHandler;
+use Shlinkio\Shlink\Common\ErrorHandler\ContentBasedErrorHandler;
+use Shlinkio\Shlink\Rest\ErrorHandler\JsonErrorHandler;
 use Zend\Expressive\Container\TemplatedErrorHandlerFactory;
 use Zend\Stratigility\FinalHandler;
 
@@ -240,7 +269,7 @@ return [
 
 ```php
 <?php
-use Shlinkio\Shlink\Common\Expressive\ContentBasedErrorHandler;
+use Shlinkio\Shlink\Common\ErrorHandler\ContentBasedErrorHandler;
 use Zend\Expressive\Container\WhoopsErrorHandlerFactory;
 
 return [
