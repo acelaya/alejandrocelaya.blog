@@ -33,7 +33,7 @@ When I told him that my intention was to return different content for errors bas
 
 ### Standard implementations
 
-Well, Zend Expressive comes with some built-in Final Handler implementations. They are callables that get invoked with the request and response objects when no other middleware has returned a valid response or an exception ir thrown, so that the application returns some kind of error instead of crashing.
+Well, Zend Expressive comes with some built-in Final Handler implementations. They are callables that get invoked with the request and response objects when no other middleware has returned a valid response or an exception is thrown, so that the application returns some kind of error instead of crashing.
 
 To achieve this, any final handler has to return a response, which is the one that will be finally sent to the client.
 
