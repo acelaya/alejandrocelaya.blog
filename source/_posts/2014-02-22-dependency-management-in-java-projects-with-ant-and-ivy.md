@@ -16,9 +16,9 @@ Dependency management is very important in any kind of project. Any application 
 
 The problem is that getting each one of them from a different place takes time, and it’s not easy to be sure we get the correct version.
 
-To solve this in java projects we can use an automated dependency manager, like [Maven](http://maven.apache.org/), which is really a building system with dependcy management included. The problem with maven is that it could be hard to use, and not very intuitive.
+To solve this in java projects we can use an automated dependency manager, like [Maven](https://maven.apache.org/), which is really a building system with dependcy management included. The problem with maven is that it could be hard to use, and not very intuitive.
 
-Instead of Maven, I rather prefer to use [Ivy](https://ant.apache.org/ivy/). It is a more simple and agile dependency management system, designed to be used with [Ant](https://ant.apache.org/), but it takes dependencies from Maven repositories, like [Maven central](http://mvnrepository.com/).
+Instead of Maven, I rather prefer to use [Ivy](https://ant.apache.org/ivy/). It is a more simple and agile dependency management system, designed to be used with [Ant](https://ant.apache.org/), but it takes dependencies from Maven repositories, like [Maven central](https://mvnrepository.com/).
 
 ### Getting started
 
@@ -43,11 +43,11 @@ As you can see, it is very simple. We just defined an info element with the basi
 
 For each one of them we have to know its organization, name and revision. With this we can be sure we will get the desired library and revision.
 
-But how do we know what to put in `org`, `name` and `rev` attributes? The [maven central repository](http://mvnrepository.com/) webpage will help us with this.
+But how do we know what to put in `org`, `name` and `rev` attributes? The [maven central repository](https://mvnrepository.com/) webpage will help us with this.
 
-At the top search bar we can write the name of a library, for example gson. The first result corresponds to the gson artifacts in the maven central. By selecting the desired version we will get the dependency element for an Ivy script, as well as other dependency management systems, like Maven or [Gradle](http://www.gradle.org/).
+At the top search bar we can write the name of a library, for example gson. The first result corresponds to the gson artifacts in the maven central. By selecting the desired version we will get the dependency element for an Ivy script, as well as other dependency management systems, like Maven or [Gradle](https://gradle.org/).
 
-![Maven dependency example](http://blog.alejandrocelaya.com/assets/img/dependency.jpg)
+![Maven dependency example](https://blog.alejandrocelaya.com/assets/img/dependency.jpg)
 
 We just need to copy and paste it. Nice and easy.
 

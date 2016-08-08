@@ -16,7 +16,7 @@ One of the trending topics in the PHP world nowadays is the one about microframe
 
 First, Slim's team announced the third version of its own framework, which implemented the psr-7 HTTP standard by taking advantage of the middleware concept. The previos version works with Middleware too, but psr-7 looks to be designed to be used with middleware.
 
-Then, Laravel launched the [Lumen](http://lumen.laravel.com/) project, which is another microframework based on Laravel components, similar to Silex, which is based on Symfony components.
+Then, Laravel launched the [Lumen](https://lumen.laravel.com/) project, which is another microframework based on Laravel components, similar to Silex, which is based on Symfony components.
 
 And finally, Zend framework's team launched [Zend Expressive](https://github.com/zendframework/zend-expressive), which is similar to Slim 3 in the fact that it works with middleware and psr-7, built on top of [zend-stratigility](https://github.com/zendframework/zend-stratigility) and [zend-diactoros](https://github.com/zendframework/zend-diactoros).
 
@@ -103,7 +103,7 @@ So, in Expressive, everything is middleware lazily fetched from a service contai
 
 ### Router
 
-Currently, Expressive includes implementations to integrate with three routers. [Aura.Router](https://github.com/auraphp/Aura.Router), [FastRoute](https://github.com/nikic/FastRoute) and [ZF2 MVC router](http://framework.zend.com/manual/current/en/modules/zend.mvc.routing.html). The first is used by default.
+Currently, Expressive includes implementations to integrate with three routers. [Aura.Router](https://github.com/auraphp/Aura.Router), [FastRoute](https://github.com/nikic/FastRoute) and [ZF2 MVC router](https://framework.zend.com/manual/current/en/modules/zend.mvc.routing.html). The first is used by default.
 
 For small applications like my website, any of them should be good enough, but I needed routes to support optional params at the beginning of the path (the language). Neither Aura.Router or FastRoute do it, so I had to stick with ZF2's router in combination with a custom Segment route that allows to skip certain parts of the route, otherwise I would have been forced to define the same route with different names, which would have made assembling routes with param inheritance much harder.
 
@@ -127,7 +127,7 @@ The template engine will be injected in the Applicaiton by fetching the `Zend\Ex
 
 The service container is very important in Expressive. All the services, middlewares and configurations are fetched from it. Expressive expects an `Interop\Container\ContainerInterface` object, which is implemented by the most used service containers (or dependency injection containers if you prefer so).
 
-Documentation on how to use [Zend\ServiceManager](http://framework.zend.com/manual/current/en/modules/zend.service-manager.html), [Pimple](http://pimple.sensiolabs.org/) and [Aura.Di](https://github.com/auraphp/Aura.Di) is included in the project. Depending on how big you expect your application to become, you can use one or another, but you should be able to replace it in case of need.
+Documentation on how to use [Zend\ServiceManager](https://framework.zend.com/manual/current/en/modules/zend.service-manager.html), [Pimple](http://pimple.sensiolabs.org/) and [Aura.Di](https://github.com/auraphp/Aura.Di) is included in the project. Depending on how big you expect your application to become, you can use one or another, but you should be able to replace it in case of need.
 
 If no container is provided, the Application will use the first one. Also, it has been my choice, and as I said earlier, everything in my website's project is managed by the ServiceManager, even the `Application` object itself.
 
@@ -139,7 +139,7 @@ Another thing that any framework has to provide is a way to catch requests to in
 
 By default it just displays plain text errors, and returns the proper status code (404 or 500). If you want certain template to be rendered, you have to register a `TemplateErrorHandler` in your container, via the `Zend\Expressive\Container\TemplatedErrorHandlerFactory`. It will use a configuration block to know which template has to be rendered in each case, and use the registered template engine to render them.
 
-In development, a `WhoopsErrorHandler` can be used too. It extends the functionality of the `TemplatedErrorHandler` by using [Whoops](http://filp.github.io/whoops/) to display nice errors. Make sure to never use it in production.
+In development, a `WhoopsErrorHandler` can be used too. It extends the functionality of the `TemplatedErrorHandler` by using [Whoops](https://filp.github.io/whoops/) to display nice errors. Make sure to never use it in production.
 
 ### Other considerations
 
@@ -148,7 +148,7 @@ You know now how to use the main components in the framework, but you need to kn
 * [PSR-7 By Example](https://mwop.net/blog/2015-01-26-psr-7-by-example.html)
 * [On HTTP, Middleware, and PSR-7](https://mwop.net/blog/2015-01-08-on-http-middleware-and-psr-7.html)
 
-You should also take a look at the official documentation. It is not very long and it's very well structured. [http://zend-expressive.readthedocs.org/en/stable/](http://zend-expressive.readthedocs.org/en/stable/)
+You should also take a look at the official documentation. It is not very long and it's very well structured. [https://zend-expressive.readthedocs.org/en/stable/](http://zend-expressive.readthedocs.org/en/stable/)
 
 ### Conclusion
 

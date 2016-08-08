@@ -12,7 +12,7 @@ tags:
 
 ---
 
-Any medium and large project has to deal at some point with the problem of translating the application itself to other languages. There are many tools and standards to do this, but one of my favourite components is [Zend\I18n](http://zf2.readthedocs.org/en/latest/modules/zend.i18n.translating.html).
+Any medium and large project has to deal at some point with the problem of translating the application itself to other languages. There are many tools and standards to do this, but one of my favourite components is [Zend\I18n](https://zf2.readthedocs.org/en/latest/modules/zend.i18n.translating.html).
 
 Everybody who knows me is aware that I love Zend Framework, but unfortunately it's been a while since the last time I worked on a project based on it.
 
@@ -40,7 +40,7 @@ The first we need to decide is the way we are going to store translations. There
 
 The preferred method when using Zend\I18n is gettext (and it would be also my choice). It is easy to configure, uses super fast binary files in production and we don't need to define translations immediately, we can leave it for then, so that it doesn't break the development flow.
 
-Gettext files are usually handled with an external tool, [poedit](http://poedit.net/), an open source cross-platform application that can inspect our project and find new translations, deleted translations and updated translations, syncing our translation files (usually those with `po` extension) so that we don't need to remember where we added or updated internationalizable texts.
+Gettext files are usually handled with an external tool, [poedit](https://poedit.net/), an open source cross-platform application that can inspect our project and find new translations, deleted translations and updated translations, syncing our translation files (usually those with `po` extension) so that we don't need to remember where we added or updated internationalizable texts.
 
 To do this we just need to tell the program the name of the functions we use to translate strings (usually `translate`, `gettext`, `_` and such) and the files it needs to scan for new translations.
  

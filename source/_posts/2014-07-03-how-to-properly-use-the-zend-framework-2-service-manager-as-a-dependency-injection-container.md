@@ -45,7 +45,7 @@ return array(
 )
 ~~~
 
-<span class="text-muted">For more information about the service manager configuration read [this](http://framework.zend.com/manual/2.3/en/modules/zend.service-manager.quick-start.html).</span>
+<span class="text-muted">For more information about the service manager configuration read [this](https://framework.zend.com/manual/2.3/en/modules/zend.service-manager.quick-start.html).</span>
 
 ### ServiceLocatorAwareInterface
 

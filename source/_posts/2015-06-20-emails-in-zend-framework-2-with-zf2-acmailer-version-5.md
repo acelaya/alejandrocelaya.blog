@@ -15,7 +15,7 @@ categories:
 
 About a month ago I released the Zend Framework 2 module [ZF2-AcMailer](https://github.com/acelaya/ZF2-AcMailer) version 5.0.0. This new major version includes some important improvements, and a new configuration system that allows multiple mail services to be registered.
 
-When this module was on its first version, I wrote [an article](http://blog.alejandrocelaya.com/2014/03/02/send-emails-in-a-zend-framework-2-application-using-zf2-acmailer-module/) explaining how to use it, but a lot has changed since then, so I thought it was a good idea to write a new one with updated information.
+When this module was on its first version, I wrote [an article](https://blog.alejandrocelaya.com/2014/03/02/send-emails-in-a-zend-framework-2-application-using-zf2-acmailer-module/) explaining how to use it, but a lot has changed since then, so I thought it was a good idea to write a new one with updated information.
 
 With this article I'm going to explain all the new features of the module.
 
