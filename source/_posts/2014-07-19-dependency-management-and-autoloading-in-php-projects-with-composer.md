@@ -118,7 +118,7 @@ If later in the project we need to update an existing dependency, add new depend
 </blockquote>
 
 <blockquote>
-    <small>If you are using a VCS like <a href="http://git-scm.com/">git</a> in your project you will probably want to <i>ignore</i> your <code>vendor</code> folder</small>
+    <small>If you are using a VCS like <a href="https://git-scm.com/">git</a> in your project you will probably want to <i>ignore</i> your <code>vendor</code> folder</small>
 </blockquote>
 
 ### Advanced usages
@@ -132,4 +132,4 @@ This should be enough to start working with composer, but it is a much more powe
 
 And that's all you need to know to start working with composer.
 
-**Update 2015-04-25**: I've written an article addressing advanced concepts that is a good continuation to this one. [Composer advanced concepts](http://blog.alejandrocelaya.com/2015/04/25/composer-advanced-concepts/).
+**Update 2015-04-25**: I've written an article addressing advanced concepts that is a good continuation to this one. [Composer advanced concepts](https://blog.alejandrocelaya.com/2015/04/25/composer-advanced-concepts/).

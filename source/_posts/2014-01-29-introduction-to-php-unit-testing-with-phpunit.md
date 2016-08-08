@@ -11,11 +11,11 @@ categories:
 
 ---
 
-Nowadays we are in the era of agile methodologies. One of the best practices promoted by these methodologies is [Test-Driven Development (TDD)](http://en.wikipedia.org/wiki/Test-driven_development)
+Nowadays we are in the era of agile methodologies. One of the best practices promoted by these methodologies is [Test-Driven Development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development)
 
 It mainly consists on preparing small pieces of code that are responsible for testing parts of the real application.
 
-For this purpose each of the main programming languages has its own unit testing framework. In the case of PHP this is [PHPUnit](http://phpunit.de/).
+For this purpose each of the main programming languages has its own unit testing framework. In the case of PHP this is [PHPUnit](https://phpunit.de/).
 
 ### Preparing the testing environment.
 
@@ -27,7 +27,7 @@ When we are doing TDD every new feature or piece of code we write will come with
 
 Once the failing test is written and we know what the real code is expected to do we will write it. Once it is done the test should pass.
 
-Finally we can [refactor](http://en.wikipedia.org/wiki/Code_refactoring) the code.
+Finally we can [refactor](https://en.wikipedia.org/wiki/Code_refactoring) the code.
 
 This is knonwn as **red light, green light, refactor**.
 
@@ -35,9 +35,9 @@ This is knonwn as **red light, green light, refactor**.
 * <span class="text-success">**Green light:**</span> the test passes after the code is implemented.
 * <span class="text-info">**Refactor:**</span> the tested code is refactored to improve performance and make it maintainable.
 
-To make it possible to test an application it is better if it is object oriented, and it follows the [SOLID principles](http://es.wikipedia.org/wiki/SOLID_(object-oriented_design)). PHPUnit can be used to test procedural code, but we are not going to discuss that in this article.
+To make it possible to test an application it is better if it is object oriented, and it follows the [SOLID principles](https://es.wikipedia.org/wiki/SOLID_(object-oriented_design)). PHPUnit can be used to test procedural code, but we are not going to discuss that in this article.
 
-Finally we need to get the PHPUnit library. It can be done by following [this article](http://phpunit.de/manual/current/en/installation.html).
+Finally we need to get the PHPUnit library. It can be done by following [this article](https://phpunit.de/manual/current/en/installation.html).
 
 ### First examples
 
@@ -224,7 +224,7 @@ With all this set up we are ready to run the tests. In the console we need to be
 
 After running the test we will see something like this:
 
-![Red light screenshot](http://blog.alejandrocelaya.com/assets/img/red-light.png)
+![Red light screenshot](https://blog.alejandrocelaya.com/assets/img/red-light.png)
 
 As we can see all the tests failed. They all returned zero instead of expected result. Finally a resume line tells there were 4 tests, 4 assertions and all of them failed.
 
@@ -292,7 +292,7 @@ class Calculator
 
 All the methods do now what they suggest they do. If we run again the tests with the phpunit command the result is this.
 
-![Green light screenshot](http://blog.alejandrocelaya.com/assets/img/green-light.png)
+![Green light screenshot](https://blog.alejandrocelaya.com/assets/img/green-light.png)
 
 All the tests are now working and a green light is returned.
 
@@ -499,4 +499,4 @@ Now we can run tests again and all lights will be green.
 
 This is basically what unit testing is. In real life testing use to be a little more complex, with more dependencies and more code to be written. We should also add some more assertions for each operation, to ensure everything is ok, but this is just an example.
 
-For a complete PHPUnit documentation refer to its [website](http://phpunit.de/manual/current/en/index.html).
+For a complete PHPUnit documentation refer to its [website](https://phpunit.de/manual/current/en/index.html).

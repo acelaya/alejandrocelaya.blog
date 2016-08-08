@@ -14,7 +14,7 @@ tags:
 
 ---
 
-One of the first articles I wrote in this blog was an introduction to unit testing PHP applications. You can find it [here](http://blog.alejandrocelaya.com/2014/01/29/introduction-to-php-unit-testing-with-phpunit/) in case you need to know the first steps and the theory.
+One of the first articles I wrote in this blog was an introduction to unit testing PHP applications. You can find it [here](https://blog.alejandrocelaya.com/2014/01/29/introduction-to-php-unit-testing-with-phpunit/) in case you need to know the first steps and the theory.
 
 On this article I'm going to explain how to get a Zend Framework 2 module tested. It is indeed very similar to test any PHP application, we just have to be sure the framework classes are properly loaded.
 
@@ -51,7 +51,7 @@ MyModule
 
 If you don't want to create this by yourself, this module can be found [here](https://github.com/acelaya-blog/zf2-testing).
 
-The content of src and tests folders is the only one that matters for this article. I'm going to use [psr-4](http://www.php-fig.org/psr/psr-4/) autoloading but we'll see that later.
+The content of src and tests folders is the only one that matters for this article. I'm going to use [psr-4](https://www.php-fig.org/psr/psr-4/) autoloading but we'll see that later.
 
 ### Bootstrapping
 
@@ -293,7 +293,7 @@ class IndexControllerTest extends TestCase
 
 Once again this is a simple PHPUnit test which checks every method in the IndexController class does what it's intended to do.
 
-In the case of controller tests there is a Zend Framework 2 component that is worth the mention, `Zend\Test`. It includes a class designed to test HTTP controllers, the `Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase`. It extends `PHPUnit_Framework_TestCase` so it can be used as a regular test case, but it adds some new methods to check headers, routes and even CSS selectors in returned views. Complete documentation can be found [here](http://framework.zend.com/manual/2.3/en/modules/zend.test.phpunit.html).
+In the case of controller tests there is a Zend Framework 2 component that is worth the mention, `Zend\Test`. It includes a class designed to test HTTP controllers, the `Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase`. It extends `PHPUnit_Framework_TestCase` so it can be used as a regular test case, but it adds some new methods to check headers, routes and even CSS selectors in returned views. Complete documentation can be found [here](https://framework.zend.com/manual/2.3/en/modules/zend.test.phpunit.html).
 
 ### Conclusions
 

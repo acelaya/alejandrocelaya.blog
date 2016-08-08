@@ -309,7 +309,7 @@ return [
 
 ### Delegator factories
 
-Delegator factories allow us to override the behavior of certain factories without code duplication. [Here](http://ocramius.github.io/blog/zend-framework-2-delegator-factories-explained/) is an excelent article about delegator factories by [Marco Pivetta](https://twitter.com/Ocramius), who originally created the implementation in Zend Framework 2.
+Delegator factories allow us to override the behavior of certain factories without code duplication. [Here](https://ocramius.github.io/blog/zend-framework-2-delegator-factories-explained/) is an excelent article about delegator factories by [Marco Pivetta](https://twitter.com/Ocramius), who originally created the implementation in Zend Framework 2.
 
 It could happen we have a service that is created in a third party factory and we need to update the way it is created because we don't need some of the soft dependencies injected on it but instead we need to do "whatever" before returning it.
 
@@ -433,4 +433,4 @@ It is proven how versatile the `ServiceManager` is. Try to take full advantage o
 
 Even if your project is not based on Zend Framework 2, using this component is a good way to get a powerful service container implementation (or dependency injection container or whatever name you want to give to it), that will do a great job decoupling your classes and making your code clean.
 
-**Update 2015-02-07:** If you want to see a real example where the `ServiceManager` is used to handle an application, read this new article, [Managing objects creation and dependency injection with Zend\ServiceManager](http://blog.alejandrocelaya.com/2015/02/06/managing-objects-creation-and-dependency-injection-with-zend-service-manager/)
+**Update 2015-02-07:** If you want to see a real example where the `ServiceManager` is used to handle an application, read this new article, [Managing objects creation and dependency injection with Zend\ServiceManager](https://blog.alejandrocelaya.com/2015/02/06/managing-objects-creation-and-dependency-injection-with-zend-service-manager/)

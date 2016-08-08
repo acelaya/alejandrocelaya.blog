@@ -270,7 +270,7 @@ This is also possible by using [Abdul](https://twitter.com/samsonasik)'s impleme
 
 This approach is similar to that used in traditional full-stack MVC controllers.
 
-You can also easily define rest controllers as [I explained in my blog](http://blog.alejandrocelaya.com/2016/06/24/dispatch-rest-like-requests-with-a-single-controller-class-in-zend-expressive/) not so long ago.
+You can also easily define rest controllers as [I explained in my blog](https://blog.alejandrocelaya.com/2016/06/24/dispatch-rest-like-requests-with-a-single-controller-class-in-zend-expressive/) not so long ago.
 
 However, this should be primarily used if you want to migrate an existing application to Zend Expressive. For new projects it's better to have a single middleware to handle each route. That approach improves granularity, and makes middlewares easier to test.
 

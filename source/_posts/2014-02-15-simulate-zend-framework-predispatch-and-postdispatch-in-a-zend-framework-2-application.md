@@ -95,4 +95,4 @@ $eventManager->getSharedManager()->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATC
 
 Attaching multiple event handlers will make the to be executed in order of priority or in the order they were attached when they have the same priority.
 
-Event handlers could be attached to other MVC events, which will allow us to handle other situations. For a full list of MVC events refer to [this Akrabat’s article](http://akrabat.com/zend-framework-2/a-list-of-zf2-events/).
+Event handlers could be attached to other MVC events, which will allow us to handle other situations. For a full list of MVC events refer to [this Akrabat’s article](https://akrabat.com/a-list-of-zf2-events/).

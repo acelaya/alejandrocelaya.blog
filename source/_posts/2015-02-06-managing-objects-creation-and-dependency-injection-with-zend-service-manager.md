@@ -17,13 +17,13 @@ tags:
 
 ---
 
-Some time ago I wrote the most successful article of this blog, [Advanced usage of ServiceManager in Zend Framework 2](http://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/), explaining all the ways a service can be created by making use of `Zend\ServiceManager`, the service container component in Zend Framework 2.
+Some time ago I wrote the most successful article of this blog, [Advanced usage of ServiceManager in Zend Framework 2](https://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/), explaining all the ways a service can be created by making use of `Zend\ServiceManager`, the service container component in Zend Framework 2.
 
 On this article I'm going to show a real example where objects and services are all managed and created with a `ServiceManager` instance, which makes decoupling components and dependency injection very easy.
  
 It is not a Zend Framework 2 application, because the `ServiceManager` is so integrated there that its power could go unnoticed. Instead, I'm using a [Slim](http://www.slimframework.com/) framework based application, which solves some common problems that has nothing to do with this article (like routing and request dispatching) and allows us to concentrate on what's important.
 
-The project is just a simple application to perform a [CRUD](http://es.wikipedia.org/wiki/CRUD) over two fictitious entities, *users* and *items*. Very simple.
+The project is just a simple application to perform a [CRUD](https://es.wikipedia.org/wiki/CRUD) over two fictitious entities, *users* and *items*. Very simple.
 
 ### Getting the application
 
@@ -164,7 +164,7 @@ It creates the UserController instance and returns it, but it also injects its o
 
 That dependency is also fetched from the `ServiceManager`, because that `$serviceLocator` is the `ServiceManager` which injects itself in factories when calling the `createService` method. That is really usefull, because we can access services easily in a recursive way.
 
-At this point we don't need to know how the `UserService::class` service is created, and we can focus on creating the UserController. That's a good example of [Single Responsibility Principle](http://en.wikipedia.org/wiki/Single_responsibility_principle).
+At this point we don't need to know how the `UserService::class` service is created, and we can focus on creating the UserController. That's a good example of [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle).
 
 The ItemController is created in a very similar way. You can take a look at the class `src/Controller/ItemControllerFactory.php`.
 
@@ -267,7 +267,7 @@ If I wasn't injecting the EntityManager, the UserService would be tightly couple
 
 You have seen a real example which uses the `ServiceManager`. There is no theory, you can check it yourself. I have used each object creation strategy at least once (invokables, factories, initializers, abstract_factories and delegators) so that you can see how it works.
 
-As I mentioned earlier, I already wrote a more theoretical article on the `ServiceManager` subject a while ago. You can find it [here](http://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/) if you need it (indeed I recommend you to read it).
+As I mentioned earlier, I already wrote a more theoretical article on the `ServiceManager` subject a while ago. You can find it [here](https://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/) if you need it (indeed I recommend you to read it).
 
 I hope you use dependency injection in your projects from now on. There is no excuse not to do it, you just need to change your point of view.
 

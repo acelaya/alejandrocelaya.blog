@@ -15,7 +15,7 @@ categories:
 
 Some time ago I created a Zend Framework 2 module designed to wrap Zend\Mail and ease sending emails in a Zend Framework 2 application. I was copy-pasting the code of that module in many applications so I decided it was a good candidate to become an independent module.
 
-After creating it I pushed it to [github](https://github.com/) and registered it in [packagist](https://packagist.org/), allowing it to be installed by using [composer](https://getcomposer.org/). Then I registered it in the official [Zend Framework 2 modules](http://modules.zendframework.com/) webpage. In this post I am going to explain how to use it and all the features it includes. The module can be found [here](https://github.com/acelaya/ZF2-AcMailer).
+After creating it I pushed it to [github](https://github.com/) and registered it in [packagist](https://packagist.org/), allowing it to be installed by using [composer](https://getcomposer.org/). Then I registered it in the official [Zend Framework 2 modules](https://zfmodules.com/) web page. In this post I am going to explain how to use it and all the features it includes. The module can be found [here](https://github.com/acelaya/ZF2-AcMailer).
 
 It has grown in the last months, adding more features. File attachemnts, composition of emails from templates, event handling, SMTP over SSL, etc.
 

@@ -9,7 +9,7 @@ categories:
 
 ---
 
-The [HTML5](http://en.wikipedia.org/wiki/HTML5) specification is in process to be a standard. New features are being included but some of them are already supported by major modern browsers.
+The [HTML5](https://en.wikipedia.org/wiki/HTML5) specification is in process to be a standard. New features are being included but some of them are already supported by major modern browsers.
 
 One of those features is a group of new HTML tag attributes, really useful to solve situations that used to be fixed by using javascript.
 

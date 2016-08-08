@@ -22,7 +22,7 @@ I will try to explain how did I prepare it.
 
 In late March I recived an email that my exam was going to be on May the seventh, so I saw that I was going to have 4-6 weeks to prepare it. I could have started earlier, but maybe I’m a little lazy.
 
-Since this was one of the first times the Zend Framework certification exam was based on version 2 (2.2), there was no documentation or examples in the internet, so I decided to just read the whole [documentation](http://framework.zend.com/manual/2.2/en/user-guide/overview.html). I was working with Zend Framework 2 in my job, so I could apply the theory in real projects.
+Since this was one of the first times the Zend Framework certification exam was based on version 2 (2.2), there was no documentation or examples in the internet, so I decided to just read the whole [documentation](https://framework.zend.com/manual/2.2/en/user-guide/overview.html). I was working with Zend Framework 2 in my job, so I could apply the theory in real projects.
 
 My main problem was that I needed to compatibilize the study with my work, so I started studying about an hour a day. Some days I didn’t studied, but some weekends I could spend more time on it.
 

@@ -17,7 +17,7 @@ categories:
 
 It is good system. Once we have defined our script we can automatically build it to create application installers in minutes, including creation of Windows register entries, installation folders, application shortcuts, etc
 
-The problem is that only Windows binaries are officially provided to compile this kind of scripts. This can be a problem in a [continuous integration](http://en.wikipedia.org/wiki/Continuous_integration) environment, where continuous integration servers use to be Linux based.
+The problem is that only Windows binaries are officially provided to compile this kind of scripts. This can be a problem in a [continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) environment, where continuous integration servers use to be Linux based.
 
 At this article I am going to explain how to compile NSIS source code in Linux to get it working there and allow it to be invoked from automated tasks run in a continuous integration server.
 
@@ -41,7 +41,7 @@ All of this tools can be easily installed from repository, and probably we alrea
 
 The scons installer downloaded from their website comes in RPM format which could be a problem for systems not based in Ubuntu. For Debian I used the alien [`aptitude install alien`] tool, which converts RPM packages into DEB packages by running this command: `alien -k filename.rpm`
 
-Anyway, I uploaded the DEB resultant package for you to [download](http://blog.alejandrocelaya.com/assets/downloads/scons_2.3.0-1_all.deb_.zip) it.
+Anyway, I uploaded the DEB resultant package for you to [download](https://blog.alejandrocelaya.com/assets/downloads/scons_2.3.0-1_all.deb_.zip) it.
 
 ### Compile NSIS
 
@@ -76,7 +76,7 @@ ln -s /home/alejandro/nsis/nsis-2.46/bin/makensis /usr/local/bin/makensis
 
 Now it is time to test the command. Running `makensis` from anywhere should output something like this.
 
-![Nsis help](http://blog.alejandrocelaya.com/assets/img/nsis.png)
+![Nsis help](https://blog.alejandrocelaya.com/assets/img/nsis.png)
 
 If we have an nsis script, runing the command makensis /path/to/script.nsi will compile the script, creating the installer. The syntax is the same used in windows.
 

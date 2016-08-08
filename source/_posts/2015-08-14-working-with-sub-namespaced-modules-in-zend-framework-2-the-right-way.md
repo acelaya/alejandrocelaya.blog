@@ -15,11 +15,11 @@ categories:
 
 About a year ago I wrote two articles discussing the best way to work with modules with sub-namespaces in Zend Framework 2.
 
-Here you can find [Part 1](http://blog.alejandrocelaya.com/2014/05/21/create-modules-with-sub-namespaces-in-zend-framework-2/) and [Part 2](http://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/)
+Here you can find [Part 1](https://blog.alejandrocelaya.com/2014/05/21/create-modules-with-sub-namespaces-in-zend-framework-2/) and [Part 2](http://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/)
 
 The solution provided in those articles was functional, but it introduced some new problems to deal with. It happens that after some time working with sub-namespaced modules I have found the best way to solve those new problems, and I wanted to write this new article explaining it.
 
-For this article I'm going to use the example namespace `ZasDev\AtomicReader`, which belongs to a real [application](http://www.atomic-reader.com) I'm working on. For example, in my `Auth` module, a real fully qualified class name could be `ZasDev\AtomicReader\Auth\Controller\LoginController`.
+For this article I'm going to use the example namespace `ZasDev\AtomicReader`, which belongs to a real [application](https://github.com/zasDev/atomic-reader) I'm working on. For example, in my `Auth` module, a real fully qualified class name could be `ZasDev\AtomicReader\Auth\Controller\LoginController`.
 
 ### The problems
 

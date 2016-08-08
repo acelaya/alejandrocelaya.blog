@@ -11,7 +11,7 @@ categories:
 
 ---
 
-Everyone who regularly visits my blog knows that I'm an absolute fan of the [Zend\ServiceManager](http://zendframework.github.io/zend-servicemanager/) component.
+Everyone who regularly visits my blog knows that I'm an absolute fan of the [Zend\ServiceManager](https://zendframework.github.io/zend-servicemanager/) component.
 
 It is always my choice to deal with dependency injection in any kind of project, more now that v3 has been released, which is faster and has a better public API.
 

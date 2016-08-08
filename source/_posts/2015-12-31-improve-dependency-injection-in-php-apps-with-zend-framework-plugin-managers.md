@@ -16,9 +16,9 @@ categories:
 I have spoken many times at this blog about dependency injection, and how the ZF2 ServiceManager is one of the best tools to solve it.
 You can read these related articles to know more:
 
-- [How to properly use the Zend framework 2 service manager as a dependency injection container](http://blog.alejandrocelaya.com/2014/07/03/how-to-properly-use-the-zend-framework-2-service-manager-as-a-dependency-injection-container/)
-- [Advanced usage of ServiceManager in Zend Framework 2](http://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/)
-- [Managing objects creation and dependency injection with Zend\ServiceManager](http://blog.alejandrocelaya.com/2015/02/06/managing-objects-creation-and-dependency-injection-with-zend-service-manager/)
+- [How to properly use the Zend framework 2 service manager as a dependency injection container](https://blog.alejandrocelaya.com/2014/07/03/how-to-properly-use-the-zend-framework-2-service-manager-as-a-dependency-injection-container/)
+- [Advanced usage of ServiceManager in Zend Framework 2](https://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/)
+- [Managing objects creation and dependency injection with Zend\ServiceManager](https://blog.alejandrocelaya.com/2015/02/06/managing-objects-creation-and-dependency-injection-with-zend-service-manager/)
 
 In this article I'm going to speak about another utility that comes with the `Zend\ServiceManager` package, the `AbstractPluginManager`.
 

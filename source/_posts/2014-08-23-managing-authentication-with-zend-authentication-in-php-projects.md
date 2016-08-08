@@ -30,7 +30,7 @@ This component has a main class, the `Zend\Authentication\AuthenticationService`
 
 Both of them have some predefined implementations, and we could even define our own by implementing `Zend\Authentication\Adapter\AdapterInterface` and `Zend\Authentication\Storage\StorageInterface`
 
-As for this, we could say the **Zend\Authentication** component implements the [adapter pattern](http://en.wikipedia.org/wiki/Adapter_pattern), because the AuthetnicationService will never do the job, but delegate both tasks to its adapters. Changing one of the adapters should result in very little code modifications, because the rest of the application depends only in the AuthenticationService.
+As for this, we could say the **Zend\Authentication** component implements the [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern), because the AuthetnicationService will never do the job, but delegate both tasks to its adapters. Changing one of the adapters should result in very little code modifications, because the rest of the application depends only in the AuthenticationService.
 
 ### Installation
 
@@ -43,7 +43,7 @@ It will suggest to install other Zend Framework 2 components that you will proba
 <blockquote class="text-muted">
     <small>
         For more information on how to use composer, read
-        <a href="http://blog.alejandrocelaya.com/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">this</a>
+        <a href="https://blog.alejandrocelaya.com/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">this</a>
     </small>
 </blockquote>
 
@@ -125,7 +125,7 @@ The identity data contents will depend on the adapter implementation. In the cas
 <blockquote>
     <small>For this tutorial I have avoided the database connection configuration and how we get the username and password.</small>
 
-    <small>If you want to know how to create a database adapter (<code>Zend\Db\Adapter\Adapter</code>) in Zend Framework 2, just read <a href="http://framework.zend.com/manual/2.3/en/modules/zend.db.adapter.html">this article</a>.</small>
+    <small>If you want to know how to create a database adapter (<code>Zend\Db\Adapter\Adapter</code>) in Zend Framework 2, just read <a href="https://framework.zend.com/manual/2.3/en/modules/zend.db.adapter.html">this article</a>.</small>
 </blockquote>
 
 #### Checking a stored identity

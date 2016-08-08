@@ -13,7 +13,7 @@ categories:
 
 ---
 
-Some weeks ago, I explained how to create [modules with sub-namespaces](http://blog.alejandrocelaya.com/2014/05/21/create-modules-with-sub-namespaces-in-zend-framework-2/) in a Zend Framework 2 application.
+Some weeks ago, I explained how to create [modules with sub-namespaces](https://blog.alejandrocelaya.com/2014/05/21/create-modules-with-sub-namespaces-in-zend-framework-2/) in a Zend Framework 2 application.
 
 On that article I created an example module that we could add in our `modules` directory, but what if we want to distribute that module through the [composer](https://getcomposer.org/) network to be installed as a vendor module.
 

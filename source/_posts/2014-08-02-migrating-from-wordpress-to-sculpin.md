@@ -19,7 +19,7 @@ Seemed like a good idea. I might be able to show my skills and learn new ones at
 
 I didn't wanted to use a very complex tool for this purpose, or to create one of my own (why to reinvent the wheel?), so I decided that blogger or wordpress could be the right options.
 
-After weighing the pros and cons of both options I opted for wordpress, because it seemed more customizable, and having a [VPS](http://en.wikipedia.org/wiki/Virtual_private_server) could ease the self-hosting task.
+After weighing the pros and cons of both options I opted for wordpress, because it seemed more customizable, and having a [VPS](https://en.wikipedia.org/wiki/Virtual_private_server) could ease the self-hosting task.
 
 At the begining it was a good solution, but finally proved to be hard to control. Not easy to customize the layout, very resource consuming, hard to optimize, etc.
 
@@ -31,7 +31,7 @@ We discussed the tool in the [Symfony Zaragoza](https://twitter.com/symfony_zgz)
 
 In the Github era, many static site generators have appeared, because Github allows us to host static sites for free. Those generators allows us to make a "dynamic" website which is compiled into a static site.
 
-There are many alternatives. From [Jekyll](http://jekyllrb.com/), the Github official static site generator written in ruby, to [Pelican](http://blog.getpelican.com/), another python-powered alternative.
+There are many alternatives. From [Jekyll](https://jekyllrb.com/), the Github official static site generator written in ruby, to [Pelican](http://blog.getpelican.com/), another python-powered alternative.
 
 The problem is that I'm a PHP developer, and I'm not as confortable with those languages as I am with PHP, so I looked for a PHP alternative and Sculpin appeared.
 
@@ -65,7 +65,7 @@ The result is the blog you are now seeing.
 
 My conclusion is that a dynamically generate static site is a good solution for a personal blog. It loads superfast, is very SEO friendly and is easily customizable, but it has an important problem. **Only advanced users can use it**.
 
-The lack of [WYSIWYG](http://es.wikipedia.org/wiki/WYSIWYG) editor makes users with no experience on HTML/Markdown (at least) impossible to deal with this kind of sites.
+The lack of [WYSIWYG](https://es.wikipedia.org/wiki/WYSIWYG) editor makes users with no experience on HTML/Markdown (at least) impossible to deal with this kind of sites.
 
 Also, the site needs to be deployed every time a new article is written.
 

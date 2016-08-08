@@ -18,7 +18,7 @@ In this post I am going to explain how to configure a connection to 2 databases 
 
 Lets asume we have a `doctrine_connection.global.php` configuration file, where we are going to define the doctrine database connection configuration. Any other doctrine configuration should be defined in other configuration files.
 
-For further information on how Zend Framework 2 configuration works take a look at its [documentation](http://framework.zend.com/manual/2.2/en/tutorials/config.advanced.html).
+For further information on how Zend Framework 2 configuration works take a look at its [documentation](https://framework.zend.com/manual/2.2/en/tutorials/config.advanced.html).
 
 ### Two connections. Two entity managers.
 

@@ -104,7 +104,7 @@ In this case I've used the HTML5 `FormData` object to encapsulate the form eleme
 
 By default the `ajax` method creates a `jqXHR` object (a wrapper of the native `XMLHttpRequest` object) with default behavior, but we need to extend that behavior, so we have to create a new one which will handle the upload progress too.
 
-What we do is to add a `progress` event listener which will increase a [bootstrap styled](http://getbootstrap.com/components/#progress) progress bar as long as the content is sent to the server. The method `acelaya.createProgressBar` will create that progress bar and add it to the DOM.
+What we do is to add a `progress` event listener which will increase a [bootstrap styled](https://getbootstrap.com/components/#progress) progress bar as long as the content is sent to the server. The method `acelaya.createProgressBar` will create that progress bar and add it to the DOM.
 
 ```javascript
 handleUploadProgress: function (e, progressBar) {
@@ -230,6 +230,6 @@ It is **important** to call `$filter->getValues()` even if we are not going to u
 
 Now the application keeps working, but our uploaded files are filtered and validated.
 
-Zend Framework 2 has other [filters](http://zf2.readthedocs.org/en/latest/modules/zend.filter.file.html) and [validators](http://zf2.readthedocs.org/en/latest/modules/zend.validator.file.html) you can use with files. Take a look at them.
+Zend Framework 2 has other [filters](https://zf2.readthedocs.org/en/latest/modules/zend.filter.file.html) and [validators](http://zf2.readthedocs.org/en/latest/modules/zend.validator.file.html) you can use with files. Take a look at them.
 
 And this is it. We have our fully functional file uploading application.
