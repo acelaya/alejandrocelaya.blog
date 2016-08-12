@@ -294,3 +294,9 @@ If you need any other content type to be managed by your application, you just n
 Finally, you will have to register the `ContentBasedErrorHandler` with the **Zend\Expressive\FinalHandler** name, so that it is properly injected in the `Application` when created.
 
 And that's it. This approach can be clearly improved, but it is good starting point.
+
+<blockquote>
+    <small>
+        <b>Update 2016-08-12:</b> I have finally created a package implementing this solution, so that anyone can install it in his/her own project: <a href="https://github.com/acelaya/ze-content-based-error-handler">acelaya/ze-content-based-error-handler</a>.
+    </small>
+</blockquote>
