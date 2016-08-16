@@ -269,6 +269,7 @@ blockquote .small:before {
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 4px;
+    max-width: 100%;
 }
 .post .share {
     margin-top: 20px;
