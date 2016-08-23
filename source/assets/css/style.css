@@ -376,6 +376,13 @@ body {
   text-align: center;
   margin: 0 auto;
 }
+#fh5co-hero .fh5co-intro > div .fh5co-center-position.post-title {
+  width: 100%;
+}
+#fh5co-hero .fh5co-intro > div .post-title h2 {
+  font-size: 55px;
+  line-height: 75px;
+}
 @media screen and (max-width: 992px) {
   #fh5co-hero .fh5co-intro > div .fh5co-center-position {
     width: 100%;
@@ -1510,6 +1517,13 @@ body {
   background-color: #f9f9f9;
 }
 
+.post .other-articles a {
+  color: #6a7885;
+}
+.post .other-articles a:hover {
+  text-decoration: underline;
+}
+
 .post .categories-list {
   float: left;
 }
@@ -1610,4 +1624,11 @@ body {
   background: 0 0;
   border: none;
   margin: 20px auto!important;
+}
+
+.label-category {
+  background-color: #2a2d36;
+}
+.label-tag {
+  background-color: #8dc63f;
 }
