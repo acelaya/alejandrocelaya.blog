@@ -1474,7 +1474,7 @@ body {
   text-decoration: none;
 }
 .post h3 {
-  color: #31708f;
+  color: #8dc63f;
 }
 .post h4 {
   margin-top: 20px;
@@ -1504,6 +1504,10 @@ body {
 }
 .post .post-title {
   text-align: justify;
+}
+
+.post blockquote {
+  background-color: #f9f9f9;
 }
 
 .post .categories-list {
@@ -1595,4 +1599,15 @@ body {
   .search-form input[type=search]:focus {
     width: 250px;
   }
+}
+
+.btn-social.btn-sm :first-child {
+  line-height: 34px;
+  width: 32px;
+}
+
+.twitter-tweet {
+  background: 0 0;
+  border: none;
+  margin: 20px auto!important;
 }

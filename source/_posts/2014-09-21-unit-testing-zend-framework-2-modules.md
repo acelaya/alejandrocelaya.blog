@@ -110,11 +110,8 @@ For our example, the composer.json autoloading could be something like this:
 [...]
 ~~~
 
-<blockquote class="text-muted">
-    <small>
-        For more information on how to use composer, read
-        <a href="/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">this</a>
-    </small>
+<blockquote class="text-muted">For more information on how to use composer, read
+    <a href="/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">this</a>
 </blockquote>
 
 ### PHPUnit configuration

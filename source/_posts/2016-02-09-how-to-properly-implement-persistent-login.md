@@ -16,8 +16,7 @@ One could think that it is a small and easy-to-implement feature, but it has ind
 
 I wasn't able to properly implement it in the first projects I worked in, and I'm trying to explain everything I've learned about it in the last years.
 
-<blockquote>
-    <small>In this article I’m not going to show you how to implement a persistent login in one or another programming language, but what are the good practices that should be followed when you implement it in the way you want.</small>
+<blockquote>In this article I’m not going to show you how to implement a persistent login in one or another programming language, but what are the good practices that should be followed when you implement it in the way you want.
 </blockquote>
 
 ### First thoughts.

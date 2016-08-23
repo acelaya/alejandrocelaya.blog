@@ -130,8 +130,7 @@ return [
 ];
 ```
 
-<blockquote>
-    <small>I have used middleware closures to demonstrate that any middleware used in the programmatic approach is valid here, but you should avoid it while working with the configuration-driven approach, since it will break the configuration caching process.</small>
+<blockquote>I have used middleware closures to demonstrate that any middleware used in the programmatic approach is valid here, but you should avoid it while working with the configuration-driven approach, since it will break the configuration caching process.
 </blockquote>
 
 With this, the `ApplicationFactory` preregisters all the routes before returning the `Application` instance.
@@ -151,8 +150,7 @@ $app = $container->get(Application::class);
 $app->run();
 ```
 
-<blockquote>
-<small>Note that Expressive projects can be easily created from scratch by using the <a href="https://docs.zendframework.com/zend-expressive/getting-started/skeleton/">skeleton installer</a>, which in the process will ask you for the concrete implementations to use and initialize all the code above, including base configuration files.</small>
+<blockquote>Note that Expressive projects can be easily created from scratch by using the <a href="https://docs.zendframework.com/zend-expressive/getting-started/skeleton/">skeleton installer</a>, which in the process will ask you for the concrete implementations to use and initialize all the code above, including base configuration files.
 </blockquote>
 
 While the configuration-driven approach would be my choice, it is also possible to take a hybrid approach between the programmatic and the config-driven options.
