@@ -1533,18 +1533,19 @@ body {
 }
 
 
-#search-form {
+.search-form {
   margin-top: -15px;
   position: relative;
   display: inline-block;
 }
 @media (max-width: 769px) {
-  #search-form {
+  .search-form {
     margin-left: -15px;
+    margin-top: 0;
   }
 }
 
-#search-form .icon-search {
+.search-form .icon-search {
   position: absolute;
   right: 0;
   top: 0;
@@ -1560,13 +1561,13 @@ body {
   -o-transition: 0.5s;
   transition: 0.5s;
 }
-#search-form .icon-search:hover {
+.search-form .icon-search:hover {
   color: #fff;
 }
-#search-form .icon-search.focus {
+.search-form .icon-search.focus {
   color: #85919d !important;
 }
-#search-form input[type=search] {
+.search-form input[type=search] {
   border: none;
   padding-right: 30px;
   width: 30px;
@@ -1576,22 +1577,22 @@ body {
   -o-transition: background-color ease-in-out .3s, width ease-in-out .3s;
   transition: background-color ease-in-out .3s, width ease-in-out .3s;
 }
-#search-form input[type=search]:focus {
+.search-form input[type=search]:focus {
   background-color: #ffffff;
 }
 @media (max-width: 769px) {
-  #search-form input[type=search] {
+  .search-form input[type=search] {
     width: 100%;
     border: 2px solid rgba(255, 255, 255, 0.1);
   }
 }
 @media (min-width: 992px) {
-  #search-form input[type=search]:focus {
+  .search-form input[type=search]:focus {
     width: 300px;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  #search-form input[type=search]:focus {
+  .search-form input[type=search]:focus {
     width: 250px;
   }
 }

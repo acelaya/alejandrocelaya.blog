@@ -2,9 +2,23 @@
 var acelayablog = {
 
     initSearchForm : function() {
-        $("#search-form .icon-search").click(function() {
-            // $(this).closest("form").submit();
-            $(this).closest("form").find('input[type=search]').focus();
+        var $searchForm = $("#fh5co-header").find('.search-form'),
+            $icon = $searchForm.find('.icon-search'),
+            $input = $searchForm.find('input[type=search]'),
+            isMobile = $input.width() > 0;
+
+        $icon.click(function() {
+            if (isMobile) {
+                $searchForm.submit();
+            } else {
+                $input.focus();
+            }
+        });
+        $input.focus(function () {
+            $icon.addClass('focus');
+        });
+        $input.blur(function () {
+            $icon.removeClass('focus');
         });
     },
 
