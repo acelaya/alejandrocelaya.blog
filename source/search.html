@@ -4,7 +4,7 @@ title: Search
 exclude_from_search: true
 ---
 
-<div class="search-section">
+<div class="search-section col-md-12">
     <section>
         <form action="{{ site.url }}/search/" method="get">
             <input type="search" id="search-query" name="q" placeholder="Search" autocomplete="off" class="form-control">
@@ -35,7 +35,7 @@ exclude_from_search: true
         }
         (function() {
             var query = getParameterByName('q');
-            document.getElementsById("search-query").value = query;
+            document.getElementById("search-query").value = query;
         })();
     </script>
 </div>
