@@ -25,14 +25,14 @@ use:
                     {% if post.meta.categories %}
                     <li class="categories-list">
                         {% for category in post.meta.categories %}
-                        <a class="label label-info" href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>
+                        <a class="label label-category" href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>
                         {% endfor %}
                     </li>
                     {% endif %}
                     {% if post.meta.tags %}
                     <li class="tags-list">
                         {% for tag in post.meta.tags %}
-                        <a class="label label-primary" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
+                        <a class="label label-tag" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
                         {% endfor %}
                     </li>
                     {% endif %}

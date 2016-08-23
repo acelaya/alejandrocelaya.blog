@@ -412,6 +412,10 @@ body {
     line-height: 57px;
     text-align: center;
   }
+  #fh5co-hero .fh5co-intro > div .post-title h2 {
+    font-size: 35px;
+    line-height: 50px;
+  }
 }
 #fh5co-hero .fh5co-intro > div h3 {
   font-weight: 100;
@@ -1509,9 +1513,6 @@ body {
 .post .other-articles {
   margin-bottom: 0;
 }
-.post .post-title {
-  text-align: justify;
-}
 
 .post blockquote {
   background-color: #f9f9f9;
@@ -1631,4 +1632,14 @@ body {
 }
 .label-tag {
   background-color: #8dc63f;
+}
+
+.label {
+  padding: .3em .6em .2em;
+}
+
+@media (max-width: 767px) {
+  code {
+    word-break: break-all;
+  }
 }
