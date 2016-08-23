@@ -6,7 +6,6 @@ exclude_from_search: true
 
 <div class="search-section">
     <section>
-        {% if page.title %}<h1 class="textfill"><span>{{ page.title }}</span></h1>{% endif %}
         <form action="{{ site.url }}/search/" method="get">
             <input type="search" id="search-query" name="q" placeholder="Search" autocomplete="off" class="form-control">
         </form>

@@ -2,8 +2,9 @@
 var acelayablog = {
 
     initSearchForm : function() {
-        $("#search-form .fa-search").click(function() {
-            $(this).closest("form").submit();
+        $("#search-form .icon-search").click(function() {
+            // $(this).closest("form").submit();
+            $(this).closest("form").find('input[type=search]').focus();
         });
     },
 
