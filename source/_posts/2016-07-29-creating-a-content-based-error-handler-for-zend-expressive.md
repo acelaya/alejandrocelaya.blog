@@ -121,9 +121,9 @@ My final solution was using the [strategy design pattern](https://en.wikipedia.o
 For my implementation I've used a [zend-servicemanager PluginManager](https://docs.zendframework.com/zend-servicemanager/plugin-managers/), but this could be easily done without it.
 
 <blockquote>
-    <p><small><b>Update 2016-07-30:</b> In the first version of this article, the <code>ContentBasedErrorHandler</code> was a <code>PluginManager</code> itself. If you read the comments, Nikola Poša suggested to split it into two elements, the ErrorHandler and the PluginManager, and make the first one encapsulate the second.</small></p>
-
-    <div><small>It is a much cleaner approach, and properly segregates the two responsibilities, so I have updated the example.</small></div>
+    <div><b>Update 2016-07-30:</b> In the first version of this article, the <code>ContentBasedErrorHandler</code> was a <code>PluginManager</code> itself. If you read the comments, Nikola Poša suggested to split it into two elements, the ErrorHandler and the PluginManager, and make the first one encapsulate the second.</div>
+    <br>
+    <div>It is a much cleaner approach, and properly segregates the two responsibilities, so I have updated the example.</div>
 </blockquote>
 
 ```php
@@ -295,8 +295,5 @@ Finally, you will have to register the `ContentBasedErrorHandler` with the **Zen
 
 And that's it. This approach can be clearly improved, but it is good starting point.
 
-<blockquote>
-    <small>
-        <b>Update 2016-08-12:</b> I have finally created a package implementing this solution, so that anyone can install it in his/her own project: <a href="https://github.com/acelaya/ze-content-based-error-handler">acelaya/ze-content-based-error-handler</a>.
-    </small>
+<blockquote><b>Update 2016-08-12:</b> I have finally created a package implementing this solution, so that anyone can install it in his/her own project: <a href="https://github.com/acelaya/ze-content-based-error-handler">acelaya/ze-content-based-error-handler</a>.
 </blockquote>

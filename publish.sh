@@ -13,7 +13,7 @@ composer update
 # Generate production site
 vendor/bin/sculpin generate --env=prod
 
-# Undo change sin the layout made by grunt
+# Undo changes in the layout made by grunt
 git checkout -- source/_views/default.html.twig
 
 # Run post-generate grunt tasks

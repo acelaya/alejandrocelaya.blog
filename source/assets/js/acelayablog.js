@@ -2,8 +2,26 @@
 var acelayablog = {
 
     initSearchForm : function() {
-        $("#search-form .fa-search").click(function() {
-            $(this).closest("form").submit();
+        var $icon = $('.icon-search'),
+            $input = $('input[type=search]');
+
+        $icon.click(function() {
+            var $form = $(this).closest('form'),
+                isMobile = $form.find('input[type=search]').width() > 0;
+
+            if (isMobile) {
+                $form.submit();
+            } else {
+                $input.focus();
+            }
+        });
+        $input.focus(function () {
+            var $theIcon = $(this).closest('form').find('.icon-search');
+            $theIcon.addClass('focus');
+        });
+        $input.blur(function () {
+            var $theIcon = $(this).closest('form').find('.icon-search');
+            $theIcon.removeClass('focus');
         });
     },
 

@@ -1,10 +1,11 @@
 module.exports = function(grunt) {
 
+    var currentTimestamp = new Date().getTime();
+
     grunt.initConfig({
 
         pkg: grunt.file.readJSON('package.json'),
 
-        // Replace development by production elements
         processhtml: {
             production: {
                 files : {
@@ -13,70 +14,79 @@ module.exports = function(grunt) {
             }
         },
 
-        // Minify CSS
+        'string-replace': {
+            production: {
+                options: {
+                    replacements: [{
+                        pattern: /(.js|.css)\?v/ig,
+                        replacement: '$1?v=' + currentTimestamp
+                    }]
+                },
+                files : {
+                    'source/_views/default.html.twig': ['source/_views/default.html.twig']
+                }
+            }
+        },
+
         cssmin : {
-            minify: {
-                expand: true,
-                src: [
-                    'output_prod/assets/css/bootstrap-social.css',
-                    'output_prod/assets/css/main.css'
-                ],
-                ext: '.min.css'
-            },
-            combine: {
+            production: {
                 files : {
                     'output_prod/assets/css/main.min.css' : [
+                        'output_prod/assets/css/animate.css',
+                        'output_prod/assets/css/icomoon.css',
                         'output_prod/assets/css/bootstrap.min.css',
-                        'output_prod/assets/css/bootstrap-social.min.css',
+                        'output_prod/assets/css/bootstrap-social.css',
                         'output_prod/assets/css/highlightjs-github.min.css',
-                        'output_prod/assets/css/main.min.css'
+                        'output_prod/assets/css/style.css'
                     ]
                 }
             }
         },
 
-        // Minify javascript with UglifyJS
         uglify : {
-            production : {
-                src : [
-                    'output_prod/assets/js/mustache.js',
-                    'output_prod/assets/js/jquery.lunr.search.js',
-                    'output_prod/assets/js/acelayablog.js',
-                    'output_prod/assets/js/main.js'
-                ],
-                dest : 'output_prod/assets/js/main.min.js'
-            }
-        },
-
-        // Concat minified JS files
-        concat: {
             options: {
-                separator: ';\n'
+                compress: {
+                    drop_console: true
+                }
             },
-            production: {
-                src: [
-                    'output_prod/assets/js/lunr.min.js',
-                    'output_prod/assets/js/uri.min.js',
-                    'output_prod/assets/js/highlight.pack.js',
-                    'output_prod/assets/js/main.min.js'
-                ],
-                dest: 'output_prod/assets/js/main.min.js'
+            production : {
+                files: {
+                    'output_prod/assets/js/main.min.js': [
+                        'output_prod/assets/js/jquery.min.js',
+                        'output_prod/assets/js/bootstrap.min.js',
+                        'output_prod/assets/js/jquery.easing.1.3.js',
+                        'output_prod/assets/js/jquery.waypoints.min.js',
+                        'output_prod/assets/js/lunr.min.js',
+                        'output_prod/assets/js/mustache.js',
+                        'output_prod/assets/js/uri.min.js',
+                        'output_prod/assets/js/jquery.lunr.search.js',
+                        'output_prod/assets/js/highlight.pack.js',
+                        'output_prod/assets/js/acelayablog.js',
+                        'output_prod/assets/js/main.js'
+                    ]
+                }
             }
         },
 
-        // Clean assets outside of main files
         clean : {
             production : [
-                'output_prod/assets/css/main.css',
+                'output_prod/assets/css/animate.css',
+                'output_prod/assets/css/icomoon.css',
+                'output_prod/assets/css/bootstrap.min.css',
+                'output_prod/assets/css/highlightjs-github.min.css',
                 'output_prod/assets/css/bootstrap-social.css',
-                'output_prod/assets/css/bootstrap-social.min.css',
-                'output_prod/assets/js/mustache.js',
-                'output_prod/assets/js/jquery.lunr.search.js',
-                'output_prod/assets/js/acelayablog.js',
-                'output_prod/assets/js/main.js',
+                'output_prod/assets/css/style.css',
+                'output_prod/assets/js/jquery.min.js',
+                'output_prod/assets/js/bootstrap.min.js',
+                'output_prod/assets/js/jquery.easing.1.3.js',
+                'output_prod/assets/js/jquery.waypoints.min.js',
                 'output_prod/assets/js/lunr.min.js',
+                'output_prod/assets/js/mustache.js',
                 'output_prod/assets/js/uri.min.js',
-                'output_prod/assets/js/highlight.pack.js'
+                'output_prod/assets/js/jquery.lunr.search.js',
+                'output_prod/assets/js/highlight.pack.js',
+                'output_prod/assets/js/acelayablog.js',
+                'output_prod/assets/js/main.js'
             ]
         }
 
@@ -84,11 +94,11 @@ module.exports = function(grunt) {
 
     // Load plugins
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-processhtml');
+    grunt.loadNpmTasks('grunt-string-replace');
 
-    grunt.registerTask('default', ['processhtml:production']);
-    grunt.registerTask('postgenerate', ['cssmin', 'uglify', 'concat', 'clean']);
+    grunt.registerTask('default', ['processhtml:production', 'string-replace:production']);
+    grunt.registerTask('postgenerate', ['cssmin', 'uglify', 'clean']);
 };

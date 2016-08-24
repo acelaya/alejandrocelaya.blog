@@ -17,11 +17,15 @@
         }
     },
     "config": {
-        "component-dir": "source/components"
+        "component-dir": "source/components",
+        "process-timeout": 0
     },
     "require": {
         "sculpin/sculpin": "dev-master",
         "twig/extensions": "^1.3"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "scripts": {
+        "sculpin": "sculpin generate --server --watch"
+    }
 }

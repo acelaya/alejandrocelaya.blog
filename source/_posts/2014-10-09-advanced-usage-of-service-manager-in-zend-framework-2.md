@@ -147,10 +147,7 @@ return [
 ];
 ~~~
 
-<blockquote>
-    <small>Factories can also be defined as closures in the <b>factories</b> block, but that is not recommended since configuration files won't be able to be serialized and cached, but it is faster than defining a new class for each factory for prototyping purposes.
-    </small>
-</blockquote>
+<blockquote>Factories can also be defined as closures in the <b>factories</b> block, but that is not recommended since configuration files won't be able to be serialized and cached, but it is faster than defining a new class for each factory for prototyping purposes.</blockquote>
 
 ### Initializers
 
@@ -283,8 +280,7 @@ class MappersAbstractFactory implements AbstractFactoryInterface
 
 This factory will be able to create a service as long as the class of the requested service exists and it is a subclass of the `AbstractDbMapper`.
 
-<blockquote>
-    <small>Notice that we are using the fully qualied name of concrete mappers as the service name, so in this example we will be able to make this factory to create the UserMapper only if we fetch the service with the name <code>Application\Mapper\UserMapper</code></small>
+<blockquote>Notice that we are using the fully qualied name of concrete mappers as the service name, so in this example we will be able to make this factory to create the UserMapper only if we fetch the service with the name <code>Application\Mapper\UserMapper</code>
 </blockquote>
 
 The difference between the `$name` and the `$requestedName` arguments are that the second is the name as we requested it (for example **Application\Mapper\UserMapper**) and the first is the name after the `ServiceManager` has resolved it (for example **applicationmapperusermapper**). It depends on your needs which one you use to check if the service can be created.
