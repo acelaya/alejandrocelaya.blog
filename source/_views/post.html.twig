@@ -23,8 +23,10 @@
                             {{ page.blocks.content | raw }}
                         </div>
 
-                        <fieldset class="share animate-box">
-                            <legend><small class="text-muted">If you liked this article, share it</small></legend>
+                        <div class="share animate-box">
+                            <br>
+                            <hr>
+                            <p><small class="text-muted">If you liked this article, share it</small></p>
                             <div class="buttons">
                                 {% set encodedUrl = (site.url ~ page.url ~ '/') | url_encode(true) %}
                                 <a href="https://www.facebook.com/sharer.php?u={{ encodedUrl }}/" target="_blank"
@@ -44,7 +46,7 @@
                                     <i class="icon-linkedin"></i> LinkedIn
                                 </a>
                             </div>
-                        </fieldset>
+                        </div>
 
                         <div class="animate-box">
                             <hr>
@@ -66,44 +68,54 @@
                                 <li class="clearfix"></li>
                             </ul>
                         </div>
-
-                        {% if page.previous_post or page.next_post %}
-                            <nav class="well animate-box">
-                                <ul class="list-unstyled other-articles row">
-                                    <li class="col-sm-6 col-xs-12">
-                                        {% if page.previous_post %}
-                                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}/">
-                                                <i class="icon-arrow-left2"></i>
-                                                &nbsp;<span class="title">{{ page.previous_post.title }}</span>
-                                            </a>
-                                        {% endif %}
-                                    </li>
-                                    <li class="col-sm-6 col-xs-12 text-right">
-                                        {% if page.next_post %}
-                                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}/">
-                                                <span class="title">{{ page.next_post.title }}</span>
-                                                &nbsp;<i class="icon-arrow-right2"></i>
-                                            </a>
-                                        {% endif %}
-                                    </li>
-                                </ul>
-                            </nav>
-                        {% endif %}
-
-                        {% if site.disqus_shortname %}
-                            <div class="animate-box">
-                                <div id="disqus_thread"></div>
-                                <script type="text/javascript">
-                                    var disqus_shortname = '{{ site.disqus_shortname }}';
-                                    (function() {
-                                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                                    })();
-                                </script>
-                            </div>
-                        {% endif %}
                     </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if page.previous_post or page.next_post %}
+        <div id="fh5co-subscribe">
+            <div class="container animate-box">
+                <ul class="list-unstyled other-articles row">
+                    <li class="col-sm-6 col-xs-12">
+                        {% if page.previous_post %}
+                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}/">
+                                <i class="icon-arrow-left2"></i>
+                                &nbsp;<span class="title">{{ page.previous_post.title }}</span>
+                            </a>
+                        {% endif %}
+                    </li>
+                    <li class="col-sm-6 col-xs-12 text-right">
+                        {% if page.next_post %}
+                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}/">
+                                <span class="title">{{ page.next_post.title }}</span>
+                                &nbsp;<i class="icon-arrow-right2"></i>
+                            </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    <div id="fh5co-faqs">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if site.disqus_shortname %}
+                        <div class="animate-box">
+                            <div id="disqus_thread"></div>
+                            <script type="text/javascript">
+                                var disqus_shortname = '{{ site.disqus_shortname }}';
+                                (function() {
+                                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                                })();
+                            </script>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
