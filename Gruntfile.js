@@ -35,7 +35,7 @@ module.exports = function(grunt) {
                         'output_prod/assets/css/animate.css',
                         'output_prod/assets/css/icomoon.css',
                         'output_prod/assets/css/bootstrap.min.css',
-                        'output_prod/assets/css/highlight',
+                        'output_prod/assets/css/highlight-github.min.css',
                         'output_prod/assets/css/bootstrap-social.css',
                         'output_prod/assets/css/style.css'
                     ]
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
                 'output_prod/assets/css/animate.css',
                 'output_prod/assets/css/icomoon.css',
                 'output_prod/assets/css/bootstrap.min.css',
-                'output_prod/assets/css/highlight',
+                'output_prod/assets/css/highlight-github.min.css',
                 'output_prod/assets/css/bootstrap-social.css',
                 'output_prod/assets/css/style.css',
                 'output_prod/assets/js/jquery.min.js',
