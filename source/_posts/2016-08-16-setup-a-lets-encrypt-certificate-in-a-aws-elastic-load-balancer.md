@@ -44,9 +44,8 @@ The problem with this in an Elastic Load Balancer is that you are running this t
 
 To prevent this you will have to leave just one server temporarily. Don't worry, it only takes a few seconds. Once the certificate is created you can add the rest of the servers again.
 
-<blockquote>
-    <small>There are other plugins which simplify deploying certificates in standalone web servers.<br>
-        For example, the apache plugin automatically sets the configuration in the apache virtual host of your choice.</small>
+<blockquote>There are other plugins which simplify deploying certificates in standalone web servers.<br>
+    For example, the apache plugin automatically sets the configuration in the apache virtual host of your choice.
 </blockquote>
 
 If everything worked, you should now have 4 files in the `/etc/letsencrypt/live/mydomain.com` folder.

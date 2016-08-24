@@ -109,8 +109,7 @@ For small applications like my website, any of them should be good enough, but I
 
 The fun thing is that Slim's router does support optional route params at the beginning of the path, at least in version 2. Maybe I try to integrate it in the future with Expressive, since I don't need all the power provided by ZF2's router.
 
-<blockquote>
-    <small><b>Update 2015-09-20:</b> I have finally created a Slim's router integration library and I'm now using it. You can find it here <a href="https://github.com/acelaya/expressive-slim-router">https://github.com/acelaya/expressive-slim-router</a></small>
+<blockquote><b>Update 2015-09-20:</b> I have finally created a Slim's router integration library and I'm now using it. You can find it here <a href="https://github.com/acelaya/expressive-slim-router">https://github.com/acelaya/expressive-slim-router</a>
 </blockquote>
 
 To make a router other than Aura.Router to be automatically injected in the Applicaiton when using the container's `ApplicationFactory`, you need to register a service with the `Zend\Expressive\Router\RouterInterface` name.

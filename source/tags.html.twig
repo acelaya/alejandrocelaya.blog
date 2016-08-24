@@ -4,10 +4,13 @@ title: Tags
 use:
     - posts_tags
 ---
-<h2>Tags</h2>
 
-<div class="tags-list">
-    {% for tag,posts in data.posts_tags %}
-        <a class="btn btn-default" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
-    {% endfor %}
+<div class="col-md-12">
+    <h2 class="animate-box">Tags</h2>
+
+    <div class="tags-list animate-box">
+        {% for tag,posts in data.posts_tags %}
+            <a class="btn btn-default" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
+        {% endfor %}
+    </div>
 </div>

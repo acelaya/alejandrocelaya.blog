@@ -30,8 +30,7 @@ If you want, I've created an example project that I'm going to use on this artic
 
 Then go to the public directory, run `php -S 0.0.0.0:8000` and navigate to <a href="http://localhost:8000" target="_blank">localhost:8000</a>
 
-<blockquote>
-    <small>If you are not familiar with composer, take a look at this <a href="/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">article</a>.</small>
+<blockquote>If you are not familiar with composer, take a look at this <a href="/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">article</a>.
 </blockquote>
 
 ### Translation files

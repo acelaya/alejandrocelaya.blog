@@ -29,8 +29,7 @@ The project is just a simple application to perform a [CRUD](https://es.wikipedi
 
 As usual, I have hosted the example application on github. Clone it from [here](https://github.com/acelaya-blog/service-manager-example), install dependencies by running `composer install` and  start the built-in web server by running `php -S 0.0.0.0:8000 -t public`.
 
-<blockquote>
-    <small>If you are not familiar with composer, take a look at this <a href="/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">article</a>.</small>
+<blockquote>If you are not familiar with composer, take a look at this <a href="/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">article</a>.
 </blockquote>
 
 If you are used to modern PHP applications, the project structure shouldn't be a problem. There is a `src` folder with the source code, a `public` folder which is the document root of the application, a `config` folder with some configuration files and a `tests` folder with the unit tests.
@@ -98,8 +97,7 @@ If we go to the **delegators** block, we'll see that there is defined one delega
 
 Our SlimDelegator sets some configuration options in the Slim instance after it is created and before it is returned by the `ServiceManager`.
 
-<blockquote>
-    <small>The name of a service can be anything as long as it is unique. Using the fully qualified class name is just a convention when there is only one way to create the object returned.</small>
+<blockquote>The name of a service can be anything as long as it is unique. Using the fully qualified class name is just a convention when there is only one way to create the object returned.
 </blockquote>
 
 The final step of the bootstrap process is to use the **app** object to register a couple routes.
