@@ -4,7 +4,7 @@
     <meta property="og:title" content="{{ page.title }}" />
     <meta property="og:type" content="development" />
     <meta property="og:url" content="{{ site.url }}{{ page.url }}/" />
-    <meta property="og:image" content="{{ site.url }}/assets/img/me.jpg" />
+    <meta property="og:image" content="{{ site.url }}/assets/img/hero_bg.jpg" />
 {% endblock %}
 
 {% block heroTitle %}
@@ -14,92 +14,98 @@
 {% endblock %}
 
 {% block content_wrapper %}
-    <div class="col-md-12">
-        <article class="post">
-            <div class="animate-box">
-                {{ page.blocks.content | raw }}
-            </div>
+    <div id="fh5co-faqs">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <article class="post">
+                        <div class="animate-box">
+                            {{ page.blocks.content | raw }}
+                        </div>
 
-            <fieldset class="share animate-box">
-                <legend><small class="text-muted">If you liked this article, share it</small></legend>
-                <div class="buttons">
-                    {% set encodedUrl = (site.url ~ page.url ~ '/') | url_encode(true) %}
-                    <a href="https://www.facebook.com/sharer.php?u={{ encodedUrl }}/" target="_blank"
-                       class="btn btn-sm btn-social btn-facebook">
-                        <i class="icon-facebook"></i> Facebook
-                    </a>
-                    <a href="https://twitter.com/share?url={{ encodedUrl }}&text={{ page.title | url_encode(true) }}&via=acelayaa" target="_blank"
-                       class="btn btn-sm btn-social btn-twitter">
-                        <i class="icon-twitter"></i> Twitter
-                    </a>
-                    <a href="https://plus.google.com/share?url={{ encodedUrl }}" target="_blank"
-                       class="btn btn-sm btn-social btn-google-plus">
-                        <i class="icon-google-plus"></i> Google+
-                    </a>
-                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ encodedUrl }}&title={{ page.title }}&source={{ site.url }}" target="_blank"
-                       class="btn btn-sm btn-social btn-linkedin">
-                        <i class="icon-linkedin"></i> LinkedIn
-                    </a>
-                </div>
-            </fieldset>
-
-            <div class="animate-box">
-                <hr>
-                <ul class="list-unstyled">
-                    {% if page.categories %}
-                        <li class="categories-list">
-                            {% for category in page.categories %}
-                                <a class="label label-category" href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>
-                            {% endfor %}
-                        </li>
-                    {% endif %}
-                    {% if page.tags %}
-                        <li class="tags-list">
-                            {% for tag in page.tags %}
-                                <a class="label label-tag" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
-                            {% endfor %}
-                        </li>
-                    {% endif %}
-                    <li class="clearfix"></li>
-                </ul>
-            </div>
-
-            {% if page.previous_post or page.next_post %}
-                <nav class="well animate-box">
-                    <ul class="list-unstyled other-articles row">
-                        <li class="col-sm-6 col-xs-12">
-                            {% if page.previous_post %}
-                                <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}/">
-                                    <i class="icon-arrow-left2"></i>
-                                    &nbsp;<span class="title">{{ page.previous_post.title }}</span>
+                        <fieldset class="share animate-box">
+                            <legend><small class="text-muted">If you liked this article, share it</small></legend>
+                            <div class="buttons">
+                                {% set encodedUrl = (site.url ~ page.url ~ '/') | url_encode(true) %}
+                                <a href="https://www.facebook.com/sharer.php?u={{ encodedUrl }}/" target="_blank"
+                                   class="btn btn-sm btn-social btn-facebook">
+                                    <i class="icon-facebook"></i> Facebook
                                 </a>
-                            {% endif %}
-                        </li>
-                        <li class="col-sm-6 col-xs-12 text-right">
-                            {% if page.next_post %}
-                                <a class="next" href="{{ site.url }}{{ page.next_post.url }}/">
-                                    <span class="title">{{ page.next_post.title }}</span>
-                                    &nbsp;<i class="icon-arrow-right2"></i>
+                                <a href="https://twitter.com/share?url={{ encodedUrl }}&text={{ page.title | url_encode(true) }}&via=acelayaa" target="_blank"
+                                   class="btn btn-sm btn-social btn-twitter">
+                                    <i class="icon-twitter"></i> Twitter
                                 </a>
-                            {% endif %}
-                        </li>
-                    </ul>
-                </nav>
-            {% endif %}
+                                <a href="https://plus.google.com/share?url={{ encodedUrl }}" target="_blank"
+                                   class="btn btn-sm btn-social btn-google-plus">
+                                    <i class="icon-google-plus"></i> Google+
+                                </a>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ encodedUrl }}&title={{ page.title }}&source={{ site.url }}" target="_blank"
+                                   class="btn btn-sm btn-social btn-linkedin">
+                                    <i class="icon-linkedin"></i> LinkedIn
+                                </a>
+                            </div>
+                        </fieldset>
 
-            {% if site.disqus_shortname %}
-                <div class="animate-box">
-                    <div id="disqus_thread"></div>
-                    <script type="text/javascript">
-                        var disqus_shortname = '{{ site.disqus_shortname }}';
-                        (function() {
-                            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                        })();
-                    </script>
+                        <div class="animate-box">
+                            <hr>
+                            <ul class="list-unstyled">
+                                {% if page.categories %}
+                                    <li class="categories-list">
+                                        {% for category in page.categories %}
+                                            <a class="label label-category" href="{{ site.url }}/category/{{ category | url_encode(true) }}/">{{ category }}</a>
+                                        {% endfor %}
+                                    </li>
+                                {% endif %}
+                                {% if page.tags %}
+                                    <li class="tags-list">
+                                        {% for tag in page.tags %}
+                                            <a class="label label-tag" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">{{ tag | replace('-', ' ') }}</a>
+                                        {% endfor %}
+                                    </li>
+                                {% endif %}
+                                <li class="clearfix"></li>
+                            </ul>
+                        </div>
+
+                        {% if page.previous_post or page.next_post %}
+                            <nav class="well animate-box">
+                                <ul class="list-unstyled other-articles row">
+                                    <li class="col-sm-6 col-xs-12">
+                                        {% if page.previous_post %}
+                                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}/">
+                                                <i class="icon-arrow-left2"></i>
+                                                &nbsp;<span class="title">{{ page.previous_post.title }}</span>
+                                            </a>
+                                        {% endif %}
+                                    </li>
+                                    <li class="col-sm-6 col-xs-12 text-right">
+                                        {% if page.next_post %}
+                                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}/">
+                                                <span class="title">{{ page.next_post.title }}</span>
+                                                &nbsp;<i class="icon-arrow-right2"></i>
+                                            </a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </nav>
+                        {% endif %}
+
+                        {% if site.disqus_shortname %}
+                            <div class="animate-box">
+                                <div id="disqus_thread"></div>
+                                <script type="text/javascript">
+                                    var disqus_shortname = '{{ site.disqus_shortname }}';
+                                    (function() {
+                                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                                    })();
+                                </script>
+                            </div>
+                        {% endif %}
+                    </article>
                 </div>
-            {% endif %}
-        </article>
+            </div>
+        </div>
     </div>
 {% endblock %}

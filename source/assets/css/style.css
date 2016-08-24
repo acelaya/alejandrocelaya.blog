@@ -38,7 +38,6 @@ a:hover, a:active, a:focus {
 
 p, figure {
   margin-bottom: 1.5em;
-  font-size: 1.2em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1473,6 +1472,7 @@ body {
   margin-bottom: 30px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e5e5e5;
+  text-align: justify;
 }
 .post:last-child {
   border-bottom: none;
@@ -1486,6 +1486,8 @@ body {
 }
 .post h3 {
   color: #8dc63f;
+  margin: 2em 0 1em 0;
+  text-align: center;
 }
 .post h4 {
   margin-top: 20px;
@@ -1499,8 +1501,30 @@ body {
   padding: 4px;
   max-width: 100%;
 }
+.post ul {
+  font-size: 1.2em;
+}
+.post ul li {
+  line-height: 1.5em;
+}
+.post ul, .post pre {
+  margin-bottom: .8em;
+}
+.post p {
+  margin-bottom: .8em;
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+.post pre > code {
+  overflow: auto;
+  word-wrap: normal;
+  white-space: pre;
+  font-size: 1.1em;
+}
+
 .post .share {
-  margin-top: 20px;
+  margin-top: 1.5em;
 }
 .post .share .buttons {
   text-align: center;

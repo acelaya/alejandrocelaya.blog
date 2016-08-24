@@ -14,7 +14,7 @@ categories:
 
 ---
 
-<div class="alert alert-info">
+<div class="well well-sm">
     <b>This article was first published in <a href="https://devzone.zend.com/7245/project-scalability-with-zend-expressive/" target="_blank">Zend Developer Zone</a></b>
 </div>
 

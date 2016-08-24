@@ -10,7 +10,7 @@
             <meta property="og:title" content="{{ site.title }} &mdash; {{ site.subtitle }}" />
             <meta property="og:type" content="development" />
             <meta property="og:url" content="{{ site.url }}/" />
-            <meta property="og:image" content="{{ site.url }}/assets/img/me.jpg" />
+            <meta property="og:image" content="{{ site.url }}/assets/img/hero_bg.jpg" />
         {% endblock %}
 
         {#<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />#}
@@ -57,43 +57,18 @@
                 </div>
             </section>
 
-            <div id="fh5co-faqs">
-                <div class="container">
-                    <div class="row">
-                        {% block content_wrapper %}{% block content %}{% endblock %}{% endblock %}
+            {% block content_wrapper %}
+                <div id="fh5co-faqs">
+                    <div class="container">
+                        <div class="row">
+                            {% block content %}{% endblock %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endblock %}
 
             {% include 'partials/footer.html.twig' %}
         </div>
-
-        {#<header>#}
-
-        {#</header>#}
-
-        {#<div id="wrap">#}
-            {#<div id="brand">#}
-                {#<div class="container">#}
-                    {#<h1><a href="{{ site.url }}/">{{ site.title }}</a></h1>#}
-                {#</div>#}
-            {#</div>#}
-            {#<div class="container" id="main">#}
-                {#<div class="row">#}
-                    {#<div class="col-md-9">#}
-                        {#{% block content_wrapper %}{% block content %}{% endblock %}{% endblock %}#}
-                    {#</div>#}
-                    {#<div class="col-md-3 sidebar">#}
-                        {#{% include 'partials/sidebar.html.twig' %}#}
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
-            {#<div id="push"></div>#}
-        {#</div>#}
-
-        {#<footer id="footer">#}
-            {#{% include 'partials/footer.html.twig' %}#}
-        {#</footer>#}
 
         <!-- build:js /assets/js/main.min.js -->
         <script src="/assets/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
