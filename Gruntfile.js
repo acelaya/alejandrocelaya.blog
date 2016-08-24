@@ -54,16 +54,23 @@ module.exports = function(grunt) {
 
         clean : {
             production : [
-                'output_prod/assets/css/main.css',
+                'output_prod/assets/css/animate.css',
+                'output_prod/assets/css/icomoon.css',
+                'output_prod/assets/css/bootstrap.min.css',
+                'output_prod/assets/css/highlight',
                 'output_prod/assets/css/bootstrap-social.css',
-                'output_prod/assets/css/bootstrap-social.min.css',
-                'output_prod/assets/js/mustache.js',
-                'output_prod/assets/js/jquery.lunr.search.js',
-                'output_prod/assets/js/acelayablog.js',
-                'output_prod/assets/js/main.js',
+                'output_prod/assets/css/style.css',
+                'output_prod/assets/js/jquery.min.js',
+                'output_prod/assets/js/bootstrap.min.js',
+                'output_prod/assets/js/jquery.easing.1.3.js',
+                'output_prod/assets/js/jquery.waypoints.min.js',
                 'output_prod/assets/js/lunr.min.js',
+                'output_prod/assets/js/mustache.js',
                 'output_prod/assets/js/uri.min.js',
-                'output_prod/assets/js/highlight.pack.js'
+                'output_prod/assets/js/jquery.lunr.search.js',
+                'output_prod/assets/js/highlight.pack.js',
+                'output_prod/assets/js/acelayablog.js',
+                'output_prod/assets/js/main.js'
             ]
         }
 
