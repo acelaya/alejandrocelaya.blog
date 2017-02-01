@@ -16,7 +16,7 @@ body {
   font-size: 16px;
   line-height: 28px;
   font-weight: 300;
-  color: #85919d;
+  color: #6f7984;
   height: 100%;
   position: relative;
 }
@@ -616,7 +616,7 @@ body {
   font-weight: 400;
 }
 #fh5co-projects .fh5co-project-item .fh5co-text p {
-  color: #85919d;
+  color: #6f7984;
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
@@ -1170,7 +1170,7 @@ body {
   color: #484c50;
 }
 .fh5co-person .fh5co-designation {
-  color: #85919d;
+  color: #6f7984;
 }
 .fh5co-person .fh5co-bio {
   text-align: left;
@@ -1612,7 +1612,7 @@ li.post {
   color: #fff;
 }
 .search-form .icon-search.focus {
-  color: #85919d !important;
+  color: #6f7984 !important;
 }
 .search-form input[type=search] {
   border: none;
