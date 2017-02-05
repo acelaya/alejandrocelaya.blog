@@ -1,5 +1,6 @@
 ---
 title: Managing authentication with Zend\Authentication in PHP projects
+permalink: /2014/08/23/managing-authentication-with-zend-authentication-in-php-projects
 categories:
     - php
     - zf

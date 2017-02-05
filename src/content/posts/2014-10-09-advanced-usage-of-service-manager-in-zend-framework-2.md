@@ -1,5 +1,6 @@
 ---
 title: Advanced usage of ServiceManager in Zend Framework 2
+permalink: /2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2
 categories:
     - php
     - zf

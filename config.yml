@@ -1,16 +1,4 @@
-# Reading
-text_extensions: ['htm', 'html', 'html.twig', 'twig.html', 'js', 'less', 'markdown', 'md', 'mkd', 'mkdn', 'coffee', 'css', 'erb', 'haml', 'handlebars', 'hb', 'ms', 'mustache', 'php', 'rb', 'sass', 'scss', 'slim', 'txt', 'xhtml', 'xml']
-attribute_syntax: 'yaml'
-map_converter_extension:
-  'html.twig': 'html'
-  'twig.html': 'html'
-  'twig': 'html'
-
-# Markdown converters
-markdown_ext: ['md']
-parsedown_activated: false
-
 # Outputting
 timezone: Europe/Madrid
-permalink: '/:year/:month/:day/:title/'
-layout_ext: ['html.twig', 'twig', 'html']
+permalink: '/:year/:month/:day/:title'
+no_html_extension: true

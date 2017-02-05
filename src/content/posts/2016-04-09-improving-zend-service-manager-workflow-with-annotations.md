@@ -1,5 +1,6 @@
 ---
 title: Improving Zend\ServiceManager workflow with annotations
+permalink: /2016/04/09/improving-zend-service-manager-workflow-with-annotations
 tags:
     - annotations
     - service-manager

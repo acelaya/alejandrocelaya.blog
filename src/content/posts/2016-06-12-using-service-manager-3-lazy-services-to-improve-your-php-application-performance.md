@@ -1,5 +1,6 @@
 ---
 title: Using ServiceManager 3 lazy services to improve your PHP application performance
+permalink: /2016/06/12/using-service-manager-3-lazy-services-to-improve-your-php-application-performance
 tags:
     - lazy-services
     - service-manager
