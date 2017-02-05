@@ -4,7 +4,7 @@
 /app/config/sculpin_kernel_*.yml
 /app/config/sculpin_site_dev.yml
 /app/logs/*
-/output_*/
+/build/
 /source/components/
 /sculpin.lock
 /node_modules
