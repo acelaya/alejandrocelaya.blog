@@ -12,5 +12,5 @@ parsedown_activated: false
 
 # Outputting
 timezone: Europe/Madrid
-permalink: 'pretty'
+permalink: '/:year/:month/:day/:title/'
 layout_ext: ['html.twig', 'twig', 'html']
