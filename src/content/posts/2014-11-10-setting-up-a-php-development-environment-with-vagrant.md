@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Setting up a PHP development environment with Vagrant
 categories:
     - php

@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Create modules with sub-namespaces in Zend Framework 2. Part II
 tags:
     - autoloader

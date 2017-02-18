@@ -1,4 +1,5 @@
 ---
+layout: post
 title: HTML5 attributes that will save your time
 tags:
     - attributes

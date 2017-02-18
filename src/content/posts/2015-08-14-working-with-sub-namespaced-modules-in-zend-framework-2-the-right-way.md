@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Working with sub-namespaced modules in Zend Framework 2 the right way 
 tags:
     - autoloader

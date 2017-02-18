@@ -1,4 +1,5 @@
 ---
+layout: post
 title: How to properly use the Zend framework 2 service manager as a dependency injection container
 tags:
     - zf2

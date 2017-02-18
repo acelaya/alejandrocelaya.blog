@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Simulate Zend Framework preDispatch and postDispatch in a Zend Framework 2 application
 tags:
     - dispatch

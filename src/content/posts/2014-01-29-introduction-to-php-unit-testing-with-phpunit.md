@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Introduction to PHP unit testing with PHPUnit
 tags:
     - agile

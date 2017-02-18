@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Dispatch REST-like requests with a single controller class in Zend Expressive
 tags:
     - zend-expressive

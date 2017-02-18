@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Using UUID identifiers for databases in PHP projects with Doctrine 
 tags:
     - database

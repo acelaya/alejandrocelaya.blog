@@ -1,4 +1,5 @@
 ---
+layout: post
 title: My first approach to Zend Expressive 
 tags:
     - microframework

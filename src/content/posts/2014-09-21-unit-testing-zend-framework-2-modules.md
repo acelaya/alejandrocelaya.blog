@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Unit testing Zend Framework 2 modules
 categories:
     - php

@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Dependency management and autoloading in php projects with composer
 categories:
     - php

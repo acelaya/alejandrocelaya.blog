@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Project Scalability with Zend Expressive
 tags:
     - zend-expressive

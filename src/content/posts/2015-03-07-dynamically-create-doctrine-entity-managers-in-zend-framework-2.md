@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Dynamically create doctrine entity managers in Zend Framework 2
 categories:
     - php

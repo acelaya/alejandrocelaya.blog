@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Run PHPUnit tests inside a docker container from PhpStorm
 permalink: /2017/02/01/run-phpunit-tests-inside-docker-container-from-phpstorm
 tags:

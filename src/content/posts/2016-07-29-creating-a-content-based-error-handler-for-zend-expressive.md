@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Creating a content-based Error Handler for Zend Expressive
 tags:
     - zend-expressive

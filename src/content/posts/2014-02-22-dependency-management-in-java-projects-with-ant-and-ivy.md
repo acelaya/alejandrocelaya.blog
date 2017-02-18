@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Dependency management in Java projects with Ant and Ivy
 tags:
     - ant

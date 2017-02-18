@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Working with custom column types in Doctrine. Enums.
 categories:
     - php

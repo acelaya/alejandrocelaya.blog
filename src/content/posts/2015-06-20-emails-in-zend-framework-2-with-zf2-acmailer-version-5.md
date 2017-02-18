@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Emails in Zend Framework 2 with ZF2-AcMailer version 5
 tags:
     - github

@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Migrating from Wordpress to Sculpin
 categories:
     - php

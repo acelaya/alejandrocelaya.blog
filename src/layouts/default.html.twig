@@ -60,7 +60,9 @@
                 <div id="fh5co-faqs">
                     <div class="container">
                         <div class="row">
-                            {% block content %}{% endblock %}
+                            {% block content %}
+                                {{ page.content }}
+                            {% endblock %}
                         </div>
                     </div>
                 </div>

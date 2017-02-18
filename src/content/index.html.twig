@@ -1,16 +1,11 @@
 ---
 layout: default
 title: Home
-generator: pagination
-pagination:
-    max_per_page: 5
-use:
-    - posts
 ---
 
 <div class="col-md-12">
     <ul class="fh5co-faq-list">
-        {% for post in page.pagination.items %}
+        {% for post in site.posts %}
             <li class="post animate-box">
                 <h2 class="post-title"><a href="{{ site.url }}{{ post.url }}/">{{ post.title }}</a></h2>
                 <div>

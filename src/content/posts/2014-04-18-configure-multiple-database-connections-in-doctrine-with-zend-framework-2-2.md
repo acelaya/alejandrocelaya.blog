@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Configure multiple database connections in Doctrine with Zend Framework 2
 permalink: /2014/04/18/configure-multiple-database-connections-in-doctrine-with-zend-framework-2-2
 tags:

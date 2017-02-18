@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Send emails in a Zend Framework 2 application using ZF2-AcMailer module
 tags:
     - composer

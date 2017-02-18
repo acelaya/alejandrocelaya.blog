@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Composer advanced concepts
 categories:
     - php

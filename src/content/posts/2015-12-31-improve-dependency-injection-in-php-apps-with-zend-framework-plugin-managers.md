@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Improve dependency injection in PHP apps with Zend Framework plugin managers
 tags:
     - zf2

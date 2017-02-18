@@ -1,4 +1,5 @@
 ---
+layout: post
 title: How to properly implement persistent login
 tags:
     - login

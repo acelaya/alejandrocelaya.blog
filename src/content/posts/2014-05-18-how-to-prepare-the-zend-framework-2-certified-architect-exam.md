@@ -1,4 +1,5 @@
 ---
+layout: post
 title: How to prepare the Zend Framework 2 Certified Architect exam
 tags:
     - certification

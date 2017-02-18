@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Managing objects creation and dependency injection with Zend\ServiceManager
 permalink: /2015/02/06/managing-objects-creation-and-dependency-injection-with-zend-service-manager
 categories:

@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Translations and internationalization in PHP projects with Zend\I18n
 permalink: /2015/01/24/translations-and-internationalization-in-php-projects-with-zend-i18n
 categories:

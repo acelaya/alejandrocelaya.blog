@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Compile NSIS scripts in Linux
 tags:
     - building
