@@ -1,25 +1,28 @@
 ---
 layout: default
 title: Home
+
+generator: "pagination"
+provider: "site.posts"
+sort_by: "date"
 ---
 
 <div class="col-md-12">
     <ul class="fh5co-faq-list">
-        {% for post in site.posts %}
+        {% for post in page.pagination.items %}
             <li class="post animate-box">
                 <h2 class="post-title"><a href="{{ site.url }}{{ post.url }}/">{{ post.title }}</a></h2>
                 <div>
                     {#{{ post.blocks.content | truncatehtml(600) | raw }}#}
-                    {{ post.blocks.content | raw }}
                 </div>
                 <div style="margin-bottom: 10px;">
                     <a href="{{ site.url }}{{ post.url }}/"><b>Continue reading...</b></a>
                 </div>
 
                 <ul class="list-unstyled">
-                    {% if post.meta.categories %}
+                    {% if post.categories %}
                         <li class="categories-list">
-                            {% for category in post.meta.categories %}
+                            {% for category in post.categories %}
                                 <a class="label label-category"
                                    href="{{ site.url }}/category/{{ category | url_encode(true) }}/">
                                     {{ category }}
@@ -27,9 +30,9 @@ title: Home
                             {% endfor %}
                         </li>
                     {% endif %}
-                    {% if post.meta.tags %}
+                    {% if post.tags %}
                         <li class="tags-list">
-                            {% for tag in post.meta.tags %}
+                            {% for tag in post.tags %}
                                 <a class="label label-tag" href="{{ site.url }}/tag/{{ tag | url_encode(true) }}/">
                                     {{ tag | replace('-', ' ') }}
                                 </a>
@@ -47,7 +50,7 @@ title: Home
         <ul class="pager">
             {% if page.pagination.next_page %}
             <li class="previous">
-                <a href="{{ site.url }}{{ page.pagination.next_page.url }}/">&larr; Older posts</a>
+                <a href="{{ site.url }}{{ page.pagination.next_page_url }}/">&larr; Older posts</a>
             </li>
             {% else %}
             <li class="previous disabled">
@@ -56,7 +59,7 @@ title: Home
             {% endif %}
             {% if page.pagination.previous_page %}
             <li class="next">
-                <a href="{{ site.url }}{{ page.pagination.previous_page.url }}/">Newer posts &rarr;</a>
+                <a href="{{ site.url }}{{ page.pagination.previous_page_url }}/">Newer posts &rarr;</a>
             </li>
             {% else %}
             <li class="next disabled">
