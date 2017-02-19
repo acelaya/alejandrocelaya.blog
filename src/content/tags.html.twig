@@ -1,0 +1,25 @@
+---
+layout: default
+title: Tags
+---
+
+<div class="col-md-12">
+    <h2 class="animate-box">Tags</h2>
+
+    <div class="tags-list animate-box">
+        {% set tagList = [] %}
+        {% for tag in site.tags %}
+            {% for post in tag %}
+                {% for tagName in post.tags %}
+                    {% if tagName not in tagList %}
+                        {% set tagList = tagList | merge([tagName]) %}
+
+                        <a class="btn btn-default" href="{{ site.url }}/tag/{{ tagName | url_encode(true) }}/">
+                            {{ tagName | replace('-', ' ') }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
