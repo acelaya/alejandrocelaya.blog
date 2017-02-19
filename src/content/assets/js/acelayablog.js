@@ -6,14 +6,7 @@ var acelayablog = {
             $input = $('input[type=search]');
 
         $icon.click(function() {
-            var $form = $(this).closest('form'),
-                isMobile = $form.find('input[type=search]').width() > 0;
-
-            if (isMobile) {
-                $form.submit();
-            } else {
-                $input.focus();
-            }
+            $(this).closest('form').focus();
         });
         $input.focus(function () {
             var $theIcon = $(this).closest('form').find('.icon-search');
