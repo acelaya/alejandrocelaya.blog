@@ -1661,6 +1661,10 @@ li.post {
 .label-tag {
   background-color: #8dc63f;
 }
+.label-tag,
+.label-category {
+    display: inline-block;
+}
 
 .label {
   padding: .3em .6em .2em;

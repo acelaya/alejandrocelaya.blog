@@ -3,7 +3,7 @@ timezone: Europe/Madrid
 permalink: '/:year/:month/:day/:title'
 no_html_extension: true
 
-# Custom data
+# Site data
 title: Alejandro Celaya | Blog
 subtitle: Software development, agile methodologies and open source projects
 my_name: Alejandro Celaya
