@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+    ac_blog_php:
+        container_name: ac_blog_php
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        ports:
+            - "4000:4000"
+        volumes:
+            - ./:/home/ac_blog/www
