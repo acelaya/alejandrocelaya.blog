@@ -6,11 +6,10 @@ class Lunr
     const NAME = 'lunr';
 
     /**
-     * @param \Twig_Environment $env
      * @param array $posts
      * @return string
      */
-    public function __invoke(\Twig_Environment $env, array $posts)
+    public function __invoke(array $posts)
     {
         $data = ['entries' => []];
         foreach ($posts as $post) {

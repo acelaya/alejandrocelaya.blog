@@ -1,6 +1,7 @@
 <?php
 
 use Acelaya\SpressPlugin\AcelayaSpressTwig\Filter\Lunr;
+use Acelaya\SpressPlugin\AcelayaSpressTwig\Filter\TruncateHtml;
 use Yosymfony\Spress\Core\ContentManager\Renderizer\TwigRenderizer;
 use Yosymfony\Spress\Core\Plugin\Event\EnvironmentEvent;
 use Yosymfony\Spress\Core\Plugin\EventSubscriber;
@@ -31,6 +32,7 @@ class AcelayaSpressTwig implements PluginInterface
 
         /** @var TwigRenderizer $renderizer */
         $renderizer = $event->getRenderizer();
-        $renderizer->addTwigFunction(Lunr::NAME, new Lunr(), ['needs_environment' => true, 'is_safe' => ['html']]);
+        $renderizer->addTwigFunction(Lunr::NAME, new Lunr(), ['is_safe' => ['html']]);
+        $renderizer->addTwigFilter(TruncateHtml::NAME, new TruncateHtml(), ['is_safe' => ['html']]);
     }
 }
