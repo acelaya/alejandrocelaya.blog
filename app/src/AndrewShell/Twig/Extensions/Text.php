@@ -3,33 +3,28 @@ namespace AndrewShell\Twig\Extensions;
 
 use Twig_Environment;
 use Twig_Extension;
-use Twig_Filter_Method;
+use Twig_SimpleFilter;
 use Twig_SimpleFunction;
 
 class Text extends Twig_Extension
 {
     public function getFilters()
     {
-        $filters = array(
-            'compact' => new Twig_Filter_Method($this, 'compactFilter'),
-            'smartTruncate' => new Twig_Filter_Method($this, 'smartTruncate'),
-        );
-
-        return $filters;
+        return [
+            new Twig_SimpleFilter('compact', [$this, 'compactFilter']),
+            new Twig_SimpleFilter('smartTruncate', [$this, 'smartTruncate']),
+        ];
     }
 
     public function getFunctions()
     {
-        $functions = array(
-            new Twig_SimpleFunction('lunr', array($this, 'lunrGenerator'), array('needs_environment' => true, 'is_safe' => array('html'))),
-        );
-
-        return $functions;
-    }
-
-    public function getName()
-    {
-        return 'AndrewShellText';
+        return [
+            new Twig_SimpleFunction(
+                'lunr',
+                [$this, 'lunrGenerator'],
+                ['needs_environment' => true, 'is_safe' => ['html']]
+            ),
+        ];
     }
 
     public function compactFilter($string)
@@ -47,9 +42,14 @@ class Text extends Twig_Extension
         return $string;
     }
 
+    /**
+     * @param Twig_Environment $env
+     * @param $posts
+     * @return string
+     */
     public function lunrGenerator(Twig_Environment $env, $posts)
     {
-        $data = array('entries' => array());
+        $data = ['entries' => []];
         foreach ($posts as $post) {
             $meta = $post->meta();
             if (isset($meta['exclude_from_search'])) {
@@ -66,13 +66,13 @@ class Text extends Twig_Extension
             } else {
                 $description = twig_truncate_filter($env, $content, 280);
             }
-            $data['entries'][] = array(
+            $data['entries'][] = [
                 'title' => $this->compactFilter(strip_tags($post->title())),
                 'url' => $post->url(),
                 'date' => date('Y-m-d H:i:s O', $post->date()),
                 'body' => htmlentities($content, ENT_COMPAT, "UTF-8", $double_encode = false),
                 'description' => htmlentities($description, ENT_COMPAT, "UTF-8", $double_encode = false),
-            );
+            ];
         }
         $result = json_encode($data, JSON_PRETTY_PRINT, 5);
         if (false === $result) {
