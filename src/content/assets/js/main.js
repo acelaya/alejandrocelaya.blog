@@ -100,20 +100,6 @@
 
         });
 
-        $(window).resize(function() {
-            if ( $('body').hasClass('offcanvas-visible') ) {
-                $('body').removeClass('offcanvas-visible');
-                $('.js-fh5co-nav-toggle').removeClass('active');
-            }
-        });
-
-        $(window).scroll(function(){
-            if ( $('body').hasClass('offcanvas-visible') ) {
-                $('body').removeClass('offcanvas-visible');
-                $('.js-fh5co-nav-toggle').removeClass('active');
-            }
-        });
-
     };
 
 
