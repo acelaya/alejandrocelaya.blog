@@ -1,0 +1,76 @@
+
+var acelayablog = {
+
+    initSearchForm : function() {
+        var $icon = $('.icon-search'),
+            $input = $('input[type=search]');
+
+        $icon.click(function() {
+            $(this).closest('form').focus();
+        });
+        $input.focus(function () {
+            var $theIcon = $(this).closest('form').find('.icon-search');
+            $theIcon.addClass('focus');
+        });
+        $input.blur(function () {
+            var $theIcon = $(this).closest('form').find('.icon-search');
+            $theIcon.removeClass('focus');
+        });
+    },
+
+    initShareButtons : function() {
+        var buttons = $(".buttons .btn-social");
+        if (buttons.size() == 0) {
+            return;
+        }
+
+        buttons.click(function(e) {
+            var link = $(this).attr("href");
+
+            e.preventDefault();
+            window.open(link, 'Share article', 'menubar=no, toolbar=no, resizable=yes, scrollbars=yes, height=600, width=600');
+        });
+    },
+
+    initHighlightjs : function() {
+        if (typeof hljs == 'undefined') {
+            return;
+        }
+        hljs.initHighlightingOnLoad();
+    },
+
+    initSearch : function() {
+        var searchInput = $('#search-query');
+        if (searchInput.size() == 0) {
+            return;
+        }
+
+        searchInput.lunrSearch({
+            indexUrl: '/search.json',               // URL of the `search.json` index data for your site
+            results:  '#search-results',            // jQuery selector for the search results container
+            entries:  '.hfeed',                     // jQuery selector for the element to contain the results list, must be a child of the results element above.
+            template: '#search-results-template'    // jQuery selector for the Mustache.js template
+        });
+    },
+
+    initToTopButton : function() {
+        var btn = $(".to-top");
+        btn.click(function(e) {
+            e.preventDefault();
+            $("body, html").animate({
+                scrollTop : 0
+            })
+        });
+
+        // Make the button to be displayed on scroll
+        $(window).scroll(function() {
+            var top = $('body').scrollTop() | $('html').scrollTop();
+            if (top >= 300) {
+                btn.removeClass('hidden');
+            } else {
+                btn.addClass('hidden');
+            }
+        });
+    }
+
+};

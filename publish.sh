@@ -1,27 +1,21 @@
 #!/bin/sh
 
 # Delete the old production folder
-rm -rf output_prod
+rm -rf build
 
-# Run pre-generate grunt tasks
+# Run grunt tasks
 npm install
 grunt
 
-# Install composer dependencies
-composer update
-
 # Generate production site
-vendor/bin/sculpin generate --env=prod
-
-# Undo changes in the layout made by grunt
-git checkout -- source/_views/default.html.twig
-
-# Run post-generate grunt tasks
-grunt postgenerate
+composer update
+vendor/bin/spress site:build --env=dev
+grunt post-generate
+git checkout -- src/layouts/default.html.twig
 
 # Deploy blog
 blogpath='/home/alejandro/apps/alejandrocelaya/blog'
 now=`date +'%Y-%m-%d_%T'`
 ssh root@alejandrocelaya.com "mv $blogpath $blogpath-$now"
 ssh root@alejandrocelaya.com "mkdir $blogpath"
-rsync -avz --no-owner --no-group output_prod/ root@alejandrocelaya.com:${blogpath}
+rsync -avz --no-owner --no-group build/ root@alejandrocelaya.com:${blogpath}
