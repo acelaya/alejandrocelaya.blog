@@ -15,7 +15,7 @@ permalink: atom.xml
             {% if site.email %}<email><![CDATA[{{ site.email }}]]></email>{% endif %}
         </author>
     {% endif %}
-    <generator uri="http://sculpin.io/">Sculpin</generator>
+    <generator uri="http://spress.yosymfony.com/">Spress</generator>
     {% for post in site.posts | slice(0, 10) %}
         <entry>
             <title type="html"><![CDATA[{{ post.title }}]]></title>

@@ -1,7 +1,8 @@
 #!/bin/sh
+Set -e
 
 # Delete the old production folder
-rm -rf build
+sudo rm -rf build
 
 # Run grunt tasks
 npm install
@@ -9,7 +10,7 @@ grunt
 
 # Generate production site
 composer update
-vendor/bin/spress site:build --env=dev
+vendor/bin/spress site:build --env=pro
 grunt post-generate
 git checkout -- src/layouts/default.html.twig
 
