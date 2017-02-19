@@ -6,7 +6,7 @@ var acelayablog = {
             $input = $('input[type=search]');
 
         $icon.click(function() {
-            $(this).closest('form').focus();
+            $input.focus();
         });
         $input.focus(function () {
             var $theIcon = $(this).closest('form').find('.icon-search');
