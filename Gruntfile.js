@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         processhtml: {
             production: {
                 files : {
-                    'source/_views/default.html.twig' : [ 'source/_views/default.html.twig' ]
+                    'build/index.html' : [ 'build/index.html' ]
                 }
             }
         },
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                     }]
                 },
                 files : {
-                    'source/_views/default.html.twig': ['source/_views/default.html.twig']
+                    'build/index.html': ['build/index.html']
                 }
             }
         },
@@ -31,13 +31,13 @@ module.exports = function(grunt) {
         cssmin : {
             production: {
                 files : {
-                    'output_prod/assets/css/main.min.css' : [
-                        'output_prod/assets/css/animate.css',
-                        'output_prod/assets/css/icomoon.css',
-                        'output_prod/assets/css/bootstrap.min.css',
-                        'output_prod/assets/css/bootstrap-social.css',
-                        'output_prod/assets/css/highlightjs-github.min.css',
-                        'output_prod/assets/css/style.css'
+                    'build/assets/css/main.min.css' : [
+                        'build/assets/css/animate.css',
+                        'build/assets/css/icomoon.css',
+                        'build/assets/css/bootstrap.min.css',
+                        'build/assets/css/bootstrap-social.css',
+                        'build/assets/css/highlightjs-github.min.css',
+                        'build/assets/css/style.css'
                     ]
                 }
             }
@@ -51,18 +51,18 @@ module.exports = function(grunt) {
             },
             production : {
                 files: {
-                    'output_prod/assets/js/main.min.js': [
-                        'output_prod/assets/js/jquery.min.js',
-                        'output_prod/assets/js/bootstrap.min.js',
-                        'output_prod/assets/js/jquery.easing.1.3.js',
-                        'output_prod/assets/js/jquery.waypoints.min.js',
-                        'output_prod/assets/js/lunr.min.js',
-                        'output_prod/assets/js/mustache.js',
-                        'output_prod/assets/js/uri.min.js',
-                        'output_prod/assets/js/jquery.lunr.search.js',
-                        'output_prod/assets/js/highlight.pack.js',
-                        'output_prod/assets/js/acelayablog.js',
-                        'output_prod/assets/js/main.js'
+                    'build/assets/js/main.min.js': [
+                        'build/assets/js/jquery.min.js',
+                        'build/assets/js/bootstrap.min.js',
+                        'build/assets/js/jquery.easing.1.3.js',
+                        'build/assets/js/jquery.waypoints.min.js',
+                        'build/assets/js/lunr.min.js',
+                        'build/assets/js/mustache.js',
+                        'build/assets/js/uri.min.js',
+                        'build/assets/js/jquery.lunr.search.js',
+                        'build/assets/js/highlight.pack.js',
+                        'build/assets/js/acelayablog.js',
+                        'build/assets/js/main.js'
                     ]
                 }
             }
@@ -70,23 +70,23 @@ module.exports = function(grunt) {
 
         clean : {
             production : [
-                'output_prod/assets/css/animate.css',
-                'output_prod/assets/css/icomoon.css',
-                'output_prod/assets/css/bootstrap.min.css',
-                'output_prod/assets/css/highlightjs-github.min.css',
-                'output_prod/assets/css/bootstrap-social.css',
-                'output_prod/assets/css/style.css',
-                'output_prod/assets/js/jquery.min.js',
-                'output_prod/assets/js/bootstrap.min.js',
-                'output_prod/assets/js/jquery.easing.1.3.js',
-                'output_prod/assets/js/jquery.waypoints.min.js',
-                'output_prod/assets/js/lunr.min.js',
-                'output_prod/assets/js/mustache.js',
-                'output_prod/assets/js/uri.min.js',
-                'output_prod/assets/js/jquery.lunr.search.js',
-                'output_prod/assets/js/highlight.pack.js',
-                'output_prod/assets/js/acelayablog.js',
-                'output_prod/assets/js/main.js'
+                'build/assets/css/animate.css',
+                'build/assets/css/icomoon.css',
+                'build/assets/css/bootstrap.min.css',
+                'build/assets/css/highlightjs-github.min.css',
+                'build/assets/css/bootstrap-social.css',
+                'build/assets/css/style.css',
+                'build/assets/js/jquery.min.js',
+                'build/assets/js/bootstrap.min.js',
+                'build/assets/js/jquery.easing.1.3.js',
+                'build/assets/js/jquery.waypoints.min.js',
+                'build/assets/js/lunr.min.js',
+                'build/assets/js/mustache.js',
+                'build/assets/js/uri.min.js',
+                'build/assets/js/jquery.lunr.search.js',
+                'build/assets/js/highlight.pack.js',
+                'build/assets/js/acelayablog.js',
+                'build/assets/js/main.js'
             ]
         }
 
@@ -99,6 +99,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-processhtml');
     grunt.loadNpmTasks('grunt-string-replace');
 
-    grunt.registerTask('default', ['processhtml:production', 'string-replace:production']);
-    grunt.registerTask('postgenerate', ['cssmin', 'uglify', 'clean']);
+    grunt.registerTask('default', ['cssmin', 'uglify', 'clean', 'processhtml', 'string-replace']);
 };
