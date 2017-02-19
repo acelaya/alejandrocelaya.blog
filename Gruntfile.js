@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         processhtml: {
             production: {
                 files : {
-                    'build/index.html' : [ 'build/index.html' ]
+                    'src/layouts/default.html.twig' : [ 'src/layouts/default.html.twig' ]
                 }
             }
         },
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                     }]
                 },
                 files : {
-                    'build/index.html': ['build/index.html']
+                    'src/layouts/default.html.twig': ['src/layouts/default.html.twig']
                 }
             }
         },
@@ -99,5 +99,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-processhtml');
     grunt.loadNpmTasks('grunt-string-replace');
 
-    grunt.registerTask('default', ['cssmin', 'uglify', 'clean', 'processhtml', 'string-replace']);
+    grunt.registerTask('default', ['processhtml', 'string-replace']);
+    grunt.registerTask('post-generate', ['cssmin', 'uglify', 'clean']);
 };
