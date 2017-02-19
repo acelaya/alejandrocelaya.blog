@@ -1,17 +1,7 @@
 <footer id="fh5co-footer">
     <div class="container">
         <div class="row row-bottom-padded-md">
-            <div class="col-md-4 col-xs-12 animate-box">
-                <div class="fh5co-footer-widget">
-                    <h3>Contents</h3>
-                    <ul class="fh5co-links">
-                        <li><a href="{{ site.url }}/categories/">Categories</a></li>
-                        <li><a href="{{ site.url }}/tags/">Tags</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-md-4 col-xs-12 animate-box">
+            <div class="col-md-2 col-xs-12 animate-box">
                 <div class="fh5co-footer-widget">
                     <h3>Categories</h3>
                     <ul class="fh5co-links">
@@ -24,7 +14,18 @@
                 </div>
             </div>
 
-            <div class="col-md-4 col-xs-12 animate-box">
+            <div class="col-md-7 col-xs-12 animate-box">
+                <div class="fh5co-footer-widget">
+                    <h3>Latest blog posts</h3>
+                    <ul class="fh5co-links blog-posts">
+                        {% for post in site.posts | slice(0, 5) %}
+                            <li><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-xs-12 animate-box">
                 <div class="fh5co-footer-widget">
                     <h3>Follow me</h3>
                     <ul class="fh5co-social">
@@ -34,6 +35,14 @@
                         <li><a target="_blank" href="https://twitter.com/acelayaa"><i class="icon-twitter"></i></a></li>
                         <li><a target="_blank" href="https://plus.google.com/+AlejandroCelaya?rel=author"><i class="icon-google-plus"></i></a></li>
                         <li><a href="{{ site.url }}/feed/"><i class="icon-rss"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="fh5co-footer-widget" style="margin-top: 40px;">
+                    <h3>Contents</h3>
+                    <ul class="fh5co-links">
+                        <li><a href="{{ site.url }}/categories/">Categories</a></li>
+                        <li><a href="{{ site.url }}/tags/">Tags</a></li>
                     </ul>
                 </div>
             </div>
