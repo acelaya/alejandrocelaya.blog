@@ -1,0 +1,25 @@
+---
+layout: default
+title: Categories
+---
+
+<div class="col-md-12">
+    <h2 class="animate-box">Categories</h2>
+
+    <div class="categories-list animate-box">
+        {% set categoryList = [] %}
+        {% for category in site.categories %}
+            {% for post in category %}
+                {% for categoryName in post.categories %}
+                    {% if categoryName not in categoryList %}
+                        {% set categoryList = categoryList | merge([categoryName]) %}
+
+                        <a class="btn btn-default" href="{{ site.url }}/category/{{ categoryName | url_encode(true) }}/">
+                            {{ categoryName }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
