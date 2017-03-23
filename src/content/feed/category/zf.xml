@@ -1,11 +1,11 @@
 ---
-permalink: atom.xml
+permalink: /feed/category/zf.xml
 ---
 
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title><![CDATA[{{ site.title }}]]></title>
-    <link href="{{ site.url }}/feed" rel="self"/>
+    <link href="{{ site.url }}/feed/category/zf.xml" rel="self"/>
     <link href="{{ site.url }}/"/>
     <updated>{{ site.time | date('c') }}</updated>
     <id>{{ site.url }}/</id>
@@ -16,7 +16,15 @@ permalink: atom.xml
         </author>
     {% endif %}
     <generator uri="http://spress.yosymfony.com/">Spress</generator>
-    {% for post in site.posts | slice(0, 10) %}
+
+    {% set postsList = [] %}
+    {% for post in site.posts %}
+        {% if 'zf' in post.categories %}
+            {% set postsList = postsList | merge([post]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% for post in postsList | slice(0, 10) %}
         <entry>
             <title type="html"><![CDATA[{{ post.title }}]]></title>
             <link href="{{ site.url }}{{ post.url }}/"/>
