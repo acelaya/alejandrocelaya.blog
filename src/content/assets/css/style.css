@@ -48,18 +48,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-selection {
-  color: #818892;
-  background: #f9f6f0;
+  color: #ffffff;
+  background: #a1b2ca;
 }
 
 ::-moz-selection {
-  color: #818892;
-  background: #f9f6f0;
+  color: #ffffff;
+  background: #a1b2ca;
 }
 
 ::selection {
-  color: #818892;
-  background: #f9f6f0;
+  color: #ffffff;
+  background: #a1b2ca;
 }
 
 .btn {
@@ -1667,7 +1667,7 @@ li.post {
 }
 
 .label {
-  padding: .3em .6em .2em;
+  padding: .4em .6em .3em;
 }
 
 .article-date-group {
