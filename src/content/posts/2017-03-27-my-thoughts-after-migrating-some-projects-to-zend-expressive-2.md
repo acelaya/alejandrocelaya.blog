@@ -5,7 +5,7 @@ categories: [php,zf]
 tags: [zend-expressive,psr-7,psr-15,middleware,zf3,microframework,migration]
 ---
 
-The day Zend Expressive 2 was released I was super excited. I have been using it a lot for both professional and personal projects, so I'm quiet used to it.
+The day Zend Expressive 2 was released I was super excited. I have been using it a lot for both professional and personal projects, so I'm quite used to it.
 
 Since I've been using it in many projects, being able to update all of them to version 2 was a challenge, but I can say, I have succeed :-)
 
@@ -101,7 +101,7 @@ The hardest part here is migrating tests.
 
 Since expressive 1 middlewares are `callables`, I used to use `Closures` in tests. Now, the last argument is type hinted to `DelegateInterface`, so you have to explicitly mock it.
 
-I have used [prophecy](https://github.com/phpspec/prophecy), which comes with PHPUnity, and it works like a charm. It's not very difficult, but it could take a while if the application is big.
+I have used [prophecy](https://github.com/phpspec/prophecy), which comes with PHPUnit, and it works like a charm. It's not very difficult, but it could take a while if the application is big.
 
 Of course, If you don't test your code, you won't have this problem, but I hope it is not your case ;-)
 
