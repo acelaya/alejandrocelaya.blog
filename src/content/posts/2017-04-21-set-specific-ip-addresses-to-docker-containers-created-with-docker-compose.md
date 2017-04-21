@@ -88,7 +88,7 @@ networks:
                 - subnet: 172.28.0.0/16
 ```
 
-Using the `ipam` you can define a specific CIDR block for the new network, and then, attaching every container to that network you can specify its IP address.
+Using the `ipam` you can define a specific CIDR block for the new network, and then, attaching every container to that network, you can specify its IP address on that range.
 
 Now, test_1 is always run with the IP address 172.28.1.1, test_2 with 172.28.1.2 and test_3 with 172.28.1.3, and I'm able to hardcode those addresses in the config files.
 
