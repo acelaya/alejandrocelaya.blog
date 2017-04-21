@@ -1,7 +1,8 @@
 FROM php:7.1-alpine
 MAINTAINER Alejandro Celaya <alejandro@alejandrocelaya.com>
 
-RUN apk update
+RUN apk update && \
+    apk add --no-cache --virtual git
 
 # Install common php extensions
 RUN docker-php-ext-install iconv
