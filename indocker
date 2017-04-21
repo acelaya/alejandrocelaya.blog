@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker exec -it ac_blog_php /bin/sh -c "cd /home/ac_blog/www && $*"

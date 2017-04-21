@@ -1679,3 +1679,7 @@ li.post {
     word-break: break-all;
   }
 }
+
+pre {
+  background-color: #f8f8f8;
+}
