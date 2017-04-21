@@ -45,7 +45,7 @@ ERROR: Circular dependency between test_2 and test_3 and test_1
 
 It makes sense, since docker-compose checks links in order to run containers in the correct order. It is not possible in this case because every container depends on the other two.
 
-### Fixing the problem with networks
+### Fixing the problem with **networks**
 
 By default docker assigns random (sort of...) IP addresses to containers. By using links you make an entry to be added to the hosts file of a container, mapping the name of another container with its IP address. This way you don't need to know its IP address, you can access it over the network by just using its name.
 
