@@ -9,8 +9,9 @@ npm install
 grunt
 
 # Generate production site
-sudo composer update
-sudo vendor/bin/spress site:build --env=pro
+sudo rm -rf build
+composer update
+vendor/bin/spress site:build --env=pro
 grunt post-generate
 git checkout -- src/layouts/default.html.twig
 
