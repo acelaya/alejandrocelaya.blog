@@ -3,6 +3,7 @@ layout: post
 title: "Take advantage of vault project&#039;s​ high availability with an AWS internal load balancer"
 categories: [tools]
 tags: [vault,ha,high-availability,aws,load-balancer,hashicorp,encryption,security]
+permalink: /2017/04/23/take-advantage-of-vault-projects-high-availability-with-an-aws-internal-load-balancer
 ---
 
 In a project I'm working on, we recently needed to add some kind of encryption system that allowed us to store sensitive information in a secure manner, but being able to access to it at runtime in order to pass it to third party services.
