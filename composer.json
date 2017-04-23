@@ -11,10 +11,6 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "AndrewShell": "app/src",
-            "Acelaya": "app/src"
-        },
         "psr-4": {
             "Acelaya\\SpressPlugin\\": "src/plugins"
         }
