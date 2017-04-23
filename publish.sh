@@ -9,6 +9,7 @@ npm install
 grunt
 
 # Generate production site
+sudo rm -rf build
 composer update
 vendor/bin/spress site:build --env=pro
 grunt post-generate
