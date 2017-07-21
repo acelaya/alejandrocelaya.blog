@@ -7,21 +7,21 @@ tags: [zf2,zf3,di,dependency-injection,services,factories,service-manager,solid,
 
 I think it is doubtless that modern PHP embraces SOLID principles, and therefore, [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection).
 
-That's way every modern PHP application needs a dependency injection container to deal with it.
+That's why every modern PHP application needs a dependency injection container to deal with it.
 
 There are several options out there, depending on the way you like to work. Every container has a slightly different approach.
 
-My choice is [zend-servicemanager](https://docs.zendframework.com/zend-servicemanager/), it is the one that suits me, because I don't like black magic.
+My choice is [zend-servicemanager](https://docs.zendframework.com/zend-servicemanager/), it is the one that better suits me.
 
-Other containers use auto wiring and auto discovery in order to know which dependencies need to be injected on every service, and I think that leads to errors when an application grows.
+Other containers rely on auto wiring and auto discovery in order to know which dependencies need to be injected on every service, and I think that leads to errors when an application grows.
 
 I like **zend-servicemanager** because it is explicit, and you are always in control of what's done, without loosing flexibility in the process.
 
-However, I have to recognize that this copes with a prize.
+However, I have to recognize that it comes with a prize.
 
 ### Factories everywhere
 
-Since this container relies on you defining factories for every service, you usually end up writing, testing and maintaining a lot of factories that doesn't add value to the application.
+Since this container expects you to define factories for every service, you usually end up writing, testing and maintaining a lot of factories that doesn't add value to the application.
 
 That's why it is **so important** to properly reuse factories when possible, not only because you will have to maintain less classes, but because the ServiceManager will instantiate less objects at runtime when it can reuse a factory.
 
@@ -221,11 +221,11 @@ You have an in-detail documentation of this factory here: [https://docs.zendfram
 
 This factory works similarly to the previous one, but instead of discovering the dependencies to inject based on a configuration array, it uses reflection on requested service.
 
-This has the small advantage that you don't have to specify the dependencies for every service. However, reflection is veeeery inefficient, so this factory is not suited for production, but only for prototyping purposes.
+This has the small advantage that you don't have to specify the dependencies for every service. However, reflection is very inefficient, so this factory is not suited for production, but only for prototyping purposes.
 
 Also, you need to register services with the same type used in the requested service constructor, so you can't type hint to an interface and then inject a service which is registered with an implementation name, or a string which is not even a class name.
 
-Apart form that, registration is equal to previous factories:
+Apart from that, registration is the same as in previous factories:
 
 ```php
 <?php
@@ -343,4 +343,4 @@ However, if I were you, I would choose the `ConfigAbstractFactory` over this one
 
 The problem of defining several factories is usually the main argument I hear against using this component, but as you can see, there are several approaches to deal with it, without loosing control over your code base or depending on black magic.
 
-There are probably other options that I've missed here, so if you know any other option, just comment this post and I will gladly add it.
+There are probably other options that I've missed here, so if you know any other approach, just comment this post and I will gladly add it.
