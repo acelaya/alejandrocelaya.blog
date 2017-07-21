@@ -1,0 +1,216 @@
+---
+layout: post
+title: "Reusing factories in Zend ServiceManager"
+categories: [php,zf]
+tags: [zf2,zf3,di,dependency-injection,services,factories,service-manager,solid,inversion-of-control]
+---
+
+I think it is doubtless that modern PHP embraces SOLID principles, and therefore, [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection).
+
+That's way every modern PHP application needs a dependency injection container to deal with it.
+
+There are several options out there, depending on the way you like to work. Every container has a slightly different approach.
+
+My choice is [zend-servicemanager](https://docs.zendframework.com/zend-servicemanager/), it is the one that suits me, because I don't like black magic.
+
+Other containers use auto wiring and auto discovery in order to know which dependencies need to be injected on every service, and I think that leads to errors when an application grows.
+
+I like **zend-servicemanager** because it is explicit, and you are always in control of what's done, without loosing flexibility in the process.
+
+However, I have to recognize that this copes with a prize.
+
+### Factories everywhere
+
+Since this container relies on you defining factories for every service, you usually end up writing, testing and maintaining a lot of factories that doesn't add value to the application.
+
+That's why it is **so important** to properly reuse factories when possible, not only because you will have to maintain less classes, but because the ServiceManager will instantiate less objects at runtime when it can reuse a factory.
+
+This article is born because of the question of a reader of this blog, which asked me what did I mean with the *"redundancy mitigated by reusing same factory"* sentence, in one of my [Zend Expressive articles](https://blog.alejandrocelaya.com/2016/07/21/project-scalability-with-zend-expressive/).
+
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr"><a href="https://twitter.com/acelayaa">@acelayaa</a> <a href="https://t.co/fVCXfiXBJq">https://t.co/fVCXfiXBJq</a>. Had a question about &quot;redundancy mitigated by reusing same factory&quot; Do you have any examples of this?</p>&mdash; Jason Bailey (@sidewaysgravity) <a href="https://twitter.com/sidewaysgravity/status/888402105341530112">21 de julio de 2017</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+I created a [gist](https://gist.github.com/acelaya/41cf7457c2dbc434c4bb919a21e002da) with some of the approaches to reuse factories, but I think it deserves a blog post, so here it is.
+
+### Shared dependencies
+
+The simplest situation to reuse a factory is when you have more than one service with the same dependencies.
+
+This situation can be solved with an abstract factory, but you can also use a concrete factory, which is more efficient.
+
+Let's imagine you are using the [zend-db](https://docs.zendframework.com/zend-db/) package to deal with persistence, and you have created one `TableGateway` class for every table in your database.
+
+All of the `TableGateways` depend on a `Zend\DB\Adapter\AdapterInterface` to be injected on them, so creating a different factory for every one of them would be a waste of time.
+
+Instead, you just need to create a factory like this:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+use Interop\Container\ContainerInterface;
+use Zend\DB\Adapter\AdapterInterface;
+
+class TableGatewayFactory
+{
+    public function __invoke(ContainerInterface $container, string $requestedName)
+    {
+        $adapter = $container->get(AdapterInterface::class);
+        return new $requestedName($adapter);
+    }
+}
+```
+
+Then, register your table gateways using the FQCN:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+return [
+
+    'service_manager' => [
+        'factories' => [
+            UserTableGateway::class => TableGatewayFactory::class,
+            ArticleTableGateway::class => TableGatewayFactory::class,
+            FooTableGateway::class => TableGatewayFactory::class,
+        ],
+    ],
+
+];
+```
+
+If you prefer using an abstract factory, just do this:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+use Interop\Container\ContainerInterface;
+use Zend\DB\Adapter\AdapterInterface;
+use Zend\DB\TableGateway\TableGateway;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+
+class TableGatewayAbstractFactory implements AbstractFactoryInterface
+{
+    public function canCreate(ContainerInterface $container, $requestedName)
+    {
+        return is_subclass_of($requestedName, TableGateway::class);
+    }
+    
+    public function __invoke(ContainerInterface $container, $requestedName)
+    {
+        $adapter = $container->get(AdapterInterface::class);
+        return new $requestedName($adapter);
+    }
+}
+```
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+return [
+
+    'service_manager' => [
+        'abstract_factories' => [
+            TableGatewayAbstractFactory::class,
+        ],
+    ],
+
+];
+```
+
+### Using ConfigAbstractFactory
+
+The zend-servicemanager v3.2 introduced a built-in factory that can inject dependencies on services based on configuration.
+
+This is probably one of the better ways to reuse factories (indeed, you won't have to write any factory, since this one is included in the package).
+
+In 80% of the cases (if not more), a factory basically consists on grabbing some dependencies from the container, and creating a new instance of an object where those dependencies are injected. In those cases the `ConfigAbstractFactory` is perfect.
+
+When using this factory, you just need to define a configuration block where you define the service names on which every other service depends.
+
+For example, if we have this code base:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+class OtherService
+{
+    public function __construct()
+    {
+        // No dependencies
+    }
+}
+
+class BazService
+{
+    public function __construct()
+    {
+        // No dependencies
+    }
+}
+
+class BarService
+{
+    public function __construct(BazService $baz)
+    {
+        // Depends on BazService
+    }
+}
+
+class FooService
+{
+    public function __construct(BarService $baz, OtherService $other)
+    {
+        // Depends both on BarService and OtherService
+    }
+}
+```
+
+We just need to define a configuration like this:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
+use Zend\ServiceManager\Factory\InvokableFactory;
+
+return [
+    'service_manager' => [
+        'factories' => [
+            FooService::class => ConfigAbstractFactory::class,
+            BarService::class => ConfigAbstractFactory::class,
+            BazService::class => InvokableFactory::class,
+            OtherService::class => InvokableFactory::class,
+            // ...
+        ],
+    ],
+    
+    ConfigAbstractFactory::class => [
+        BarService::class => [BazService::class],
+        FooService::class => [BarService::class, OtherService::class],
+    ],
+];
+```
+
+Then, the `ConfigAbstractFactory` will look for all the services on which requested service depends, and inject them into it.
+
+Also, the package includes a binary that can be used to generate the `ConfigAbstractFactory` config for a service, so you won't even need to write that.
+
+This factory can be registered as an abstract factory too (indeed, it **is** an abstract factory), but as mentioned above, it is less efficient, and I prefer this approach.
