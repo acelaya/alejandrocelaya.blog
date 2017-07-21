@@ -78,6 +78,7 @@ return [
             UserTableGateway::class => TableGatewayFactory::class,
             ArticleTableGateway::class => TableGatewayFactory::class,
             FooTableGateway::class => TableGatewayFactory::class,
+            // ...
         ],
     ],
 
@@ -198,7 +199,6 @@ return [
             BarService::class => ConfigAbstractFactory::class,
             BazService::class => InvokableFactory::class,
             OtherService::class => InvokableFactory::class,
-            // ...
         ],
     ],
     
@@ -214,3 +214,133 @@ Then, the `ConfigAbstractFactory` will look for all the services on which reques
 Also, the package includes a binary that can be used to generate the `ConfigAbstractFactory` config for a service, so you won't even need to write that.
 
 This factory can be registered as an abstract factory too (indeed, it **is** an abstract factory), but as mentioned above, it is less efficient, and I prefer this approach.
+
+You have an in-detail documentation of this factory here: [https://docs.zendframework.com/zend-servicemanager/config-abstract-factory/](https://docs.zendframework.com/zend-servicemanager/config-abstract-factory/)
+
+### Using ReflectionBasedAbstractFactory
+
+This factory works similarly to the previous one, but instead of discovering the dependencies to inject based on a configuration array, it uses reflection on requested service.
+
+This has the small advantage that you don't have to specify the dependencies for every service. However, reflection is veeeery inefficient, so this factory is not suited for production, but only for prototyping purposes.
+
+Also, you need to register services with the same type used in the requested service constructor, so you can't type hint to an interface and then inject a service which is registered with an implementation name, or a string which is not even a class name.
+
+Apart form that, registration is equal to previous factories:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use Zend\ServiceManager\Factory\InvokableFactory;
+
+return [
+
+    'service_manager' => [
+        'factories' => [
+            FooService::class => ReflectionBasedAbstractFactory::class,
+            BarService::class => ReflectionBasedAbstractFactory::class,
+            BazService::class => InvokableFactory::class,
+            OtherService::class => InvokableFactory::class,
+        ],
+    ],
+
+];
+```
+
+The extended documentation for this factory can be found here: [https://zendframework.github.io/zend-servicemanager/reflection-abstract-factory/](https://zendframework.github.io/zend-servicemanager/reflection-abstract-factory/)
+
+### Using acelaya/zsm-annotated-services package
+
+Some time ago (when the `ConfigAbstractFactory` didn't exist yet), I created the [acelaya/zsm-annotated-services](https://github.com/acelaya/zsm-annotated-services) package, which provides one factory that can discover the list of dependencies of a service based on an `@Inject` annotation in its constructor, instead of using a configuration array.
+
+The first example could be redeclared like this:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+use Acelaya\ZsmAnnotatedServices\Annotation\Inject;
+
+class OtherService
+{
+    public function __construct()
+    {
+        // No dependencies
+    }
+}
+
+class BazService
+{
+    public function __construct()
+    {
+        // No dependencies
+    }
+}
+
+class BarService
+{
+    /**
+     * @Inject({BazService::class}) 
+     */
+    public function __construct(BazService $baz)
+    {
+        // Depends on BazService
+    }
+}
+
+class FooService
+{
+    /**
+     * @Inject({BarService::class, OtherService::class}) 
+     */
+    public function __construct(BarService $baz, OtherService $other)
+    {
+        // Depends both on BarService and OtherService
+    }
+}
+```
+
+And then, you just need to map the services to the `AnnotatedFactory` (select the right one, depending on the ServiceManager version)
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+use Acelaya\ZsmAnnotatedServices\Factory\V3\AnnotatedFactory;
+use Zend\ServiceManager\Factory\InvokableFactory;
+
+return [
+
+    'service_manager' => [
+        'factories' => [
+            FooService::class => AnnotatedFactory::class,
+            BarService::class => AnnotatedFactory::class,
+            BazService::class => InvokableFactory::class,
+            OtherService::class => InvokableFactory::class,
+            
+            // You will probably need to define some cache adapter in production
+            AnnotatedFactory::CACHE_SERVICE => SomeCacheFactory::class,
+        ],
+    ],
+
+];
+```
+
+The only drawback of this factory, is that you need to define a cache adapter in production, because processing annotations is very slow (it uses reflection too).
+
+Here you have the complete documentation: [https://github.com/acelaya/zsm-annotated-services](https://github.com/acelaya/zsm-annotated-services).
+
+However, if I were you, I would choose the `ConfigAbstractFactory` over this one, because using annotations couples the configuration with the service.
+
+### Conclusion
+
+The problem of defining several factories is usually the main argument I hear against using this component, but as you can see, there are several approaches to deal with it, without loosing control over your code base or depending on black magic.
+
+There are probably other options that I've missed here, so if you know any other option, just comment this post and I will gladly add it.
