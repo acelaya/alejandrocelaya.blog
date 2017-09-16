@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Setup a "Let's Encrypt" certificate in a AWS Elastic Load Balancer
+title: Setup a Let's Encrypt certificate in a AWS Elastic Load Balancer
 tags:
     - lets-encrypt
     - https
