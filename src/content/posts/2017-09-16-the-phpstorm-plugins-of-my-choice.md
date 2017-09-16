@@ -21,7 +21,7 @@ It autocompletes environment variables defined in the .env file and the docker-c
 
 It also displays the value defined for those env variables inside the file.
 
-![.env](/assets/img/phpstorm-plugins/dot-env.png)
+![.env](https://blog.alejandrocelaya.com/assets/img/phpstorm-plugins/dot-env.png)
 
 <blockquote>
     As a tip I will say that the first time I installed this plugin it didn't work for me, because I had the .env files associated with the ini file type. Make sure you associate them with the .env type instead to get it working.
@@ -49,7 +49,7 @@ It adds syntax highlight, autocompletion, quickfixes and refactoring for `bash` 
 
 It also allows you to add a missing shebang or even run the script right inside PhpStorm by right-clicking and selecting "Run".
 
-![BashSupport](/assets/img/phpstorm-plugins/bash-support.png)
+![BashSupport](https://blog.alejandrocelaya.com/assets/img/phpstorm-plugins/bash-support.png)
 
 Link: [https://plugins.jetbrains.com/plugin/4230-bashsupport](https://plugins.jetbrains.com/plugin/4230-bashsupport)
 
@@ -61,7 +61,7 @@ It adds a minimap inside any file editor, similar to the one that was made popul
 
 It can be used to get an idea of the size of the file just at a glance.
 
-![CodeGlance](/assets/img/phpstorm-plugins/code-glance.png)
+![CodeGlance](https://blog.alejandrocelaya.com/assets/img/phpstorm-plugins/code-glance.png)
 
 Link: [https://plugins.jetbrains.com/plugin/7275-codeglance](https://plugins.jetbrains.com/plugin/7275-codeglance)
 
@@ -83,7 +83,7 @@ This plugin adds a lot of features:
 
 This plugin almost suppresses the possibilities of breaking your code when running an automated use statements optimization or remove part of the annotation by mistake, things that cannot be caught by a unit test.
 
-![PHP Annotations](/assets/img/phpstorm-plugins/annotations.png)
+![PHP Annotations](https://blog.alejandrocelaya.com/assets/img/phpstorm-plugins/annotations.png)
 
 Link: [https://plugins.jetbrains.com/plugin/7320-php-annotations](https://plugins.jetbrains.com/plugin/7320-php-annotations)
 
@@ -97,7 +97,7 @@ It also displays warnings for common mistakes, like using the dev-master constra
 
 It is very useful when you don't remember the name of a package, since it autocompletes package names too.
 
-![PHP composer.json support](/assets/img/phpstorm-plugins/composer.png)
+![PHP composer.json support](https://blog.alejandrocelaya.com/assets/img/phpstorm-plugins/composer.png)
 
 Link: [https://plugins.jetbrains.com/plugin/7631-php-composer-json-support](https://plugins.jetbrains.com/plugin/7631-php-composer-json-support)
 
@@ -140,7 +140,7 @@ When you work on an API that needs to be documented, swagger is a really good to
 
 This plugin adds autocompletion and inspections on swagger docs, either yaml or JSON, so that you don't need to wait for external tools to validate your files.
 
-![Swagger plugin](/assets/img/phpstorm-plugins/swagger.png)
+![Swagger plugin](https://blog.alejandrocelaya.com/assets/img/phpstorm-plugins/swagger.png)
 
 Link: [https://plugins.jetbrains.com/plugin/8347-swagger-plugin](https://plugins.jetbrains.com/plugin/8347-swagger-plugin)
 
