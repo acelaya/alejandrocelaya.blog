@@ -1,6 +1,9 @@
 FROM php:7.1-alpine
 MAINTAINER Alejandro Celaya <alejandro@alejandrocelaya.com>
 
+# Make home directory writable by anyone
+RUN chmod 777 /home
+
 RUN apk update && \
     apk add --no-cache --virtual git
 
@@ -24,5 +27,5 @@ RUN chmod +x composer.phar
 RUN mv composer.phar /usr/local/bin/composer
 
 CMD cd /home/ac_blog/www && \
-    composer update && \
+    composer install && \
     composer up;
