@@ -32,14 +32,14 @@ Also, this module uses [Semantic Versioning](http://semver.org/), so it is safe 
 
 Finally, enable the module in your application configuration file.
 
-~~~php
+```php
 return [
     'modules' => [
         'Application',
         'AcMailer' // <- Add this line
     ],
 ]
-~~~
+```
 
 ### The new configuration structure
 
@@ -55,7 +55,7 @@ Since I was going to change that, I took the opportunity to make other naming ch
 
 The result was an structure like this.
 
-~~~php
+```php
 return [
     'acmailer_options' => [
 
@@ -128,7 +128,7 @@ return [
         ]
     ]
 ];
-~~~
+```
 
 The first change that can be seen is that the top level configuration key is no longer `mail_options`, but `acmailer_options`. I thought it was safer to use the module name, in order to prevent naming collisions. However, the old configuration key will keep working, but it's deprecated and will be removed in the next major version.
 
@@ -164,21 +164,21 @@ You just have to have the old **'mail_options'** configuration in the global con
 
 Just run this command:
 
-~~~bash
+```bash
 php public/index.php acmailer parse-config
-~~~
+```
 
 This will output the new configuration in phpArray format. To define another format, use the `format` value flag. like this.
 
-~~~bash
+```bash
 php public/index.php acmailer parse-config --format=ini
-~~~
+```
 
 To directly dump the configuration into a config file, use the `outputFile` value flag.
 
-~~~bash
+```bash
 php public/index.php acmailer parse-config --outputFile="config/autoload/new_mail.global.php"
-~~~
+```
 
 Take into account that you will loose any business logic in your config files, since this consumes the generated configuration. For example, if you are reading a password from an environment variable, you will have to manually check the output of this command to fix that, because the password will be now hardcoded in your new config file.
 
@@ -204,7 +204,7 @@ Once you have fetched a mail service, any configuration automatically set at cre
 
 In order to send the email, just fetch the service and call to the `send()` method. It will return a `AcMailer\Result\MailResult` instance.
 
-~~~php
+```php
 $mailService = $sm->get('acmailer.mailservice.default');
 $mailService->setBody('This is the body');
 
@@ -221,7 +221,7 @@ if ($result->isValid()) {
         echo sprintf('An error occurred. Message: %s', $result->getMessage());
     }
 }
-~~~
+```
 
 #### Customize the message
 
@@ -229,7 +229,7 @@ It is very probable that the recipients of the message (for example) have to be 
 
 Use the `getMessage()` method to get the wrapped `Zend\Mail\Message` instance and customize it.
 
-~~~php
+```php
 $mailService = $sm->get('acmailer.mailservice.default');
 
 $message = $mailService->getMessage();
@@ -237,7 +237,7 @@ $message->setSubject('This is the subject')
         ->addTo('foobar@example.com')
         ->addTo('another@example.com')
         ->addBcc('hidden@domain.com');
-~~~
+```
 
 #### Customize the body
 
@@ -247,7 +247,7 @@ In any case, the charset can be provided.
 
 Raw bodies:
 
-~~~php
+```php
 $mailService->setBody('Hello!!');
 $mailService->setBody('Hello!!', 'utf-8');
 $mailService->setBody('<h1>Hello!!</h1>', 'utf-8');
@@ -257,22 +257,22 @@ $part->charset = 'utf-8';
 $mailService->setBody($part);
 
 $mailService->setBody($part, 'utf-8');
-~~~
+```
 
 Templates:
 
-~~~php
+```php
 $mailService->setTemplate(new Zend\View\Model\ViewModel(), ['charset' => 'utf-8']);
 $mailService->setTemplate('application/emails/my-template', [
     'charset' => 'utf-8',
     'date' => date('Y-m-d'),
     'foo' => 'bar',
 ]);
-~~~
+```
 
 Complex templates:
 
-~~~php
+```php
 $layout = new \Zend\View\Model\ViewModel([
     'name' => 'John Doe',
     'date' => date('Y-m-d')
@@ -285,7 +285,7 @@ $footer->setTemplate('application/emails/footer');
 $layout->addChild($footer, 'footer');
 
 $mailService->setTemplate($layout);
-~~~
+```
 
 There is also a `setSubject()` public method, but it is marked as deprecated in this version and will be removed in the future. Use the `$message->setSubject()` method instead.
 
@@ -293,7 +293,7 @@ There is also a `setSubject()` public method, but it is marked as deprecated in 
 
 It is possible to add attachments or clean the attachments list before sending the message, by using the setter and adder methods.
 
-~~~php
+```php
 $mailService->addAttachment('data/mail/attachments/file1.pdf');
 $mailService->addAttachment('data/mail/attachments/file2.pdf', 'different-filename.pdf');
 
@@ -312,7 +312,7 @@ $mailService->setAttachments([
 
 // A good way to remove all attachments is to call this
 $mailService->setAttachments([]);
-~~~
+```
 
 ### Events layer
 
@@ -326,7 +326,7 @@ Finally, if an error occurs and an exception is thrown, the event `MailEvent::EV
 
 The mail listeners are attached and detached with two simple methods.
 
-~~~php
+```php
 $mailListener = new \Application\Event\MyMailListener();
 $mailService->attachMailListener($mailListener);
 
@@ -336,7 +336,7 @@ if ($foo) {
 }
 
 $mailService->send();
-~~~
+```
 
 This module doesn't come with any built-in mail listener, you will have to create your own listeners by extending `AcMailer\Event\AbstractMailListener` and implementing the `onPreSend`, `onPostSend` and `onSendError` methods, which receive a `AcMailer\Event\MailEvent` object as an argument, which in turn wraps the mail service itself, so that you can customize anything at any of those points.
 

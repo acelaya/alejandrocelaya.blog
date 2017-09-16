@@ -1,7 +1,7 @@
 ---
 layout: post
 permalink: /2017/05/28//how-to-customize-not-found-and-method-not-allowed-response-prototypes-in-zend-expressive-2
-title: "How to customize \"not found\" and \"method not allowed\" response prototypes in Zend expressive 2"
+title: "How to customize 'not found' and 'method not allowed' response prototypes in Zend expressive 2"
 categories: [php,zf]
 tags: [zend-expressive,psr-7,middleware,psr-15,zf3]
 ---

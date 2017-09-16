@@ -25,7 +25,7 @@ Zend Framework 2 modules usually have a standard folder structure. A view folder
 
 This could be the structure of our module:
 
-~~~
+```
 MyModule
 | - config
 | - languages
@@ -48,7 +48,7 @@ MyModule
 | - view
 | - composer.json
 | - Module.php
-~~~
+```
 
 If you don't want to create this by yourself, this module can be found [here](https://github.com/acelaya-blog/zf2-testing).
 
@@ -64,7 +64,7 @@ In the getting started documentation used to be a different approach, but it see
 
 The thing is that when I make a unit test I just want to test one class, one tiny component, and don't need to load everything else. That's why I prefer to use the composer's autoloader, which makes the bootstrap script much simpler.
 
-~~~php
+```php
 <?php
 $vendorDir = findParentPath('vendor');
 
@@ -87,7 +87,7 @@ function findParentPath($path)
     }
     return $dir . '/' . $path;
 }
-~~~
+```
 
 What this script does is basically trying to recursively find the vendor folder in a parent directory. If it finds it, it includes the autoloader, if not, it throws a `RuntimeException`.
 
@@ -97,7 +97,7 @@ That makes us not having to use `Zend\Loader`, loading modules, preparing a `Ser
 
 For our example, the composer.json autoloading could be something like this:
 
-~~~javascript
+```javascript
 [...]
 
 "autoload": {
@@ -109,7 +109,7 @@ For our example, the composer.json autoloading could be something like this:
 }
 
 [...]
-~~~
+```
 
 <blockquote class="text-muted">For more information on how to use composer, read
     <a href="/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">this</a>
@@ -119,7 +119,7 @@ For our example, the composer.json autoloading could be something like this:
 
 Once the bootstrap script is clear, we need to define the phpunit config file. It is just a common phpunit.xml file, nothing special, you just need to define the test suites you want. In our case there will be two testsuites, one for controllers and one for services, but we could include others if needed.
 
-~~~xml
+```xml
 <?xml version="1.0"?>
 <phpunit bootstrap="./bootstrap.php"
          colors="true"
@@ -146,7 +146,7 @@ Once the bootstrap script is clear, we need to define the phpunit config file. I
     </filter>
 
 </phpunit>
-~~~
+```
 
 ### Writing tests
 
@@ -156,7 +156,7 @@ The subjects under test (both classes we are going to test) can be found in the 
 
 **MyServiceTest**:
 
-~~~php
+```php
 <?php
 namespace MyModuleTest\Service;
 
@@ -222,7 +222,7 @@ class MyServiceTest extends TestCase
         $this->assertTrue($barIsTriggered);
     }
 }
-~~~
+```
 
 The MyService class just wraps an EventManager which handles two events. When we call MyService::foo, the event manager triggers the foo event, passing a param to it called argument with the value foo. When we call MyService::bar the same happens, but both the event triggered and the param are bar instead of foo.
 
@@ -232,7 +232,7 @@ As you can see it is a simple PHPUnit test which extends `PHPUnit_Framework_Test
 
 **IndexController**:
 
-~~~php
+```php
 <?php
 namespace MyModuleTest\Controller;
 
@@ -287,7 +287,7 @@ class IndexControllerTest extends TestCase
         $this->assertEquals('/home', $headers['Location']);
     }
 }
-~~~
+```
 
 Once again this is a simple PHPUnit test which checks every method in the IndexController class does what it's intended to do.
 

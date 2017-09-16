@@ -50,7 +50,7 @@ That service abstracts the concrete implementation for each social network, and 
 
 It could look like this:
 
-~~~php
+```php
 namespace Acelaya\Social;
 
 use Acelaya\Social\Connector\FacebookConnector;
@@ -95,7 +95,7 @@ class SocialUsers
         }
     }
 }
-~~~
+```
 
 The service methods call to the proper connector based on the social network we specify. Apparently, it's a simple implementation.
 
@@ -105,7 +105,7 @@ The solution would be to create a `SocialPluginManager`, an object that extends 
 
 Each social connector should implement an interface like this.
 
-~~~php
+```php
 namespace Acelaya\Social\Connector;
 
 interface SocialConnectorInterface
@@ -120,11 +120,11 @@ interface SocialConnectorInterface
      */
     public function getUserData($authToken);
 }
-~~~
+```
 
 Then the `SocialPluginManager` will just need to check if any created object implements it.
 
-~~~php
+```php
 namespace Acelaya\Social;
 
 use Acelaya\Social\Connector\SocialConnectorInterface;
@@ -157,11 +157,11 @@ class SocialPluginManager extends AbstractPluginManager
         ));
     }
 }
-~~~
+```
 
 We now need to refactor the `SocialUsers` service so that it depends on the `SocialPluginManager`.
 
-~~~php
+```php
 namespace Acelaya\Social;
 
 use Acelaya\Social\Connector\SocialConnectorInterface;
@@ -203,13 +203,13 @@ class SocialUsers
         return $this->socialPlugins->get($socialNetwork);
     }
 }
-~~~
+```
 
 The resulting code is much cleaner, and now we can add any new social network without having to change the `SocialUsers` service. We just need to create and register the new social connector.
 
 The last thing we have to do is defining the `SocialPluginManager` configuration. Since the `AbstractPluginManager` extends the `ServiceManager`, it is exactly the same as the one used for it. To make the previous code work, we have to use the social network name as the service name for each connector, so the configuration could look like this.
 
-~~~php
+```php
 use Acelaya\Social\Connector;
 
 return [
@@ -219,7 +219,7 @@ return [
         'linkedin' => Connector\LinkedinConnectorFactory::class,
     ]
 ];
-~~~
+```
 
 I have used factories as an example, but you can use any valid strategy you want.
 

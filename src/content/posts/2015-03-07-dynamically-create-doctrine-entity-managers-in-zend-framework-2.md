@@ -25,7 +25,7 @@ Let's assume we have one default database with a couple tables, one *users* tabl
 
 To access this database we are going to use the default `EntityManager`, with a configuration like this.
 
-~~~php
+```php
 return [
     
     'doctrine' => [
@@ -68,7 +68,7 @@ return [
     ],
 
 ];
-~~~
+```
 
 With this configuration it is easy to get an `EntityManager` instance, just by fetching it from the `ServiceManager` with the key `doctrine.entitymanager.orm_default`.
 
@@ -78,7 +78,7 @@ But how do we configure an entity manager connection when we don't know which is
 
 The first thig we are going to do es to define another connection configuration but leaving the dbname empty.
 
-~~~php
+```php
 return [
     
     'doctrine' => [
@@ -138,11 +138,11 @@ return [
     ],
 
 ];
-~~~
+```
 
 Now I'm going to define a custom factory that will get current user's database name and update the configuration on the fly before creating the `EntityManager`.
 
-~~~php
+```php
 namespace Acelaya\Blog\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
@@ -176,7 +176,7 @@ class DynamicEMFactory implements FactoryInterface
         return $serviceLocator->get('doctrine.entitimanager.dynamic_orm');
     }
 }
-~~~
+```
 
 Let's see what this factory does.
 
@@ -190,7 +190,7 @@ Finally we use the DoctrineModule's standard factories to create our `EntityMana
 
 The last thing to do would be to define a custom name for this service.
 
-~~~php
+```php
 return [
     'service_manager' => [
         'factories' => [
@@ -198,7 +198,7 @@ return [
         ]
     ]
 ];
-~~~
+```
 
 And that should be it. Once you fetch this service from the `ServiceManager` (`$sm->get('DynamicEntityManager')`), it will dynamically update the configuration and create the entity manager.
 

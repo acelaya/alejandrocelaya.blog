@@ -30,7 +30,7 @@ Using this package, we can limit the values of properties in doctrine entities, 
 
 Let's imagine we have this enum, and we want it to be a valid doctrine type.
 
-~~~php
+```php
 <?php
 namespace Acelaya\Enum;
 
@@ -43,11 +43,11 @@ class Action extends Enum
     const UPDATE    = 'update';
     const DELETE    = 'delete';
 }
-~~~
+```
 
 We also have this entity with a column of type `Acelaya\Enum\Action`.
 
-~~~php
+```php
 <?php
 namespace Acelaya\Entity;
 
@@ -83,13 +83,13 @@ class MyEntity
 
     // Getters and setters...
 }
-~~~
+```
 
 We have used the column type **php_enum_action** in the `Doctrine\ORM\Mapping\Column` annotation for the `$action` property. We now need to tell doctrine how to convert that type from PHP to database and how to hydrate the column back.
 
 Defining a custom type in doctrine is as easy as creating a class extending `Doctrine\DBAL\Types\Type`, and overwriting the methods `getName`, `getSQLDeclaration`, `convertToPHPValue` and `convertToDatabaseValue`.
 
-~~~php
+```php
 <?php
 namespace Acelaya\Type;
 
@@ -140,7 +140,7 @@ class ActionEnumType extends Type
         return (string) $value;
     }
 }
-~~~
+```
 
 This is what each method does:
 
@@ -153,7 +153,7 @@ We now have to register this custom type so that doctrine is able to handle it.
 
 At your application's bootstrap, make this call.
 
-~~~php
+```php
 // [...]
 
 use Doctrine\DBAL\Types\Type;
@@ -162,7 +162,7 @@ use Acelaya\Type\ActionEnumType;
 // [...]
 
 Type::addType('php_enum_action', ActionEnumType::class);
-~~~
+```
 
 And that's it! You can use your custom type wherever you want, and be sure that your entity properties will be objects properly persisted into the database.
 
@@ -176,7 +176,7 @@ This package eases that process, by providing a base abstract class, the `Acelay
 
 For example, using this package, the `Acelaya\Type\ActionEnumType` would have been like this:
 
-~~~php
+```php
 <?php
 namespace Acelaya\Type;
 
@@ -198,6 +198,6 @@ class ActionEnumType extends AbstractPhpEnumType
         return 'action';
     }
 }
-~~~
+```
 
 The rest of the process is the same.

@@ -28,7 +28,7 @@ Sometimes we could need to connect to two different databases and handle their c
 
 For this purpose, Doctrine allows us to define multiple connections and different EntityManagers to handle them. This could be our configuration file.
 
-~~~php
+```php
 <?php
 return array(
 
@@ -73,7 +73,7 @@ return array(
 
     )
 );
-~~~
+```
 
 As you can see, two connections have been defined, the standard `orm_default` and a new `orm_another` connection.
 
@@ -93,7 +93,7 @@ It defines a unique database entry point, that is used for write operations (INS
 
 To set up this kind of connection in our `doctrine_connection.global.php` configuration file we could use something like this.
 
-~~~php
+```php
 <?php
 return array(
 
@@ -132,6 +132,6 @@ return array(
     ),
 
 );
-~~~
+```
 
 In this example we have defined a master connection and two slave connections. Doctrine will be aware of handling connections internally, it is transparent for us, we only need to use one EntityManager by getting the `Doctrine\ORM\EntityManager` service and we won’t need to change anything in the code.

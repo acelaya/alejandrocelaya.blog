@@ -32,13 +32,13 @@ By default, with no sub-namespaces, we will get a folder with the name of the ve
 
 If our module does not follow this standard folder structure we will have to tell Zend Framework where the Module class is, for example in the application config file, in the `module_paths` part, like this.
 
-~~~php
+```php
 'module_paths' => array(
     './module',
     './vendor',
     'HappyFactory\WebService\Module' => './vendor/myname/happyfactory/WebService'
 )
-~~~
+```
 
 But this is not the perfect solution, since we will need to update the config file for each sub-namespaced module we install, and paths can change in the future.
 
@@ -46,7 +46,7 @@ The best solution is to use the composer autoloading system to autoload the Modu
 
 This way, our composer.json autoload for the module will look like this.
 
-~~~json
+```json
 {
     "autoload" : {
         "psr-0" : {
@@ -57,17 +57,17 @@ This way, our composer.json autoload for the module will look like this.
         ]
     }
 }
-~~~
+```
 
 The `psr-0` part tells composer how to load the classes in the src folder. The `classmap` part makes composer to be able to load the Module class in a specific file, so Zend Framework will be able to load it by using the composer autoloader just by including it in our modules list like this.
 
-~~~php
+```php
 'modules' => array(
     'Application',
     'HappyFactory\WebService',
     'AcMailer',
 ),
-~~~
+```
 
 Even so, I would recommend to register  the module at the same folder where the Module class is, that is to say, in our exampple, the WebService folder, instead of the HappyFactory folder.
 

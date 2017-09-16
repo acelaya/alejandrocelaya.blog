@@ -54,7 +54,7 @@ Let's imagine we want our users to use database authentication (the provided use
 
 This could be the creation of the AuthenticationService.
 
-~~~php
+```php
 // [...]
 
 // We have passwords hashed with password_hash in the database,
@@ -78,7 +78,7 @@ $storage = new \Zend\Authentication\Storage\Session();
 
 // Finally create the service
 $authService = new \Zend\Authentication\AuthenticationService($storage, $adapter);
-~~~
+```
 
 And that would be all we need. That code could be located in some kind of factory or bootstrap script. We could also use a dependency injection container implementation to create the AuthenticationService object.
 
@@ -86,7 +86,7 @@ And that would be all we need. That code could be located in some kind of factor
 
 Then, if we need to use the autentication service to perform an authentication, this would be the code. I have created a class that could act as a controller.
 
-~~~php
+```php
 class MyController
 {
     /**
@@ -111,7 +111,7 @@ class MyController
         return $result->isValid() ? 'Login OK!' : 'Wrong username or password';
     }
 }
-~~~
+```
 
 As you can see, we have to set the identity (usually a username) and the credential (the password) to the adapter wrapped by the AuthenticationService, and then call to the method authenticate.
 
@@ -133,7 +133,7 @@ Since we set a PHP session storage object, it can look at that storage for a pre
 
 At some kind of pre-dispatch hook, after any operation that needs atuhentication is preformed, we could do something like this.
 
-~~~php
+```php
 // [...]
 
 /** @var \Zend\Authentication\AuthenticationService $authService */
@@ -144,7 +144,7 @@ if (!$authService->hasIdentity()) {
 }
 
 // [...]
-~~~
+```
 
 The Response object is a fake object I made up just for this example, but it represents that if the user is not logged in we return a 403 error.
 
@@ -156,7 +156,7 @@ Finally any user could want to logout from the system. The AuthenticationService
 
 Let's extend the previous `MyController` class.
 
-~~~php
+```php
 class MyController
 {
     /**
@@ -181,6 +181,6 @@ class MyController
         return 'User logged out successfully';
     }
 }
-~~~
+```
 
 And that's pretty much all you can (and probably need) to do with the AuthenticationService.
