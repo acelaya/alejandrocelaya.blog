@@ -5,13 +5,13 @@ Set -e
 rm -rf build
 
 # Run grunt tasks
-npm install
-grunt
+./innode npm install
+./innode node_modules/.bin/grunt
 
 # Generate production site
-composer update
-vendor/bin/spress site:build --env=pro
-grunt post-generate
+./inphp composer update
+./inphp vendor/bin/spress site:build --env=pro
+./innode node_modules/.bin/grunt post-generate
 git checkout -- src/layouts/default.html.twig
 
 # Deploy blog
