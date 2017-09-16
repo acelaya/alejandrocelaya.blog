@@ -22,7 +22,6 @@ It easily allows us to handle object instances, construct them and share them be
 By using a simple configuration file, we define how our objects have to be constructed,  by a simple `new`, by using a `factory`, etc.
 
 ```php
-<?php
 return array(
     // ...
 
