@@ -88,6 +88,21 @@ module.exports = function(grunt) {
                 'build/assets/js/acelayablog.js',
                 'build/assets/js/main.js'
             ]
+        },
+
+        htmlmin: {
+            production: {
+                options: {                                 // Target options
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'build',
+                    src: ['*.html', '**/*.html', '!404.html'],
+                    dest: 'build'
+                }]
+            }
         }
 
     });
@@ -95,6 +110,7 @@ module.exports = function(grunt) {
     // Load plugins
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-processhtml');
     grunt.loadNpmTasks('grunt-string-replace');
