@@ -2,14 +2,13 @@
 Set -e
 
 # Delete the old production folder
-sudo rm -rf build
+rm -rf build
 
 # Run grunt tasks
 npm install
 grunt
 
 # Generate production site
-sudo rm -rf build
 composer update
 vendor/bin/spress site:build --env=pro
 grunt post-generate
