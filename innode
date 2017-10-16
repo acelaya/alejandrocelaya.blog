@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker run -it --rm --name ac_blog_node -v ${PWD}/:/home/ac_blog node:8.5-alpine /bin/sh -c "cd /home/ac_blog && $*"

@@ -30,7 +30,7 @@ The same will be applicable for any other module name. Authentication, Admin, We
 
 The module folder usually has the same name as the module, and the Module class is located in the root of that folder. Then we have an src folder inside of it where a new directory is created for each level in the namespace. In our Application example this would be the folder structure.
 
-~~~
+```
 modules
     Application
         src
@@ -42,11 +42,11 @@ modules
                 ...
         Module.php
     ...
-~~~
+```
 
 The module class has a method where we define how to load the classes in the module. This could be the Application\Module class
 
-~~~php
+```php
 <?php
 namespace Application;
 
@@ -65,7 +65,7 @@ class Module implements AutoloaderProviderInterface
         );
     }
 }
-~~~
+```
 
 A Zend\Loader\StandardAutoloader is created defining any class in the same namespace as the Module namespace should be located in the src folder.
 
@@ -79,7 +79,7 @@ This can be easily done by making some changes to our folder structure and autol
 
 The module class will be changed to look like this.
 
-~~~php
+```php
 <?php
 namespace HappyFactory\Application;
 
@@ -98,13 +98,13 @@ class Module implements AutoloaderProviderInterface
         );
     }
 }
-~~~
+```
 
 We just updated the namespace and make sure to load classes within that namespace.
 
 Now our folder structure. In the basic example the module folder was placed inside the modules folder  (the folder used in Zend Framework 2 by default to load modules), but in this case we are going to have another folder in between, the HappyFactory folder.
 
-~~~
+```
 modules
     HappyFactory
         Application
@@ -129,13 +129,13 @@ modules
             Module.php
         ...
     ...
-~~~
+```
 
 This method is much more verbose and has more empty directories, but it works, and can be combined with regular modules too, just place them outside of the HappyFactory folder.
 
 To load this sub-namespaced modules just add the namespace of the Module class (HappyFactory\Application, HappyFactory\WebService…) in the list of modules in the application.config.php file like this.
 
-~~~php
+```php
 ...
 
 'modules' => array(
@@ -147,7 +147,7 @@ To load this sub-namespaced modules just add the namespace of the Module class (
 ),
 
 ...
-~~~
+```
 
 They will be properly loaded with the rest of the company modules and third-party modules.
 
@@ -167,7 +167,7 @@ In a standard module, let’s say Application, with an Application\Controller\In
 
 In a sub-namespaced module like HappyFactory\WebService with a HappyFactory\WebService\Controller\IndexController, the resolved path would be happy-factory/index/index, the same as the one resolved if the module was HappyFactory\Application\Controller\IndexController. If we want them to be happy-factory/web-service/index/index, as we could expect, we have to use the `controller_map` configuration entry, which was introduced in ZF 2.3.
 
-~~~php
+```php
 <?php
 return array(
    'view_manager' => array(
@@ -183,6 +183,6 @@ return array(
     ),
     // ...
 )
-~~~
+```
 
 Once we have set this for each of our modules (or once for the top level namespace), the template paths would be resolved as one could expect in a sub-namespaced module.

@@ -50,17 +50,17 @@ Once all the requirements are clear we are going to compile the NSIS binary that
 
 We have to be at the source code directory, in my case `/home/alejandro/nsis/nsis-2.46-src`, and we execute this command.
 
-~~~
+```
 scons SKIPSTUBS=all SKIPPLUGINS=all SKIPUTILS=all SKIPMISC=all NSIS_CONFIG_CONST_DATA=no PREFIX=/path/where/distributable/was/extracted install-compiler
-~~~
+```
 
 Notice that _install-compiler_ is an argument of the command that is placed at the end, and is not part of the distributable path.
 
 In my case, using my real path, the resulting command would be this:
 
-~~~
+```
 scons SKIPSTUBS=all SKIPPLUGINS=all SKIPUTILS=all SKIPMISC=all NSIS_CONFIG_CONST_DATA=no PREFIX=/home/alejandro/nsis/nsis-2.46 install-compiler
-~~~
+```
 
 The execution of this command will compile the code, generating the `makensis` binary at the bin directory inside the distributable  package folder, in my case `/home/alejandro/nsis/nsis-2.46/bin`.
 
@@ -70,10 +70,10 @@ Now that we have makensis created its a good idea to make it available from anyw
 
 Using the paths from our example, running this commands will make the job.
 
-~~~
+```
 chmod +x /home/alejandro/nsis/nsis-2.46/bin/makensis
 ln -s /home/alejandro/nsis/nsis-2.46/bin/makensis /usr/local/bin/makensis
-~~~
+```
 
 Now it is time to test the command. Running `makensis` from anywhere should output something like this.
 
@@ -83,10 +83,10 @@ If we have an nsis script, runing the command makensis /path/to/script.nsi will 
 
 **Atention!** While running this command there could be this error.
 
-~~~
+```
 Error: opening stub "/home/alejandro/nsis/nsis-2.46/share/nsis/Stubs/zlib
 Error initalizing CEXEBuild: error setting default stub
-~~~
+```
 
 This could happen because of a path error, but solving it is very simple, just go to the NSIS distributable folder, `/home/alejandro/nsis/nsis-2.46` in my case, and create the folder share [`mkdir share`], go to that folder an create a symbolic link running ln -s `/home/alejandro/nsis/nsis-2.46 nsis`.
 

@@ -21,8 +21,7 @@ It easily allows us to handle object instances, construct them and share them be
 
 By using a simple configuration file, we define how our objects have to be constructed,  by a simple `new`, by using a `factory`, etc.
 
-~~~php
-<?php
+```php
 return array(
     // ...
 
@@ -44,7 +43,7 @@ return array(
 
     // ...
 )
-~~~
+```
 
 <span class="text-muted">For more information about the service manager configuration read [this](https://framework.zend.com/manual/2.3/en/modules/zend.service-manager.quick-start.html).</span>
 
@@ -66,7 +65,7 @@ By using service [factories](https://github.com/zendframework/zf2/blob/master/li
 
 This is a better practice, which allows us to easily test our code and decouples the components of our application.
 
-~~~php
+```php
 <?php
 namespace Application\Service\Factory;
 
@@ -84,7 +83,7 @@ class MyServiceFactory implements FactoryInterface
         return new MyService($oneDependency, $anotherDependency);
     }
 }
-~~~
+```
 
 As you can see in this factory, we have used the service manager just to locate the dependencies of the object we are creating, but then that object is not “aware” of the service manager any more, to avoid bad practices while using it.
 

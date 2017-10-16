@@ -27,7 +27,7 @@ To use Ivy we need to create an `ivy.xml` file in the project root directory. It
 
 This is the [Subconnector](https://github.com/acelaya/subclient-subconnector) Ivy script.
 
-~~~xml
+```xml
 <ivy-module version="2.0">
     <info organisation="net.subclient" module="subconnector" />
 
@@ -38,7 +38,7 @@ This is the [Subconnector](https://github.com/acelaya/subclient-subconnector) Iv
         <dependency org="org.apache.commons" name="commons-lang3" rev="3.1"/>
     </dependencies>
 </ivy-module>
-~~~
+```
 
 As you can see, it is very simple. We just defined an info element with the basic project information, and a dependencies element with nested information of each of the dependencies of the project.
 
@@ -56,26 +56,26 @@ We just need to copy and paste it. Nice and easy.
 
 Once our Ivy script is ready, it is time to include retrieving dependencies in our building process. The easiest way to do it is to create an Ant target in our `build.xml` script, like this.
 
-~~~xml
+```xml
 <target name="retrieve-dependencies"
         description="Retrieve dependencies with Apache IVY">
 
     <ivy:retrieve type="jar" />
 
 </target>
-~~~
+```
 
 This will look for the ivy.xml script and download dependencies defined on it in a lib folder, but only binary jar files. If `type="jar"` is removed, all docs, sources and binaries will be retrieved.
 
 Make sure to add Ivy binaries to Ant classpath to make it properly work. The `project` element in the build script will need also to look like this.
 
-~~~xml
+```xml
 <project basedir="." default="build" name="Subconnector" xmlns:ivy="antlib:org.apache.ivy.ant">
 
     ...
 
 </project>
-~~~
+```
 
 Notice the `xmlns:ivy` attribute.
 

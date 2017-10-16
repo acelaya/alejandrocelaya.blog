@@ -30,7 +30,7 @@ Entities will have an ID, but instead of setting them with an autoincrement stra
 
 We are also going to initialize the ID in the entity's constructor. Once the entity is created, it will have an ID, generated outside the database, but unique, so we can safely persist the entity.
  
-~~~php
+```php
 namespace Acelaya\Blog\Entity;
 
 use Ramsey\Uuid\Uuid;
@@ -75,20 +75,20 @@ class User
 
     // Getters and setters...
 }
-~~~
+```
 As you can see, we don't have to set the `@GeneratedValue` annotation in the `id` property, since the value is not generated in the database. Instead, it is initialized in the contructor.
 
 ### Registering the type
 
 The last example is very simple. We don't have to do anything, and our `id` will be a `Ramsey\Uuid\Uuid` instance, so we can compare it with other UUIDs and serialize it in many ways, but Doctrine doesn't know how to serialize and deserialize that field while exchanging data with the database. We need to register the **uuid** type.
 
-~~~php
+```php
 use Doctrine\DBAL\Types\Type;
 use Ramsey\Uuid\Doctrine\UuidType;
 
 // Some kind of bootstrapping...
 
 Type::addType('uuid', UuidType::class);
-~~~
+```
 
 Once this is set, we can use the **uuid** doctrine type for any property and it will be properly serialized/unserialized. We just need to initialize those properties in our entities's constructors with the desired UUID version.

@@ -30,7 +30,7 @@ By default, ZF2 uses a psr-0-like way to perform autoloading. This would force u
 
 With the previously mentioned namespace, the module's folder structure would be this.
  
-~~~
+```
 modules
 └── ZasDev
     └── AtomicReader
@@ -50,7 +50,7 @@ modules
             │               └── Service
             │                   └── ...
             └── Module.php
-~~~
+```
 
 There are people that think that is the correct way to work, but I don't like to have so many "empty" folders.
 
@@ -60,7 +60,7 @@ As I mentioned in previous articles, the automatic view script resolution in Zen
  
 In the original articles we found that the solution was to use the `controller_map` option for the `view_manager` configuration like this.
 
-~~~php
+```php
 <?php
 return [
     'view_manager' => [
@@ -69,13 +69,13 @@ return [
         ]
     ]
 ];
-~~~
+```
 
 That will make the view resolver to use all the controller's namespace levels as folders, which solves the original problem but generates a similar problem as in the autoloading case, by making us to have a lot of empty folders.
 
 The last example would produce this folder structure for view scripts.
 
-~~~
+```
 modules
 └── ZasDev
     └── AtomicReader
@@ -91,7 +91,7 @@ modules
             ├── src
             │   └── ...
             └── Module.php
-~~~
+```
 
 ### The solutions
 
@@ -101,7 +101,7 @@ This days everybody uses [composer](https://getcomposer.org/) on their PHP proje
  
 By having this module's folder structure, which is much more usable.
 
-~~~
+```
 modules
 └── Auth
     ├── config
@@ -116,11 +116,11 @@ modules
         ├── Service
         │   └── ...
         └── Module.php
-~~~
+```
 
 We just need to define this psr-4 autoloading strategy in our composer.json and all the classes will be properly loaded.
 
-~~~javascript
+```javascript
 // composer.json
 {
     "autoload" : {
@@ -129,7 +129,7 @@ We just need to define this psr-4 autoloading strategy in our composer.json and 
         }
     }
 }
-~~~
+```
 
 And then just refresh the autoloader by running `composer dumpautoload`.
 
@@ -139,7 +139,7 @@ The problem with the view scripts resolution can be fixed by changing the `contr
 
 With this configuration, we will get controllers in the `ZasDev\AtomicReader\Auth` namespace to be resolved to the `auth` folder.
 
-~~~php
+```php
 <?php
 return [
     'view_manager' => [
@@ -149,11 +149,11 @@ return [
         ]
     ]
 ];
-~~~
+```
 
 And our complete module's folder structure will end like this.
 
-~~~
+```
 modules
 └── Auth
     ├── config
@@ -170,7 +170,7 @@ modules
         ├── Service
         │   └── ...
         └── Module.php
-~~~
+```
 
 ### Other approaches
 

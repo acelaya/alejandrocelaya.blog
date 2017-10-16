@@ -32,7 +32,7 @@ One of those events is the dispatch MVC event, which is triggered at the moment 
 
 This is an example of a basic Module class where the dispatch event is prepared to be catched when it occurs.
 
-~~~php
+```php
 <?php
 namespace Application;
 
@@ -70,7 +70,7 @@ class Module implements ConfigProviderInterface, AutoloaderProviderInterface
         );
     }
 }
-~~~
+```
 
 The onBootstrap() method is automatically called when the bootsrap MVC event is triggered on this module, which is one of the firt things that happen when a module is loaded.
 
@@ -78,21 +78,21 @@ In there we have registered an event handler for the dispatch MVC event of this 
 
 The problem is that this code will be called just after the action. To ensure that code is executed before the action (`preDispatch()`) we need to add a priority when the event handler is attached.
 
-~~~php
+```php
 $eventManager->getSharedManager()->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, function ($e) {
     // This is executed on preDispatch
 }, 100);
-~~~
+```
 
 Default priority is 1, so any number greater than 1 will make the event to be triggered before.
 
 By using a negative priority we ensure the event is called after the action (postDispatch()), but this is the default behavior.
 
-~~~php
+```php
 $eventManager->getSharedManager()->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, function ($e) {
     // This is executed on postDispatch
 }, -100);
-~~~
+```
 
 Attaching multiple event handlers will make the to be executed in order of priority or in the order they were attached when they have the same priority.
 

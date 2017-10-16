@@ -44,7 +44,7 @@ This are some examples of famous PHP project's `composer.json` files:
 
 Now lets see a simpler composer file:
 
-~~~json
+```json
 {
     "name" : "acelaya/zf2-acmailer",
     "description" : "Mail sending module for Zend Framework 2",
@@ -88,7 +88,7 @@ Now lets see a simpler composer file:
         ]
     }
 }
-~~~
+```
 
 This is the composer file of my Zend Framework 2 module [AcMailer](https://github.com/acelaya/ZF2-AcMailer). Let's explain it.
 

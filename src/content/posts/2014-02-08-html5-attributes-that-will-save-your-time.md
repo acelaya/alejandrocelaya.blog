@@ -22,11 +22,11 @@ This is a boolean attribute, which means any value assigned to it is a valid val
 
 **Usage:**
 
-~~~html
+```html
 <input type="text" autofocus>
 <textarea autofocus></textarea>
 <button type="submit" autofocus>Send</button>
-~~~
+```
 
 In a page there should be only one element with this attribute, but the last one will gain focus if more than one is present.
 
@@ -38,12 +38,12 @@ The placeholder attribute allows us to define a helper text or default value in 
 
 **Usage:**
 
-~~~html
+```html
 <input type="text" placeholder="Name">
 <input type="email" placeholder="Email address">
 <input type="password" placeholder="Enter password">
 <textarea placeholder="Comments"></textarea>
-~~~
+```
 
 This attribute is very useful in `<input[type=password]>` elements, where the placeholder value will be displayed despite that the user input will be hidden.
 
@@ -63,10 +63,10 @@ Spellcheck accepts values true to enable the feature and false to disable it.
 
 **Usage:**
 
-~~~html
+```html
 <input type="text" spellcheck="true">
 <textarea spellcheck="false"></textarea>
-~~~
+```
 
 It is enabled in major browsers by default, so we will only need to disable it if needed.
 
@@ -78,10 +78,10 @@ This is also an attribute that can only be used on text input elements. It allow
 
 **Usage:**
 
-~~~html
+```html
 <input type="text" maxlength="10" placeholder="You can't write more than 10 characters in here">
 <textarea maxlength="200"></textarea>
-~~~
+```
 
 This attribute is useful to make client-side validation of the length of a field, but make sure to make server-side validation too.
 
@@ -97,13 +97,13 @@ The start attribute is only used at ordered lists, `<ol>`, and is used to define
 
 **Usage:**
 
-~~~html
+```html
 <ol start="6">
     <li>Item nuber six</li>
     <li>Item number seven</li>
     <li>Item number eight</li>
 </ol>
-~~~
+```
 
 All major browsers support this attribute.
 
@@ -123,13 +123,13 @@ It is boolean, so its only presence will make the magic.
 
 **Usage:**
 
-~~~html
+```html
 <ol reversed>
     <li>Item number three</li>
     <li>Item number two</li>
     <li>Item number one</li>
 </ol>
-~~~
+```
 
 **Example:**
 
@@ -163,10 +163,10 @@ Accepts values _true_ and _false_, enabling or disabling the behavior.
 
 **Usage:**
 
-~~~html
+```html
 <p contenteditable="true">This content is editable</p>
 <div contenteditable="false">This content is NOT editable</div>
-~~~
+```
 
 This attribute is compatible with all major browsers.
 

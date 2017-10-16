@@ -29,10 +29,10 @@ After downloading the `composer.phar` file from the [composer](https://getcompos
 
 In UNIX systems, just make the file executable and move it to a folder that's already in the path.
 
-~~~bash
+```bash
 sudo chmod +x composer.phar
 sudo mv composer.phar /usr/local/bin/composer
-~~~
+```
 
 Under Windows systems, there is an installer that will make the work for you. Download it [here](https://getcomposer.org/doc/00-intro.md#installation-windows).
 
@@ -62,9 +62,9 @@ That is ok for development, but in production we need something more efficient t
  
 To get this done, in a deployment process, we should run this command instead.
 
-~~~bash
+```bash
 composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
-~~~
+```
 
 This is what each flag makes:
 
@@ -85,7 +85,7 @@ The composer.json file can include a **repositories** block, where we define oth
 
 There are several repository types supported by composer, from a VCS repository to a plain local directory containing zip files.
 
-~~~javascript
+```javascript
 {
     "repositories": [
         {
@@ -102,7 +102,7 @@ There are several repository types supported by composer, from a VCS repository 
         }
     ]
 }
-~~~
+```
 
 Composer will look for dependencies on each defined repository in order, and Packagist as a last resource.
 
@@ -114,7 +114,7 @@ Sometimes a library includes some command line interface scripts that the user c
 
 If you want to include your own CLI scripts and allow any user to find them when installing your library as a dependency, you will want to define them in the **bin** block.
 
-~~~javascript
+```javascript
 {
     "bin": [
         "scripts/generate-foo",
@@ -122,7 +122,7 @@ If you want to include your own CLI scripts and allow any user to find them when
         "scripts/do-something"
     ]
 }
-~~~
+```
 
 It is just a list of script paths that composer will "copy" to the `vendor/bin` directory after installation (it doesn't really copy them, it creates symlinks in UNIX systems and generates bat files under Windows).
 
@@ -136,7 +136,7 @@ Composer will trigger some events during the process of installing dependencies,
 
 These event listeners are defined in the **scripts** block. They can be either CLI commands or static class methods.
  
-~~~javascript
+```javascript
 {
     "scripts": {
         "post-package-install": "Acelaya\\MyClass::postPkgInstall",
@@ -146,7 +146,7 @@ These event listeners are defined in the **scripts** block. They can be either C
         ]
     }
 }
-~~~
+```
 
 The complete list of events can be found in composer's [documentation](https://getcomposer.org/doc/articles/scripts.md#event-names). Take a look at them and see if you can optimize your workflow.
 
@@ -156,9 +156,9 @@ At this point we all know that we can use composer to install libraries at proje
 
 We can also use composer to distribute complete applications, allowing them to be easily installed by using this command.
 
-~~~bash
+```bash
 composer create-project vendor-name/app-name
-~~~
+```
 
 This will download the application (as if we would have cloned the repository) and then install its dependencies. We could even take advantage of composer's events, and initialize a database or create some non-tracked directories.
 

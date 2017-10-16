@@ -49,40 +49,40 @@ All of the microframeworks that I've already mentioned have something in common.
 
 For example, in Slim 3, you can do something like this to dispatch a request:
 
-~~~php
+```php
 $app = new Slim\App();
 $app->get('/hello/:name', function ($req, $res, $args) {
     echo 'Hello, ' . $args['name'] . '!!';
 });
 $app->run();
-~~~
+```
 
 The same thing can be done like this with Silex:
 
-~~~php
+```php
 $app = new Silex\Application(); 
 $app->get('/hello/{name}', function ($name) use($app) { 
     return 'Hello, ' . $app->escape($name) . '!!'; 
 }); 
 $app->run(); 
-~~~
+```
 
 And also, with Expressive, you do it like this:
 
-~~~php
+```php
 $app = Zend\Expressive\AppFactory::create();
 $app->get('/hello/{name}', function ($request, $response, $next) {
     $response->write('Hello, ' . $request->getAttribute('name') . '!!');
     return $response;
 });
 $app->run();
-~~~
+```
 
 It is very similar in every case, and it is good enough for prototyping and small applications. However this is not my favourite approach. I prefer to use the service container as the **main** object, and fetch the `Application` in the front controller as a regular service. The best microframework to work like this is Expressive.
 
 For example, in my website, the front controller looks like this.
 
-~~~php
+```php
 chdir(dirname(__DIR__));
 
 // [...]
@@ -92,7 +92,7 @@ $container = include 'config/container.php';
 /** @var Zend\Expressive\Application $app */
 $app = $container->get(Zend\Expressive\Application::class);
 $app->run();
-~~~
+```
 
 This approach allows me to define some configuration files that are consumed by factories while creating services, and the Application object is treated like another Service, injecting middlewares and routes from config files.
 

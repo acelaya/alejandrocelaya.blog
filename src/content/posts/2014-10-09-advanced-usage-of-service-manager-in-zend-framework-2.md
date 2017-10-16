@@ -25,7 +25,7 @@ I'll try to explain all the ways the `ServiceManager` can create objects so that
 
 By now, let's see all the possibilities of a **service_manager** configuration.
 
-~~~php
+```php
 <?php
 return [
     'service_manager' => [
@@ -39,7 +39,7 @@ return [
         'shared' => [],
     ]
 ];
-~~~
+```
 
 ### Services and invokables
 
@@ -47,7 +47,7 @@ The two most simple ways to create services is by defining them in the **service
 
 Services defined in **services** are just instances of objects that are created inline. This is not recommended, since we are creating objects that could not be used.
 
-~~~php
+```php
 <?php
 return [
     'service_manager' => [
@@ -59,13 +59,13 @@ return [
         // [...]
     ]
 ];
-~~~
+```
 
 The rest of the blocks use lazy loading to create objects, which means that objects are created only if they are going to be used. Much more efficient.
 
 Services in **invokables** just define the fully qualified name of a class with no constructor or a constructor with no arguments, that will be instantiated at the moment we fetch the service from the `ServiceManager`.
 
-~~~php
+```php
 <?php
 return [
     'service_manager' => [
@@ -78,7 +78,7 @@ return [
         // [...]
     ]
 ];
-~~~
+```
 
 ### Factories
 
@@ -86,7 +86,7 @@ Factories are a bit more advanced than simple object instantiation. They are the
 
 To create a foctory which is responsible of creating an object, we just have to implement the `Zend\ServiceManager\FactoryInterface`. This way we'll have a `createService` method which will get called by the `ServiceManager` when we request the service, injecting itself on it.
 
-~~~php
+```php
 <?php
 namespace Application\Service\Factory;
 
@@ -104,7 +104,7 @@ class MyServiceFactory implements FactoryInterface
         return new MyService($dependencyService, $translator);
     }
 }
-~~~
+```
 
 As you can see, the `createService` method gets a `Zend\ServiceManager\ServiceLocatorInterface` instead of a `Zend\ServiceManager\ServiceManager`. That's because factories can be used to create other types of objects other than services, like controllers, view helpers, controller plugins and such. They are somehow services, but they are handled by a `PluginManager` other than the main `ServiceManager`.
 
@@ -116,7 +116,7 @@ It is very useful to get a `ServiceLocator` injected in the `createService` meth
 
 The above example using an invokable object would be like this:
 
-~~~php
+```php
 <?php
 namespace Application\Service\Factory;
 
@@ -132,11 +132,11 @@ class MyServiceFactory
         return new MyService($dependencyService, $translator);
     }
 }
-~~~
+```
 
 Services created by factories are defined in the **factories** block, and you just need to provide a unique identifier for the service (for example the fully qualified name of the object it is going to return) and the fully qualified name of the factory that is responsible of creating it.
 
-~~~php
+```php
 <?php
 return [
     'service_manager' => [
@@ -147,7 +147,7 @@ return [
         // [...]
     ]
 ];
-~~~
+```
 
 <blockquote>Factories can also be defined as closures in the <b>factories</b> block, but that is not recommended since configuration files won't be able to be serialized and cached, but it is faster than defining a new class for each factory for prototyping purposes.</blockquote>
 
@@ -159,7 +159,7 @@ For example, we could have an initializer that every time we create an object th
 
 Initializers must implement the `Zend\ServiceManager\InitializerInterface`.
 
-~~~php
+```php
 <?php
 namespace Application\Service\Initializer;
 
@@ -179,7 +179,7 @@ class EventManagerInitializer implements InitializerInterface
         }
     }
 }
-~~~
+```
 
 Every time a new service is created and before returning it, the `initialize` method of this initializer will be called, getting the service instance and the `ServiceLocator` which created it (in our case, the main `ServiceManager`).
 
@@ -189,7 +189,7 @@ If we need any other dependency to be injected on the instance, we can use the `
 
 Initializers are configured in the **initializers** block, and they are just a list of fully qualified class names, they don't need to have a key, since they are applied to every service. Anyway, if you would need to override the configuration of certain initializer, you could give it a key and it would be overriden while merging configurations.
 
-~~~php
+```php
 <?php
 return [
     'service_manager' => [
@@ -202,7 +202,7 @@ return [
         // [...]
     ]
 ];
-~~~
+```
 
 ### Abstract factories
 
@@ -216,7 +216,7 @@ For example, let's imagine we have multiple classes extending the ZfcBase's [Abs
 
 This could be one of the services to be created.
 
-~~~php
+```php
 <?php
 namespace Application\Mapper;
 
@@ -243,11 +243,11 @@ class UserMapper extends AbstractDbMapper
     
     // [...]
 }
-~~~
+```
 
 Instead of defining a concrete factory for this service, we are going to create an abstract factory that can be reused to create any other similar mapper. We are just going to check if the requested service extends the `AbstractDbMapper` to know if the factory is capable of creating the service.
 
-~~~php
+```php
 <?php
 namespace Application\Service\Factory;
 
@@ -278,7 +278,7 @@ class MappersAbstractFactory implements AbstractFactoryInterface
         return new $requestedName($dbAdapter, $hydrator);
     }
 }
-~~~
+```
 
 This factory will be able to create a service as long as the class of the requested service exists and it is a subclass of the `AbstractDbMapper`.
 
@@ -291,7 +291,7 @@ Finally the service is created by using the `$requestedName` as the class name t
 
 The configuration goes in the **abstract_factories** block, and as well as the initializers, they dont need a key name, because the `ServiceManager` will use all the abstract factories to create non-defined services until one of them is able to create it.
 
-~~~php
+```php
 <?php
 return [
     'service_manager' => [
@@ -303,7 +303,7 @@ return [
         // [...]
     ]
 ];
-~~~
+```
 
 ### Delegator factories
 
@@ -321,7 +321,7 @@ I like to combine abstract factories and delegators so that the abstract factory
 
 A delegator factory must implement `Zend\ServiceManager\DelegatorFactoryInterface` which will provide the `createDelegatorWithName` method.
 
-~~~php
+```php
 <?php
 namespace Application\Service\Delegator;
 
@@ -345,7 +345,7 @@ class MyServiceDelegator implements DelegatorFactoryInterface
         return $myService;
     }
 }
-~~~
+```
 
 The `$callback` argument is a callable that will return the original service regardless how it is created. Then we can update it and return the updated service.
 
@@ -353,7 +353,7 @@ Delegator factories are _attached_ to a certain service and are only invoked whe
 
 Delegators are defined in the **delegators** block of the **service_manager** configuration.
 
-~~~php
+```php
 <?php
 return [
     'service_manager' => [
@@ -370,13 +370,13 @@ return [
         // [...]
     ]
 ];
-~~~
+```
 
 ### Aliases
 
 The aliases configuration block is just used to define service names that will resolve other services.
 
-~~~php
+```php
 <?php
 return [
     'service_manager' => [
@@ -390,7 +390,7 @@ return [
         // [...]
     ]
 ];
-~~~
+```
 
 With this configuration both the `MyService` and the `AliasService` will return the same service, created by instantiating an `Application\Service\MyService` object.
 
@@ -406,7 +406,7 @@ By default, the `ServiceManager` allways returns the same instance of a service 
 
 The **shared** block is just meant to define which services are shared and which are not. Of course setting a service as shared is redundant because that's the default behavior, but you might want to override the configuration of another module which set it to non-shared.
 
-~~~php
+```php
 <?php
 return [
     'service_manager' => [
@@ -423,7 +423,7 @@ return [
         // [...]
     ]
 ];
-~~~
+```
     
 ### Conclusion
 

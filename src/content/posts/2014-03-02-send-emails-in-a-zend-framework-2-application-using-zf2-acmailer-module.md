@@ -26,17 +26,17 @@ At the moment of writing this article the last published version is 1.8.2
 
 AcMailer can be easily installed by using composer. Just add it to your composer.json file, in the require element.
 
-~~~json
+```json
 {
     "require": {
         "acelaya/zf2-acmailer": "1.*"
     }
 }
-~~~
+```
 
 Then run `php composer.phar install` to get it downloaded in your vendor directory. Finally enable the module by adding it to your application.config.php file.
 
-~~~php
+```php
 'modules' => array(
 
     'AcMailer',
@@ -45,7 +45,7 @@ Then run `php composer.phar install` to get it downloaded in your vendor directo
     ...
 
 ),
-~~~
+```
 
 ### The MailService
 
@@ -57,7 +57,7 @@ The last one is used to render views when composing the email from a template.
 
 After creating the service instance, it can be used to set the body and the subject of the message. Any other data can be set by using the message object. For example.
 
-~~~php
+```php
 <?php
 // ...
 
@@ -78,7 +78,7 @@ try {
 } catch (\Exception $e) {
     echo "Exception!! " . $e->getMessage();
 }
-~~~
+```
 
 This example shows how to manually create a MailService and use it to send an email, however the ZF2-AcMailer module includes a registered service that reads the configuration and creates a MailService instance ready to be used. It is registered as AcMailer\Service\MailService.
 
@@ -127,7 +127,7 @@ The module takes care to trigger three types of events. One event is triggered j
 
 To handle those email events you just need to implement the `AcMailer\Event\MailListener` interface, which provides three methods that are called when those three events are triggered. For example.
 
-~~~php
+```php
 <?php
 namespace Application\Mail\Event;
 
@@ -151,24 +151,24 @@ class MyMailListener implements MailListener
         echo "An error occured while sending the email";
     }
 }
-~~~
+```
 
 Then attach a MailListener to the MailService.
 
-~~~php
+```php
 <?php
 
 // ...
 
 $mailService = $serviceManager->get("AcMailer\Service\MailService");
 $mailService->attachMailListener(new \Application\Mail\Event\MyMailListener(), 5);
-~~~
+```
 
 When the method `send` is called, all the events are triggered in order of priority (the second argument) or in the order they were attached if they have the same priority.
 
 The MailEvent object provided to any of the methods defined in the MailListener can be used to get the instance of the MailService who triggered that event, by calling the getMailService method.
 
-~~~php
+```php
 <?php
 namespace Application\Mail\Event;
 
@@ -185,7 +185,7 @@ class MyMailListener implements MailListener
 
     // ...
 }
-~~~
+```
 
 This can be useful to change destination addresses before sending the email if some condition happened, for example.
 

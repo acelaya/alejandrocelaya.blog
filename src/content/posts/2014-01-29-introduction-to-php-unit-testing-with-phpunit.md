@@ -48,7 +48,7 @@ Lets asume we need to test a `Calculator` class, which is used to perform mathem
 
 <small>**Note**. <i class="text-muted">It is assumed the classes in these examples can be loaded somehow, by including them or autoloading them.</i></small>
 
-~~~php
+```php
 <?php
 namespace Math;
 
@@ -98,7 +98,7 @@ class Calculator
         return 0;
     }
 }
-~~~
+```
 
 We have created the class, but it is not yet implemented. If we didn't know the implementation of the class and reading the comments it is assumable that calling `add(2, 5)` will return 7, so lets write the test
 
@@ -112,7 +112,7 @@ To test the application code and check everything is going as expected we will u
 
 For example, the method `assertEquals($expected, $actual)` will check both $expected and $actual are equals. If they are the test will pass, if not the test will fail.
 
-~~~php
+```php
 <?php
 namespace Math;
 
@@ -161,7 +161,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 }
-~~~
+```
 
 As we can see, the behavior of Calculator class has been assumed while writing the test, but as the class is not implemented, the tests will fail.
 
@@ -171,7 +171,7 @@ To run a PHPUnit test suite, a small configuration script has to be defined. It 
 
 Asuming our project has this structure:
 
-~~~
+```
 Project
     |- src
     |    |- Math
@@ -185,11 +185,11 @@ Project
     |    |- WebService (this will be used later)
     |- public
     |    |- ...
-~~~
+```
 
 A basic phpunit.xml file will look like this.
 
-~~~xml
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="./bootstrap.php" colors="true">
     <testsuites>
@@ -198,7 +198,7 @@ A basic phpunit.xml file will look like this.
     </testsuite>
     </testsuites>
 </phpunit>
-~~~
+```
 
 This is defining the boostrap.php script is located in the same directory and that we only have one test suite called Math that will look for any class called *Test in the Math directory.
 
@@ -206,7 +206,7 @@ We could add more testsuites if we had more tests, and test results will be grou
 
 In our case the bootstrap.php script does simply define how to load classes, but it could be as complex as we need.
 
-~~~php
+```php
 <?php
 // Register class autoloading
 spl_autoload_register(function ($name) {
@@ -219,7 +219,7 @@ spl_autoload_register(function ($name) {
     // Load the class from tests dir otherwise
     else include_once __DIR__ . '/' . $name;
 });
-~~~
+```
 
 With all this set up we are ready to run the tests. In the console we need to be at the tests directory and run the `phpunit` command. It will find the `phpunit.xml` script and run the tests as we configured them.
 
@@ -235,7 +235,7 @@ Now we are ready to implement the calculator methods.
 
 The Calculator class methods should now be implemented, like this.
 
-~~~php
+```php
 <?php
 namespace Math;
 
@@ -289,7 +289,7 @@ class Calculator
         return $number1 / $number2;
     }
 }
-~~~
+```
 
 All the methods do now what they suggest they do. If we run again the tests with the phpunit command the result is this.
 
@@ -305,7 +305,7 @@ You should have noticed that `divide()` method could throw an exception if we tr
 
 To do this we could update our `CalculatorTest` class adding a new test like this.
 
-~~~php
+```php
 <?php
 namespace Math;
 
@@ -322,7 +322,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
         $this->calculator->divide(45, 0);
     }
 }
-~~~
+```
 
 We just added an `@expectedException` annotation, telling PHPUnit what kind of exception will be produced in that method. If that exception is produced, the test passes, otherwise it is considered it has failed.
 
@@ -344,7 +344,7 @@ Both WebRegister and WebRegisterInterface are placed at src/WebService with the 
 
 WebRegisterInterface.php
 
-~~~php
+```php
 <?php
 namespace WebService;
 
@@ -352,11 +352,11 @@ interface WebRegisterInterface
 {
     public function send($result);
 }
-~~~
+```
 
 WebRegister.php
 
-~~~php
+```php
 <?php
 namespace WebService;
 
@@ -369,11 +369,11 @@ class WebRegister implements WebRegisterInterface
 
     }
 }
-~~~
+```
 
 Now we will update the `Calculator` class to get its dependency injected in the constructor.
 
-~~~php
+```php
 <?php
 namespace Math;
 
@@ -447,13 +447,13 @@ class Calculator
         return $result;
     }
 }
-~~~
+```
 
 Now, the result is sent every time a calculation is performed. This refactoring will force us to update the `CalculatorTest`, because we instantiate a `Calculator` object there with no arguments. That will produce a PHP error because of the missing argument, but we don´t want the web service to be called every time we run the test.
 
 To solve this we create a `WebRegisterMock` class in tests/WebService/WebRegisterMock.php with this contents:
 
-~~~php
+```php
 <?php
 namespace WebService;
 
@@ -465,11 +465,11 @@ class WebRegisterMock implements WebRegisterInterface
         return null;
     }
 }
-~~~
+```
 
 Now the `CalculatorTest` class can be refactored to look like this:
 
-~~~php
+```php
 <?php
 namespace Math;
 
@@ -494,7 +494,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     // Keep the test methods...
 }
-~~~
+```
 
 Now we can run tests again and all lights will be green.
 
