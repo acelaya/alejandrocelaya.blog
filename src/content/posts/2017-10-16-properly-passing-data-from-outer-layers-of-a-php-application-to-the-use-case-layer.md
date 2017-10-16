@@ -7,7 +7,7 @@ tags: [ddd,clean-architecture,clean-code,services]
 
 Lately, I've been digging a lot in ways of improving software architecture. Mainly subjects like [Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html), [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design), and such.
 
-Those topics cover a lot of advanced and complex practices, but today, I want to talk about one of the best approaches to pass data from outer layers of the application (actions, controllers, async jobs, CLI commands...) to services that are part of the use case layer, by taking advantage of some of the practices promoted by those subjects.
+Those topics cover a lot of advanced and complex practices, but today, I want to talk about a simpler subject. What is the best approach to pass data from outer layers of the application (actions, controllers, async jobs, CLI commands...) to services that are part of the use case layer, by taking advantage of some of the practices promoted by those subjects.
 
 That's a task which is present in any kind of application, and is very important to get properly done. You usually need to get data from different origins (a HTTP request, the input of the command line...), filter and validate it, and then use it to perform some kind of task.
 
@@ -15,9 +15,9 @@ Not doing it in the correct way could cause inconsistencies, or duplications in 
 
 ### My previous attempts
 
-First of all, I want to start by talking about some of the approaches I have followed in the past, that I felt they were not 100% correct, and have led me to a better one.
+First of all, I want to start by talking about some of the approaches I have followed in the past, which I felt were not 100% correct, and have led me to a better one.
 
-My greatest doubt has always been what's the correct place to filter and validate data. And that's what I asked about a year ago on twitter.
+My main doubt has always been what's the right place to filter and validate data. And that's what I asked about a year ago on twitter.
 
 <blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/LazyWeb?src=hash&amp;ref_src=twsrc%5Etfw">#LazyWeb</a>, in web apps, filtering and validation should happen in controllers/actions or in services? I&#39;m never sure about this</p>&mdash; Alejandro Celaya (@acelayaa) <a href="https://twitter.com/acelayaa/status/777775855544242176?ref_src=twsrc%5Etfw">19 de septiembre de 2016</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -27,8 +27,10 @@ The tweet received a lot of good answers, but my knowledge wasn't mature enough 
 Since then, these have been muy approaches:
 
 * Validate data in outer layers and pass it already validated to services. That decouples the service from the validation task, but forces us to duplicate the validation if we share some business logic between a CLI command and an HTTP action (for example).
-* Having some sort of validation service that wraps the validation logic, and inject it in elements that need to validate. Solves previous problem, but it is not something that can be easily handled, and also, increases the number of dependencies of actions and CLI commands.
-* Pass raw data to Services and perform validation there. This also solves the duplication problem, but creates a weird flow, since we have to treat raw data from HTTP or CLI, cast it and check for their existence (which should be part of validation), then pass the result to the Service, and then, make the service again convert received params into some sort of data structure that can be validated.
+* Having some sort of validation service that wraps the validation logic, and inject it in elements that need to validate. Solves previous problem, but it is not something that can be easily handled, and also, increases the number of dependencies of actions and CLI commands.<br>
+Also, that new service will soon end up breaking the [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle), or you will have to create a lot of services.
+* Pass raw params to Services and perform validation there. This also solves the duplication problem, but creates a weird flow, since we have to treat raw data from HTTP or CLI, cast it and check for their existence (which should be part of validation), then pass the result to the Service, and then, make the service again convert received params into some sort of data structure that can be validated.<br>
+Another approach would be make the service directly receive a raw data structure, like an array, but that completely hides the purpose of the service, which is no longer strict enough.
 
 ### Better approach
 
@@ -40,11 +42,13 @@ A value object is an immutable object that can be used to exchange data, which a
 
 If we pass raw data from outer layers to a newly created value object, and then pass that value object to services, we ensure services always receive valid data, we avoid duplication and we also remove the validation logic from outer layers elements, without increasing the number of dependencies.
 
+Also, since the value object exposes very specific params, the intent of a service that expects that value object is very clear.
+
 All problems solved.
 
 ### Case study
 
-Ok, all that theory looks good, but how do we really apply this to the real world?
+Ok, all that theory looks good, but how do we really apply this in the real world?
 
 Let's propose an example that we can use to apply the previous approach. I'm sure you have implemented something like this a lot of times.
 
@@ -52,11 +56,11 @@ Imagine we have a web application with an endpoint which is used by users to cha
 
 The endpoint expects a POST request which receives the old password, the new password and a confirmation of the new password (to prevent typos).
 
-The user will be identified by some sort of session system, so there's no need to provide any kind of user identifier.
+In the HTTP context, the user will be identified by some sort of session system, so there's no need to provide any kind of user identifier.
 
 All provided data needs to be filtered and validated, checking that both the new password and the confirmation password are equal, and that they follow a minimum complexity rule which forces the user to use at least 10 characters that include letters and numbers.
 
-All three values will be filtered with trim and strip tags.
+All three values will be filtered with `trim` and `strip_tags`.
 
 #### The value object
 
@@ -70,18 +74,229 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Exception\ValidationException;
+use App\Validation\UserPasswordValidator;
+
 final class UserPassword
 {
     private $userId;
     private $newPassword;
     private $currentPassword;
-    
+
     public function __construct(string $userId, string $currentPassword, string $newPassword, string $confirmPassword)
     {
-        
-        
-        
-        
+        $this->validate($userId, $currentPassword, $newPassword, $confirmPassword);
+    }
+
+    public static function fromRawData(array $data): self
+    {
+        return new self(
+            $data['userId'] ?? '',
+            $data['currentPassword'] ?? '',
+            $data['newPassword'] ?? '',
+            $data['confirmPassword'] ?? ''
+        );
+    }
+
+    private function validate(
+        string $userId, 
+        string $currentPassword, 
+        string $newPassword, 
+        string $confirmPassword
+    ): void {
+        $validator = new UserPasswordValidator([
+            'userId' => $userId,
+            'currentPassword' => $currentPassword,
+            'newPassword' => $newPassword,
+            'confirmPassword' => $confirmPassword,
+        ]);
+        if (! $validator->isValid()) {
+            throw new ValidationException('Provided data is invalid', $validator->getErrors());
+        }
+
+        // If validation passed, get filtered values
+        $this->userId = $validator->getFilteredValue('userId');
+        $this->newPassword = $validator->getFilteredValue('newPassword');
+        $this->currentPassword = $validator->getFilteredValue('currentPassword');
+    }
+
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
+
+    public function getNewPassword(): string
+    {
+        return $this->newPassword;
+    }
+
+    public function getCurrentPassword(): string
+    {
+        return $this->currentPassword;
     }
 }
 ```
+
+<blockquote>
+    I have avoided the validation part, because it depends on the package used for that, but you get the idea.
+</blockquote>
+
+Let's explain this class.
+
+It is a final class, which only exposes three getters, so consumers will only be able to access those specific params.
+
+It doesn't expose the confirmPassword, because it is only used for validation. Once validated that both `newPassword` and `confirmPassword` are equal, we don't need that value anymore.
+
+As soon as the object is created, it filters and validates provided data, throwing an exception if validation fails. Otherwise, internal properties are set with already filtered values.
+
+It also includes a [named constructor](http://verraes.net/2014/06/named-constructors-in-php/) that allows this object to be created from a set of raw data, which will be very handful in several contexts. That method checks that every property is set, and passes an empty value otherwise (the empty values won't pass validation, so we don't need to duplicate the check there too).
+
+#### Consuming the value object
+
+Now let's see how the service would consume this value object. This is going to be more pseudocode than actual code, so do not take it to the letter.
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Service;
+
+use App\Model\ChangePasswordResult;
+use App\Model\UserPassword;
+
+class PasswordChanger implements PasswordChangerInterface
+{
+    public function changeUserPassword(UserPassword $userPassword): ChangePasswordResult
+    {
+        // Find the user somehow
+        $user = $this->findUserById($userPassword->getUserId());
+        
+        // Make sure current password is correct
+        if (! \password_verify($userPassword->getCurrentPâssword(), $user->getPassword())) {
+            // Throw some sort of exception or return an unsuccessful result
+        }
+        
+        // Update the password on the user
+        $user->setPassword(\password_hash($userPassword->getNewPassword(), PASSWORD_DEFAULT));
+        
+        // Finally return a successful result
+        return new ChangePasswordResult($user);
+    }
+}
+```
+
+As you can see, the service implementation is very simple when using this approach, because passing a single `UserPassword` object we have all the needed information to find the user, check if the password is correct, and then set the new password.
+
+We can be sure that provided data is perfectly valid, so the service doesn't need to know anything about validation.
+
+#### Passing the value object
+
+Finally, we need to know how outer layers create the value object and pass it to the service.
+
+Any PHP application has some sort of HTTP abstraction, where body params can be read from the request. Let's imagine we are working on a psr-7/psr-15 app, and this is our `ChangeUserPasswordAction`.
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Action;
+
+use App\Exception\ValidationException;
+use App\Model\UserPassword;
+use App\Service\PasswordChangerInterface;
+use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+class ChangeUserPasswordAction implements MiddlewareInterface
+{
+    /**
+     * @var PasswordChangerInterface 
+     */
+    private $passwordChanger;
+    
+    public function __construct(PasswordChangerInterface $passwordChanger)
+    {
+        $this->passwordChanger = $passwordChanger;
+    }
+    
+    public function process(ServerRequestInterface $request, DelegateInterface $delegate): ResponseInterface
+    {
+        try {
+            // Get request body, and include currently logged user ID
+            $data = $request->getParsedBody();
+            $data['userId'] = $request->getAttribute('currentUserId');
+            $userPassword = UserPassword::fromRawData($data);
+            
+            $result = $this->passwordChanger->changeUserPassword($userPassword);
+            
+            // Based on the result, return a success or error response...
+        } catch (ValidationException $e) {
+            // Return an error response...
+        }
+    }
+}
+```
+
+And that's it. Really simple.
+
+The action just needs to catch the possible validation exception that could be thrown when creating the `UserPassword` object, and then pass that object to the service and handle the result.
+
+Now let's imagine our app has a CLI command that is used to change any user password, to which we have to pass the same set of data (old password, new password...). It is not very likely in this specific case, but there are other operations that are more suitable to be executed from different contexts.
+
+The command (in pseudocode) could look like this:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\CLI\Command;
+
+use App\Exception\ValidationException;
+use App\Model\UserPassword;
+use App\Service\PasswordChangerInterface;
+
+class ChangeUserPasswordCommand
+{
+    /**
+     * @var PasswordChangerInterface 
+     */
+    private $passwordChanger;
+    
+    public function __construct(PasswordChangerInterface $passwordChanger)
+    {
+        $this->passwordChanger = $passwordChanger;
+    }
+    
+    public function run($input, $output): void
+    {
+        try {
+            $userPassword = new UserPassword(
+                $input->get('userId'),
+                $input->get('currentPassword'),
+                $input->get('newPassword'),
+                $input->get('confirmPassword')
+            );
+            
+            $result = $this->passwordChanger->changeUserPassword($userPassword);
+            
+            // Based on the result, output a success or error message...
+        } catch (ValidationException $e) {
+            // Output an error message...
+        }
+    }
+}
+```
+
+Again, the CLI command implementation is very simple. We just need to create the `UserPassword` object and pass it to the service, catching any validation exception (and any exception thrown by the service too).
+
+### Conclusion
+
+What I've learned here is that anything can be improved.
+
+There is no "perfect" way to do anything. You have to do it in the best possible way, but always be opened for improvement.
+
+Always try to learn from your coworkers and the community as a whole, and keep reading lots of articles and books.
+
+If you do that, you'll end up finding solutions with which you feel comfortable working with.
