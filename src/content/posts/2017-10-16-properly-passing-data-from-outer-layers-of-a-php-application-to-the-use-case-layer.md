@@ -5,7 +5,7 @@ categories: [php]
 tags: [ddd,clean-architecture,clean-code,services]
 ---
 
-Lately, I've been digging a lot in ways of improving software architecture. Mainly subjects like [Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html), [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design), and such.
+Lately, I've been digging a lot in different ways of improving software architecture. Mainly subjects like [Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html), [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design), and such.
 
 Those topics cover a lot of advanced and complex practices, but today, I want to talk about a simpler subject. What is the best approach to pass data from outer layers of the application (actions, controllers, async jobs, CLI commands...) to services that are part of the use case layer, by taking advantage of some of the practices promoted by those subjects.
 
