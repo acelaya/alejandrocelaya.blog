@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Properly passing data from outer layers of a PHP application, to the use case layer"
+title: "Properly passing data from outer layers of a PHP application to the use case layer"
 categories: [php]
 tags: [ddd,clean-architecture,clean-code,services]
 ---
