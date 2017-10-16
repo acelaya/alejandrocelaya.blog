@@ -5,7 +5,7 @@ categories: [php]
 tags: [ddd,clean-architecture,clean-code,services]
 ---
 
-Lately, I've been digging a lot in ways of improving software architecture. Mainly subjects like clean architecture, Domain Driven Design, and such.
+Lately, I've been digging a lot in ways of improving software architecture. Mainly subjects like [Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html), [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design), and such.
 
 Those topics cover a lot of advanced and complex practices, but today, I want to talk about one of the best approaches to pass data from outer layers of the application (actions, controllers, async jobs, CLI commands...) to services that are part of the use case layer, by taking advantage of some of the practices promoted by those subjects.
 
@@ -32,9 +32,7 @@ Since then, these have been muy approaches:
 
 ### Better approach
 
-We have seen the problems caused by previous approaches, so we need a better solution.
-
-Some of the answers to my tweet include the solution. **Use value objects for data exchange**.
+We have seen the problems caused by previous approaches, so we need a better solution, and some of the answers to my tweet include it. **Use value objects for data exchange**.
 
 Domain Driven Design (DDD) tells that you should use DTOs (data transfer objects) to exchange only the exact needed params with services.
 
@@ -46,13 +44,44 @@ All problems solved.
 
 ### Case study
 
-Now let's propose an example that we can use to evolve until it is implemented following a correct approach. I'm sure you have implemented something like this a lot of times.
+Ok, all that theory looks good, but how do we really apply this to the real world?
+
+Let's propose an example that we can use to apply the previous approach. I'm sure you have implemented something like this a lot of times.
 
 Imagine we have a web application with an endpoint which is used by users to change their password.
 
 The endpoint expects a POST request which receives the old password, the new password and a confirmation of the new password (to prevent typos).
 
-The user will be identified by some sort of session, so there's no need to provide any kind of user identifier.
+The user will be identified by some sort of session system, so there's no need to provide any kind of user identifier.
 
 All provided data needs to be filtered and validated, checking that both the new password and the confirmation password are equal, and that they follow a minimum complexity rule which forces the user to use at least 10 characters that include letters and numbers.
 
+All three values will be filtered with trim and strip tags.
+
+#### The value object
+
+We will create a value object that will wrap all needed information so that the service can perform the "change password" operation.
+
+It will also validate all proposed rules when created, and throw an exception if anything fails.
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Model;
+
+final class UserPassword
+{
+    private $userId;
+    private $newPassword;
+    private $currentPassword;
+    
+    public function __construct(string $userId, string $currentPassword, string $newPassword, string $confirmPassword)
+    {
+        
+        
+        
+        
+    }
+}
+```
