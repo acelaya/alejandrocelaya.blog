@@ -24,7 +24,7 @@ My main doubt has always been what's the right place to filter and validate data
 
 The tweet received a lot of good answers, but my knowledge wasn't mature enough at the moment, and I couldn't "digest" it (I suppose).
 
-Since then, these have been muy approaches:
+Since then, these have been my approaches:
 
 * Validate data in outer layers and pass it already validated to services. That decouples the service from the validation task, but forces us to duplicate the validation if we share some business logic between a CLI command and an HTTP action (for example).
 * Having some sort of validation service that wraps the validation logic, and inject it in elements that need to validate. Solves previous problem, but it is not something that can be easily handled, and also, increases the number of dependencies of actions and CLI commands.<br>
@@ -172,7 +172,7 @@ class PasswordChanger implements PasswordChangerInterface
         $user = $this->findUserById($userPassword->getUserId());
         
         // Make sure current password is correct
-        if (! \password_verify($userPassword->getCurrentPâssword(), $user->getPassword())) {
+        if (! \password_verify($userPassword->getCurrentPassword(), $user->getPassword())) {
             // Throw some sort of exception or return an unsuccessful result
         }
         
