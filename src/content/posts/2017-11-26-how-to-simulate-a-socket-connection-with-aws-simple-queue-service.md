@@ -51,7 +51,7 @@ This was problematic, since it applies a delay of up to one minute (you can't co
 
 The first solution that came to our mind was making the workers run requests on an infinite loop, but that's not a very clean approach, and will result in our workers being at a 100% of CPU usage all the time.
 
-We started investigating and found out about a feature in **SQS** called [long polling](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html). It lets you tell the queue to wait up to 20 seconds before returning a response, if the message queue is empty, and if during that time a new message enters the queue, return a response immediately.
+We started investigating and found out about a feature in **SQS** called [long polling](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html). It lets you tell the queue to wait up to 20 seconds before returning a response, if the message queue is empty, and if during that time a new message enters the queue, return a response immediately.
 
 Using it, you can make a worker continuously perform requests at 20 second intervals, but if a message is in the queue, the response will be returned immediately.
 
@@ -65,7 +65,7 @@ The second option is very easy to implement when using any of the official SDKs,
 
 The first one is very easy too. Just set a value for the "Receive Message Wait Time" param, when configuring the queue.
 
-![SQS Receive Message Wait Time](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/images/AWS_Console_Create_New_Queue_Dialog_Receive.png)
+![SQS Receive Message Wait Time](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/images/AWS_Console_Create_New_Queue_Dialog_Receive.png)
 
 That should be all, but there's one **important** consideration.
 
