@@ -7,11 +7,11 @@ tags: [aws,sqs,simple-queue-service,message-queue,queue,socket]
 
 At some point, any enterprise project will probably need a message queue.
 
-A message queue is used to publish information (usually known as **message**) that a different "node" (usually known as **worker**) will consume in order to perform a specific action.
+A message queue is used to publish information (usually known as **messages**) that a different "node" (usually known as **worker**) will consume in order to perform a specific action.
 
 It is frequently used in web applications to pass information to background workers that consume the queue and perform long tasks, but it is also an important part when applying concepts like [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) to your architecture.
 
-It is also really important when working with microservices, since it is a way to enable communication between each service.
+It is also really important when working with microservices, since it is a way to enable data exchange between each service.
 
 Whatever the case, it is very likely that you will eventually need to decide which message queue to use.
 
@@ -31,9 +31,9 @@ Since we work with AWS, we decided to give **SQS** a try, and its simplicity con
 
 It is super simple to create a new queue, and using one of their SDKs, you can interact with it in minutes.
 
-Also, the price is absurdly cheap. It is virtually free for "small" amounts of requests (and when I say small, I mean that 1 request to their API every 20 seconds during 1 year costs about $0.30 at the end of the year).
+Also, the price is absurdly cheap. It is virtually free for "small" amounts of requests (and when I say small, I mean that performing 1 request to their API every 20 seconds during 1 year costs about $0.30 at the end of the year).
 
-It is by far more cheaper than maintaining your own instances with a different service, and I'm not counting the cost in time you will have to invest in maintaining those instances.
+It is by far cheaper than maintaining your own instances with a different service, and I'm not counting the cost in time you will have to invest in maintaining those servers.
 
 ### The "small" problem with SQS
 
@@ -45,10 +45,42 @@ On the other hand, **SQS** bills by API request. This means that the worker has 
 
 Our first approach was configuring cron jobs in our workers, so that they could check if there were any message in the queue, and process all of them, if any.
 
-This was problematic, since it applies a delay of up to one minute (you can't configure a cron to be run with an interval smaller than that), which is not desirable, particularly when the job takes 5-10 seconds to complete. Adding an extra 600% waiting time can affect the user experience depending on the task.
+This was problematic, since it applies a delay of up to one minute (you can't configure a cron to be run with an interval smaller than that), which is not desirable, particularly when the job takes 5-10 seconds to complete. Adding an extra 600% of waiting time can affect the user experience, or have other side effects, depending on the task.
 
 ### The long polling to the rescue
 
 The first solution that came to our mind was making the workers run requests on an infinite loop, but that's not a very clean approach, and will result in our workers being at a 100% of CPU usage all the time.
 
-We started investigating and found out about a feature in **SQS** called [long polling](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html). It let's you tell the queue to wait up to 20 seconds if the message queue is empty, and, if during that time a new message enters the queue, return a response immediately.
+We started investigating and found out about a feature in **SQS** called [long polling](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html). It lets you tell the queue to wait up to 20 seconds before returning a response, if the message queue is empty, and if during that time a new message enters the queue, return a response immediately.
+
+Using it, you can make a worker continuously perform requests at 20 second intervals, but if a message is in the queue, the response will be returned immediately.
+
+The final behavior is very similar to a socket, in which you can process a message as soon as it enters the queue, and the worker does not consume any resource while it is waiting for a response.
+
+### Configure a queue with long polling
+
+There are two ways of configuring the long polling. You can do it in AWS, and make the queue always have it, or you can do it client-side, and add a `WaitTimeSeconds` param with the time in seconds (with a maximum value of 20 seconds).
+
+The second option is very easy to implement when using any of the official SDKs, and is more flexible, since you can decide when to wait for a message and when to fail immediately when the queue is empty.
+
+The first one is very easy too. Just set a value for the "Receive Message Wait Time" param, when configuring the queue.
+
+![SQS Receive Message Wait Time](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/images/AWS_Console_Create_New_Queue_Dialog_Receive.png)
+
+That should be all, but there's one **important** consideration.
+
+If you have several workers consuming the same queue with long polling and one message enters the queue, all the workers will receive it until one of them deletes it. This is usually problematic, since it could lead to one task being processed more than once.
+
+In order to prevent this, you should set a small value in the "Default Visibility Timeout" param, which tells **SQS** to deliver the message just to one consumer, and wait that amount of time before delivering it to the rest.
+
+This way, you can make one of the workers receive the message, delete it from the queue, and then process it, and that will prevent other workers from receiving it.
+
+Usually, setting a value of 3-5 seconds should be more than enough for the first worker to remove it from the queue. However, if you expect your workers to need a longer time, just increase the value.
+
+Remember, that value will delay delivering the message to all the workers **but the first** that gets it.
+
+### Conclusion
+
+We have seen an efficient way of working with **SQS**, the most simple, yet powerful message queue.
+
+If you have more complex needs, it might end being too simple, but if not, it is possible to tweak it enough to use it on large applications and services.
