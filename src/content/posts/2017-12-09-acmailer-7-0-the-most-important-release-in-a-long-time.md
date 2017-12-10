@@ -40,7 +40,7 @@ Yes, it was exposing the configuration to expressive apps, but the user was resp
 
 Also, the module was tightly coupled with zendframework components that are not usually used in expressive, making it harder to integrate.
 
-This release reduces the number of dependencies to the bare minimum, and provides real compatibility with expressive, allowing any of their renderers to be used to render emails, while keeping BC compatibility as much as possible with the way things used to be.
+This release reduces the number of dependencies to the bare minimum, and provides real compatibility with expressive, allowing any of their renderers to be used to render emails, while keeping backward compatibility as much as possible with the way things used to be.
 
 ### Emails can be preconfigured
 
