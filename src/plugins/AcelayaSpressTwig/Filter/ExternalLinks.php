@@ -8,7 +8,7 @@ class ExternalLinks
     public const NAME = 'external_links';
 
     /**
-     * @var string
+     * @var string|null
      */
     private $siteUrl;
 
@@ -49,7 +49,7 @@ class ExternalLinks
         $href = $link->getAttribute('href');
 
         // If the site URL has been set, we consider the link internal if it begins by that site URL
-        if ($this->siteUrl !== null) {
+        if (! empty($this->siteUrl)) {
             return \strpos($href, $this->siteUrl) !== false;
         }
 
