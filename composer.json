@@ -23,7 +23,6 @@
         "spress/spress": "^2.2",
         "twig/extensions": "^1.3"
     },
-    "minimum-stability": "dev",
     "scripts": {
         "up": "spress site:build --server --watch --env=dev"
     }

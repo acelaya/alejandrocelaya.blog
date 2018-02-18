@@ -381,6 +381,7 @@ body {
 #fh5co-hero .fh5co-intro > div .post-title h2 {
   font-size: 55px;
   line-height: 75px;
+  margin: 0;
 }
 @media screen and (max-width: 992px) {
   #fh5co-hero .fh5co-intro > div .fh5co-center-position {
@@ -484,7 +485,7 @@ body {
 }
 
 .no-js-fullheight {
-  height: 620px;
+  height: 500px;
 }
 @media screen and (max-width: 768px) {
   .no-js-fullheight {
