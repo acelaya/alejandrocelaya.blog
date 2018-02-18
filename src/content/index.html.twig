@@ -22,7 +22,7 @@ permalink: "/page/:num"
                     </small>
                 </p>
                 <div>
-                    {{ post.content | truncatehtml(600) }}
+                    {{ post.content | truncatehtml(600) | external_links }}
                 </div>
                 <div style="margin-bottom: 10px;">
                     <a href="{{ site.url }}{{ post.url }}/"><b>Continue reading...</b></a>
