@@ -24,7 +24,10 @@ layout: default
                         <div class="animate-box">
                             <p class="text-right">
                                 <small>
-                                    <i>{{ page.date | date('d F Y') }} &nbsp;&mdash;&nbsp; <a href="#disqus_thread">3 comments</a></i>
+                                    <i>
+                                        {{ page.date | date('d F Y') }} &nbsp;&mdash;&nbsp;
+                                        <a href="{{ site.url }}{{ page.url }}/#disqus_thread">Comments</a>
+                                    </i>
                                 </small>
                             </p>
                             {{ page.content | raw }}
@@ -114,14 +117,7 @@ layout: default
                     {% if site.disqus_shortname %}
                         <div class="animate-box">
                             <div id="disqus_thread"></div>
-                            <script type="text/javascript">
-                                var disqus_shortname = '{{ site.disqus_shortname }}';
-                                (function() {
-                                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                                })();
-                            </script>
+                            <script src="https://{{ site.disqus_shortname }}.disqus.com/embed.js" async></script>
                         </div>
                     {% endif %}
                 </div>

@@ -13,6 +13,14 @@ permalink: "/page/:num"
         {% for post in page.pagination.items %}
             <li class="post animate-box">
                 <h2 class="post-title"><a href="{{ site.url }}{{ post.url }}/">{{ post.title }}</a></h2>
+                <p class="text-right">
+                    <small>
+                        <i>
+                            {{ post.date | date('d F Y') }} &nbsp;&mdash;&nbsp;
+                            <a href="{{ site.url }}{{ post.url }}/#disqus_thread">Comments</a>
+                        </i>
+                    </small>
+                </p>
                 <div>
                     {{ post.content | truncatehtml(600) | raw }}
                 </div>
