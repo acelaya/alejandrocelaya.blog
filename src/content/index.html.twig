@@ -50,22 +50,23 @@ permalink: "/page/:num"
         <hr>
         <ul class="pager">
             {% if page.pagination.next_page %}
-            <li class="previous">
-                <a href="{{ site.url }}{{ page.pagination.next_page_url }}/">&larr; Older posts</a>
-            </li>
+                <li class="previous">
+                    <a href="{{ site.url }}{{ page.pagination.next_page_url }}/">&larr; Older posts</a>
+                </li>
             {% else %}
-            <li class="previous disabled">
-                <span>&larr; Older posts</span>
-            </li>
+                <li class="previous disabled">
+                    <span>&larr; Older posts</span>
+                </li>
             {% endif %}
+
             {% if page.pagination.previous_page %}
-            <li class="next">
-                <a href="{{ site.url }}{{ page.pagination.previous_page_url }}/">Newer posts &rarr;</a>
-            </li>
+                <li class="next">
+                    <a href="{{ site.url }}{{ page.pagination.previous_page_url }}/">Newer posts &rarr;</a>
+                </li>
             {% else %}
-            <li class="next disabled">
-                <span>Newer posts &rarr;</span>
-            </li>
+                <li class="next disabled">
+                    <span>Newer posts &rarr;</span>
+                </li>
             {% endif %}
         </ul>
     </div>

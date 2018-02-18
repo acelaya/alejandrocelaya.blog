@@ -1682,3 +1682,17 @@ li.post {
 pre {
   background-color: #f8f8f8;
 }
+
+.article-next,
+.article-prior {
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .article-prior {
+    text-align: right;
+  }
+  .article-next {
+    text-align: left;
+  }
+}

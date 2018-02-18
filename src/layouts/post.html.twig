@@ -60,6 +60,7 @@ layout: default
                                         {% endfor %}
                                     </li>
                                 {% endif %}
+
                                 {% if page.tags %}
                                     <li class="tags-list">
                                         {% for tag in page.tags %}
@@ -76,25 +77,25 @@ layout: default
         </div>
     </div>
 
-    {% if page.previous_post or page.next_post %}
+    {% if page.relationships.next or page.relationships.prior %}
         <div id="fh5co-subscribe">
             <div class="container animate-box">
                 <ul class="list-unstyled other-articles row">
-                    <li class="col-sm-6 col-xs-12">
-                        {% if page.previous_post %}
-                            <a class="previous" href="{{ site.url }}{{ page.previous_post.url }}/">
+                    <li class="col-sm-6 col-xs-12 article-next">
+                        {% for rel in page.relationships.next %}
+                            <a class="previous" href="{{ site.url }}{{ rel.url }}/">
                                 <i class="icon-arrow-left2"></i>
-                                &nbsp;<span class="title">{{ page.previous_post.title }}</span>
+                                &nbsp;<span class="title">{{ rel.title }}</span>
                             </a>
-                        {% endif %}
+                        {% endfor %}
                     </li>
-                    <li class="col-sm-6 col-xs-12 text-right">
-                        {% if page.next_post %}
-                            <a class="next" href="{{ site.url }}{{ page.next_post.url }}/">
-                                <span class="title">{{ page.next_post.title }}</span>
+                    <li class="col-sm-6 col-xs-12 article-prior">
+                        {% for rel in page.relationships.prior %}
+                            <a class="next" href="{{ site.url }}{{ rel.url }}/">
+                                <span class="title">{{ rel.title }}</span>
                                 &nbsp;<i class="icon-arrow-right2"></i>
                             </a>
-                        {% endif %}
+                        {% endfor %}
                     </li>
                 </ul>
             </div>
