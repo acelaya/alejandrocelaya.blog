@@ -1,5 +1,5 @@
 <?php
-namespace Acelaya\SpressPlugin\AcelayaSpressTwig\Filter;
+namespace Acelaya\SpressPlugin\AcelayaSpressTwig\Func;
 
 class Lunr
 {

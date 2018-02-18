@@ -2,4 +2,4 @@
 permalink: search.json
 ---
 
-{{ lunr(site.posts) | raw }}
+{{ lunr(site.posts) }}
