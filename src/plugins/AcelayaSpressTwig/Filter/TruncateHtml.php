@@ -32,7 +32,6 @@ class TruncateHtml
             }
         }
 
-        $output = $newDocument->saveHTML();
-        return \html_entity_decode($output);
+        return $newDocument->saveHTML();
     }
 }
