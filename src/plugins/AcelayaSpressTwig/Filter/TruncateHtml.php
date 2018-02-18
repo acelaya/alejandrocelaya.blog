@@ -5,11 +5,11 @@ namespace Acelaya\SpressPlugin\AcelayaSpressTwig\Filter;
 
 class TruncateHtml
 {
-    const NAME = 'truncatehtml';
+    public const NAME = 'truncatehtml';
 
     public function __invoke($html, $minimum = 300)
     {
-        $oldDocument = new \DomDocument();
+        $oldDocument = new \DOMDocument();
         $html = \mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
         $oldDocument->loadHTML('<div>' . $html . '</div>');
 

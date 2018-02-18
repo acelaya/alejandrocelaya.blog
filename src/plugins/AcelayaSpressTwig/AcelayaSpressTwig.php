@@ -35,7 +35,9 @@ class AcelayaSpressTwig implements PluginInterface
         $renderizer = $event->getRenderizer();
         $renderizer->addTwigFunction(Func\Lunr::NAME, new Func\Lunr(), ['is_safe' => ['html']]);
         $renderizer->addTwigFilter(Filter\TruncateHtml::NAME, new Filter\TruncateHtml(), ['is_safe' => ['html']]);
-        $renderizer->addTwigFilter(Filter\ExternalLinks::NAME, new Filter\ExternalLinks(), ['is_safe' => ['html']]);
+        $renderizer->addTwigFilter(Filter\ExternalLinks::NAME, new Filter\ExternalLinks(
+            $event->getConfigValues()['url'] ?? null
+        ), ['is_safe' => ['html']]);
         $renderizer->addTwigFunction('dump', function () {
             $values = \func_get_args();
             \var_dump(...$values);

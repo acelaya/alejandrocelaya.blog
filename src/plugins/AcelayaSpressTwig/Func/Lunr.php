@@ -3,7 +3,7 @@ namespace Acelaya\SpressPlugin\AcelayaSpressTwig\Func;
 
 class Lunr
 {
-    const NAME = 'lunr';
+    public const NAME = 'lunr';
 
     /**
      * @param array $posts
@@ -24,7 +24,9 @@ class Lunr
                 'url' => $post['url'],
                 'date' => \DateTime::createFromFormat('Y-m-d\TH:i:sO', $post['mtime'])->format('Y-m-d H:i:s O'),
                 'body' => \htmlentities($content, ENT_COMPAT, 'UTF-8', $double_encode = false),
-                'description' => \trim(\htmlentities($description, ENT_COMPAT, 'UTF-8', $double_encode = false)) . '...',
+                'description' => \trim(
+                    \htmlentities($description, ENT_COMPAT, 'UTF-8', $double_encode = false)
+                ) . '...',
             ];
         }
 
