@@ -172,4 +172,4 @@ We have seen how to use infection, and how to integrate it in a continuous integ
 
 I think it is a very useful tool, and the team behind it is doing a great job. It is also not hard to start using it, since you don't really need to write new code, just add a config file and run the CLI tool.
 
-Finally, I recommend you to read this article, from one of infection's contributors. It explains how it internally works, and how to use it in a development workflow [https://medium.com/@maks_rafalko/infection-mutation-testing-framework-c9ccf02eefd1](https://medium.com/@maks_rafalko/infection-mutation-testing-framework-c9ccf02eefd1).
+Finally, I recommend you to read this article, from infection's author. It explains how it internally works, and how to use it in a development workflow [https://medium.com/@maks_rafalko/infection-mutation-testing-framework-c9ccf02eefd1](https://medium.com/@maks_rafalko/infection-mutation-testing-framework-c9ccf02eefd1).
