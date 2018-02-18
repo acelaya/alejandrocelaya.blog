@@ -1,7 +1,8 @@
 <?php
+// Important!! This class cannot have a namespace
 
-use Acelaya\SpressPlugin\AcelayaSpressTwig\Filter\Lunr;
-use Acelaya\SpressPlugin\AcelayaSpressTwig\Filter\TruncateHtml;
+use Acelaya\SpressPlugin\AcelayaSpressTwig\Filter;
+use Acelaya\SpressPlugin\AcelayaSpressTwig\Func;
 use Yosymfony\Spress\Core\ContentManager\Renderizer\TwigRenderizer;
 use Yosymfony\Spress\Core\Plugin\Event\EnvironmentEvent;
 use Yosymfony\Spress\Core\Plugin\EventSubscriber;
@@ -32,11 +33,14 @@ class AcelayaSpressTwig implements PluginInterface
 
         /** @var TwigRenderizer $renderizer */
         $renderizer = $event->getRenderizer();
-        $renderizer->addTwigFunction(Lunr::NAME, new Lunr(), ['is_safe' => ['html']]);
-        $renderizer->addTwigFilter(TruncateHtml::NAME, new TruncateHtml(), ['is_safe' => ['html']]);
+        $renderizer->addTwigFunction(Func\Lunr::NAME, new Func\Lunr(), ['is_safe' => ['html']]);
+        $renderizer->addTwigFilter(Filter\TruncateHtml::NAME, new Filter\TruncateHtml(), ['is_safe' => ['html']]);
+        $renderizer->addTwigFilter(Filter\ExternalLinks::NAME, new Filter\ExternalLinks(
+            $event->getConfigValues()['url'] ?? null
+        ), ['is_safe' => ['html']]);
         $renderizer->addTwigFunction('dump', function () {
-            $values = func_get_args();
-            var_dump(...$values);
+            $values = \func_get_args();
+            \var_dump(...$values);
         }, ['is_safe' => ['html']]);
     }
 }

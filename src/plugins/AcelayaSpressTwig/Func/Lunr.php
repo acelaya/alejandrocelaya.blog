@@ -1,9 +1,9 @@
 <?php
-namespace Acelaya\SpressPlugin\AcelayaSpressTwig\Filter;
+namespace Acelaya\SpressPlugin\AcelayaSpressTwig\Func;
 
 class Lunr
 {
-    const NAME = 'lunr';
+    public const NAME = 'lunr';
 
     /**
      * @param array $posts
@@ -17,20 +17,22 @@ class Lunr
                 continue;
             }
 
-            $content = $this->compactFilter(strip_tags($post['content']));
-            $description = substr(strip_tags($content), 0, 280);
+            $content = $this->compactFilter(\strip_tags($post['content']));
+            $description = \substr(\strip_tags($content), 0, 280);
             $data['entries'][] = [
-                'title' => $this->compactFilter(strip_tags($post['title'])),
+                'title' => $this->compactFilter(\strip_tags($post['title'])),
                 'url' => $post['url'],
                 'date' => \DateTime::createFromFormat('Y-m-d\TH:i:sO', $post['mtime'])->format('Y-m-d H:i:s O'),
-                'body' => htmlentities($content, ENT_COMPAT, 'UTF-8', $double_encode = false),
-                'description' => trim(htmlentities($description, ENT_COMPAT, 'UTF-8', $double_encode = false)) . '...',
+                'body' => \htmlentities($content, ENT_COMPAT, 'UTF-8', $double_encode = false),
+                'description' => \trim(
+                    \htmlentities($description, ENT_COMPAT, 'UTF-8', $double_encode = false)
+                ) . '...',
             ];
         }
 
-        $result = json_encode($data, JSON_PRETTY_PRINT, 5);
+        $result = \json_encode($data, JSON_PRETTY_PRINT, 5);
         if (false === $result) {
-            $lastError = json_last_error();
+            $lastError = \json_last_error();
             switch ($lastError) {
                 case JSON_ERROR_NONE:
                     return 'No error has occurred';
@@ -59,6 +61,6 @@ class Lunr
 
     protected function compactFilter($string)
     {
-        return trim(preg_replace('!\s+!isU', ' ', $string));
+        return \trim(\preg_replace('!\s+!isU', ' ', $string));
     }
 }
