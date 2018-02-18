@@ -1,4 +1,5 @@
 <?php
+namespace Acelaya\SpressPlugin\AcelayaSpressTwig;
 
 use Acelaya\SpressPlugin\AcelayaSpressTwig\Filter\Lunr;
 use Acelaya\SpressPlugin\AcelayaSpressTwig\Filter\TruncateHtml;

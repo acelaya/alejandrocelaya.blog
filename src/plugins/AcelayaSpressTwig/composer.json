@@ -16,7 +16,6 @@
     "autoload": {
         "psr-4": {
             "Acelaya\\SpressPlugin\\AcelayaSpressTwig": "."
-        },
-        "classmap": ["AcelayaSpressTwig.php"]
+        }
     }
 }
