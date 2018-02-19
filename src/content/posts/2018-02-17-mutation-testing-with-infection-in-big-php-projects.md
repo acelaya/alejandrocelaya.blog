@@ -106,7 +106,7 @@ The first time we run infection for the whole project, it took more than 16 minu
 
 Our solution was making the build run infection only on changed sources, taking advantage of infection's `--filter` flag, which lets you pass a comma-separated list of files and it gets applied only to them.
 
-The way in which we find which files have changed from previous build is by making a `git diff` between current commit and the new commit after updating the branch in which the build is being run (the commit identifiers are defined by jenkins' GIT plugin as environment variables).
+The way in which we find which files have changed from previous build is by making a `git diff` between a commit from previous successful build and the new commit after updating the branch in which the build is being run (the commit identifiers are defined by jenkins' GIT plugin as environment variables).
 
 If it is the first time the build is run for this branch, we make the diff with develop instead.
 
@@ -115,7 +115,7 @@ The result is a bash script like this:
 ```bash
 # Get files which have changed from latest processed commit, including only those inside sources
 # If there's no previous commit, diff with develop
-INFECTION_FILTER=$(git diff ${GIT_PREVIOUS_COMMIT:-develop} $GIT_COMMIT --name-only | grep /src/ | paste -sd "," -)
+INFECTION_FILTER=$(git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-develop} $GIT_COMMIT --name-only | grep /src/ | paste -sd "," -)
 
 # Check mutations over those files, if any, and require a 70% MSI
 if [ -n "$INFECTION_FILTER" ]; then
