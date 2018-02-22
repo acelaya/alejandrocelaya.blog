@@ -108,14 +108,14 @@ Our solution was making the build run infection only on changed sources, taking 
 
 The way in which we find which files have changed from previous build is by making a `git diff` between a commit from previous successful build and the new commit after updating the branch in which the build is being run (the commit identifiers are defined by jenkins' GIT plugin as environment variables).
 
-If it is the first time the build is run for this branch, we make the diff with develop instead.
+If it is the first time the build is run for this branch, we make the diff with origin/develop instead.
 
 The result is a bash script like this:
 
 ```bash
 # Get files which have changed from latest processed commit, including only those inside sources
 # If there's no previous commit, diff with develop
-INFECTION_FILTER=$(git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-develop} $GIT_COMMIT --name-only | grep /src/ | paste -sd "," -)
+INFECTION_FILTER=$(git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-origin/develop} $GIT_COMMIT --name-only | grep /src/ | paste -sd "," -)
 
 # Check mutations over those files, if any, and require a 70% MSI
 if [ -n "$INFECTION_FILTER" ]; then
