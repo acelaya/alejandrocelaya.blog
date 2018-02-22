@@ -108,7 +108,7 @@ Our solution was making the build run infection only on changed sources, taking 
 
 The way in which we find which files have changed from previous build is by making a `git diff` between a commit from previous successful build and the new commit after updating the branch in which the build is being run (the commit identifiers are defined by jenkins' GIT plugin as environment variables).
 
-If it is the first time the build is run for this branch, we make the diff with origin/develop instead.
+If it is the first time the build is run for this branch, we make the diff with `origin/develop` instead.
 
 The result is a bash script like this:
 
@@ -138,11 +138,21 @@ While previous approach filters the files where mutations are applied, it is sti
 * First, our own execution, which generates a code coverage report to be published later, and makes the build fail if tests do not pass.
 * Then, infection runs tests again, on its own "conditions" (they take your phpunit config file and generate a new one, which has some custom configuration entries).
 
-If it were possible to pass infection an already generated code coverage, we could prevent this duplication, but, as far as I know, it does not support that.
+<strike>If it were possible to pass infection an already generated code coverage, we could prevent this duplication, but, as far as I know, it does not support that.</strike> **It does now**.
 
 Another solution would be being able to run only tests which affect changed sources, instead of running all tests suites, but phpunit does not allow to filter by a list of files, only a specific file or folder.
 
-This is the only problem for which we have not yet found a solution, so If you know any workaround, a comment will be very welcome :-)
+<strike>This is the only problem for which we have not yet found a solution, so If you know any workaround, a comment will be very welcome :-)</strike>
+
+**Update 2018-02-22**
+
+Following what Marks suggested in this [comment](#comment-3762900802), we have changed the process a little bit, and using a more recent commit from `dev-master`, we can take advantage of a feature which allows an existing code coverage to be passed to infection.
+
+Now, our phpunit execution includes these two flags: `--coverage-xml=build/coverage-xml --log-junit=build/phpunit.junit.xml`
+
+An then, infection is executed with `--coverage=build`.
+
+That's it, no need to run tests twice anymore :-)
 
 #### Xdebug vs phpdbg
 
