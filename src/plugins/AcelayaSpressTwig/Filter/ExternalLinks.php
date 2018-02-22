@@ -48,9 +48,9 @@ class ExternalLinks
         }
         $href = $link->getAttribute('href');
 
-        // If the site URL has been set, we consider the link internal if it begins by that site URL
+        // If the site URL has been set, we consider the link internal if it begins by that site URL or by #
         if (! empty($this->siteUrl)) {
-            return \strpos($href, $this->siteUrl) !== false;
+            return \strpos($href, $this->siteUrl) !== false || \strpos($href, '#') === 0;
         }
 
         // In other cases, we consider the link internal if it does not begin with http
