@@ -1,0 +1,86 @@
+---
+layout: post
+title: "Demonstrating the interoperability and decoupling of Zend Expressive"
+categories: [php,zf]
+tags: [expressive,zf,interoperability]
+---
+
+I have written a lot of posts about Zend Framework in general and Zend Expressive in particular, but I have noticed that I have never talked about one of the things that, from my point of view, makes Expressive so game-changing, **Interoperability**.
+
+### Some context
+
+In the past, PHP frameworks used to be very big libraries, which tried to provide solutions to any possible problem in order to retain users.
+
+At that time, you had to decide which framework you wanted to use, by weighing pros and cons. People ended up saying "I prefer framework *foo*, because it has a better templating system", "ok, but framework *bar* has a better performance and its dependency injection approach is delightful".
+
+It wasn't easy to pick the best part of each framework (or the parts you liked the most) and be able to use them in the same project. You couldn't just take the templating system from *foo* and make it work with the dependency injection approach from *bar*.
+
+Because of this, the [PHP Framework Interop Group](https://www.php-fig.org/) was born (PHP-FIG from now on). Its goal was to define standard recommendations that frameworks and libraries could adhere to.
+
+At some point this would mean that frameworks would use compatible APIs in their different components and people would be able to easily change one specific component by another.
+
+### Expressive's interoperability
+
+Mostly all frameworks which are part of the PHP-FIG have more or less adopted these standard recommendations. If you have been working with PHP in the last 3-4 years, you know it is now much easier to "mix" libraries and frameworks in the same project.
+
+However, the one which has been capable of making interoperability part of its essence is [Zend Expressive](https://docs.zendframework.com/zend-expressive/) (probably because it was born in that period and interoperability was one of its main design goals).
+
+Expressive itself does not provide solutions to almost anything. Instead, it relies in a series of interfaces and abstractions in order to get everything working.
+
+Some of those abstractions are PHP Standard Recommendations (PSRs) from the PHP-FIG.
+
+* It is a middleware-based framework, so it expects your middlewares and actions (request handlers) to implement [PSR-15](https://www.php-fig.org/psr/psr-15/) interfaces. This way, your own code is not coupled with Expressive at all.
+* In order to dispatch this middlewares they use a middleware dispatcher, [Zend Stratigility](https://docs.zendframework.com/zend-stratigility/) in this case, which also implements PSR-15's request handler interface.
+* It is also a web framework, so it needs to dispatch HTTP requests. For this, it expects you to include a library implementing [PSR-7](https://www.php-fig.org/psr/psr-7/). They provide one implementation, [Zend Diactoros](https://docs.zendframework.com/zend-diactoros/), but you can use whatever you want.
+* Expressive promotes Dependency Injection, so it expects a dependency injection container to be used. Once again, they expect any container implementing [PSR-11](https://www.php-fig.org/psr/psr-11/), so you can use the container of your choice and everything will work.
+
+The PHP-FIG still has some work to do in different areas. For those cases in which there's no standard recommendation, Zend's team has defined a few own interfaces and abstractions Expressive relies on in order to ease decoupling and extendability.
+
+* Routing: You can pick one of provided implementations or define your own ([I've done it](https://github.com/acelaya/expressive-slim-router) and it wasn't that hard)
+* Templating: If you need to render templates, expressive has official support for three templating systems, but as in previous case, you can use other engines with a minimal effort.<br>
+However, you are not forced to use a templating system if you don't need it, which is great.
+* Error handling: You shouldn't handle errors the same way in production and development environments. Expressive's abstractions let you use different approaches, with great integration to use [Whoops](http://filp.github.io/whoops/) in development, but you could use something like [Tracy](https://tracy.nette.org/en/) too.
+
+All of these abstractions are defined in separated packages, so in the future, if the PHP-FIG accepts a PSR for any of these things, Zend Expressive will probably start supporting them and drop these packages' interfaces as far as possible.
+
+### Expressive's extendability
+
+There are a lot of things a real project needs which have been left out of expressive's scope, which is in fact good.
+
+You will probably need some way to handle configuration. Expressive doesn't tell you what to use, because usually config is consumed before the request is even dispatched, so there's no need for any kind of integration.
+
+You will also need something to connect to a database, or consume external services. Once again, use whatever you want.
+
+If you need to be able to run your app from the command line, expressive and the HTTP layer won't even come in place. For that purpose, Zend's team recommends using [symfony/console](http://symfony.com/doc/current/components/console.html) these days. In fact, there are a few CLI utilities for expressive which have been built with that component, like [zend-expressive-tooling](https://github.com/zendframework/zend-expressive-tooling).
+
+Of course, all of this flexibility is great for experienced developers, but newcomers need a little bit of help to begin with. That's why a [skeleton project](https://github.com/zendframework/zend-expressive-skeleton) was created.
+
+The skeleton is installed using an interactive process which let's you choose the different components to be used, and the project approach you want to take.
+
+This wide range focus makes expressive fit any project. Also, despite the fact that it can be considered a microframework, I can tell you it [scales quite well](/2016/07/21/project-scalability-with-zend-expressive/).
+
+### Proof of concept
+
+Ok, perfect, interoperability runs in expressive veins, but I don't want you to just take my word. That's why I have built an example project where I use a variety of libraries and components for every task.
+
+In order to build the project, I have used the skeleton mentioned before, and then tweaked it a little bit. You can find it here: [https://github.com/acelaya-blog/expressive-interoperability-proof-of-concept](https://github.com/acelaya-blog/expressive-interoperability-proof-of-concept) 
+
+These are the components I have used:
+
+* DI Container: [PHP-DI](http://php-di.org/)
+* Router: [Slim framework v2](https://github.com/acelaya/expressive-slim-router)
+* Template renderer: [Twig](https://twig.symfony.com/)
+* HTTP abstraction: [Guzzle PSR-7 HTTP message library](https://github.com/guzzle/psr7)
+* Error handling: [Whoops](http://filp.github.io/whoops/)
+
+The result is that very few of the code is actually from `Zend`'s namespace.
+
+The project includes the instructions to run it and see how everything is in fact working. It also includes one option in the menu to see an error page.
+
+### Conclusion
+
+From my point of view, full-stack and coupled frameworks are something from the past. I like to be free to choose the tools I want to use in a project for every task, and to be able to use the best ones or the ones I like the most.
+
+For me, it makes no sense these days to ask "What PHP framework do you use?", because thanks to the PHP-FIG and initiatives like Expressive it's more and more hard to answer.
+
+Of course, if the full-stack approach is the one that fits you and makes you be more productive, I'm nobody to say otherwise :-)
