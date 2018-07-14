@@ -5,7 +5,7 @@ categories: [php,zf]
 tags: [expressive,zf,interoperability]
 ---
 
-I have written a lot of posts about Zend Framework in general and Zend Expressive in particular, but I have noticed that I have never talked about one of the things that makes Expressive so game-changing to me, **Interoperability**.
+I have written a lot of posts about Zend Framework in general and Zend Expressive in particular, but I have noticed that I have never talked about one of the things that, from my point of view, makes Expressive so game-changing, **Interoperability**.
 
 ### Some context
 
@@ -21,16 +21,16 @@ At some point this would mean that frameworks would use compatible APIs in their
 
 ### Expressive's interoperability
 
-Mostly all frameworks which are part of the PHP-FIG have more or less adopted these standard recommendations. If you have been working with PHP in the last 3-4 years, you know it is now much more easier to "mix" libraries and frameworks in the same project.
+Mostly all frameworks which are part of the PHP-FIG have more or less adopted these standard recommendations. If you have been working with PHP in the last 3-4 years, you know it is now much easier to "mix" libraries and frameworks in the same project.
 
-However, the one which has been capable of making interoperability part of its essence is [Zend Expressive](https://docs.zendframework.com/zend-expressive/) (probably because it was born in that period and that was one of its main design goals).
+However, the one which has been capable of making interoperability part of its essence is [Zend Expressive](https://docs.zendframework.com/zend-expressive/) (probably because it was born in that period and interoperability was one of its main design goals).
 
 Expressive itself does not provide solutions to almost anything. Instead, it relies in a series of interfaces and abstractions in order to get everything working.
 
 Some of those abstractions are PHP Standard Recommendations (PSRs) from the PHP-FIG.
 
 * It is a middleware-based framework, so it expects your middlewares and actions (request handlers) to implement [PSR-15](https://www.php-fig.org/psr/psr-15/) interfaces. This way, your own code is not coupled with Expressive at all.
-* In order to dispatch this middleware they use a middleware dispatcher, [Zend Stratigility](https://docs.zendframework.com/zend-stratigility/) in this case, which also implements PSR-15's request handler interface.
+* In order to dispatch this middlewares they use a middleware dispatcher, [Zend Stratigility](https://docs.zendframework.com/zend-stratigility/) in this case, which also implements PSR-15's request handler interface.
 * It is also a web framework, so it needs to dispatch HTTP requests. For this, it expects you to include a library implementing [PSR-7](https://www.php-fig.org/psr/psr-7/). They provide one implementation, [Zend Diactoros](https://docs.zendframework.com/zend-diactoros/), but you can use whatever you want.
 * Expressive promotes Dependency Injection, so it expects a dependency injection container to be used. Once again, they expect any container implementing [PSR-11](https://www.php-fig.org/psr/psr-11/), so you can use the container of your choice and everything will work.
 
@@ -41,7 +41,7 @@ The PHP-FIG still has some work to do in different areas. For those cases in whi
 However, you are not forced to use a templating system if you don't need it, which is great.
 * Error handling: You shouldn't handle errors the same way in production and development environments. Expressive's abstractions let you use different approaches, with great integration to use [Whoops](http://filp.github.io/whoops/) in development, but you could use something like [Tracy](https://tracy.nette.org/en/) too.
 
-All of these abstractions are defined in separated packages, so in the future, if the PHP-FIG approves a PSR for any of these things, Zend Expressive will probably start supporting them and drop these packages' interfaces as far as possible.
+All of these abstractions are defined in separated packages, so in the future, if the PHP-FIG accepts a PSR for any of these things, Zend Expressive will probably start supporting them and drop these packages' interfaces as far as possible.
 
 ### Expressive's extendability
 
@@ -53,7 +53,7 @@ You will also need something to connect to a database, or consume external servi
 
 If you need to be able to run your app from the command line, expressive and the HTTP layer won't even come in place. For that purpose, Zend's team recommends using [symfony/console](http://symfony.com/doc/current/components/console.html) these days. In fact, there are a few CLI utilities for expressive which have been built with that component, like [zend-expressive-tooling](https://github.com/zendframework/zend-expressive-tooling).
 
-Of course, all of this flexibility is great for experienced developers, but newcomers need a little bit of help to begin with. That's why a [skeleton project](https://github.com/zendframework/zend-expressive-skeleton) is provided.
+Of course, all of this flexibility is great for experienced developers, but newcomers need a little bit of help to begin with. That's why a [skeleton project](https://github.com/zendframework/zend-expressive-skeleton) was created.
 
 The skeleton is installed using an interactive process which let's you choose the different components to be used, and the project approach you want to take.
 
