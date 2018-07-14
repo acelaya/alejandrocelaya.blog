@@ -75,7 +75,7 @@ These are the components I have used:
 
 The result is that very few of the code is actually from `Zend`'s namespace.
 
-The project includes the instructions to run it and see how everything is in fact working.
+The project includes the instructions to run it and see how everything is in fact working. It also includes one option in the menu to see an error page.
 
 ### Conclusion
 
