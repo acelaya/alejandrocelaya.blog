@@ -1264,6 +1264,7 @@ body {
   text-indent: -55px;
   background: #fff;
   transition: all .2s ease-out;
+  box-shadow: 1px 1px 5px 0 rgba(0,0,0,0.4);
 }
 .fh5co-nav-toggle i::before, .fh5co-nav-toggle i::after {
   content: '';
@@ -1275,6 +1276,7 @@ body {
   -webkit-transition: 0.2s;
   -o-transition: 0.2s;
   transition: 0.2s;
+  box-shadow: 1px 1px 5px 0 rgba(0,0,0,0.4);
 }
 .fh5co-nav-toggle.dark i {
   position: relative;
