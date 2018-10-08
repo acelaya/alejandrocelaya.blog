@@ -20,6 +20,7 @@
         "process-timeout": 0
     },
     "require": {
+        "ext-dom": "*",
         "spress/spress": "^2.2",
         "twig/extensions": "^1.3"
     },
