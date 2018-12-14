@@ -13,7 +13,7 @@ My main concern about javascript has been that, apparently, the community has no
 
 Since I adopted true dependency injection, all my projects have drastically improved, and not being able to have a proper way to bring this to javascript has made me feel kind of lost.
 
-> Take into account that this is my relative point of view, from a community which is still quite new to me, so if you find that something I say makes no sense at all, you are more than welcome to [leave a comment](#disqus_thread).
+> Take into account that this is my relative point of view, from a community which is still quite new to me, so if you find that something I say makes no sense at all, you are more than welcome to [leave a comment](#comments-box).
 
 ### Current state of DI in JS
 
