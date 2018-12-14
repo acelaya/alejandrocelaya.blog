@@ -1699,3 +1699,7 @@ pre {
     text-align: left;
   }
 }
+
+a code {
+  text-decoration: underline;
+}
