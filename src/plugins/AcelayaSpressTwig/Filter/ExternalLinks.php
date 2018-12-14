@@ -17,8 +17,12 @@ class ExternalLinks
         $this->siteUrl = $siteUrl;
     }
 
-    public function __invoke($html)
+    public function __invoke(?string $html): string
     {
+        if (empty(trim($html ?? ''))) {
+            return '';
+        }
+
         $doc = new \DOMDocument();
         $doc->loadHTML($html);
 
