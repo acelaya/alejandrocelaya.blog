@@ -173,3 +173,5 @@ My conclusion is that dependency injection in plain javascript and even non obje
 Having a really decoupled codebase, where true [dependency inversion](https://en.wikipedia.org/wiki/Dependency_inversion_principle) is achieved thanks to dependency injection, will make our projects much easier to maintain in the long term, and easier to unit test.
 
 > I have not covered other scenarios in this article, like front-end application with [ReactJS](https://reactjs.org/) or [VueJS](https://vuejs.org/). I will try to do it in the future, when I have become wiser :P
+
+> **Update 2018-12-16:** I have found an article where [Magnus Tovslid](https://medium.com/@magnusjt) proposes a very similar approach but for ReactJS and Redux front-end applications. Take a look at it, it's very interesting. [Inversion of Control and DI in Reactjs and Redux](https://medium.com/@magnusjt/inversion-of-control-and-di-in-reactjs-and-redux-35161fcef847)

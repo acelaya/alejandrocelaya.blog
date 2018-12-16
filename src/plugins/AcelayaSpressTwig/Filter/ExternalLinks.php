@@ -35,6 +35,7 @@ class ExternalLinks
             }
 
             $link->setAttribute('target', '_blank');
+            $link->setAttribute('rel', 'noopener noreferrer');
         }
 
         return $doc->saveHTML();
