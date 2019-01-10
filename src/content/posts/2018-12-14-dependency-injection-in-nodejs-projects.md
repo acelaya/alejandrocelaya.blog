@@ -5,8 +5,6 @@ categories: [web]
 tags: [js,javascript,node,nodejs,dependency-injection,dependency-injection-container,dic,di]
 ---
 
-It's been a while since the last time I wrote a non-PHP programming related article.
-
 Some of you know that I work now as a full stack javascript developer, and I have interacted with a few different projects, both in front-end javascript and in nodejs.
 
 My main concern about javascript has been that, apparently, the community has not adopted one of the practices that, for me, has been the most game changing of all: **Dependency Injection**.
