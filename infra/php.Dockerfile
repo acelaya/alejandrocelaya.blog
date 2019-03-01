@@ -1,5 +1,5 @@
-FROM php:7.1-alpine
-MAINTAINER Alejandro Celaya <alejandro@alejandrocelaya.com>
+FROM php:7.3.2-alpine3.9
+LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
 
 # Make home directory writable by anyone
 RUN chmod 777 /home
@@ -15,7 +15,7 @@ RUN docker-php-ext-install calendar
 RUN apk add --no-cache --virtual icu-dev
 RUN docker-php-ext-install intl
 
-RUN apk add --no-cache --virtual zlib-dev
+RUN apk add --no-cache --virtual libzip-dev zlib-dev
 RUN docker-php-ext-install zip
 
 RUN apk add --no-cache --virtual libpng-dev

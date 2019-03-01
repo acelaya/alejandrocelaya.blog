@@ -5,7 +5,7 @@ services:
         container_name: ac_blog_php
         build:
             context: .
-            dockerfile: ./Dockerfile
+            dockerfile: ./infra/php.Dockerfile
         ports:
             - "4000:4000"
         volumes:
