@@ -1,12 +1,18 @@
-version: '2'
+version: '3'
 
 services:
     ac_blog_php:
         container_name: ac_blog_php
         build:
             context: .
-            dockerfile: ./Dockerfile
+            dockerfile: ./infra/php.Dockerfile
         ports:
             - "4000:4000"
         volumes:
             - ./:/home/ac_blog/www
+
+    ac_blog_node:
+        container_name: ac_blog_node
+        image: node:10.15.2-alpine
+        volumes:
+          - ./:/home/ac_blog

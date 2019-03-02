@@ -1,2 +1,8 @@
 #!/usr/bin/env bash
+
+# Run docker container if it's not up yet
+if ! [[ $(docker ps | grep ac_blog_php) ]]; then
+    docker-compose up -d
+fi
+
 docker exec -it ac_blog_php /bin/sh -c "cd /home/ac_blog/www && $*"

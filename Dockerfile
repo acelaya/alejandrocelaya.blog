@@ -1,31 +1,47 @@
-FROM php:7.1-alpine
-MAINTAINER Alejandro Celaya <alejandro@alejandrocelaya.com>
+FROM nginx:1.15.9-alpine
+LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
 
-# Make home directory writable by anyone
-RUN chmod 777 /home
+ADD . ./blog
 
-RUN apk update && \
-    apk add --no-cache --virtual git
+RUN cd ./blog && \
 
-# Install common php extensions
-RUN docker-php-ext-install iconv
-RUN docker-php-ext-install mbstring
-RUN docker-php-ext-install calendar
+    # Install node and PHP
+    apk add --no-cache nodejs && \
+    apk add --no-cache npm && \
+    apk add --no-cache php7 && \
+    apk add --no-cache php7-json && \
+    apk add --no-cache php7-iconv && \
+    apk add --no-cache php7-phar && \
+    apk add --no-cache php7-openssl && \
+    apk add --no-cache php7-dom && \
+    apk add --no-cache php7-mbstring && \
 
-RUN apk add --no-cache --virtual icu-dev
-RUN docker-php-ext-install intl
+    # Install composer
+    wget -q -O - http://getcomposer.org/installer | php && \
+    chmod +x composer.phar && \
 
-RUN apk add --no-cache --virtual zlib-dev
-RUN docker-php-ext-install zip
+    # Install dependencies and build project
+    npm install && \
+    ./node_modules/.bin/grunt && \
+    ./composer.phar install && \
+    ./vendor/bin/spress site:build --env=pro && \
+    ./node_modules/.bin/grunt post-generate && \
 
-RUN apk add --no-cache --virtual libpng-dev
-RUN docker-php-ext-install gd
+    # Move build contents to document root and delete the rest
+    cd .. && \
+    rm -r /usr/share/nginx/html/* && \
+    mv ./blog/build/* /usr/share/nginx/html && \
+    ./blog/composer.phar clear-cache && \
+    rm -r ./blog && \
 
-# Install composer
-RUN php -r "readfile('https://getcomposer.org/installer');" | php
-RUN chmod +x composer.phar
-RUN mv composer.phar /usr/local/bin/composer
-
-CMD cd /home/ac_blog/www && \
-    composer install && \
-    composer up;
+    # Delete and uninstall build tools
+    npm cache clean --force && \
+    apk del nodejs && \
+    apk del npm && \
+    apk del php7 && \
+    apk del php7-json && \
+    apk del php7-iconv && \
+    apk del php7-phar && \
+    apk del php7-openssl && \
+    apk del php7-dom && \
+    apk del php7-mbstring
