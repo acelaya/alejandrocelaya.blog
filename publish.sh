@@ -1,5 +1,5 @@
 #!/bin/sh
-Set -e
+set -e
 
 # Delete the old production folder
 rm -rf build

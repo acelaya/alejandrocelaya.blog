@@ -1,6 +1,6 @@
-module.exports = function(grunt) {
+module.exports = grunt => {
 
-    var currentTimestamp = new Date().getTime();
+    const currentTimestamp = new Date().getTime();
 
     grunt.initConfig({
 
