@@ -11,5 +11,5 @@ RUN cd /blog && npm install && ./node_modules/.bin/grunt
 # Expose static content with nginx
 FROM nginx:1.15.9-alpine
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
-RUN rm -r /usr/share/nginx/html/*
-COPY --from=node /blog/build/* /usr/share/nginx/html
+RUN rm -r /usr/share/nginx/html
+COPY --from=node /blog/build /usr/share/nginx/html
