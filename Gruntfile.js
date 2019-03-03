@@ -1,32 +1,8 @@
 module.exports = grunt => {
 
-    const currentTimestamp = new Date().getTime();
-
     grunt.initConfig({
 
         pkg: grunt.file.readJSON('package.json'),
-
-        processhtml: {
-            production: {
-                files : {
-                    'src/layouts/default.html.twig' : [ 'src/layouts/default.html.twig' ]
-                }
-            }
-        },
-
-        'string-replace': {
-            production: {
-                options: {
-                    replacements: [{
-                        pattern: /(.js|.css)\?v/ig,
-                        replacement: '$1?v=' + currentTimestamp
-                    }]
-                },
-                files : {
-                    'src/layouts/default.html.twig': ['src/layouts/default.html.twig']
-                }
-            }
-        },
 
         cssmin : {
             production: {
@@ -92,7 +68,7 @@ module.exports = grunt => {
 
         htmlmin: {
             production: {
-                options: {                                 // Target options
+                options: {
                     removeComments: true,
                     collapseWhitespace: true
                 },
@@ -112,9 +88,6 @@ module.exports = grunt => {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-processhtml');
-    grunt.loadNpmTasks('grunt-string-replace');
 
-    grunt.registerTask('default', ['processhtml', 'string-replace']);
-    grunt.registerTask('post-generate', ['cssmin', 'uglify', 'clean']);
+    grunt.registerTask('default', ['cssmin', 'uglify', 'clean']);
 };

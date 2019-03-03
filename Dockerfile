@@ -22,10 +22,9 @@ RUN cd ./blog && \
 
     # Install dependencies and build project
     npm install && \
-    ./node_modules/.bin/grunt && \
     ./composer.phar install && \
     ./vendor/bin/spress site:build --env=pro && \
-    ./node_modules/.bin/grunt post-generate && \
+    ./node_modules/.bin/grunt && \
 
     # Move build contents to document root and delete the rest
     cd .. && \
