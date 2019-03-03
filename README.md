@@ -1,6 +1,7 @@
 Alejandro Celaya | Blog
 =======================
 
+[![Build Status](https://img.shields.io/travis/acelaya/blog.alejandrocelaya.com.svg?style=flat-square)](https://travis-ci.org/acelaya/blog.alejandrocelaya.com)
 [![Docker build status](https://img.shields.io/docker/build/acelaya/blog.svg?style=flat-square)](https://hub.docker.com/r/acelaya/blog/)
 [![GitHub release](https://img.shields.io/github/tag/acelaya/blog.alejandrocelaya.com.svg?style=flat-square)](https://github.com/acelaya/blog.alejandrocelaya.com/releases)
 [![GitHub license](https://img.shields.io/github/license/acelaya/blog.alejandrocelaya.com.svg?style=flat-square)](https://github.com/acelaya/blog.alejandrocelaya.com/blob/master/LICENSE)
