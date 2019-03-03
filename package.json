@@ -18,8 +18,6 @@
         "grunt-contrib-clean": "^1.0",
         "grunt-contrib-cssmin": "^1.0",
         "grunt-contrib-htmlmin": "^2.4.0",
-        "grunt-contrib-uglify": "^1.0",
-        "grunt-processhtml": "^0.4",
-        "grunt-string-replace": "^1.0"
+        "grunt-contrib-uglify": "^1.0"
     }
 }
