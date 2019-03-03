@@ -1,7 +1,7 @@
 # Build blog
 FROM composer:1.8.4 as composer
 COPY . /blog
-RUN cd /blog && ./composer.phar install && ./vendor/bin/spress site:build --env=pro
+RUN cd /blog && composer install && ./vendor/bin/spress site:build --env=pro
 
 # Process node tasks
 FROM node:10.15.2-alpine as node
