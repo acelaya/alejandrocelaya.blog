@@ -15,7 +15,7 @@ categories:
 
 Dependency management is very important in any kind of project. Any application will need to use third party libraries to avoid to reinvent the wheel.
 
-The problem is that getting each one of them from a different place takes time, and it’s not easy to be sure we get the correct version.
+The problem is that getting each one of them from a different place takes time, and it's not easy to be sure we get the correct version.
 
 To solve this in java projects we can use an automated dependency manager, like [Maven](https://maven.apache.org/), which is really a building system with dependcy management included. The problem with maven is that it could be hard to use, and not very intuitive.
 

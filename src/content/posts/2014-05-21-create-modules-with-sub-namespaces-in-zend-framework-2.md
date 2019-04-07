@@ -73,7 +73,7 @@ A Zend\Loader\StandardAutoloader is created defining any class in the same names
 
 But what happens if we want to use a sub-namespace in our module, lets say because we have to use a common namespace between all of our modules with the name of our company.
 
-Let’s assume our company is called Happy Factory inc. We might want our Application module to use the HappyFactory\Application namespace, and our WebService module to use the HappyFactory\WebService namespace.
+Let's assume our company is called Happy Factory inc. We might want our Application module to use the HappyFactory\Application namespace, and our WebService module to use the HappyFactory\WebService namespace.
 
 This can be easily done by making some changes to our folder structure and autoloader definition.
 
@@ -153,7 +153,7 @@ They will be properly loaded with the rest of the company modules and third-part
 
 **UPDATE 2014-06-21**
 
-You can continue reading [the second part](https://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/) where I’m explaining how to create, install and enable vendor modules with sub-namespaces.
+You can continue reading [the second part](https://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/) where I'm explaining how to create, install and enable vendor modules with sub-namespaces.
 
 **UPDATE 2014-06-23**
 
@@ -161,9 +161,9 @@ You can continue reading [the second part](https://blog.alejandrocelaya.com/2014
 
 Resolving template paths is not immediate in sub-namespaced modules. It was first said [here](https://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/#comment-391).
 
-By default, if you don’t set the template to a ViewModel, it is resolved  to a path which is (top level controller namespace)/(controller name)/(action name), which is not what we want here.
+By default, if you don't set the template to a ViewModel, it is resolved  to a path which is (top level controller namespace)/(controller name)/(action name), which is not what we want here.
 
-In a standard module, let’s say Application, with an Application\Controller\IndexController and an indexAction, the path would be application/index/index.
+In a standard module, let's say Application, with an Application\Controller\IndexController and an indexAction, the path would be application/index/index.
 
 In a sub-namespaced module like HappyFactory\WebService with a HappyFactory\WebService\Controller\IndexController, the resolved path would be happy-factory/index/index, the same as the one resolved if the module was HappyFactory\Application\Controller\IndexController. If we want them to be happy-factory/web-service/index/index, as we could expect, we have to use the `controller_map` configuration entry, which was introduced in ZF 2.3.
 

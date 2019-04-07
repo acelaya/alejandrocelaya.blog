@@ -328,11 +328,11 @@ We just added an `@expectedException` annotation, telling PHPUnit what kind of e
 
 ### Mocking dependencies.
 
-Now that we have our tests working it’s time to go a step further.
+Now that we have our tests working it's time to go a step further.
 
 The `Calculator` class is a very simple class with no dependencies, but in real world it is common to have some dependencies that could difficult to test the class. For example, we could have a component that sends emails, or consumes a web service, are writes into a database.
 
-All of this operations have to be avoided at testint environments. We don’t want to test if we have a proper internet connection, or we have configured the database in the wrong port.
+All of this operations have to be avoided at testint environments. We don't want to test if we have a proper internet connection, or we have configured the database in the wrong port.
 
 For this purpose the mocks are introduced. They are fake objects designed to replace a real object that is used in production and development environments, but we want to avoid at this point.
 

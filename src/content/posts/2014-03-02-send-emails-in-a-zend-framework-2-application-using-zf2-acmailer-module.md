@@ -92,7 +92,7 @@ Files can be attached to the email before sending it, by calling `addAttachment`
 
 ### MailService configuration.
 
-The registered service reads the configuration looking for a ‘mail_options’ entry. An empty mail_options configuration array is included with the module at config/mail.global.php.dist. Feel free to customize it as you need. Every configuration option is explained at that file, but this are those options.
+The registered service reads the configuration looking for a ‘mail_options' entry. An empty mail_options configuration array is included with the module at config/mail.global.php.dist. Feel free to customize it as you need. Every configuration option is explained at that file, but this are those options.
 
 * **mail_adapter:** Tells mail service what type of transport adapter should be used. SMTP and Sendmail are supported and values for this option can be any of these:
     * `Zend\Mail\Transport\Sendmail`
@@ -193,4 +193,4 @@ This can be useful to change destination addresses before sending the email if s
 
 The MailService object should be injected in other services that will need to use it. To allow those services be properly tested the MailService implements an interface that can be used to define Mocks. Indeed a MailServiceMock is provided. Feel free to use it.
 
-All the module’s unit tests are located at the test folder and should pass while running them in the scope of a Zend Framework 2 application.
+All the module's unit tests are located at the test folder and should pass while running them in the scope of a Zend Framework 2 application.

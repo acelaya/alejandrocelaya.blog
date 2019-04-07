@@ -24,7 +24,7 @@ For further information on how Zend Framework 2 configuration works take a look 
 
 ### Two connections. Two entity managers.
 
-Sometimes we could need to connect to two different databases and handle their connections separately, maybe because we need to work with our application database and a third party application database that can’t be integrated in our system.
+Sometimes we could need to connect to two different databases and handle their connections separately, maybe because we need to work with our application database and a third party application database that can't be integrated in our system.
 
 For this purpose, Doctrine allows us to define multiple connections and different EntityManagers to handle them. This could be our configuration file.
 
@@ -87,7 +87,7 @@ Then we only need to inject the desired EntityManager on each service that will 
 
 The master-slave connection is very important in a high performance environment.
 
-We can have a good cache system or server replication with load balancer, but finally if we only have one database, that will slow down the whole application. The master-slave system allows us to define “multiple” database connections that MySQL will internally synchronize.
+We can have a good cache system or server replication with load balancer, but finally if we only have one database, that will slow down the whole application. The master-slave system allows us to define "multiple" database connections that MySQL will internally synchronize.
 
 It defines a unique database entry point, that is used for write operations (INSERT, UPDATE, DELETE) and multiple databases for reading operations (SELECT).
 
@@ -134,4 +134,4 @@ return array(
 );
 ```
 
-In this example we have defined a master connection and two slave connections. Doctrine will be aware of handling connections internally, it is transparent for us, we only need to use one EntityManager by getting the `Doctrine\ORM\EntityManager` service and we won’t need to change anything in the code.
+In this example we have defined a master connection and two slave connections. Doctrine will be aware of handling connections internally, it is transparent for us, we only need to use one EntityManager by getting the `Doctrine\ORM\EntityManager` service and we won't need to change anything in the code.

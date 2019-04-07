@@ -73,4 +73,4 @@ Even so, I would recommend to register  the module at the same folder where the 
 
 Here is an example of a real module with subnamespaces you can install with composer [https://github.com/zasDev/common](https://github.com/zasDev/common). The module is in the namespace `ZasDev\Commons`. You can install it in your project by adding `"zasdev/commons" : "0.*"` to your composer.json file.
 
-And that’s all. Nice and easy.
+And that's all. Nice and easy.

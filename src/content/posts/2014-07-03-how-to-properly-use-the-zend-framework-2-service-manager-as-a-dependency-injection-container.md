@@ -85,6 +85,6 @@ class MyServiceFactory implements FactoryInterface
 }
 ```
 
-As you can see in this factory, we have used the service manager just to locate the dependencies of the object we are creating, but then that object is not “aware” of the service manager any more, to avoid bad practices while using it.
+As you can see in this factory, we have used the service manager just to locate the dependencies of the object we are creating, but then that object is not "aware" of the service manager any more, to avoid bad practices while using it.
 
 With this implementation we can easily test the `MyService` class by injecting mocks.

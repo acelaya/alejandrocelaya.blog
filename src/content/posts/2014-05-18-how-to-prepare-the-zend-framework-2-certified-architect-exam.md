@@ -21,13 +21,13 @@ I will try to explain how did I prepare it.
 
 ### Studying
 
-In late March I recived an email that my exam was going to be on May the seventh, so I saw that I was going to have 4-6 weeks to prepare it. I could have started earlier, but maybe I’m a little lazy.
+In late March I recived an email that my exam was going to be on May the seventh, so I saw that I was going to have 4-6 weeks to prepare it. I could have started earlier, but maybe I'm a little lazy.
 
 Since this was one of the first times the Zend Framework certification exam was based on version 2 (2.2), there was no documentation or examples in the internet, so I decided to just read the whole [documentation](https://framework.zend.com/manual/2.2/en/user-guide/overview.html). I was working with Zend Framework 2 in my job, so I could apply the theory in real projects.
 
-My main problem was that I needed to compatibilize the study with my work, so I started studying about an hour a day. Some days I didn’t studied, but some weekends I could spend more time on it.
+My main problem was that I needed to compatibilize the study with my work, so I started studying about an hour a day. Some days I didn't studied, but some weekends I could spend more time on it.
 
-About two weeks after I started I saw I wasn’t going to be able to read all the documentation, so I started to read the components documentation in order of importance. This finally was proved to be a good system. I got no questions in my exam about `Zend\Barcode`, `Zend\Debug`, `Zend\Navigation` and such trivial components, but plenty of questions about `EventManager`, `ServiceManager`, `ModuleManager`, `Mvc` and `Forms`.
+About two weeks after I started I saw I wasn't going to be able to read all the documentation, so I started to read the components documentation in order of importance. This finally was proved to be a good system. I got no questions in my exam about `Zend\Barcode`, `Zend\Debug`, `Zend\Navigation` and such trivial components, but plenty of questions about `EventManager`, `ServiceManager`, `ModuleManager`, `Mvc` and `Forms`.
 
 I neither had any questions of ZendService components.
 
@@ -51,7 +51,7 @@ These was the most important parts, but I also had questions about `Hydrators`, 
 
 ### Conclusions
 
-I made the exam with two other people I knew. The three of us thought that it wasn’t a very complicated exam, with no tricky questions (like `$foo = "Bar"; echo $fo;`), but you have to know the theory very well, how the framework works and how it is supposed to be used.
+I made the exam with two other people I knew. The three of us thought that it wasn't a very complicated exam, with no tricky questions (like `$foo = "Bar"; echo $fo;`), but you have to know the theory very well, how the framework works and how it is supposed to be used.
 
 It is important to know about factories, dependency injection and good practices.
 

@@ -26,7 +26,7 @@ Puting this check on `preDispatch()` allowed us to redirect the user to the logi
 
 ### The Zend Framework 2 behavior.
 
-As I said earlier, this behavior has been removed from the framework in the last version. Now a new event-based system is present, which allows us to register code execution to certain situations, even create aour own “situations” to be handled.
+As I said earlier, this behavior has been removed from the framework in the last version. Now a new event-based system is present, which allows us to register code execution to certain situations, even create aour own "situations" to be handled.
 
 One of those events is the dispatch MVC event, which is triggered at the moment the controller action is executed. That is the event we will nedd to handle.
 
@@ -96,4 +96,4 @@ $eventManager->getSharedManager()->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATC
 
 Attaching multiple event handlers will make the to be executed in order of priority or in the order they were attached when they have the same priority.
 
-Event handlers could be attached to other MVC events, which will allow us to handle other situations. For a full list of MVC events refer to [this Akrabat’s article](https://akrabat.com/a-list-of-zf2-events/).
+Event handlers could be attached to other MVC events, which will allow us to handle other situations. For a full list of MVC events refer to [this Akrabat's article](https://akrabat.com/a-list-of-zf2-events/).
