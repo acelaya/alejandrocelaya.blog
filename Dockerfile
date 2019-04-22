@@ -4,7 +4,7 @@ COPY . /blog
 RUN cd /blog && composer install && ./vendor/bin/spress site:build --env=pro
 
 # Process node tasks
-FROM node:10.15.2-alpine as node
+FROM node:10.15.3-alpine as node
 COPY --from=composer /blog /blog
 RUN cd /blog && npm install && ./node_modules/.bin/grunt
 

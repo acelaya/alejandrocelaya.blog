@@ -146,11 +146,11 @@ Another solution would be being able to run only tests which affect changed sour
 
 **Update 2018-02-22**
 
-Following what Marks suggested in this [comment](#comment-3762900802), we have changed the process a little bit, and using a more recent commit from `dev-master`, we can take advantage of a feature which allows an existing code coverage to be passed to infection.
+Following what Maks suggested in this [comment](#comment-3762900802), we have changed the process a little bit, and using a more recent commit from `dev-master`, we can take advantage of a feature which allows an existing code coverage to be passed to infection.
 
 Now, our phpunit execution includes these two flags: `--coverage-xml=build/coverage-xml --log-junit=build/phpunit.junit.xml`
 
-An then, infection is executed with `--coverage=build`.
+And then, infection is executed with `--coverage=build`.
 
 That's it, no need to run tests twice anymore :-)
 
