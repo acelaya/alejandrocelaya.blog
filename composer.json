@@ -20,7 +20,9 @@
         "process-timeout": 0
     },
     "require": {
+        "php": "^7.3",
         "ext-dom": "*",
+        "ext-json": "*",
         "spress/spress": "^2.2",
         "twig/extensions": "^1.3"
     },

@@ -1700,3 +1700,7 @@ pre {
 a code {
   text-decoration: underline;
 }
+
+blockquote {
+  font-size: inherit;
+}

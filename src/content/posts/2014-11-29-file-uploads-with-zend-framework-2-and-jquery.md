@@ -25,8 +25,7 @@ You will need a modern browser to do this, since asynchronous file uploads are n
 
 I have created a project which is fully functional. I'm going to use it across this article so feel free to clone it from here [https://github.com/acelaya-blog/file-uploads](https://github.com/acelaya-blog/file-uploads).
 
-<blockquote>Notice that I've simplified the usual Zend Framework 2 project structure. It's enough for this example, but maybe difficult to maintain if your project grows, so better use the <a href="https://github.com/zendframework/ZendSkeletonApplication">Skeleton Application</a> structure in real applications.
-</blockquote>
+> Notice that I've simplified the usual Zend Framework 2 project structure. It's enough for this example, but maybe difficult to maintain if your project grows, so better use the [Skeleton Application](https://github.com/zendframework/ZendSkeletonApplication) structure in real applications.
 
 Once you have it, open a terminal, go to the directory and run `php composer.phar selfupdate && php composer.phar install`.
 
@@ -124,8 +123,7 @@ The event object contains the total size of the data and the size that has been 
 
 In the method `acelaya.handleUploadProgress` we calculate the percentage of the data that has been sent to display it in the progress bar.
 
-<blockquote>When you test this application, make sure to use big files, at least 1 GB in total, since you are going to "upload" them to your local machine, which is pretty fast. I already managed the server side to allow up to 1.5GB of POST data.
-</blockquote>
+> When you test this application, make sure to use big files, at least 1 GB in total, since you are going to "upload" them to your local machine, which is pretty fast. I already managed the server side to allow up to 1.5GB of POST data.
 
 Once files are uploaded, if the server returns a success response, we refresh the list of files, otherwise an error message is displayed.
 

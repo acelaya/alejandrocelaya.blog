@@ -1,15 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace Acelaya\SpressPlugin\AcelayaSpressTwig\Func;
+
+use function json_encode;
+use function json_last_error;
 
 class Lunr
 {
     public const NAME = 'lunr';
 
-    /**
-     * @param array $posts
-     * @return string
-     */
-    public function __invoke(array $posts)
+    public function __invoke(array $posts): string
     {
         $data = ['entries' => []];
         foreach ($posts as $post) {
@@ -30,9 +31,9 @@ class Lunr
             ];
         }
 
-        $result = \json_encode($data, JSON_PRETTY_PRINT, 5);
+        $result = json_encode($data, JSON_PRETTY_PRINT, 5);
         if (false === $result) {
-            $lastError = \json_last_error();
+            $lastError = json_last_error();
             switch ($lastError) {
                 case JSON_ERROR_NONE:
                     return 'No error has occurred';
@@ -56,10 +57,11 @@ class Lunr
                     return 'Error #:' . $lastError;
             }
         }
+
         return $result;
     }
 
-    protected function compactFilter($string)
+    private function compactFilter(string $string): string
     {
         return \trim(\preg_replace('!\s+!isU', ' ', $string));
     }

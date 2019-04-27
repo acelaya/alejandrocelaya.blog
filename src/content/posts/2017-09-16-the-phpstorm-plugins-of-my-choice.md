@@ -23,9 +23,7 @@ It also displays the value defined for those env variables inside the file.
 
 ![.env](https://blog.alejandrocelaya.com/assets/img/phpstorm-plugins/dot-env.png)
 
-<blockquote>
-    As a tip I will say that the first time I installed this plugin it didn't work for me, because I had the .env files associated with the ini file type. Make sure you associate them with the .env type instead to get it working.
-</blockquote>
+> As a tip I will say that the first time I installed this plugin it didn't work for me, because I had the .env files associated with the ini file type. Make sure you associate them with the .env type instead to get it working.
 
 Link: [https://plugins.jetbrains.com/plugin/9525--env-files-support](https://plugins.jetbrains.com/plugin/9525--env-files-support)
 
