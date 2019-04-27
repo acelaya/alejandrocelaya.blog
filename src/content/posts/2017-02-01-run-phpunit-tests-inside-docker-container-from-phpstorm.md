@@ -31,9 +31,7 @@ However, once you start using docker in the project, it is not that simple.
 
 Gladly, since PhpStorm is a very powerful tool, it supports integration with docker, which can be then used, among other things, to automatically run tests inside a container.
 
-<blockquote>
-    From this point, I'm going to explain the procees, assuming you have already installed docker in your system. If not, you need to install at least <a target="_blank" href="https://docs.docker.com/engine/installation/">docker engine</a> and <a target="_blank" href="https://docs.docker.com/compose/install/">docker compose</a>.
-</blockquote>
+> From this point, I'm going to explain the process, assuming you have already installed docker in your system. If not, you need to install at least [docker engine](https://docs.docker.com/engine/installation/) and [docker compose](https://docs.docker.com/compose/install/).
 
 The first thing you need to do is configure the connection with docker engine. Go to **Settings** -> **Build, Execution, Deployment** -> **Docker**.
 

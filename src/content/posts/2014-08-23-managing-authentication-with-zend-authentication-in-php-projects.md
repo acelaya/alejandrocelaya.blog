@@ -42,9 +42,7 @@ Just run `php composer.phar require zendframework/zend-authentication:2.3.*` to 
 
 It will suggest to install other Zend Framework 2 components that you will probably need if you want to use some of the built-in adapters and storages.
 
-<blockquote class="text-muted">For more information on how to use composer, read
-    <a href="https://blog.alejandrocelaya.com/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/">this</a>
-</blockquote>
+> For more information on how to use composer, read [this](https://blog.alejandrocelaya.com/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/).
 
 ### Usage
 
@@ -121,9 +119,7 @@ In any case, if authentication was valid, the AuthenticationService will automat
 
 The identity data contents will depend on the adapter implementation. In the case of the DbTable adapter, it is an array with information of the user's table row.
 
-<blockquote>For this tutorial I have avoided the database connection configuration and how we get the username and password.
-    If you want to know how to create a database adapter (<code>Zend\Db\Adapter\Adapter</code>) in Zend Framework 2, just read <a href="https://framework.zend.com/manual/2.3/en/modules/zend.db.adapter.html">this article</a>.
-</blockquote>
+> For this tutorial I have avoided the database connection configuration and how we get the username and password. If you want to know how to create a database adapter (`Zend\Db\Adapter\Adapter`) in Zend Framework 2, just read [this article](https://framework.zend.com/manual/2.3/en/modules/zend.db.adapter.html).
 
 #### Checking a stored identity
 

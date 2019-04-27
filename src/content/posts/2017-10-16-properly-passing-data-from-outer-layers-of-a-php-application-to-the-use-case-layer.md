@@ -141,9 +141,7 @@ final class UserPassword
 }
 ```
 
-<blockquote>
-    I have avoided the validation part, because it depends on the package used for that, but you get the idea.
-</blockquote>
+> I have avoided the validation part, because it depends on the package used for that, but you get the idea.
 
 Let's explain this class.
 
