@@ -3,13 +3,12 @@ version: '3'
 services:
     ac_blog_php:
         container_name: ac_blog_php
-        build:
-            context: .
-            dockerfile: ./infra/php.Dockerfile
+        image: composer:1.8.4
+        command: /bin/sh -c "cd /home/ac_blog && composer install && composer up"
         ports:
             - "4000:4000"
         volumes:
-            - ./:/home/ac_blog/www
+            - ./:/home/ac_blog
 
     ac_blog_node:
         container_name: ac_blog_node
