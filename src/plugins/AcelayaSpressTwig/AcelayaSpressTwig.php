@@ -27,13 +27,14 @@ class AcelayaSpressTwig implements PluginInterface
         ];
     }
     
-    public function onStart(EnvironmentEvent $event)
+    public function onStart(EnvironmentEvent $event): void
     {
         $this->io = $event->getIO();
 
         /** @var TwigRenderizer $renderizer */
         $renderizer = $event->getRenderizer();
         $renderizer->addTwigFunction(Func\Lunr::NAME, new Func\Lunr(), ['is_safe' => ['html']]);
+        $renderizer->addTwigFunction(Func\Taxonomies::NAME, new Func\Taxonomies());
         $renderizer->addTwigFilter(Filter\TruncateHtml::NAME, new Filter\TruncateHtml(), ['is_safe' => ['html']]);
         $renderizer->addTwigFilter(Filter\ExternalLinks::NAME, new Filter\ExternalLinks(
             $event->getConfigValues()['url'] ?? null
