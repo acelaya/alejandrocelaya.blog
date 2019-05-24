@@ -9,7 +9,11 @@ pagination_permalink: "/page/:num"
 
 {% set year = '0' %}
 <div class=" col-md-12">
-    <h2 class="animate-box">{{ page.title }} &mdash; "{{ page.term }}"</h2>
+    <div class="animate-box clearfix">
+        {% include 'ads.html.twig' %}
+        <h2>{{ page.title }} &mdash; "{{ page.term }}"</h2>
+    </div>
+
     {% for post in page.pagination.items %}
         {% set this_year %}{{ post.date | date("Y") }}{% endset %}
         {% if year != this_year %}

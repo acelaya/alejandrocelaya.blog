@@ -22,6 +22,9 @@ permalink: "/page/:num"
                     </small>
                 </p>
                 <div>
+                    {% if (loop.index == 1) %}
+                        {% include 'ads.html.twig' %}
+                    {% endif %}
                     {{ post.content | truncatehtml(600) | external_links }}
                 </div>
                 <div style="margin-bottom: 10px;">
