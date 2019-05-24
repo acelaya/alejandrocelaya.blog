@@ -3,7 +3,12 @@ layout: default
 title: Search
 ---
 
-<div class="search-section col-md-12">
+<div class="search-section col-md-12 animate-box">
+    <div class="clearfix">
+        {% include 'ads.html.twig' %}
+        <h2>Search</h2>
+    </div>
+
     <section>
         <form action="{{ site.url }}/search/" method="get">
             <input type="search" id="search-query" name="q" placeholder="Search" autocomplete="off" class="form-control">

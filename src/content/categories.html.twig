@@ -4,7 +4,10 @@ title: Categories
 ---
 
 <div class="col-md-12">
-    <h2 class="animate-box">Categories</h2>
+    <div class="animate-box clearfix">
+        {% include 'ads.html.twig' %}
+        <h2>Categories</h2>
+    </div>
 
     <div class="categories-list animate-box">
         {% set categories = taxonomies(site.categories, 'categories') %}
