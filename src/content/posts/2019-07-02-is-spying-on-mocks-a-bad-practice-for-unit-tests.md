@@ -26,3 +26,11 @@ While this might look like a clear definition, it's actually quite open, because
 Very often, in object oriented programming projects, people take a class as a unit to test, and create a unit test for every class. In other paradigms, like functional programming, you might consider a function as the unit to be tested, or a set of functions which you have decided to put together in a module.
 
 This is not really important for the purpose oif this article. What's really important is to take into account that, in order to properly "unit test" a "unit of source code", you have to do it by isolating it from any dependency of that unit.
+
+In order to do it, it's important that you follow the **[Dependency Injection Principle](https://en.wikipedia.org/wiki/Dependency_inversion_principle)**, or you will end up trying to hack yourself to detach a "unit" from its dependencies.
+
+> You can find other articles about [Dependency Injection](https://blog.alejandrocelaya.com/tag/dependency-injection/) in my blog.
+
+### Replacing dependencies
+
+
