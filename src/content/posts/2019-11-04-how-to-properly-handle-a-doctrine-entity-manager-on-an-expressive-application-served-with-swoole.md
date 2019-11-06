@@ -15,7 +15,7 @@ Swoole is an asynchronous non-blocking I/O framework which works in a similar wa
 
 It has been conceived in a way that the app stays in memory between requests, removing the bootstrapping step and making apps to be served much faster.
 
-Swoole can serve as many simultaneous requests as you tell it to. For this it makes use of workers. Each worker can serve one request at a time, and every worker has a separated instance of the app loaded in memory (this is something I [learned recently](https://twitter.com/dominikzogg/status/1189403552399134720)).
+Swoole can serve as many simultaneous requests as you tell it to. For this it makes use of workers. Each worker can serve one request at a time, and every worker has a separate instance of the app loaded in memory (this is something I [learned recently](https://twitter.com/dominikzogg/status/1189403552399134720)).
 
 Because of this, you have to sometimes change a bit the way you design your code. For example, if a service needs to be stateful (it shouldn't, but shit happens), you will have to remember that the state will persist between requests, and you will want to somehow reset it to avoid unexpected side effects.
 
@@ -23,7 +23,7 @@ Because of this, you have to sometimes change a bit the way you design your code
 
 One of the main services that keeps this internal state in Shlink is the doctrine [EntityManager](https://www.doctrine-project.org/projects/doctrine-orm/en/current/tutorials/getting-started.html#obtaining-the-entitymanager).
 
-Because it was originally designed to be used on a classical web server + CGI context, assuming it would be recreated on every request, there are a few considerations to take into account:
+Due to the fact that it was originally designed to be used on a classical web server + CGI context, assuming it would be recreated on every request, there are a few considerations to take into account:
 
 * It implements the unit of work pattern. It internally keeps track of all the entities that have been created/changed until you decide to flush it.
 * If something fails, the `EntityManager` can get closed, which makes it unusable after that moment.
@@ -72,7 +72,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
 
 It just expects a factory that creates the actual `EntityManager`, and exposes an `open` public method which re-creates the wrapped instance if closed.
 
-This method is called from an expressive middleware which needs to be registered early in the middleware pipeline. It makes sure the method is called before the next middleware on the stack is invoked:
+This method is called from a [PSR-15](https://www.php-fig.org/psr/psr-15/) middleware which needs to be registered early in the middleware pipeline. It makes sure the method is called before the next middleware on the stack is invoked:
 
 ```php
 <?php
@@ -113,10 +113,10 @@ class CloseDbConnectionMiddleware implements MiddlewareInterface
 
 > Again, the code can be found in [shlink-common](https://github.com/shlinkio/shlink-common/blob/master/src/Middleware/CloseDbConnectionMiddleware.php)
 
-This middleware also does two more things, this time, after calling the next middleware on the stack, and making sure it does it even if an exception is thrown.
+This middleware also does two more things (this time, after calling the next middleware on the stack, and making sure it does it even if an exception is thrown).
 
 * It first closes the database connection. By doing it so, we make sure the `EntityManager` will reconnect the next time it needs to interact with the database, and therefore, we avoid the "expired connection" issue.
-* Then it clears the `EntityManager` itself. This avoids memory leaks, and also prevents that any orphan/non-flushed entity "transcends" to the next request, solving the other two problems.
+* Then it clears the `EntityManager` itself. This avoids memory leaks, and also prevents that any orphan/non-flushed entity "transcends" to the next request, solving the first problem.
 
 ### Further considerations
 
@@ -126,7 +126,7 @@ You need to know that the worker making use of it will not be able to serve any 
 
 Also, closing the DB connection on every request is not the most optimal approach. It would be perfect to have a connection pool that was able to recreate connections when expired, and to keep them open as long as possible for faster operations. However, the `EntityManager` was not designed for that, so it's better to close it.
 
-You also need a `callable` to pass to the `ReopeningEntityManager`. The way you solve this depends on your implementations and the dependencies you use.
+You also need a `callable` to pass to the `ReopeningEntityManager`. The way you solve this depends on your implementation and the dependencies you use.
 
 In my case, in Shlink I make use of the `ServiceManager`, so I have a delegator factory which takes the actual factory and passes it to the `ReopeningEntityManager`:
 
