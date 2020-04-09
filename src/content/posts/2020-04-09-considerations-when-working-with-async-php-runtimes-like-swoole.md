@@ -2,7 +2,7 @@
 layout: post
 title: "Considerations when working with async PHP runtimes like swoole"
 categories: [php]
-tags: [swoole,async,db,cache,scope,autoloading,database]
+tags: [swoole,async,db,cache,scope,autoloading,database,di,dependency-injection]
 ---
 
 Asynchronous and non-blocking runtimes are pretty usual in many programming languages, as well as long-lived web apps that stay in memory and are capable of dispatching multiple HTTP requests without having to be fully bootstrapped every time. This has not been traditionally the case with PHP apps. 
@@ -25,7 +25,7 @@ What swoole does is running a main process which bootstraps the PHP application 
 
 Those HTTP requests are handled by a set of child processes called "web workers". Swoole forks the contents in memory for the main process to each one of the workers, so each worker has a "copy" of the application in memory.
 
-Each worker is independent, but each one of them can only handle one request at a time, so you have to increase the number of workers if you expect a lot of concurrent traffic (more on this later).
+Each worker is independent, but each one of them can only handle one request at a time, so you have to increase the number of workers if you expect a lot of concurrent traffic.
 
 Other than web workers, swoole also has another set of child processes called "task workers", which can be used to delegate long tasks at runtime to prevent web workers from getting blocked.
 
@@ -55,15 +55,73 @@ Obviously, swoole (and also others) provides some tools to work with databases (
 
 #### In-memory caches don't behave as expected
 
-It is frequent to use local in-memory caches, like APCu
+It is a frequent practice to use local in-memory caches, like APCu, to improve applications performance in production.
 
-> Notice that this problem does not happen when using distributed/centralized caching solutions, like redis or memcached, as in that case, the caching technology is shared by all workers.
+Usually APCu is faster than other options, like redis or memcached, so it's the choice when you only have one instance of your app running (meaning, you don't have a cluster behind a load balancer).
 
+However, even if you are running your app on just one server with swoole, because of the web worker system explained earlier, you actually have several copies of your app in memory, and each one of them will have a separated and not shared cache when using APCu.
 
+This can lead to inconsistencies which are hard to debug, so you need to have it in mind.
 
+Also, since the information that is being loaded is kept in memory anyway, you will not notice such a big improvement by using APCu or other in-memory caches.
 
-More articles:
+> Notice that this problem does not happen when using distributed/centralized caching solutions, such as redis or memcached, as in that case, the caching technology is shared by all workers.
 
-* https://www.zend.com/blog/why-you-should-use-asynchronous-php
-* https://samsonasik.wordpress.com/2020/04/05/using-swoole-in-mezzio-application-with-sdebug/
+#### No need to optimize file including/requiring
+
+Many projects have complex configuration systems which are spread into several files. While this make it more maintainable, it also has a performance impact when all those files need to be loaded on every request.
+
+Because of that, there are libraries like [laminas-config-aggregator](https://github.com/laminas/laminas-config-aggregator) that can dynamically load config from many sources and, if some conditions are met, they can merge the result in a single bigger file that can be used in later requests.
+
+In the case of swoole, as all the files will be kept in memory once loaded for the first time, there's no need for this kind of optimization.
+
+#### Class autoloading happens once
+
+This point is very related with the previous one.
+
+Composer offers a lot of optimization options so that class autoloading is faster in production. While you usually will still want to use some of those so that the first time a class is being loaded it is still reasonably fast, any subsequent hits will just use the class which is already in memory.
+
+One of the composer flags you will probably don't want use with swoole is `--apcu-autoloader`, because of the reasons mentioned two points above this one.
+
+#### Services should be truly stateless
+
+This is something that you should always do anyway, but it's specially important when a service instance is kept in memory between HTTP requests.
+
+Sometimes it's easy to end up having some small piece of internal state on a service, where we save something as a side effect of a method call, to end up using it when another one of the public methods is invoked.
+
+While this could seem harmless when the whole app is bootstrapped on every request, it can have very dangerous side effects when the app is served with swoole, because the instance will persist until another request is dispatched by the same web worker.
+
+Just imagine you saved some user data on a service, and it ends up being served to another user on the next request. That won't look good.
+
+Because of this, make sure your services are truly stateless, and if for any reason that's not possible, at least remember to have some mechanism in place that flushes the data just before finishing the request.
+
+#### Hot reloading for dev envs is not that good
+
+One thing we usually take for granted is that we can modify a PHP file and just by making a new request, the new code will be executed. However, when the code is kept in memory, it's not that straightforward.
+
+When you are developing a project which is served with swoole, you will have to restart the server every time to get your changes applied.
+
+Swoole has a mechanism to do a light server reload, which is faster. You can find the docs in [it's website](https://www.swoole.co.uk/docs/modules/swoole-server-reload).
+
+The problem with this is that you need to implement the mechanism to invoke that when a file is changed, or use some library that does it for you.
+
+Also, I have noticed that even calling that and seeing that the server is reloaded, does not always have the expected effect, and you have to still end up doing a hard reload. It's something I don't fully understand and I still need to investigate a bit further.
+
+### Conclusion
+
+As it always happens when new technologies appear, it takes some time to get used to them, but I strongly suggest you to give a try to swoole or any other non-blocking runtime, because it makes your apps super fast.
+
+Just remember to have all of the above in mind ;-)
+
+That said, here you can find some libraries that will make your life easier when trying to serve existing projects with swoole, without having to couple with it and being able to continue using your favourite framework:
+
+* IDE helper: [https://github.com/swoft-cloud/swoole-ide-helper](https://github.com/swoft-cloud/swoole-ide-helper)
+* Mezzio (formerly Zend Expressive): [https://github.com/mezzio/mezzio-swoole](https://github.com/mezzio/mezzio-swoole)
+* Symfony: [https://github.com/k911/swoole-bundle](https://github.com/k911/swoole-bundle)
+* Laravel: [https://github.com/swooletw/laravel-swoole](https://github.com/swooletw/laravel-swoole)
+
+Also, here you can find some more articles talking about this topic:
+
+* [https://www.zend.com/blog/why-you-should-use-asynchronous-php](https://www.zend.com/blog/why-you-should-use-asynchronous-php)
+* [https://samsonasik.wordpress.com/2020/04/05/using-swoole-in-mezzio-application-with-sdebug/](https://samsonasik.wordpress.com/2020/04/05/using-swoole-in-mezzio-application-with-sdebug/)
 
