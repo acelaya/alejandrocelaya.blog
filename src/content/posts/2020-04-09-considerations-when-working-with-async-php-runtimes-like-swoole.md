@@ -17,7 +17,7 @@ In this article, I will be focusing on the first one, and explain how to approac
 
 ### Introducing Swoole
 
-The main difference swoole has compared to other similar projects is that it's written as a native PHP extension, and needs to be installed with `pear`.
+The main difference swoole has compared to other similar projects is that it's written as a native PHP extension, and needs to be installed with `pecl`.
 
 This is obviously a bit cumbersome, but the benefit is that, since it's written in C++, it has a better handling of memory allocation, which is very important to achieve what it tries to do.
 
