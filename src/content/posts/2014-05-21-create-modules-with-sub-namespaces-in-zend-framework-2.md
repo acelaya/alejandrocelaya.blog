@@ -153,13 +153,13 @@ They will be properly loaded with the rest of the company modules and third-part
 
 **UPDATE 2014-06-21**
 
-You can continue reading [the second part](https://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/) where I'm explaining how to create, install and enable vendor modules with sub-namespaces.
+You can continue reading [the second part](https://alejandrocelaya.blog/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/) where I'm explaining how to create, install and enable vendor modules with sub-namespaces.
 
 **UPDATE 2014-06-23**
 
 ### Properly resolving view template paths
 
-Resolving template paths is not immediate in sub-namespaced modules. It was first said [here](https://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/#comment-391).
+Resolving template paths is not immediate in sub-namespaced modules. It was first said [here](https://alejandrocelaya.blog/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/#comment-391).
 
 By default, if you don't set the template to a ViewModel, it is resolved  to a path which is (top level controller namespace)/(controller name)/(action name), which is not what we want here.
 

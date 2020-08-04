@@ -13,7 +13,7 @@ tags:
 
 ---
 
-Some time ago I published an [article](https://blog.alejandrocelaya.com/2014/04/18/configure-multiple-database-connections-in-doctrine-with-zend-framework-2-2/) talking about different Doctrine configurations when using the `DoctrineORMModule` in Zend Framework 2 applications, so that you can create multiple database connections, either by using one entity manager or more than one.
+Some time ago I published an [article](https://alejandrocelaya.blog/2014/04/18/configure-multiple-database-connections-in-doctrine-with-zend-framework-2-2/) talking about different Doctrine configurations when using the `DoctrineORMModule` in Zend Framework 2 applications, so that you can create multiple database connections, either by using one entity manager or more than one.
 
 Since then, many people have asked me how to configure the entity manager when the database connection configuration has to be generated dynamically, for example because you have more than one database and you need to choose one of them based on some external element.
 

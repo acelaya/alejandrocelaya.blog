@@ -42,7 +42,7 @@ All of this tools can be easily installed from repository, and probably we alrea
 
 The scons installer downloaded from their website comes in RPM format which could be a problem for systems not based in Ubuntu. For Debian I used the alien [`aptitude install alien`] tool, which converts RPM packages into DEB packages by running this command: `alien -k filename.rpm`
 
-Anyway, I uploaded the DEB resultant package for you to [download](https://blog.alejandrocelaya.com/assets/downloads/scons_2.3.0-1_all.deb_.zip) it.
+Anyway, I uploaded the DEB resultant package for you to [download](https://alejandrocelaya.blog/assets/downloads/scons_2.3.0-1_all.deb_.zip) it.
 
 ### Compile NSIS
 
@@ -77,7 +77,7 @@ ln -s /home/alejandro/nsis/nsis-2.46/bin/makensis /usr/local/bin/makensis
 
 Now it is time to test the command. Running `makensis` from anywhere should output something like this.
 
-![Nsis help](https://blog.alejandrocelaya.com/assets/img/nsis.png)
+![Nsis help](https://alejandrocelaya.blog/assets/img/nsis.png)
 
 If we have an nsis script, runing the command makensis /path/to/script.nsi will compile the script, creating the installer. The syntax is the same used in windows.
 

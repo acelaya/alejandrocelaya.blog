@@ -127,4 +127,4 @@ This should be enough to start working with composer, but it is a much more powe
 
 And that's all you need to know to start working with composer.
 
-**Update 2015-04-25**: I've written an article addressing advanced concepts that is a good continuation to this one. [Composer advanced concepts](https://blog.alejandrocelaya.com/2015/04/25/composer-advanced-concepts/).
+**Update 2015-04-25**: I've written an article addressing advanced concepts that is a good continuation to this one. [Composer advanced concepts](https://alejandrocelaya.blog/2015/04/25/composer-advanced-concepts/).

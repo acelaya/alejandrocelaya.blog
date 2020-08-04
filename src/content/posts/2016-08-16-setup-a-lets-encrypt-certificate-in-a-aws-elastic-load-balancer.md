@@ -65,11 +65,11 @@ Now that you have your certificate files, you need to upload them to the ELB.
 
 Go to the AWS web console, select the EC2 service and go to Load Balancers. Once there select the load balancer of your choice and go to the **Listeners** tab.
 
-![Load Balancer listeners](https://blog.alejandrocelaya.com/assets/img/load-balancers-listeners.png)
+![Load Balancer listeners](https://alejandrocelaya.blog/assets/img/load-balancers-listeners.png)
 
 Now you have to click on the "Change" link, in the **SSL Certificate** column of the HTTPS protocol, in order to set the new certificate.
 
-![Load Balancer set SSL Certificate](https://blog.alejandrocelaya.com/assets/img/load-balancers-set-certificate.png)
+![Load Balancer set SSL Certificate](https://alejandrocelaya.blog/assets/img/load-balancers-set-certificate.png)
 
 In this window, select the third option, **Upload a new SSL certificate to AWS...** and set the name of your choice for it.
 

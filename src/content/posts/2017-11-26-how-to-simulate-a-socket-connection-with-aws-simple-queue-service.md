@@ -65,7 +65,7 @@ The second option is very easy to implement when using any of the official SDKs,
 
 The first one is very easy too. Just set a value for the "Receive Message Wait Time" param, when configuring the queue.
 
-![SQS Receive Message Wait Time](https://blog.alejandrocelaya.com/assets/img/sqs-socket/receive-message-wait-time.png)
+![SQS Receive Message Wait Time](https://alejandrocelaya.blog/assets/img/sqs-socket/receive-message-wait-time.png)
 
 That should be all, but there's one **important** consideration.
 

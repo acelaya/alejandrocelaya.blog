@@ -3,5 +3,5 @@ permalink: robots.txt
 ---
 
 User-agent: *
-Sitemap: https://blog.alejandrocelaya.com/sitemap.xml
+Sitemap: https://alejandrocelaya.blog/sitemap.xml
 Disallow: /search.json

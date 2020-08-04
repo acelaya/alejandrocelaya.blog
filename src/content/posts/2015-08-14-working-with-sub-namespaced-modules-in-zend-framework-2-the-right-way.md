@@ -16,7 +16,7 @@ categories:
 
 About a year ago I wrote two articles discussing the best way to work with modules with sub-namespaces in Zend Framework 2.
 
-Here you can find [Part 1](https://blog.alejandrocelaya.com/2014/05/21/create-modules-with-sub-namespaces-in-zend-framework-2/) and [Part 2](http://blog.alejandrocelaya.com/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/)
+Here you can find [Part 1](https://alejandrocelaya.blog/2014/05/21/create-modules-with-sub-namespaces-in-zend-framework-2/) and [Part 2](http://alejandrocelaya.blog/2014/06/21/create-modules-with-sub-namespaces-in-zend-framework-2-part-ii/)
 
 The solution provided in those articles was functional, but it introduced some new problems to deal with. It happens that after some time working with sub-namespaced modules I have found the best way to solve those new problems, and I wanted to write this new article explaining it.
 

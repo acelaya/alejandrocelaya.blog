@@ -15,7 +15,7 @@ tags:
 
 ---
 
-One of the first articles I wrote in this blog was an introduction to unit testing PHP applications. You can find it [here](https://blog.alejandrocelaya.com/2014/01/29/introduction-to-php-unit-testing-with-phpunit/) in case you need to know the first steps and the theory.
+One of the first articles I wrote in this blog was an introduction to unit testing PHP applications. You can find it [here](https://alejandrocelaya.blog/2014/01/29/introduction-to-php-unit-testing-with-phpunit/) in case you need to know the first steps and the theory.
 
 On this article I'm going to explain how to get a Zend Framework 2 module tested. It is indeed very similar to test any PHP application, we just have to be sure the framework classes are properly loaded.
 

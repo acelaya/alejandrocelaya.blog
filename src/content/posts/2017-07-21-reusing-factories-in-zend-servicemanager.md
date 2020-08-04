@@ -25,7 +25,7 @@ Since this container expects you to define factories for every service, you usua
 
 That's why it is **so important** to properly reuse factories when possible, not only because you will have to maintain less classes, but because the ServiceManager will instantiate less objects at runtime when it can reuse a factory.
 
-This article is born because of the question of a reader of this blog, which asked me what did I mean with the *"redundancy mitigated by reusing same factory"* sentence, in one of my [Zend Expressive articles](https://blog.alejandrocelaya.com/2016/07/21/project-scalability-with-zend-expressive/).
+This article is born because of the question of a reader of this blog, which asked me what did I mean with the *"redundancy mitigated by reusing same factory"* sentence, in one of my [Zend Expressive articles](https://alejandrocelaya.blog/2016/07/21/project-scalability-with-zend-expressive/).
 
 <blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr"><a href="https://twitter.com/acelayaa">@acelayaa</a> <a href="https://t.co/fVCXfiXBJq">https://t.co/fVCXfiXBJq</a>. Had a question about &quot;redundancy mitigated by reusing same factory&quot; Do you have any examples of this?</p>&mdash; Jason Bailey (@sidewaysgravity) <a href="https://twitter.com/sidewaysgravity/status/888402105341530112">21 de julio de 2017</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
