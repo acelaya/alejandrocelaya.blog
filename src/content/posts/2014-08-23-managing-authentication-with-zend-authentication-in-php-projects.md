@@ -42,7 +42,7 @@ Just run `php composer.phar require zendframework/zend-authentication:2.3.*` to 
 
 It will suggest to install other Zend Framework 2 components that you will probably need if you want to use some of the built-in adapters and storages.
 
-> For more information on how to use composer, read [this](https://blog.alejandrocelaya.com/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/).
+> For more information on how to use composer, read [this](https://alejandrocelaya.blog/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/).
 
 ### Usage
 

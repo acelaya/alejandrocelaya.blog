@@ -40,7 +40,7 @@ Click the green *plus* button and a new docker connection will be created. The o
 * **Linux**: unix:///var/run/docker.sock
 * **Windows and Mac**: http://127.0.0.1:2376 (The URL of the docker machine. If you are using the deprecated docker toolbox with boot2docker, you have to make sure which is the IP address of the virtual machine)
 
-![Docker in PhpStorm](https://blog.alejandrocelaya.com/assets/img/phpstorm-docker/phpstorm-docker.png)
+![Docker in PhpStorm](https://alejandrocelaya.blog/assets/img/phpstorm-docker/phpstorm-docker.png)
 
 Apply changes and we are done here.
 
@@ -50,17 +50,17 @@ Now let's create a remote interpreter. It will be used so that tools that need a
 
 Go to **Settings** -> **Languages & Frameworks** -> **PHP**. In here, you select the default interpreter for your project.
 
-![Interpreter](https://blog.alejandrocelaya.com/assets/img/phpstorm-docker/interpreter.png)
+![Interpreter](https://alejandrocelaya.blog/assets/img/phpstorm-docker/interpreter.png)
 
 Click the button with the three dots, which will open the dialog to create a new interpreter.
 
-![Interpreter dialog](https://blog.alejandrocelaya.com/assets/img/phpstorm-docker/interpreter-dialog.png)
+![Interpreter dialog](https://alejandrocelaya.blog/assets/img/phpstorm-docker/interpreter-dialog.png)
 
 In that dialog you will likely have a local interpreter. Click the green *plus* button, at the top-left corner, and select **Remote**.
 
 That will open the dialog to create a new remote interpreter. One of the options is to use a docker image from which PhpStorm will create a docker container that should contain a php interpreter.
 
-![Docker iterpreter](https://blog.alejandrocelaya.com/assets/img/phpstorm-docker/docker-interpreter.png)
+![Docker iterpreter](https://alejandrocelaya.blog/assets/img/phpstorm-docker/docker-interpreter.png)
 
 In this dialog, just select the server (this is the connection with the docker engine, the one we created in the first step), then select the docker image you want to use. The dropdown will be filled with all the images in your machine.
 
@@ -78,7 +78,7 @@ It only contains a dropdown where you have to select the remote interpreter we c
 
 Select it and you'll see a configuration similar to this.
 
-![PHPUnit configuration](https://blog.alejandrocelaya.com/assets/img/phpstorm-docker/phpunit.png)
+![PHPUnit configuration](https://alejandrocelaya.blog/assets/img/phpstorm-docker/phpunit.png)
 
 As you can see, PhpStorm mounts the project dir as a volume inside the container, in the `/opt/project` dir, and based on that path, selects the path to composer's autoloader script and the phpunit.xml script.
 
@@ -90,7 +90,7 @@ Now, you can right-click any test class, test method or phpunit.xml file and sel
 
 You'll know it is working because of this:
 
-![Tests inside container](https://blog.alejandrocelaya.com/assets/img/phpstorm-docker/tests-in-container.png)
+![Tests inside container](https://alejandrocelaya.blog/assets/img/phpstorm-docker/tests-in-container.png)
 
 ### Conclusion
 

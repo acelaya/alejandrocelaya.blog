@@ -18,7 +18,7 @@ It is much more powerful than some people think, easily solving the integration 
 
 I'm going to try to explain some of the best practices and mechanisms bundled with composer.
 
-> If you are not familiar with composer, some time ago I wrote an introduction article that you should read before continuing with this one. [Dependency management and autoloading in php projects with composer](https://blog.alejandrocelaya.com/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/).
+> If you are not familiar with composer, some time ago I wrote an introduction article that you should read before continuing with this one. [Dependency management and autoloading in php projects with composer](https://alejandrocelaya.blog/2014/07/19/dependency-management-and-autoloading-in-php-projects-with-composer/).
 
 ### Globally installing composer
 

@@ -29,7 +29,7 @@ This is not really important for the purpose of this article. What's really impo
 
 One of the better ways to achieve this is by following the **[Dependency Injection Principle](https://en.wikipedia.org/wiki/Dependency_inversion_principle)**. Without it you will probably end up trying to hack yourself in order to detach a "unit" from its dependencies.
 
-> You can find other articles about [Dependency Injection](https://blog.alejandrocelaya.com/tag/dependency-injection/) in my blog.
+> You can find other articles about [Dependency Injection](https://alejandrocelaya.blog/tag/dependency-injection/) in my blog.
 
 ### Replacing dependencies
 

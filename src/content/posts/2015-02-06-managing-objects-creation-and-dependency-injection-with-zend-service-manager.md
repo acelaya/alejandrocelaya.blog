@@ -19,7 +19,7 @@ tags:
 
 ---
 
-Some time ago I wrote the most successful article of this blog, [Advanced usage of ServiceManager in Zend Framework 2](https://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/), explaining all the ways a service can be created by making use of `Zend\ServiceManager`, the service container component in Zend Framework 2.
+Some time ago I wrote the most successful article of this blog, [Advanced usage of ServiceManager in Zend Framework 2](https://alejandrocelaya.blog/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/), explaining all the ways a service can be created by making use of `Zend\ServiceManager`, the service container component in Zend Framework 2.
 
 On this article I'm going to show a real example where objects and services are all managed and created with a `ServiceManager` instance, which makes decoupling components and dependency injection very easy.
  
@@ -265,7 +265,7 @@ If I wasn't injecting the EntityManager, the UserService would be tightly couple
 
 You have seen a real example which uses the `ServiceManager`. There is no theory, you can check it yourself. I have used each object creation strategy at least once (invokables, factories, initializers, abstract_factories and delegators) so that you can see how it works.
 
-As I mentioned earlier, I already wrote a more theoretical article on the `ServiceManager` subject a while ago. You can find it [here](https://blog.alejandrocelaya.com/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/) if you need it (indeed I recommend you to read it).
+As I mentioned earlier, I already wrote a more theoretical article on the `ServiceManager` subject a while ago. You can find it [here](https://alejandrocelaya.blog/2014/10/09/advanced-usage-of-service-manager-in-zend-framework-2/) if you need it (indeed I recommend you to read it).
 
 I hope you use dependency injection in your projects from now on. There is no excuse not to do it, you just need to change your point of view.
 

@@ -48,7 +48,7 @@ But how do we know what to put in `org`, `name` and `rev` attributes? The [maven
 
 At the top search bar we can write the name of a library, for example gson. The first result corresponds to the gson artifacts in the maven central. By selecting the desired version we will get the dependency element for an Ivy script, as well as other dependency management systems, like Maven or [Gradle](https://gradle.org/).
 
-![Maven dependency example](https://blog.alejandrocelaya.com/assets/img/dependency.jpg)
+![Maven dependency example](https://alejandrocelaya.blog/assets/img/dependency.jpg)
 
 We just need to copy and paste it. Nice and easy.
 
