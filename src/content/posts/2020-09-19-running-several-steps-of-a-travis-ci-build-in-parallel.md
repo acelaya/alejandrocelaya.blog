@@ -5,27 +5,25 @@ categories: [tools]
 tags: [ci,continuous-integration,github-actions,oss,open-source]
 ---
 
-Let's not deny that [github actions](https://github.com/features/actions) are hitting hard in the tech community, and many projects are transitioning from other continuous integration systems like [Circle CI](https://circleci.com/) or [Travis CI](https://travis-ci.org/).
+Let's not deny that [GitHub actions](https://github.com/features/actions) are hitting hard in the tech community, and many projects are transitioning from other continuous integration systems like [Circle CI](https://circleci.com/) or [Travis CI](https://travis-ci.org/).
 
 Personally I have been using Travis a lot during the past years, for all my OSS projects, and I have gotten very used to it.
 
-However, people seem to be "abandoning" travis in favor of github actions, for different reasons. "It's faster", "I can run smaller tasks in parallel", etc.
+However, people seem to be "abandoning" travis in favor of GitHub Actions, for different reasons. "It's faster", "I can run smaller tasks in parallel", etc.
 
-In my case, I have moved a few very specific tasks there, where travis was becoming a bottleneck, but I still have mixed feelings about the very-verbose yaml-based config needed to configure a few github actions, compared to the more concise travis one.
+In my case, I have moved a few very specific tasks there, where travis was becoming a bottleneck, but I still have mixed feelings about the very-verbose yaml-based config needed to configure a few GitHub Actions, compared to the more concise travis one.
 
-In this article I'll explain how I configured a travis build to run several smaller tasks in parallel jobs, without having to move to github actions.
+In this article I'll explain how I improved a travis build to run several smaller tasks in parallel jobs, without having to completely move away from it.
 
 ### Initial state
 
-My travis config was relatively simple. It was used to build a JS project for the web browser, and it had to run the next 5 tasks:
+This project's travis config is relatively simple. It is used to build a JS project for the web browser, and it has to run the next tasks:
 
 * Lint the code, to make sure it fulfils the project's coding standards.
 * Run unit tests.
 * Run mutation tests.
 * Build the docker image, to make sure none of the new changes broke it.
-* Conditionally publish a release on github, with a dist file attached to it, if the build is being run for a git tag.
-
-This is how it looked:
+* Conditionally publish a release on GitHub, with a dist file attached to it, if the build is being run for a git tag.
 
 ```yaml
 dist: bionic
@@ -84,14 +82,14 @@ Also, specially the mutation tests one, which is currently always considered suc
 Other than this, the build config defines "global" customizations that are actually only used for some tasks:
 
 * Running `npm ci` is not required for the `docker build` task.
-* Getting the `docker` service is not required but the other three tasks.
+* Getting the `docker` service is not required by any of the other tasks.
 * Determining changed files is only used by the `mutation tests` task.
 
 ### Making use of jobs
 
 One cool feature travis supports is the use of a job [build matrix](https://docs.travis-ci.com/user/build-matrix/), that lets you define multiple jobs that run in parallel as part of the same build, and make each one of them do unrelated tasks.
 
-Using this feature I improved my `.travis.yml` file, making it look like this:
+Using this feature it is possible to improve the `.travis.yml` file, making it look like this:
 
 ```yaml
 dist: bionic
@@ -154,11 +152,15 @@ This approach introduces all these benefits:
 
 * Now linting, testing, mutation testing and building the docker image run in parallel, making the build finish earlier.
 * The mutation testing step is allowed to fail, and thanks to the `fast_finish` flag, travis won't even wait for it to finish, considering the build successful once the rest have passed.
-* Each job can have a name, making it more clear in travis UI what tasks are being run:
-
-    ![Travis CI jobs](https://alejandrocelaya.blog/assets/img/travis-multiple-jobs/travis-jobs.png)
-
 * Configs that are only meaningful for certain jobs are defined in the job itself, instead of globally.
 * The "publish release" job only runs conditionally if the build is for a tag, thanks to the `if: tag IS present` condition. (More info about [conditional jobs](https://docs.travis-ci.com/user/conditional-builds-stages-jobs/) in travis).
+* As soon as any of the jobs fails, the whole build fails and you don't have to continue waiting. Before this, if the third task failed, you still had to wait for the previous two to finish.
+* Each job can have a name, making it more clear in travis UI what tasks are being run:
+
+![Travis CI jobs](https://alejandrocelaya.blog/assets/img/travis-multiple-jobs/travis-jobs.png)
 
 ### Conclusion
+
+The main purpose of this article was to showcase that travis still has a lot to give. Github Actions are definitely cool, but there's usually no silver bullet for everything, and a combination with other tools might be more suitable.
+
+Also, this allows people using travis to improve their builds without having to change everything. Then, once you have split your tasks, if you still want to move to Github Actions, it should be easier.
