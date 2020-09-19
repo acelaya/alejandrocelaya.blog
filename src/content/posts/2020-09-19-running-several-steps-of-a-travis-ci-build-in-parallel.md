@@ -164,3 +164,5 @@ This approach introduces all these benefits:
 The main purpose of this article was to showcase that travis still has a lot to give. Github Actions are definitely cool, but there's usually no silver bullet for everything, and a combination with other tools might be more suitable.
 
 Also, this allows people using travis to improve their builds without having to change everything. Then, once you have split your tasks, if you still want to move to Github Actions, it should be easier.
+
+> If you are curious, this is the project in which I use this travis configuration: [shlinkio/shlink-web-client](https://github.com/shlinkio/shlink-web-client).
