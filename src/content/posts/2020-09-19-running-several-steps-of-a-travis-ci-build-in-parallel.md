@@ -133,10 +133,13 @@ jobs:
     - name: 'Build docker image'
       services:
         - docker
+      install: skip
       script: docker build -t project:test .
 
     - name: 'Publish release'
       if: tag IS present
+      install: skip
+      script: skip
       before_deploy: npm run build ${TRAVIS_TAG#?}
       deploy:
         - provider: releases
