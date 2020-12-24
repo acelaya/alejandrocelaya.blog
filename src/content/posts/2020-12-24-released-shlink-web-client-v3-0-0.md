@@ -116,18 +116,21 @@ It also allows setting new values in case you want to use a new domain that you 
     </div>
 </div>
 
-
 ### Other improvements
 
-Those were the major changes, but v3.0.0 includes some other minor improvements.
+The changes described so far were the major ones. However, v3.0.0 includes a few other minor improvements.
 
-* Result and loading messages
-* Dropped support for Shlink v1
+* Result and loading messages have been standardized: They are now more consistent and use the same set of components, which also ensures consistency in the future.
+* Error messages are now more descriptive: Instead of showing generic error messages when API calls fail, the actual error message is now always displayed, so that it's easier to know what failed.
+* Dropped support for Shlink v1: All major versions come with some breaking changes that improve code maintainability. This one drops Shlink v1 support, which allows removing some conditional paths here and there.
+
+Other than the last point, Shlink v3.0.0 is fully backwards compatible, so it's safe to upgrade if you are already using Shlink v2.x
 
 ### Next steps
 
 Of course this doesn't end here, and I have a lot of ideas to improve it even further.
 
-* Dark theme
-* Shlink dashboard
-* Filtering in lists added to URL
+* Dark theme: It's what the cool kids do these days, and I have already done some experiments in the field.
+* Shlink dashboard: Next gen web app for Shlink. You can read the whole reasoning in [this issue](https://github.com/shlinkio/shlink-web-client/issues/338).
+* Filtering in lists added to URL: Many sections allow filtering lists, but the state is saved in memory, which means it gets lost if the page is refreshed, and it cannot be bookmarked. The intention is to make all filtering params to become part of URLs.
+* Exporting visits in CSV: It's cool to see charts full of info, but sometimes admins need to feed other services with the visits info, and consuming the original API is not always an option. This app will soon support exporting the visits you see in a CSV file.
