@@ -62,12 +62,66 @@ The new design groups the inputs by context, which makes it more clear. It also 
 
 ### Enhanced visits page
 
-### Result and loading messages
+The visits page had a problem, it was trying to display too much information in a single place.
+
+* Visits over time
+* Visits from every platform
+* Visits from every location
+* A list of visits as a table
+
+The new approach splits those in subsections with their own sub-route (`/by-location`, `/by-context`, etc). This helps to render a smaller amount of charts at once, since they are a bit CPU greedy.
+
+Also, only the visits from the last 30 days are loaded by default, making it load way faster for URLs with a lot of visits.
+
+<div class="row">
+    <div class="col-md-6">
+        <img alt="Shlink web client visits - Before" src="/assets/img/shlink-web-client-3/visits-before.png">
+        <p class="text-center"><small>Before</small></p>
+    </div>
+    <div class="col-md-6">
+        <img alt="Shlink web client visits - After" src="/assets/img/shlink-web-client-3/visits-after.png">
+        <p class="text-center"><small>After</small></p>
+    </div>
+</div>
+
+### Date range selector
+
+A new component allows selecting date ranges either by relative time ranges (last 30 days, last 90 days...) or by selecting absolute start and end dates.
+
+This component is used both to filter short URL lists and visits lists.
+
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+        <img alt="Shlink web client date range selector" src="/assets/img/shlink-web-client-3/date-range-selector.png">
+        <p class="text-center"><small>Date range selector</small></p>
+    </div>
+</div>
+
+### Domain selector
+
+Shlink has had multi-domain support for some versions, but changing the domain from the web client required to set the value manually, which is prone to typos.
+
+This version introduces a new component which allows selecting from domains already used in the past (which is what you will want in most of the cases), preventing accidental typos.
+
+It also allows setting new values in case you want to use a new domain that you never used in the past. This domain will then appear in the list the next time.
+
+<div class="row">
+    <div class="col-md-6">
+        <img alt="Shlink web client domains - existing" src="/assets/img/shlink-web-client-3/domains-existing.png">
+        <p class="text-center"><small>Existing domains</small></p>
+    </div>
+    <div class="col-md-6">
+        <img alt="Shlink web client domains - new" src="/assets/img/shlink-web-client-3/domains-new.png">
+        <p class="text-center"><small>New domain</small></p>
+    </div>
+</div>
+
 
 ### Other improvements
 
-* Domain selector
-* Date range selector
+Those were the major changes, but v3.0.0 includes some other minor improvements.
+
+* Result and loading messages
 * Dropped support for Shlink v1
 
 ### Next steps
