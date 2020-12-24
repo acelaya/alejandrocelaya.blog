@@ -84,6 +84,23 @@ Also, only the visits from the last 30 days are loaded by default, making it loa
     </div>
 </div>
 
+### Outer sections
+
+The app has some sections which are not related to a specific server, like creating/editing servers, or the settings page.
+
+These sections have also been adapted to the new style, and they also have a max-width for wide screens.
+
+<div class="row">
+    <div class="col-md-6">
+        <img alt="Shlink web client server - Before" src="/assets/img/shlink-web-client-3/create-server-before.png">
+        <p class="text-center"><small>Before</small></p>
+    </div>
+    <div class="col-md-6">
+        <img alt="Shlink web client server - After" src="/assets/img/shlink-web-client-3/create-server-after.png">
+        <p class="text-center"><small>After</small></p>
+    </div>
+</div>
+
 ### Date range selector
 
 A new component allows selecting date ranges either by relative time ranges (last 30 days, last 90 days...) or by selecting absolute start and end dates.
@@ -99,7 +116,7 @@ This component is used both to filter short URL lists and visits lists.
 
 ### Domain selector
 
-Shlink has had multi-domain support for some versions, but changing the domain from the web client required to set the value manually, which is prone to typos.
+Shlink has had multi-domain support for some versions, but changing the domain from the web client required to set the value manually, which is a bit error-prone.
 
 This version introduces a new component which allows selecting from domains already used in the past (which is what you will want in most of the cases), preventing accidental typos.
 
@@ -124,13 +141,13 @@ The changes described so far were the major ones. However, v3.0.0 includes a few
 * Error messages are now more descriptive: Instead of showing generic error messages when API calls fail, the actual error message is now always displayed, so that it's easier to know what failed.
 * Dropped support for Shlink v1: All major versions come with some breaking changes that improve code maintainability. This one drops Shlink v1 support, which allows removing some conditional paths here and there.
 
-Other than the last point, Shlink v3.0.0 is fully backwards compatible, so it's safe to upgrade if you are already using Shlink v2.x
+Other than the last point, Shlink v3.0.0 is mostly backwards compatible, so it's safe to upgrade if you are already using Shlink v2.x
 
 ### Next steps
 
 Of course this doesn't end here, and I have a lot of ideas to improve it even further.
 
-* Dark theme: It's what the cool kids do these days, and I have already done some experiments in the field.
+* Dark theme: It's what the cool kids do these days, and I have already done some experiments around it.
 * Shlink dashboard: Next gen web app for Shlink. You can read the whole reasoning in [this issue](https://github.com/shlinkio/shlink-web-client/issues/338).
-* Filtering in lists added to URL: Many sections allow filtering lists, but the state is saved in memory, which means it gets lost if the page is refreshed, and it cannot be bookmarked. The intention is to make all filtering params to become part of URLs.
-* Exporting visits in CSV: It's cool to see charts full of info, but sometimes admins need to feed other services with the visits info, and consuming the original API is not always an option. This app will soon support exporting the visits you see in a CSV file.
+* Filtering in lists added to URL: Many sections allow filtering lists, but the state is saved in memory, which means it gets lost if the page is refreshed, and it cannot be bookmarked. The intention is to make all filtering params to become part of the URL.
+* Exporting visits in CSV: It's cool to see charts full of info, but sometimes admins need to feed other services with the data, and consuming the original API is not always an option. Exporting visits to a CSV file will soon be supported by shlink-web-client.
