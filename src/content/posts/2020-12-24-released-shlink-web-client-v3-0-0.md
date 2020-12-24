@@ -13,7 +13,7 @@ This new version introduces several improvements to the project, and I thought i
 
 The project has been using the same design almost since the beginning. It was clean, but it laked a bit of contrast and consistency in many sections.
 
-Now the main background is light-gray, with components composed in white cards with a slight shadow, that makes them easier to spot inside th app.
+Now the main background is light-gray, with components composed in white cards with a slight box shadow, that makes them easier to spot inside the app.
 
 Also, the main area has now a max-width that prevents components from stretching too much on wide screens.
 
@@ -42,7 +42,7 @@ Also, the main area has now a max-width that prevents components from stretching
 
 Up until now, after connecting to a Shlink server, you went directly to the list of short URLs.
 
-With this new version, you can see an overview page first, which displays some general stats, a quick short URL creation form, and the latest 5 short URLs.
+With this new version, you now see an overview page first, which displays some general stats, a quick short URL creation form, and the latest 5 short URLs.
 
 From there, you can navigate to the full list of short URLs, with filtering capabilities, or go to the advanced short URL creation form.
 
@@ -62,7 +62,7 @@ From there, you can navigate to the full list of short URLs, with filtering capa
 
 One of the sections with more room for improvement was the short URL creation form. It had all the inputs mixed, displaying just the "long url" one, with the option to un-collapsing the rest at will.
 
-The new design groups the inputs by context, which makes it more clear. It also displays all the components from the beginning, since the "quick form" is now in the overview page.
+The new design groups the inputs by context, which makes it more clear. It also displays the inputs all the time, since the "quick form" is now located in the overview page.
 
 <div class="row">
     <div class="col-md-6">
@@ -94,7 +94,7 @@ The visits page had a problem, it was trying to display too much information in 
 * Visits from every location
 * A list of visits as a table
 
-The new approach splits those in subsections with their own sub-route (`/by-location`, `/by-context`, etc). This helps to render a smaller amount of charts at once, since they are a bit CPU greedy.
+The new approach splits those in subsections with their own sub-route each (`/by-location`, `/by-context`, etc). This helps to render a smaller amount of charts at once, since they are a bit CPU greedy.
 
 Also, only the visits from the last 30 days are loaded by default, making it load way faster for URLs with a lot of visits.
 
@@ -195,4 +195,4 @@ Of course this doesn't end here, and I have a lot of ideas to improve it even fu
 * Dark theme: It's what the cool kids do these days, and I have already done some experiments around it.
 * Shlink dashboard: Next gen web app for Shlink. You can read the whole reasoning in [this issue](https://github.com/shlinkio/shlink-web-client/issues/338).
 * Filtering in lists added to URL: Many sections allow filtering lists, but the state is saved in memory, which means it gets lost if the page is refreshed, and it cannot be bookmarked. The intention is to make all filtering params to become part of the URL.
-* Exporting visits in CSV: It's cool to see charts full of info, but sometimes admins need to feed other services with the data, and consuming the original API is not always an option. Exporting visits to a CSV file will soon be supported by shlink-web-client.
+* Exporting visits in CSV: It's cool to see charts full of info, but sometimes admins need to feed other services with the data, and consuming the original API is not always an option. Exporting visits to a CSV file will be supported soon by shlink-web-client.
