@@ -71,6 +71,10 @@ var acelayablog = {
                 btn.addClass('hidden');
             }
         });
+    },
+
+    initGalleries: function() {
+        $('.gallery-item').magnificPopup({type:'image'});
     }
 
 };

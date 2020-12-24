@@ -13,6 +13,7 @@ module.exports = grunt => {
                         'build/assets/css/bootstrap.min.css',
                         'build/assets/css/bootstrap-social.css',
                         'build/assets/css/highlightjs-github.min.css',
+                        'build/assets/css/magnific-popup.css',
                         'build/assets/css/style.css'
                     ]
                 }
@@ -32,6 +33,7 @@ module.exports = grunt => {
                         'build/assets/js/bootstrap.min.js',
                         'build/assets/js/jquery.easing.1.3.js',
                         'build/assets/js/jquery.waypoints.min.js',
+                        'build/assets/js/jquery.magnific-popup.min.js',
                         'build/assets/js/lunr.min.js',
                         'build/assets/js/mustache.js',
                         'build/assets/js/uri.min.js',
@@ -50,12 +52,14 @@ module.exports = grunt => {
                 'build/assets/css/icomoon.css',
                 'build/assets/css/bootstrap.min.css',
                 'build/assets/css/highlightjs-github.min.css',
+                'build/assets/css/magnific-popup.css',
                 'build/assets/css/bootstrap-social.css',
                 'build/assets/css/style.css',
                 'build/assets/js/jquery.min.js',
                 'build/assets/js/bootstrap.min.js',
                 'build/assets/js/jquery.easing.1.3.js',
                 'build/assets/js/jquery.waypoints.min.js',
+                'build/assets/js/jquery.magnific-popup.min.js',
                 'build/assets/js/lunr.min.js',
                 'build/assets/js/mustache.js',
                 'build/assets/js/uri.min.js',

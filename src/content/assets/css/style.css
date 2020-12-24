@@ -1781,3 +1781,7 @@ blockquote {
   font-size: 9px;
   line-height: 1;
 }
+
+.gallery-item {
+  cursor: zoom-in;
+}

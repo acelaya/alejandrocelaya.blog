@@ -156,4 +156,5 @@ $(document).ready(function() {
     acelayablog.initShareButtons();
     acelayablog.initSearch();
     acelayablog.initToTopButton();
+    acelayablog.initGalleries();
 });

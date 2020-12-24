@@ -19,11 +19,21 @@ Also, the main area has now a max-width that prevents components from stretching
 
 <div class="row">
     <div class="col-md-6">
-        <img alt="Shlink web client design - Before" src="/assets/img/shlink-web-client-3/design-before.png">
+        <img 
+            alt="Shlink web client design - Before" 
+            class="gallery-item" 
+            data-mfp-src="/assets/img/shlink-web-client-3/design-before.png" 
+            src="/assets/img/shlink-web-client-3/design-before.png"
+        >
         <p class="text-center"><small>Before</small></p>
     </div>
     <div class="col-md-6">
-        <img alt="Shlink web client design - After" src="/assets/img/shlink-web-client-3/design-after.png">
+        <img 
+            alt="Shlink web client design - After"
+            class="gallery-item" 
+            data-mfp-src="/assets/img/shlink-web-client-3/design-after.png"
+            src="/assets/img/shlink-web-client-3/design-after.png"
+        >
         <p class="text-center"><small>After</small></p>
     </div>
 </div>
@@ -38,7 +48,12 @@ From there, you can navigate to the full list of short URLs, with filtering capa
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <img alt="Shlink web client overview" src="/assets/img/shlink-web-client-3/overview.png">
+        <img 
+            alt="Shlink web client overview"
+            class="gallery-item" 
+            data-mfp-src="/assets/img/shlink-web-client-3/overview.png"
+            src="/assets/img/shlink-web-client-3/overview.png"
+        >
         <p class="text-center"><small>Overview</small></p>
     </div>
 </div>
@@ -51,11 +66,21 @@ The new design groups the inputs by context, which makes it more clear. It also 
 
 <div class="row">
     <div class="col-md-6">
-        <img alt="Shlink web client creation form - Before" src="/assets/img/shlink-web-client-3/creation-form-before.png">
+        <img 
+            alt="Shlink web client creation form - Before"
+            class="gallery-item" 
+            data-mfp-src="/assets/img/shlink-web-client-3/creation-form-before.png"
+            src="/assets/img/shlink-web-client-3/creation-form-before.png"
+        >
         <p class="text-center"><small>Before</small></p>
     </div>
     <div class="col-md-6">
-        <img alt="Shlink web client creation form - After" src="/assets/img/shlink-web-client-3/creation-form-after.png">
+        <img 
+            alt="Shlink web client creation form - After"
+            class="gallery-item" 
+            data-mfp-src="/assets/img/shlink-web-client-3/creation-form-after.png"
+            src="/assets/img/shlink-web-client-3/creation-form-after.png"
+        >
         <p class="text-center"><small>After</small></p>
     </div>
 </div>
@@ -75,11 +100,21 @@ Also, only the visits from the last 30 days are loaded by default, making it loa
 
 <div class="row">
     <div class="col-md-6">
-        <img alt="Shlink web client visits - Before" src="/assets/img/shlink-web-client-3/visits-before.png">
+        <img 
+            alt="Shlink web client visits - Before"
+            class="gallery-item" 
+            data-mfp-src="/assets/img/shlink-web-client-3/visits-before.png"
+            src="/assets/img/shlink-web-client-3/visits-before.png"
+        >
         <p class="text-center"><small>Before</small></p>
     </div>
     <div class="col-md-6">
-        <img alt="Shlink web client visits - After" src="/assets/img/shlink-web-client-3/visits-after.png">
+        <img 
+            alt="Shlink web client visits - After"
+            class="gallery-item" 
+            data-mfp-src="/assets/img/shlink-web-client-3/visits-after.png"
+            src="/assets/img/shlink-web-client-3/visits-after.png"
+        >
         <p class="text-center"><small>After</small></p>
     </div>
 </div>
@@ -92,11 +127,21 @@ These sections have also been adapted to the new style, and they also have a max
 
 <div class="row">
     <div class="col-md-6">
-        <img alt="Shlink web client server - Before" src="/assets/img/shlink-web-client-3/create-server-before.png">
+        <img 
+            alt="Shlink web client server - Before"
+            class="gallery-item" 
+            data-mfp-src="/assets/img/shlink-web-client-3/create-server-before.png"
+            src="/assets/img/shlink-web-client-3/create-server-before.png"
+        >
         <p class="text-center"><small>Before</small></p>
     </div>
     <div class="col-md-6">
-        <img alt="Shlink web client server - After" src="/assets/img/shlink-web-client-3/create-server-after.png">
+        <img
+            alt="Shlink web client server - After"
+            class="gallery-item" 
+            data-mfp-src="/assets/img/shlink-web-client-3/create-server-after.png"
+            src="/assets/img/shlink-web-client-3/create-server-after.png"
+        >
         <p class="text-center"><small>After</small></p>
     </div>
 </div>
