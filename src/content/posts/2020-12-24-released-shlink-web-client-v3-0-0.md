@@ -150,7 +150,7 @@ These sections have also been adapted to the new style, and they also have a max
 
 A new component allows selecting date ranges either by relative time ranges (last 30 days, last 90 days...) or by selecting absolute start and end dates.
 
-This component is used both to filter short URL lists and visits lists.
+This component is used to filter both short URL lists and visits lists.
 
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
@@ -165,7 +165,7 @@ Shlink has had multi-domain support for some versions, but changing the domain f
 
 This version introduces a new component which allows selecting from domains already used in the past (which is what you will want in most of the cases), preventing accidental typos.
 
-It also allows setting new values in case you want to use a new domain that you never used in the past. This domain will then appear in the list the next time.
+It also allows setting new values in case you want to use a new domain that you never used before. This domain will then appear in the list the next time.
 
 <div class="row">
     <div class="col-md-6">
