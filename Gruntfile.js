@@ -14,7 +14,8 @@ module.exports = grunt => {
                         'build/assets/css/bootstrap-social.css',
                         'build/assets/css/highlightjs-github.min.css',
                         'build/assets/css/magnific-popup.css',
-                        'build/assets/css/style.css'
+                        'build/assets/css/style.css',
+                        'build/assets/css/main.css'
                     ]
                 }
             }
@@ -55,6 +56,7 @@ module.exports = grunt => {
                 'build/assets/css/magnific-popup.css',
                 'build/assets/css/bootstrap-social.css',
                 'build/assets/css/style.css',
+                'build/assets/css/main.css',
                 'build/assets/js/jquery.min.js',
                 'build/assets/js/bootstrap.min.js',
                 'build/assets/js/jquery.easing.1.3.js',
