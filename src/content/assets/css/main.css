@@ -1,5 +1,5 @@
 body {
-    color: #6f7984;
+    color: #494e57;
     background: #efefef url(/assets/img/white_wave.png) repeat;
 }
 
@@ -62,7 +62,7 @@ a:hover, a:active, a:focus {
 }
 
 #fh5co-projects .fh5co-project-item .fh5co-text p {
-    color: #6f7984;
+    color: #494E57;
 }
 
 .no-js-fullheight {
@@ -103,7 +103,7 @@ a:hover, a:active, a:focus {
 }
 
 .fh5co-person .fh5co-designation {
-    color: #6f7984;
+    color: #494E57;
 }
 
 #fh5co-projects .fh5co-project-item img {
@@ -275,7 +275,7 @@ li.post {
     color: #fff;
 }
 .search-form .icon-search.focus {
-    color: #6f7984 !important;
+    color: #494E57 !important;
 }
 .search-form input[type=search] {
     border: none;
