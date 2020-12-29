@@ -27,6 +27,7 @@
     "next": "^10.0.0",
     "next-compose-plugins": "^2.2.1",
     "next-fonts": "^1.5.1",
+    "next-ga": "^2.3.4",
     "ramda": "^0.27.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

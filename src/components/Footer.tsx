@@ -27,7 +27,7 @@ const Footer: FC<{ latestPosts: Post[] }> = ({ latestPosts }) => (
           <div className="fh5co-footer-widget">
             <h3>Latest blog posts</h3>
             <ul className="fh5co-links blog-posts">
-              {latestPosts.map((post) => <li><Link href={post.url}>{post.title}</Link></li>)}
+              {latestPosts.map((post) => <li key={post.slug}><Link href={post.url}>{post.title}</Link></li>)}
             </ul>
           </div>
         </div>
