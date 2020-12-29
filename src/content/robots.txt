@@ -1,7 +1,0 @@
----
-permalink: robots.txt
----
-
-User-agent: *
-Sitemap: https://alejandrocelaya.blog/sitemap.xml
-Disallow: /search.json
