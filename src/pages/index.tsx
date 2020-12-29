@@ -48,8 +48,8 @@ const Home: FC<HomeProps> = ({ posts, latestPosts, isFirstPage, isLastPage, curr
 export const getStaticProps: GetStaticProps<HomeProps> = async (context) => {
   const page: number = Number(context.params?.pageNum ?? 1);
   const [result, { posts: latestPosts }] = await Promise.all([
-    getPostsForPage(page),
-    getPostsForPage(1),
+    getPostsForPage({ page }),
+    getPostsForPage(),
   ]);
 
   return {

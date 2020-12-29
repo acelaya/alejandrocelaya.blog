@@ -28,6 +28,13 @@ interface PostsPagination {
   isLastPage: boolean;
 }
 
+interface PageOptions {
+  page?: number;
+  category?: string;
+  tag?: string;
+  pageSize?: number;
+}
+
 const filterByCategoryOrTag = (category?: string, tag?: string) => (post: Post) => {
   if (category) {
     return post.categories.includes(category);
@@ -61,16 +68,18 @@ export const listPosts = async (category?: string, tag?: string): Promise<Post[]
   return allPostsData.filter(filterByCategoryOrTag(category, tag)).sort((a, b) =>  a.date < b.date ? 1 : -1)
 };
 
-export const calcPagesForPosts = (posts: Post[]) => Math.ceil(posts.length / PAGE_SIZE);
+export const calcPagesForPosts = (posts: Post[], pageSize: number = PAGE_SIZE) => Math.ceil(posts.length / pageSize);
 
-export const getPostsForPage = async (page: number, category?: string, tag?: string): Promise<PostsPagination> => {
+export const getPostsForPage = async (
+  { page = 1, pageSize = PAGE_SIZE, category, tag }: PageOptions = {}
+): Promise<PostsPagination> => {
   const allPosts = await listPosts(category, tag);
-  const posts = allPosts.slice(page * PAGE_SIZE - PAGE_SIZE, page * PAGE_SIZE);
+  const posts = allPosts.slice(page * pageSize - pageSize, page * pageSize);
 
   return {
     posts,
     isFirstPage: page === 1,
-    isLastPage: page >= calcPagesForPosts(allPosts),
+    isLastPage: page >= calcPagesForPosts(allPosts, pageSize),
   }
 }
 

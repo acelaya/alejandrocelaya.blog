@@ -82,7 +82,7 @@ export const getStaticProps: GetStaticProps<PostDetailProps> = async (context) =
   const [,,, slug] = (context.params?.slug ?? []) as string[];
   const [posts, { posts: latestPosts }] = await Promise.all([
     listPosts(),
-    getPostsForPage(1),
+    getPostsForPage(),
   ]);
   const post = posts.find((post) => post.slug === slug)
   const indexOfPost = posts.indexOf(post);

@@ -55,7 +55,7 @@ const SearchPage: FC<SearchPageProps> = ({ index, posts, latestPosts }) => {
 export const getStaticProps: GetStaticProps<SearchPageProps> = async () => {
   const [posts, { posts: latestPosts }] = await Promise.all([
     listPosts(),
-    getPostsForPage(1),
+    getPostsForPage(),
   ]);
   const index = lunr(function () {
     this.field('title');
