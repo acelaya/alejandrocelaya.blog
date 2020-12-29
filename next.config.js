@@ -8,9 +8,23 @@ module.exports = withPlugins([ withFonts, withMDX ], {
   enableSvg: true,
   trailingSlash: true, // Makes pages to be exported as index.html files
   env,
-  webpack(config) {
+  webpack(config, { dev, isServer }) {
     config.optimization.minimizer = config.optimization.minimizer || [];
     config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
+
+    if (!dev && isServer) {
+      const originalEntry = config.entry;
+
+      config.entry = async () => {
+        const entries = { ...(await originalEntry()) };
+
+        // These scripts can import components from the app and use ES modules
+        entries['./scripts/generate-feed'] = './scripts/generate-feed.js';
+
+        return entries;
+      };
+    }
+
 
     return config;
   },
