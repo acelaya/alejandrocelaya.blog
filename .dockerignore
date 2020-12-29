@@ -1,8 +1,10 @@
 build
-infra
 node_modules
-vendor
+coverage
+home
+.next/
+out/
+build
 docker-compose.*
-innode
-inphp
+indocker
 package-lock.json

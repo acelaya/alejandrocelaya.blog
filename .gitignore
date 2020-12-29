@@ -1,8 +1,14 @@
-/.idea
-/build/
-/source/components/
 /node_modules
-/vendor
-composer.lock
+/coverage
 docker-compose.override.yml
-package-lock.json
+/home
+
+# next.js
+/.next/
+/out/
+/build
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

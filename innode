@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-docker-compose run ac_blog_node /bin/sh -c "cd /home/ac_blog && $*"

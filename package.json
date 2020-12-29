@@ -1,23 +1,50 @@
 {
-    "name": "alejandrocelaya.blog",
-    "version": "1.0.0",
-    "description": "Alejandro Celaya | Blog - Software development, agile methodologies and open source projects",
-    "keywords": [
-        "php",
-        "java",
-        "tdd",
-        "agile methodologies",
-        "continuous integration",
-        "zf2"
-    ],
-    "author": "Alejandro Celaya Alastrué",
-    "license": "MIT",
-    "readmeFilename": "README.md",
-    "devDependencies": {
-        "grunt": "^1.0.1",
-        "grunt-contrib-clean": "^1.0",
-        "grunt-contrib-cssmin": "^1.0",
-        "grunt-contrib-htmlmin": "^2.4.0",
-        "grunt-contrib-uglify": "^1.0"
-    }
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "sitemap": "node scripts/generate-sitemap.js",
+    "feed": "node ./.next/server/scripts/generate-feed.js",
+    "export": "npm run build && next export && npm run sitemap && npm run feed"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@next/mdx": "^10.0.4",
+    "bootstrap": "^3.4.1",
+    "date-fns": "^2.16.1",
+    "disqus-react": "^1.0.10",
+    "feed": "^4.2.1",
+    "highlight.js": "^10.5.0",
+    "lunr": "^2.3.9",
+    "next": "^10.0.0",
+    "next-compose-plugins": "^2.2.1",
+    "next-fonts": "^1.5.1",
+    "next-ga": "^2.3.4",
+    "ramda": "^0.27.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-external-link": "^1.2.0",
+    "react-highlight": "^0.12.0",
+    "react-image-lightbox": "^5.1.1",
+    "react-tweet-embed": "^1.2.2"
+  },
+  "devDependencies": {
+    "@mdx-js/loader": "^1.6.22",
+    "@types/lunr": "^2.3.3",
+    "@types/node": "^14.14.16",
+    "@types/ramda": "^0.27.34",
+    "@types/react": "^17.0.0",
+    "nextjs-sitemap-generator": "^1.1.3",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "react-lunr": "^1.0.0",
+    "typescript": "^4.1.3"
+  }
 }

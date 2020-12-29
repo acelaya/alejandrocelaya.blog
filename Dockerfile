@@ -1,15 +1,11 @@
-# Build blog
-FROM composer:2 as composer
+FROM node:14.15-alpine as node
 COPY . /blog
-RUN cd /blog && composer install && ./vendor/bin/spress site:build --env=pro
+RUN cd /blog && \
+    npm install && \
+    npm run export
 
-# Process node tasks
-FROM node:10.15.3-alpine as node
-COPY --from=composer /blog /blog
-RUN cd /blog && npm install && ./node_modules/.bin/grunt
-
-# Expose static content with nginx
-FROM nginx:1.19.6-alpine
+FROM nginx:1.19-alpine
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
-RUN rm -r /usr/share/nginx/html
-COPY --from=node /blog/build /usr/share/nginx/html
+RUN rm -r /usr/share/nginx/html && rm /etc/nginx/conf.d/default.conf
+COPY --from=node /blog/out /usr/share/nginx/html
+COPY config/nginx.conf /etc/nginx/conf.d/default.conf

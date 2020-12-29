@@ -1,5 +1,4 @@
-Alejandro Celaya | Blog
-=======================
+# Alejandro Celaya | Blog
 
 [![Build Status](https://img.shields.io/travis/acelaya/alejandrocelaya.blog.svg?style=flat-square)](https://travis-ci.org/acelaya/alejandrocelaya.blog)
 [![Docker build status](https://img.shields.io/docker/cloud/build/acelaya/blog.svg?style=flat-square)](https://hub.docker.com/r/acelaya/blog/)
@@ -9,4 +8,4 @@ Alejandro Celaya | Blog
 
 This is my blog. You can see it at https://alejandrocelaya.blog
 
-It is made by using [Spress](http://spress.yosymfony.com)
+Built on top of [Next.js](https://nextjs.org/)
