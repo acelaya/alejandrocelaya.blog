@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+REF=$1
+[[ "${REF}" == *"main"* ]] && DOCKER_TAG="latest" || DOCKER_TAG=${REF#refs/tags/v}
+
+docker build -t acelaya/blog:${DOCKER_TAG} .
+docker push acelaya/blog:${DOCKER_TAG}
