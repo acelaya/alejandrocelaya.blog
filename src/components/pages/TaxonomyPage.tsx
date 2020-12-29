@@ -10,16 +10,17 @@ import { PostHint } from '../post/PostHint';
 export interface TaxonomyPageProps extends PaginatorProps {
   taxonomy: string;
   posts: Post[];
+  latestPosts: Post[];
   type: TaxonomyType;
 }
 
 export const TaxonomyPage: FC<TaxonomyPageProps> = (
-  { taxonomy, type, posts, isFirstPage, isLastPage, currentPage },
+  { taxonomy, type, posts, latestPosts, isFirstPage, isLastPage, currentPage },
 ) => {
   let currentYear: string | null = null;
 
   return (
-    <Layout url={`/${type}/${taxonomy}`}>
+    <Layout url={`/${type}/${taxonomy}`} latestPosts={latestPosts}>
       <Container>
         <SectionTitle>
           <span className="taxonomies-title">{type}</span> Archive &mdash; &quot;{taxonomy}&quot;

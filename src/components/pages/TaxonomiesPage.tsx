@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Post } from '../../utils/posts';
 import Layout from '../Layout';
 import { Container } from '../Container';
 import { SectionTitle } from '../SectionTitle';
@@ -8,14 +9,15 @@ import { TaxonomiesType } from '../types';
 export interface TaxonomiesPageProps {
   taxonomies: string[];
   type: TaxonomiesType;
+  latestPosts: Post[];
 }
 
 const buildTaxonomyUrl = (taxonomy: string, type: TaxonomiesType) =>
   `/${type === 'categories' ? 'category' : 'tag'}/${encodeURI(taxonomy)}`;
 
-export const TaxonomiesPage: FC<TaxonomiesPageProps> = ({ taxonomies, type }) => {
+export const TaxonomiesPage: FC<TaxonomiesPageProps> = ({ taxonomies, type, latestPosts }) => {
   return (
-    <Layout url={`/${type}`}>
+    <Layout url={`/${type}`} latestPosts={latestPosts}>
       <Container>
         <SectionTitle className="taxonomies-title">{type}</SectionTitle>
 

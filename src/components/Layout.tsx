@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { FC, useRef, useState } from 'react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Post } from '../utils/posts';
 import Footer from './Footer';
 import Header from './Header';
 import { MobileMenu } from './menu/MobileMenu';
@@ -9,9 +10,10 @@ import { MobileMenu } from './menu/MobileMenu';
 interface LayoutProps {
   url: string
   title?: string;
+  latestPosts: Post[];
 }
 
-const Layout: FC<LayoutProps> = ({ children, title, url }) => {
+const Layout: FC<LayoutProps> = ({ children, title, url, latestPosts }) => {
   const ref = useRef<HTMLDivElement>();
   const computedTitle = `${process.env.SITE_TITLE} — ${process.env.SITE_SUBTITLE}`;
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
@@ -66,7 +68,7 @@ const Layout: FC<LayoutProps> = ({ children, title, url }) => {
           {children}
         </section>
 
-        <Footer />
+        <Footer latestPosts={latestPosts} />
       </div>
     </>
   )

@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Layout from '../components/Layout';
-import { listPosts, Post } from '../utils/posts';
+import { getPostsForPage, listPosts, Post } from '../utils/posts';
 import { PostDetail } from '../components/post/PostDetail';
 import { PostTaxonomies } from '../components/post/PostTaxonomies';
 import { SecondaryContainer } from '../components/SecondaryContainer';
@@ -16,11 +16,12 @@ interface PostDetailProps {
   post: Post;
   prevPost: Post | null;
   nextPost: Post | null;
+  latestPosts: Post[];
 }
 
-const PostDetailPage: FC<PostDetailProps> = ({ post, nextPost, prevPost }) => {
+const PostDetailPage: FC<PostDetailProps> = ({ post, nextPost, prevPost, latestPosts }) => {
   return (
-    <Layout title={post.title} url={post.url}>
+    <Layout title={post.title} url={post.url} latestPosts={latestPosts}>
       <Container>
         <article className="post post-detail">
           <PostDetail post={post} />
@@ -79,7 +80,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<PostDetailProps> = async (context) => {
   const [,,, slug] = (context.params?.slug ?? []) as string[];
-  const posts = await listPosts();
+  const [posts, { posts: latestPosts }] = await Promise.all([
+    listPosts(),
+    getPostsForPage(1),
+  ]);
   const post = posts.find((post) => post.slug === slug)
   const indexOfPost = posts.indexOf(post);
   const prevPost = posts[indexOfPost + 1] ?? null;
@@ -90,6 +94,7 @@ export const getStaticProps: GetStaticProps<PostDetailProps> = async (context) =
       post,
       prevPost,
       nextPost,
+      latestPosts,
     },
   };
 };

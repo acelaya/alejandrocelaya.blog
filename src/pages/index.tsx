@@ -12,11 +12,12 @@ import { Paginator, PaginatorProps } from '../components/Paginator';
 
 interface HomeProps extends PaginatorProps {
   posts: Post[];
+  latestPosts: Post[];
 }
 
-const Home: FC<HomeProps> = ({ posts, isFirstPage, isLastPage, currentPage }) => {
+const Home: FC<HomeProps> = ({ posts, latestPosts, isFirstPage, isLastPage, currentPage }) => {
   return (
-    <Layout url="/">
+    <Layout latestPosts={latestPosts} url="/">
       <Container>
         <ul className="fh5co-faq-list">
           {posts.map((post, index) => (
@@ -46,11 +47,15 @@ const Home: FC<HomeProps> = ({ posts, isFirstPage, isLastPage, currentPage }) =>
 
 export const getStaticProps: GetStaticProps<HomeProps> = async (context) => {
   const page: number = Number(context.params?.pageNum ?? 1);
-  const result = await getPostsForPage(page);
+  const [result, { posts: latestPosts }] = await Promise.all([
+    getPostsForPage(page),
+    getPostsForPage(1),
+  ]);
 
   return {
     props: {
       ...result,
+      latestPosts,
       currentPage: page,
     },
   };

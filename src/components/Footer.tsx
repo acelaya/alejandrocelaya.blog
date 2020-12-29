@@ -1,10 +1,12 @@
 import { faGithub, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faRss } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from './Link';
+import { FC } from 'react';
 import { ExternalLink } from 'react-external-link';
+import { Post } from '../utils/posts';
+import Link from './Link';
 
-const Footer = () => (
+const Footer: FC<{ latestPosts: Post[] }> = ({ latestPosts }) => (
   <footer id="fh5co-footer">
     <div className="container">
       <div className="row row-bottom-padded-md">
@@ -25,10 +27,7 @@ const Footer = () => (
           <div className="fh5co-footer-widget">
             <h3>Latest blog posts</h3>
             <ul className="fh5co-links blog-posts">
-              {/* TODO Print latest 5 posts here */}
-              {/*{% for post in site.posts | slice(0, 5) %}*/}
-              {/*<li><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></li>*/}
-              {/*{% endfor %}*/}
+              {latestPosts.map((post) => <li><Link href={post.url}>{post.title}</Link></li>)}
             </ul>
           </div>
         </div>
