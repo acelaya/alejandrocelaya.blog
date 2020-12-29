@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path'
 import { format, parse } from 'date-fns';
 import { TaxonomiesType } from '../components/types';
+import { renderPost } from './renderPost';
 
 const POSTS_DIR = path.join(process.cwd(), 'src/posts')
 const PAGE_SIZE = 5;
@@ -27,10 +28,6 @@ interface PostsPagination {
   isLastPage: boolean;
 }
 
-const renderPost = async (postFileName: string): Promise<string> => {
-  return fs.readFileSync(path.join(process.cwd(), 'src/posts', postFileName)).toString();
-}
-
 const filterByCategoryOrTag = (category?: string, tag?: string) => (post: Post) => {
   if (category) {
     return post.categories.includes(category);
@@ -53,10 +50,8 @@ export const listPosts = async (category?: string, tag?: string): Promise<Post[]
     const date = `${year}-${month}-${day}`;
     const formattedDate = format(parse(date, 'y-M-d', new Date()), 'dd MMMM y');
 
-    const [{ metadata = {} }, content] = await Promise.all([
-      import(`../posts/${fileName}`),
-      renderPost(fileName)
-    ]);
+    // Render post HTML and resolve its metadata
+    const { content, metadata } = await renderPost(fileName);
 
     // Combine the data with the id
     return { slug, date, formattedDate, fileName, url, content, ...metadata }
