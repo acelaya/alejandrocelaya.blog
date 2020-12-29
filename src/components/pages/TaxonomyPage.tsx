@@ -19,7 +19,7 @@ export const TaxonomyPage: FC<TaxonomyPageProps> = (
   let currentYear: string | null = null;
 
   return (
-    <Layout url={`/${type}`}>
+    <Layout url={`/${type}/${taxonomy}`}>
       <Container>
         <SectionTitle>
           <span className="taxonomies-title">{type}</span> Archive &mdash; &quot;{taxonomy}&quot;

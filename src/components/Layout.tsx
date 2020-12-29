@@ -1,9 +1,10 @@
 import Head from 'next/head';
-import { FC, useRef } from 'react';
+import { FC, useRef, useState } from 'react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Footer from './Footer';
 import Header from './Header';
+import { MobileMenu } from './menu/MobileMenu';
 
 interface LayoutProps {
   url: string
@@ -13,9 +14,12 @@ interface LayoutProps {
 const Layout: FC<LayoutProps> = ({ children, title, url }) => {
   const ref = useRef<HTMLDivElement>();
   const computedTitle = `${process.env.SITE_TITLE} — ${process.env.SITE_SUBTITLE}`;
+  const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
 
   return (
-    <div>
+    <>
+      <MobileMenu isVisible={mobileMenuVisible} toggle={() => setMobileMenuVisible(!mobileMenuVisible)} />
+
       <Head>
         <title>{computedTitle}</title>
         <meta name="description" content={computedTitle} />
@@ -27,7 +31,11 @@ const Layout: FC<LayoutProps> = ({ children, title, url }) => {
         <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,600,400italic,700' />
       </Head>
 
-      <div id="fh5co-page">
+      <div
+        id="fh5co-page"
+        className={mobileMenuVisible ? 'offcanvas-visible' : ''}
+        onClick={() => setMobileMenuVisible(false)}
+      >
         <Header />
 
         <section id="fh5co-hero" className="no-js-fullheight">
@@ -60,7 +68,7 @@ const Layout: FC<LayoutProps> = ({ children, title, url }) => {
 
         <Footer />
       </div>
-    </div>
+    </>
   )
 };
 

@@ -40,6 +40,10 @@ a:hover, a:active, a:focus {
   margin-top: 15px;
 }
 
+#fh5co-page.offcanvas-visible {
+  transform: translateX(-275px);
+}
+
 svg[class*="fa"] {
   width: 22px;
 }
