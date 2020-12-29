@@ -2,7 +2,8 @@ FROM node:14.15-alpine as node
 COPY . /blog
 RUN cd /blog && \
     npm install && \
-    npm run export
+    npm run export && \
+    npm run sitemap
 
 # Expose static content with nginx
 FROM nginx:1.19-alpine
