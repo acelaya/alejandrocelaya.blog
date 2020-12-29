@@ -5,8 +5,8 @@ RUN cd /blog && \
     npm run export && \
     npm run sitemap
 
-# Expose static content with nginx
 FROM nginx:1.19-alpine
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
-RUN rm -r /usr/share/nginx/html
+RUN rm -r /usr/share/nginx/html && rm /etc/nginx/conf.d/default.conf
 COPY --from=node /blog/out /usr/share/nginx/html
+COPY config/nginx.conf /etc/nginx/conf.d/default.conf
