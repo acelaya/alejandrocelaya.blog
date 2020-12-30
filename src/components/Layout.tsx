@@ -31,6 +31,12 @@ const Layout: FC<LayoutProps> = ({ children, title, url, latestPosts }) => {
         <meta property="og:type" content="development" />
         <meta property="og:image" content={`${process.env.SITE_URL}/assets/img/hero_bg.jpg`} />
         <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,600,400italic,700' />
+        <link
+          rel="alternate"
+          type="application/atom+xml"
+          href={`${process.env.SITE_URL}/atom.xml`}
+          title={`${process.env.SITE_TITLE} activity feed`}
+        />
       </Head>
 
       <div
