@@ -477,3 +477,7 @@ blockquote {
 .entry-title {
   margin: 20px 0 10px;
 }
+
+.ReactModal__Overlay {
+  z-index: 10000 !important;
+}
