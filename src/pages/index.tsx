@@ -1,4 +1,3 @@
-import { GetStaticProps } from 'next';
 import { FC } from 'react';
 import Layout from '../components/Layout'
 import { getPostsForPage, Post } from '../utils/posts';
@@ -9,13 +8,14 @@ import { PostHeading } from '../components/post/PostHeading';
 import { Container } from '../components/Container';
 import Link from '../components/Link';
 import { Paginator, PaginatorProps } from '../components/Paginator';
+import { withStaticLatestPosts } from '../utils/pages';
+import { WithLatestPosts } from '../components/types';
 
 interface HomeProps extends PaginatorProps {
   posts: Post[];
-  latestPosts: Post[];
 }
 
-const Home: FC<HomeProps> = ({ posts, latestPosts, isFirstPage, isLastPage, currentPage }) => {
+const Home: FC<HomeProps & WithLatestPosts> = ({ posts, latestPosts, isFirstPage, isLastPage, currentPage }) => {
   return (
     <Layout latestPosts={latestPosts} url="/">
       <Container>
@@ -45,20 +45,16 @@ const Home: FC<HomeProps> = ({ posts, latestPosts, isFirstPage, isLastPage, curr
   )
 };
 
-export const getStaticProps: GetStaticProps<HomeProps> = async (context) => {
+export const getStaticProps = withStaticLatestPosts<HomeProps>(async (context) => {
   const page: number = Number(context.params?.pageNum ?? 1);
-  const [result, { posts: latestPosts }] = await Promise.all([
-    getPostsForPage({ page }),
-    getPostsForPage(),
-  ]);
+  const result = await getPostsForPage({ page });
 
   return {
     props: {
       ...result,
-      latestPosts,
       currentPage: page,
     },
   };
-};
+});
 
 export default Home;

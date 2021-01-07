@@ -7,3 +7,7 @@ export type TaxonomyType = 'category' | 'tag';
 export interface WithPostProps {
   post: Post;
 }
+
+export interface WithLatestPosts {
+  latestPosts: Post[];
+}

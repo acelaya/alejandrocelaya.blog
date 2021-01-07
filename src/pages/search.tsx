@@ -1,21 +1,21 @@
 import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { GetStaticProps } from 'next';
 import lunr from 'lunr';
 import { useLunr } from 'react-lunr';
 import Layout from '../components/Layout';
 import { Container } from '../components/Container';
-import { getPostsForPage, listPosts, Post } from '../utils/posts';
+import { listPosts, Post } from '../utils/posts';
 import { SectionTitle } from '../components/SectionTitle';
 import { PostHint } from '../components/post/PostHint';
+import { WithLatestPosts } from '../components/types';
+import { withStaticLatestPosts } from '../utils/pages';
 
 interface SearchPageProps {
   index: object;
   posts: Record<string, Post>;
-  latestPosts: Post[];
 }
 
-const SearchPage: FC<SearchPageProps> = ({ index, posts, latestPosts }) => {
+const SearchPage: FC<SearchPageProps & WithLatestPosts> = ({ index, posts, latestPosts }) => {
   const { query: { q = '' } } = useRouter()
   const [searchQuery, setSearchQuery] = useState<string>('');
   const results = useLunr(searchQuery, index, posts) as Post[];
@@ -52,11 +52,8 @@ const SearchPage: FC<SearchPageProps> = ({ index, posts, latestPosts }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<SearchPageProps> = async () => {
-  const [posts, { posts: latestPosts }] = await Promise.all([
-    listPosts(),
-    getPostsForPage(),
-  ]);
+export const getStaticProps = withStaticLatestPosts<SearchPageProps>(async () => {
+  const posts = await listPosts();
   const index = lunr(function () {
     this.field('title');
     this.field('content');
@@ -74,9 +71,8 @@ export const getStaticProps: GetStaticProps<SearchPageProps> = async () => {
         acc[post.slug] = post;
         return acc;
       }, {}),
-      latestPosts,
     },
   };
-};
+});
 
 export default SearchPage;
