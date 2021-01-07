@@ -1,15 +1,11 @@
-import { GetStaticProps } from 'next';
 import { FC } from 'react';
 import Layout from '../components/Layout'
 import Link from '../components/Link';
-import { getPostsForPage, Post } from '../utils/posts';
 import { Container } from '../components/Container';
+import { WithLatestPosts } from '../components/types';
+import { withStaticLatestPosts } from '../utils/pages';
 
-interface NotFoundPageProps {
-  latestPosts: Post[];
-}
-
-const NotFoundPage: FC<NotFoundPageProps> = ({ latestPosts }) => {
+const NotFoundPage: FC<WithLatestPosts> = ({ latestPosts }) => {
   return (
     <Layout latestPosts={latestPosts} url="/" title="404. Page not found">
       <Container>
@@ -25,12 +21,6 @@ const NotFoundPage: FC<NotFoundPageProps> = ({ latestPosts }) => {
   )
 };
 
-export const getStaticProps: GetStaticProps<NotFoundPageProps> = async () => {
-  const { posts: latestPosts } = await getPostsForPage();
-
-  return {
-    props: { latestPosts },
-  };
-};
+export const getStaticProps = withStaticLatestPosts(async () => ({ props: {} }));
 
 export default NotFoundPage;
