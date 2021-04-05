@@ -198,6 +198,9 @@ li.post {
   font-size: 1.2em;
   line-height: 1.5em;
 }
+.post li p {
+  font-size: inherit;
+}
 
 .post pre > code {
   overflow: auto;
