@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import { ExternalLinkProps } from 'react-external-link/dist/ExternalLink';
+import { LinkProps } from './Link';
 
-const InternalLink: FC<ExternalLinkProps> = ({ children, className, ...rest }) => (
+const InternalLink: FC<LinkProps> = ({ children, className, ...rest }) => (
   <Link {...rest}>
     <a className={className}>{children}</a>
   </Link>
