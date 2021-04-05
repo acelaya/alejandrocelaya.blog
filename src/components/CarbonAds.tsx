@@ -12,7 +12,9 @@ export const CarbonAds = () => {
 
     ref.current?.appendChild(script);
 
-    return () => ref.current?.removeChild(script);
+    return () => {
+      ref.current?.removeChild(script);
+    };
   }, [])
 
   return <div className="carbonads-container" ref={ref} />;
