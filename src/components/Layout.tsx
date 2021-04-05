@@ -2,15 +2,14 @@ import Head from 'next/head';
 import { FC, useRef, useState } from 'react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Post } from '../utils/posts';
 import Footer from './Footer';
 import Header from './Header';
 import { MobileMenu } from './menu/MobileMenu';
+import { WithLatestPosts } from './types';
 
-interface LayoutProps {
+interface LayoutProps extends WithLatestPosts {
   url: string
   title?: string;
-  latestPosts: Post[];
 }
 
 const Layout: FC<LayoutProps> = ({ children, title, url, latestPosts }) => {

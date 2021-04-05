@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticPaths } from 'next';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Layout from '../components/Layout';
-import { getPostsForPage, listPosts, Post } from '../utils/posts';
+import { listPosts, Post } from '../utils/posts';
 import { PostDetail } from '../components/post/PostDetail';
 import { PostTaxonomies } from '../components/post/PostTaxonomies';
 import { SecondaryContainer } from '../components/SecondaryContainer';
@@ -11,15 +11,16 @@ import { Container } from '../components/Container';
 import { PostSocialSharing } from '../components/post/PostSocialSharing';
 import { PostComments } from '../components/post/PostComments';
 import Link from '../components/Link';
+import { WithLatestPosts } from '../components/types';
+import { withStaticLatestPosts } from '../utils/pages';
 
 interface PostDetailProps {
   post: Post;
   prevPost: Post | null;
   nextPost: Post | null;
-  latestPosts: Post[];
 }
 
-const PostDetailPage: FC<PostDetailProps> = ({ post, nextPost, prevPost, latestPosts }) => {
+const PostDetailPage: FC<PostDetailProps & WithLatestPosts> = ({ post, nextPost, prevPost, latestPosts }) => {
   return (
     <Layout title={post.title} url={post.url} latestPosts={latestPosts}>
       <Container>
@@ -78,12 +79,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<PostDetailProps> = async (context) => {
+export const getStaticProps = withStaticLatestPosts<PostDetailProps>(async (context) => {
   const [,,, slug] = (context.params?.slug ?? []) as string[];
-  const [posts, { posts: latestPosts }] = await Promise.all([
-    listPosts(),
-    getPostsForPage(),
-  ]);
+  const posts = await listPosts();
   const post = posts.find((post) => post.slug === slug)
   const indexOfPost = posts.indexOf(post);
   const prevPost = posts[indexOfPost + 1] ?? null;
@@ -94,9 +92,8 @@ export const getStaticProps: GetStaticProps<PostDetailProps> = async (context) =
       post,
       prevPost,
       nextPost,
-      latestPosts,
     },
   };
-};
+});
 
 export default PostDetailPage;

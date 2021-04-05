@@ -3,10 +3,10 @@ import { faRss } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { ExternalLink } from 'react-external-link';
-import { Post } from '../utils/posts';
 import Link from './Link';
+import { WithLatestPosts } from './types';
 
-const Footer: FC<{ latestPosts: Post[] }> = ({ latestPosts }) => (
+const Footer: FC<WithLatestPosts> = ({ latestPosts }) => (
   <footer id="fh5co-footer">
     <div className="container">
       <div className="row row-bottom-padded-md">
