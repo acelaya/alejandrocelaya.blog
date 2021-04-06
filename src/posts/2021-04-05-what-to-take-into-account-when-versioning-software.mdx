@@ -78,7 +78,7 @@ For example, not long ago I released a [new major version](/2020/12/24/released-
 Because of this there are projects that use different approaches to version apps. For example:
 
 * Firefox and Chrome have 6-week cycles, and after each one of them they release a new major version no matter what.
-* Jetbrains publishes a few releases of their IDEs every year (I think 3) which always start with the year they were released, like `2020.3.0`, and they increase the patch number for bugfixes.
+* Jetbrains publishes a few releases of their IDEs every year (I think 3) which always start with the year they were released on, like `2020.3.0`, and they increase the patch number for bugfixes.
 * Ubuntu releases 2 versions every year, one in April and one in October, and they are always identified by the year and month they were released on, like `19.04` or `20.10`.
 
 ### Special versions
@@ -97,13 +97,13 @@ It does not mean it's necessarily unstable, but it means you are still introduci
 
 The intention of an alpha release is that a subset of people con test some new functionality, but you don't want people to use it in production
 
-Alpha versions are on their very early stages. Their public API is subtle to change, and they probably contain bugs.
+Alpha versions are on their very early stages. Their public API is very likely to change, and they probably contain bugs.
 
 Semantic Versioning states that alpha versions are identified by this pattern: `MAJOR.MINOR.PATCH-alpha.NUMBER`, for example `2.0.0-alpha.1`.
 
 #### Beta
 
-Similar to alpha versions, beta versions are also subtle to contain bugs, but their API will in theory not change. That means that you could potentially adapt your software to start using a beta version, and when the corresponding stable release is published, you shouldn't need that many changes.
+Similar to alpha versions, beta versions are also prone to contain bugs, but their API will in theory not change. That means that you could potentially adapt your software to start using a beta version, and when the corresponding stable release is published, you shouldn't need that many changes.
 
 Semantic Versioning defines a pattern similar to the one for alpha versions: `MAJOR.MINOR.PATCH-beta.NUMBER`, for example `2.0.0-beta.1`.
 
