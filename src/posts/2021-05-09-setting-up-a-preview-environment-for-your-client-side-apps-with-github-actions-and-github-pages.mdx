@@ -1,0 +1,140 @@
+export const metadata = {
+  title: 'Setting-up a preview environment for your client-side apps with GitHub Action and GitHub Pages',
+  categories: ['tools', 'web'],
+  tags: ['github', 'ci', 'continuous-integration', 'github-actions', 'github-pages', 'oss', 'open-source'],
+};
+
+In the last couple of days I have been playing around with the idea of combining GitHub Actions and GitHub Pages to be able to dynamically build preview environments every time a pull request is opened against a repository hosting a client-side web app.
+
+The idea is that you can quickly preview the changes made by some contributor, without having to clone their branch and running everything locally, something specially useful for open source projects.
+
+In this article I will explain how to set everything up, and what are some considerations and problems you may face during the process.
+
+### Enable github pages
+
+The first thing you need to do is enable your project to publish pages on some branch. I recommend creating a new branch for this, let's say `preview-env`, and then enabling publishing on it.
+
+In order to do that go to your repository and then **Settings** -> **Pages**, look for the **Source** section, and you should see something like this:
+
+![GitHub pages before enabling](/assets/img/preview-envs/github-pages-before-enabling.png)
+
+Click in the dropdown and select your new branch, `preview-env`. Then click **Save**.
+
+![GitHub pages after enabling](/assets/img/preview-envs/github-pages-after-enabling.png)
+
+After saving you will see a message at the top of this section telling you what's the URL in which the pages are published. It always follows the same pattern. If your organization is `my-org` and your repository is `my-repo`, the url will be `https://my-org.github.io/my-repo/`.
+
+### Configure the workflow
+
+Now we need to configure a workflow that will "deploy" the preview environment for the branch every time a new pull request is created or updated:
+
+Let's imagine we have a React web app that is built with node.js. The configuration could look like this.
+
+```yml
+# .github/workflows/deploy-preview.yml
+name: Deploy preview
+
+on:
+  pull_request: null
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use node.js 14.15
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15
+      - name: Generate slug
+        id: generate_slug
+        run: echo "##[set-output name=slug;]$(echo ${GITHUB_HEAD_REF#refs/heads/} | sed -r 's/[~\^]+//g' | sed -r 's/[^a-zA-Z0-9]+/-/g' | sed -r 's/^-+\|-+$//g' | tr A-Z a-z)"
+      - name: Build
+        run: npm ci && npm run build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: preview-env
+          folder: build
+          target-folder: ${{ steps.generate_slug.outputs.slug }}
+      - name: Publish env
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: Preview environment
+          message: |
+            ## Preview environment
+            https://my-org.github.io/my-repo/${{ steps.generate_slug.outputs.slug }}/
+```
+
+> If you are not familiar with GitHub Actions yet, take a look at the [official documentation](https://docs.github.com/en/actions).
+
+This workflow will follow the next steps:
+
+* Checkout the code from the repository.
+* Set-up node.js 14.15
+* Based on the branch name, generate a slug that we will use to have separated deployment folders for every pull request we receive. The slug is exposed to next steps as an output.
+* Build the project. This step will obviously depend on the needs of your project.
+* Using [JamesIves/github-pages-deploy-action](https://github.com/JamesIves/github-pages-deploy-action), deploy the contents we previously built in the GitHub page, under a sub-folder matching the slug we generated a few steps above, and under the branch `preview-env` (remember we enabled GitHub pages for this branch).
+* Finally, using [marocchino/sticky-pull-request-comment](https://github.com/marocchino/sticky-pull-request-comment), post a comment in the pull request with a link to the preview environment, so that you can just click on it and see the deployment.
+
+The steps may change depending on your needs and how you build your project. For example, I have an extra step to update a property in the `package.json` that is then used to allow serving the app in a sub-path instead of the root of the domain.
+
+You may also not build your site with node.js, as you could be using any of the multiple existing static site generators out there, but you get the idea.
+
+Finally, you have probably noticed the config includes `continue-on-error: true`. This will allow the pull request to be merged even if this process fails for some reason.
+
+### Considerations when using forks
+
+While the configuration above will work perfectly when creating pull requests inside the same repository, there are some limitations when the pull request comes from a fork (which is the usual in OSS projects).
+
+For security reasons, the `GITHUB_TOKEN` injected in those cases doesn't have write permissions, which will make the "deploy" step fail.
+
+Also, you cannot define your own token with more permissions and inject it as a secret, as the secrets are not exposed to workflows running on forks.
+
+However, with a couple small config changes, we can work around these limitations:
+
+#### Change event
+
+The first thing we need to do is use the `pull_request_target` event instead of the `pull_request` one.
+
+```diff
+on:
+-  pull_request: null
++  pull_request_target: null
+```
+
+According to the documentation, this is equivalent to the `pull_request` event, but it runs in the scope of the base repository.
+
+Thanks to this, the `GITHUB_TOKEN` will come with write permissions, and we will have access to secrets if needed.
+
+#### Checkout the fork
+
+The second thing we are going to change is that we now need to specify the repository to checkout.
+
+In order to do that, we need to add two inputs to the "Checkout code" step, like this:
+
+```diff
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
++       with:
++         repository: ${{ github.event.pull_request.head.repo.full_name }}
++         ref: ${{ github.event.pull_request.head.ref }}
+```
+
+This will ensure we checkout from the fork repository, instead of the base one, which is the default, as it's the one where the `pull_request_target` event is scoped to.
+
+And that's it. With these two changes you can now deploy preview environments for pull requests coming from forks.
+
+> **IMPORTANT!** The limitations of the `pull_request` event are there for a reason. People could potentially get access to your secrets or manipulate your code. Proceed at your own risk.
+
+### Other considerations
+
+Other than the limitations for forks, there are a few other minor things to take into consideration.
+
+* Changes in GitHub Pages do not reflect immediately. It may take up to a couple of minutes for the deployment to be available, but considering you will usually not review a PR right after it has been created, this should not be a big issue.
+* As you have seen, every time a pull request is created, the deployment will generate a new folder in your GitHub Pages branch. This may result in a lot of old folders to pile-up, so you may want to set up some way to clean them up periodically or after the pull request has been merged.
+* Due to the fact that GitHub Pages only allows static pages to be served, this process cannot be used with apps that require some kind of back-end or server-side logic.
+* If your project is already using GitHub Pages for something else (serve the project's website or docs), that may conflict with this, preventing you from having this kind of preview envs.
