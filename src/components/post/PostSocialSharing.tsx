@@ -13,10 +13,10 @@ export const PostSocialSharing: FC<WithPostProps> = ({ post }) => {
       <p className="text-muted text-center"><small>If you liked this article, feel free to share it:</small></p>
       <div className="buttons">
         <Link
-          href={`https://www.facebook.com/sharer.php?u=${encodedUrl}`}
-          className="btn btn-sm btn-social btn-facebook"
+          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${post.title}&source=${siteUrl}`}
+          className="btn btn-sm btn-social btn-linkedin"
         >
-          <FontAwesomeIcon icon={faFacebookF} /> Facebook
+          <FontAwesomeIcon icon={faLinkedinIn} /> LinkedIn
         </Link>
         &nbsp;
         <Link
@@ -27,10 +27,10 @@ export const PostSocialSharing: FC<WithPostProps> = ({ post }) => {
         </Link>
         &nbsp;
         <Link
-          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${post.title}&source=${siteUrl}`}
-          className="btn btn-sm btn-social btn-linkedin"
+          href={`https://www.facebook.com/sharer.php?u=${encodedUrl}`}
+          className="btn btn-sm btn-social btn-facebook"
         >
-          <FontAwesomeIcon icon={faLinkedinIn} /> LinkedIn
+          <FontAwesomeIcon icon={faFacebookF} /> Facebook
         </Link>
       </div>
     </>
