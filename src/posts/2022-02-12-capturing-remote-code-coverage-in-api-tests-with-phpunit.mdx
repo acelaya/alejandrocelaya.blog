@@ -38,14 +38,17 @@ I tried a couple of different approaches (more on this at the end), but the most
 ```php
 use PHPUnit\Runner\Version;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
+use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\Report\Html\Facade as Html;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as Xml;
 
-$coverage = new CodeCoverage();
 // Define directories containing the code you want to cover
-$coverage->filter()->addDirectoryToWhitelist(...);
-$coverage->filter()->addDirectoryToWhitelist(...);
+$filter = new Filter();
+$filter->includeDirectory(...);
+$filter->includeDirectory(...);
+$coverage = new CodeCoverage((new Selector())->forLineCoverage($filter), $filter);
 
 // This is "pseudo-code". Defining the routes depends on the framework you use
 $app->get('/api-tests/start-coverage', function () use (&$coverage) {
