@@ -4,7 +4,7 @@ services:
     acelaya_blog_node:
         container_name: acelaya_blog_node
         image: node:16.14-alpine
-        command: /bin/sh -c "cd /blog && npm install && npm run dev"
+        command: /bin/sh -c "cd /blog && npm install --legacy-peer-deps && npm run dev"
         volumes:
             - ./:/blog
         ports:
