@@ -1,4 +1,4 @@
-FROM node:14.17-alpine as node
+FROM node:16.14-alpine as node
 COPY . /blog
 RUN cd /blog && \
     npm install && \
