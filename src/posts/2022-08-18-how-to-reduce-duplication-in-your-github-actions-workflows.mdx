@@ -1,0 +1,348 @@
+export const metadata = {
+  title: 'How to reduce duplication in your GitHub Actions workflows',
+  categories: ['tools', 'web'],
+  tags: ['github', 'ci', 'continuous-integration', 'github-actions'],
+};
+
+In 2019, GitHub published their own solution for CI/CD called [GitHub Actions](https://github.com/features/actions), which allowed those hosting their code in GitHub, to be able to define and run their continuous integration pipelines in the same platform.
+
+When it was released, one of the main pain points to use it was that defining pipelines required large yaml config files, where it was sometimes hard to avoid step duplication.
+
+However, during this time, and based on users' feedback, GitHub has introduced several improvements on this regard.
+
+Recently, I have been refactoring and improving a pipeline in one of my projects, and I wanted to share the different approaches I used to reduce duplication.
+
+Those approaches are:
+
+* Matrix.
+* Composed actions.
+* Reusable workflows.
+
+### Introducing the workflow
+
+> First of all, this article assumes you have certain knowledge on how GitHub Actions works. If that's not the case, you probably want to take a look at its [documentation](https://docs.github.com/en/actions).
+
+Let's imagine we start with this continuous integration workflow for a PHP project:
+
+```yaml
+name: Continuous integration
+
+on:
+  pull_request: null
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  coding-styles-8-0:
+    runs-on: ubuntu-22.04
+    env:
+      extensions: 'openswoole, gd, intl'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.0'
+          extensions: ${{ env.extensions }}
+          key: coding-styles-extensions
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+      - name: Use PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          tools: composer
+          extensions: ${{ env.extensions }}
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Check coding styles
+        run: composer coding-styles
+
+  static-analysis-8-0:
+    runs-on: ubuntu-22.04
+    env:
+      extensions: 'openswoole, gd, intl'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.0'
+          extensions: ${{ env.extensions }}
+          key: coding-styles-extensions
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+      - name: Use PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          tools: composer
+          extensions: ${{ env.extensions }}
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Static analysis
+        run: composer static-analysis
+
+  unit-tests-8-0:
+    runs-on: ubuntu-22.04
+    env:
+      extensions: 'openswoole, gd, intl'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.0'
+          extensions: ${{ env.extensions }}
+          key: coding-styles-extensions
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+      - name: Use PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          tools: composer
+          extensions: ${{ env.extensions }}
+          coverage: pcov
+          ini-values: pcov.directory=module
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Unit tests
+        run: composer test:unit
+
+  unit-tests-8-1:
+    runs-on: ubuntu-22.04
+    env:
+      extensions: 'openswoole'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.1'
+          extensions: ${{ env.extensions }}
+          key: coding-styles-extensions
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+      - name: Use PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+          extensions: ${{ env.extensions }}
+          coverage: pcov
+          ini-values: pcov.directory=module
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Unit tests
+        run: composer test:unit
+      - name: Publish coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-unit
+          path: |
+            build/coverage-unit
+
+  e2e-tests-8-0:
+    runs-on: ubuntu-22.04
+    env:
+      extensions: 'openswoole, gd, intl'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.0'
+          extensions: ${{ env.extensions }}
+          key: coding-styles-extensions
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+      - name: Use PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          tools: composer
+          extensions: ${{ env.extensions }}
+          coverage: pcov
+          ini-values: pcov.directory=module
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: E2E tests
+        run: composer test:e2e
+
+  e2e-tests-8-1:
+    runs-on: ubuntu-22.04
+    env:
+      extensions: 'openswoole'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.1'
+          extensions: ${{ env.extensions }}
+          key: coding-styles-extensions
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+      - name: Use PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+          extensions: ${{ env.extensions }}
+          coverage: pcov
+          ini-values: pcov.directory=module
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: E2E tests
+        run: composer test:e2e
+      - name: Publish coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-e2e
+          path: |
+            build/coverage-e2e
+
+  unit-mutation-tests:
+    runs-on: ubuntu-22.04
+    needs:
+      - unit-tests-8-1
+    env:
+      extensions: 'openswoole'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.1'
+          extensions: ${{ env.extensions }}
+          key: coding-styles-extensions
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+      - name: Use PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+          extensions: ${{ env.extensions }}
+          coverage: pcov
+          ini-values: pcov.directory=module
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Download coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-unit
+          path: build
+      - name: Unit mutation tests
+        run: composer mutation-tests:unit
+
+  e2e-mutation-tests:
+    runs-on: ubuntu-22.04
+    needs:
+      - e2e-tests-8-1
+    env:
+      extensions: 'openswoole'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.1'
+          extensions: ${{ env.extensions }}
+          key: coding-styles-extensions
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+      - name: Use PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+          extensions: ${{ env.extensions }}
+          coverage: pcov
+          ini-values: pcov.directory=module
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Download coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-unit
+          path: build
+      - name: E2E mutation tests
+        run: composer mutation-tests:e2e
+```
+
+In human language, this is what the pipeline does:
+
+* Check coding styles.
+* Run a static analysis.
+* Run unit tests and generate code coverage.
+* Run E2E tests and generate code coverage.
+* Run mutation tests for the unit tests.
+* Run mutation tests for the E2E tests.
+
+The first 4 jobs are all run in parallel, and the last two are run after the tests have finished (as they require the code coverage reports).
+
+Also, for all the jobs, an environment needs to be set-up, with certain version of PHP (sometimes just 8.0, sometimes also 8.1) and some PHP extensions.
+
+Now, let's see how to improve all those duplicated steps.
+
+### Use a matrix
+
+The first thing we can do is merge the jobs for all the PHP versions, and pass that as a matrix argument.
+
+Also, coding styles and static analysis are both static code checks which require a very similar set-up. We can merge those two and pass them via a matrix.
+
+### Reuse steps with a composite action
+
+### Reuse a whole workflow
