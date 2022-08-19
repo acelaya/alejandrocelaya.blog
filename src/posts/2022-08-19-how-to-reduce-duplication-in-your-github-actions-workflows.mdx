@@ -18,9 +18,9 @@ Those approaches are:
 * Composed actions.
 * Reusable workflows.
 
-### Introducing the workflow
+> This article assumes you have certain knowledge on how GitHub Actions works. If that's not the case, you probably want to take a look at its [documentation](https://docs.github.com/en/actions).
 
-> First of all, this article assumes you have certain knowledge on how GitHub Actions works. If that's not the case, you probably want to take a look at its [documentation](https://docs.github.com/en/actions).
+### Introducing the workflow
 
 Let's imagine we start with this continuous integration workflow for a PHP project:
 
@@ -341,7 +341,7 @@ Now, let's see how to improve all those duplicated steps.
 
 The first thing we can do is merge the jobs for all the PHP versions, and pass that as a matrix argument.
 
-Also, coding styles and static analysis are both static code checks which require a very similar set-up. We can merge those two and pass them via a matrix.
+Also, coding styles and static analysis are both static code checks which require a very similar set-up. We can merge those two and pass them via matrix as well.
 
 ```yaml
 name: Continuous integration
@@ -360,7 +360,7 @@ jobs:
       extensions: 'openswoole, gd, intl'
     strategy:
       matrix:
-        command: ['soding-styles', 'static-analysis']
+        command: ['coding-styles', 'static-analysis']
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -559,17 +559,17 @@ With this change, we are down from 8 jobs to 5, with the only consideration that
 
 ### Reuse steps with a composite action
 
-The next more obvious thing is that there are a couple of steps that appear on each one of the workflows to set up the environment.
+The next more obvious thing is that there are a couple of steps that appear on each one of the jobs to set up the environment.
 
-We can combine those into a local composite action that wraps all the individual steps and can be called as a whole by every job.
+We can combine those into a local [composite action](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) that wraps all the individual steps and can be called as a whole by every job.
 
-Local actions have to be located inside `.github/actions`, in a folder with the name we want, containing an `action.yml` file, which in our case could look like this.
+Local actions have to be located inside `.github/actions`, in a folder with the name we want, containing an `action.yml` file, which in our case, could look like this:
 
 _.github/actions/ci-setup/action.yml_:
 
 ```yaml
 name: CI setup
-description: 'Sets up the environment to jobs during CI workflow'
+description: 'Sets up the environment for jobs during CI workflow'
 
 inputs:
   php-version:
@@ -577,7 +577,7 @@ inputs:
     required: true
   php-extensions:
     description: 'The PHP extensions to install'
-    required: true
+    required: false
     default: ''
   extensions-cache-key:
     description: 'The key used to cache PHP extensions'
@@ -631,7 +631,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        command: ['soding-styles', 'static-analysis']
+        command: ['coding-styles', 'static-analysis']
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -737,15 +737,17 @@ jobs:
 
 Every job is now much shorter, with almost all duplicated code moved to the composite action.
 
-Also, as a side effect, we got rid of defining the PHP extensions as an env var, since we now pass them as an arg of the action only in one place.
+Also, as a side effect, we got rid of defining the PHP extensions as an env var, since we now pass them as an arg to the action only in one place.
 
 ### Reuse a whole workflow
 
 But that's not it. There's still a lot of duplication between both tests jobs and both mutation tests jobs.
 
-One way we can reduce even further the gap is by extracting them to reusable workflows.
+One way we can reduce even further the gap is by extracting them to [reusable workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows).
 
-They are similar to composite actions, with the difference that they do not wrap only a couple of steps, but they can have even multiple jobs that we programmatically invoke.
+They are similar to composite actions, with the difference that they do not wrap only a couple of steps, but they can have even multiple jobs that we then invoke from the main workflow.
+
+Also, our reusable workflow can still use the composite action we created in previous step.
 
 Let's define our `ci-test` reusable workflow:
 
@@ -826,7 +828,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        command: ['soding-styles', 'static-analysis']
+        command: ['coding-styles', 'static-analysis']
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -852,9 +854,11 @@ jobs:
 
 This reduces the duplication to the bare minimum, allowing us to reuse the tests + mutation-tests logic both for unit tests and E2E tests, keeping the benefit of making the later depend on the former.
 
-### Considerations
+### Final thoughts
 
-There are a couple of things to clarify from the example above:
+You can see how the final result looks like in the end in this [example repository](https://github.com/acelaya-blog/github-actions-improvements/tree/main/.github).
+
+There are a couple of things to clarify from the examples above:
 
 * In here, we use local composite actions and reusable workflows.
 
@@ -868,7 +872,7 @@ There are a couple of things to clarify from the example above:
 
   That's why a reusable workflow is a better solution here.
 
-* It may also look like the `unit-tests` and `e2e-tests` jobs, which in the last version only invoke the `ci-tests reusable workflow could have been merged using a matrix.
+* It may also look like the `unit-tests` and `e2e-tests` jobs, which in the last version only invoke the `ci-tests` reusable workflow could have been merged using a matrix.
 
   However, GitHub Actions does not currently allow to use a matrix with reusable workflows.
 
