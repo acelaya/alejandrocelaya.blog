@@ -1,4 +1,4 @@
-import { faGithub, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faGithub, faLinkedinIn, faTwitter, faMastodon } from '@fortawesome/free-brands-svg-icons';
 import { faRss } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
@@ -51,6 +51,9 @@ const Footer: FC<WithLatestPosts> = ({ latestPosts }) => (
               </li>
               <li>
                 <Link href="https://github.com/acelaya"><FontAwesomeIcon icon={faGithub} /></Link>
+              </li>
+              <li>
+                <Link href="https://mstdn.social/@acelaya"><FontAwesomeIcon icon={faMastodon} /></Link>
               </li>
               <li>
                 <Link href="https://twitter.com/acelayaa"><FontAwesomeIcon icon={faTwitter} /></Link>
