@@ -3,9 +3,9 @@ import path from 'path';
 import { parse } from 'date-fns';
 import { Feed } from 'feed';
 import { listPosts } from '../src/utils/posts'
-import { SITE_URL, SITE_TITLE } from '../config/config';
+import { config } from '../config/config.mjs';
 
-// TODO Make MJS
+const { SITE_URL, SITE_TITLE } = config;
 
 (async () => {
   const feed = new Feed({

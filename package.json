@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "sitemap": "node scripts/generate-sitemap.js",
+    "sitemap": "node scripts/generate-sitemap.mjs",
     "feed": "node ./.next/server/scripts/generate-feed.js",
     "export": "npm run build && next export && npm run sitemap && npm run feed"
   },

@@ -4,15 +4,15 @@ import Link from '../Link';
 import { PostContent } from './PostContent';
 
 const wrapper = ({ children }) => (
-<>
-  {Children.toArray(children).filter((child) => {
-    if (typeof child !== 'object') {
-      return false;
-    }
+  <>
+    {Children.toArray(children).filter((child) => {
+      if (typeof child !== 'object') {
+        return false;
+      }
 
-    return (child as ReactElement).props?.originalType === 'p';
-  }).slice(0, 2)}
-</>
+      return (child as ReactElement).props?.originalType === 'p';
+    }).slice(0, 2)}
+  </>
 )
 
 export const PostHint: FC<WithPostProps> = ({ post }) => (
