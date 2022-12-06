@@ -1,4 +1,4 @@
-module.exports = {
+export const config = {
   GA: 'UA-38351554-3',
   DISQUS_SHORTNAME: 'acelayablog',
   CARBON_SERVE: 'CK7IVK3W',

@@ -5,6 +5,8 @@ import { Feed } from 'feed';
 import { listPosts } from '../src/utils/posts'
 import { SITE_URL, SITE_TITLE } from '../config/config';
 
+// TODO Make MJS
+
 (async () => {
   const feed = new Feed({
     id: SITE_URL,

@@ -118,7 +118,7 @@ INFECTION_FILTER=$(git diff ${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-origin/develop} $G
 
 # Check mutations over those files, if any, and require a 70% MSI
 if [ -n "$INFECTION_FILTER" ]; then
-    vendor/bin/infection --threads=4 --min-msi=70 --only-covered --log-verbosity=2 --filter="${INFECTION_FILTER}"
+    vendor/bin/infection --threads=4 --min-msi=70 --only-covered --log-verbosity=2 --filter="$INFECTION_FILTER"
 else
     echo "No source files affected. Infection skipped."
 fi
@@ -165,11 +165,11 @@ In our project, it usually takes 30%-50% less time to generate a code coverage r
 
 So, instead of running infection like this:
 
-    vendor/bin/infection --threads=4 --min-msi=70 --only-covered --log-verbosity=2 --filter="${INFECTION_FILTER}"
+    vendor/bin/infection --threads=4 --min-msi=70 --only-covered --log-verbosity=2 --filter="$INFECTION_FILTER"
 
 We have to do it like this
 
-    phpdbg -qrr vendor/bin/infection --threads=4 --min-msi=70 --only-covered --log-verbosity=2 --filter="${INFECTION_FILTER}"
+    phpdbg -qrr vendor/bin/infection --threads=4 --min-msi=70 --only-covered --log-verbosity=2 --filter="$INFECTION_FILTER"
 
 It is explained in [infection's docs](https://infection.github.io/guide/usage.html#Running-with-phpdbg).
 

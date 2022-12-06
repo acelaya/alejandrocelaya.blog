@@ -1,7 +1,7 @@
 FROM node:16.14-alpine as node
 COPY . /blog
 RUN cd /blog && \
-    npm install --legacy-peer-deps && \
+    npm install --force && \
     npm run export
 
 FROM nginx:1.21-alpine
