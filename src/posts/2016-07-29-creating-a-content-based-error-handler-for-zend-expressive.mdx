@@ -16,11 +16,11 @@ When a route is not matched (404) or it is matched with an incorrect HTTP method
 
 I asked on twitter if this was a bug or a feature, and [Abdul Malik](https://twitter.com/samsonasik) confirmed that it was the intended behavior.
 
-<TweetEmbed id="757889412252307456" />
+<TweetEmbed tweetId="757889412252307456" />
 
 Before that, [Nikola Poša](https://twitter.com/nikolaposa) had already pointed me to the [Final Handler](https://docs.zendframework.com/zend-expressive/features/error-handling/) documentation, which is the element in Zend Expressive responsible of catching unhandled errors and recover gracefully. I read the documentation again, in case I missed something.
 
-<TweetEmbed id="757884384196386816" />
+<TweetEmbed tweetId="757884384196386816" />
 
 When I told him that my intention was to return different content for errors based on what the client expects (the `Accept` header), he kindly showed me one of his implementations to solve this problem, and it gave me some ideas on how to implement something myself.
 
