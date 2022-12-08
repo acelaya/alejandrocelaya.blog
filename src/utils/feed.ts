@@ -2,12 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import { parse } from 'date-fns';
 import { Feed } from 'feed';
-import { listPosts } from '../src/utils/posts'
-import { config } from '../config/config.mjs';
+import { listPosts } from './posts';
+import { config } from '../../config/config.mjs';
 
 const { SITE_URL, SITE_TITLE } = config;
 
-(async () => {
+export const generateFeed = async () => {
   const feed = new Feed({
     id: SITE_URL,
     title: SITE_TITLE,
@@ -19,6 +19,7 @@ const { SITE_URL, SITE_TITLE } = config;
       email: 'alejandro@alejandrocelaya.com',
       link: 'https://www.alejandrocelaya.com',
     },
+    copyright: '', // Why is this mandatory in the type definition ¯\_(ツ)_/¯
   });
 
   const posts = await listPosts();
@@ -35,5 +36,5 @@ const { SITE_URL, SITE_TITLE } = config;
     });
   });
 
-  fs.writeFileSync(path.join(process.cwd(), 'out/atom.xml'), feed.atom1());
-})();
+  fs.writeFileSync(path.join(process.cwd(), 'public/atom.xml'), feed.atom1());
+};

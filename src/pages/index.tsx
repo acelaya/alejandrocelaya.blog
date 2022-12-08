@@ -10,6 +10,7 @@ import Link from '../components/Link';
 import { Paginator, PaginatorProps } from '../components/Paginator';
 import { withStaticLatestPosts } from '../utils/pages';
 import { WithLatestPosts } from '../components/types';
+import { generateFeed } from '../utils/feed';
 
 interface HomeProps extends PaginatorProps {
   posts: Post[];
@@ -41,8 +42,13 @@ const Home: FC<HomeProps & WithLatestPosts> = ({ posts, latestPosts, isFirstPage
 };
 
 export const getStaticProps = withStaticLatestPosts<HomeProps>(async (context) => {
-  const page: number = Number(context.params?.pageNum ?? 1);
+  const page = Number(context.params?.pageNum ?? 1);
   const result = await getPostsForPage({ page });
+
+  if (process.env.NODE_ENV !== 'development') {
+    // Generate feed here. This gets invoked during site build, so it's convenient
+    await generateFeed();
+  }
 
   return {
     props: {

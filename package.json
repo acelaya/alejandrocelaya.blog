@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "sitemap": "node scripts/generate-sitemap.mjs",
-    "feed": "node ./.next/server/scripts/generate-feed.js",
-    "export": "npm run build && next export && npm run sitemap && npm run feed"
+    "export": "npm run build && next export && npm run sitemap"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
