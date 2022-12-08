@@ -5,5 +5,5 @@ export const config = {
   CARBON_PLACEMENT: 'blogalejandrocelayacom',
   SITE_URL: 'https://alejandrocelaya.blog',
   SITE_TITLE: 'Alejandro Celaya | Blog',
-  SITE_SUBTITLE: 'Software development, agile methodologies and open source projects'
+  SITE_SUBTITLE: 'Software development, agile methodologies and open source software'
 };

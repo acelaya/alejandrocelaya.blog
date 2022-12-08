@@ -10,7 +10,7 @@ const withMDX = mdx({
   options: {
     providerImportSource: '@mdx-js/react',
     rehypePlugins: [
-      [inferDescription, { inferDescriptionHast: true, truncateSize: 280 }],
+      [inferDescription, { inferDescriptionHast: true, truncateSize: 300 }],
       rehypeMdxPluginPostSummary,
       rehypePrism,
     ],
