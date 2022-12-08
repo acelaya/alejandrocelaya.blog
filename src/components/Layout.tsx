@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { FC, useRef, useState } from 'react';
+import { FC, PropsWithChildren, useRef, useState } from 'react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Footer from './Footer';
@@ -7,10 +7,10 @@ import Header from './Header';
 import { MobileMenu } from './menu/MobileMenu';
 import { WithLatestPosts } from './types';
 
-interface LayoutProps extends WithLatestPosts {
+type LayoutProps = WithLatestPosts & PropsWithChildren<{
   url: string
   title?: string;
-}
+}>;
 
 const Layout: FC<LayoutProps> = ({ children, title, url, latestPosts }) => {
   const ref = useRef<HTMLDivElement>();

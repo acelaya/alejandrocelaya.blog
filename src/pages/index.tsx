@@ -10,6 +10,7 @@ import Link from '../components/Link';
 import { Paginator, PaginatorProps } from '../components/Paginator';
 import { withStaticLatestPosts } from '../utils/pages';
 import { WithLatestPosts } from '../components/types';
+import { generateFeed } from '../utils/feed';
 
 interface HomeProps extends PaginatorProps {
   posts: Post[];
@@ -24,13 +25,8 @@ const Home: FC<HomeProps & WithLatestPosts> = ({ posts, latestPosts, isFirstPage
             <li key={post.slug} className="post">
               <h2 className="post-title"><Link href={post.url}>{post.title}</Link></h2>
               <PostHeading post={post} />
-              <div>
-                {index === 0 && <CarbonAds />}
-                <PostPreview post={post} />
-              </div>
-              <div style={{ marginBottom: '10px' }}>
-                <Link href={post.url}><b>Continue reading...</b></Link>
-              </div>
+              {index === 0 && <CarbonAds />}
+              <PostPreview post={post} />
               <PostTaxonomies post={post} />
             </li>
           ))}
@@ -46,8 +42,13 @@ const Home: FC<HomeProps & WithLatestPosts> = ({ posts, latestPosts, isFirstPage
 };
 
 export const getStaticProps = withStaticLatestPosts<HomeProps>(async (context) => {
-  const page: number = Number(context.params?.pageNum ?? 1);
+  const page = Number(context.params?.pageNum ?? 1);
   const result = await getPostsForPage({ page });
+
+  if (process.env.NODE_ENV !== 'development') {
+    // Generate feed here. This gets invoked during site build, so it's convenient
+    await generateFeed();
+  }
 
   return {
     props: {

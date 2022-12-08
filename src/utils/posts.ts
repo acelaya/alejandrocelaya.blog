@@ -20,6 +20,7 @@ export interface Post extends PostMeta {
   fileName: string;
   url: string;
   content: string;
+  summary: string;
 }
 
 interface PostsPagination {
@@ -48,7 +49,9 @@ const filterByCategoryOrTag = (category?: string, tag?: string) => (post: Post) 
 };
 
 export const listPosts = async (category?: string, tag?: string): Promise<Post[]> => {
-  const fileNames = fs.readdirSync(POSTS_DIR)
+  const fileNames = fs.readdirSync(POSTS_DIR, { withFileTypes: true })
+    .filter((file) => file.isFile())
+    .map((file) => file.name);
   const allPostsData = await Promise.all(fileNames.map(async (fileName) => {
     // Remove ".md" from file name to get id
     const [year, month, day, ...rest] = fileName.split('-');
@@ -58,10 +61,10 @@ export const listPosts = async (category?: string, tag?: string): Promise<Post[]
     const formattedDate = format(parse(date, 'y-M-d', new Date()), 'dd MMMM y');
 
     // Render post HTML and resolve its metadata
-    const { content, metadata } = await renderPost(fileName);
+    const { content, metadata, summary } = await renderPost(fileName);
 
     // Combine the data with the id
-    return { slug, date, formattedDate, fileName, url, content, ...metadata }
+    return { slug, date, formattedDate, fileName, url, content, summary, ...metadata }
   }))
 
   // Filter posts by category or tag and sort by date

@@ -2,7 +2,7 @@ import Router from 'next/router';
 import withGA from 'next-ga';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-image-lightbox/style.css';
-import 'highlight.js/styles/github.css';
+import 'prismjs/themes/prism-okaidia.min.css';
 import '../styles/theme.css';
 import '../styles/social-buttons.css';
 import '../styles/global.css';
