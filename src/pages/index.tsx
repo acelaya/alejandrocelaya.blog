@@ -24,13 +24,8 @@ const Home: FC<HomeProps & WithLatestPosts> = ({ posts, latestPosts, isFirstPage
             <li key={post.slug} className="post">
               <h2 className="post-title"><Link href={post.url}>{post.title}</Link></h2>
               <PostHeading post={post} />
-              <div>
-                {index === 0 && <CarbonAds />}
-                <PostPreview post={post} />
-              </div>
-              <div style={{ marginBottom: '10px' }}>
-                <Link href={post.url}><b>Continue reading...</b></Link>
-              </div>
+              {index === 0 && <CarbonAds />}
+              <PostPreview post={post} />
               <PostTaxonomies post={post} />
             </li>
           ))}

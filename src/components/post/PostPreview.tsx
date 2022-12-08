@@ -1,7 +1,16 @@
-import { Children, FC } from 'react';
+import { FC } from 'react';
 import { WithPostProps } from '../types';
-import { PostContent } from './PostContent';
+import Link from '../Link';
+import { usePostSummary } from '../../hooks/use-post-summary';
 
-const wrapper = ({ children }) => <>{Children.toArray(children).slice(0, 5)}</>
-
-export const PostPreview: FC<WithPostProps> = ({ post }) => <PostContent post={post} wrapper={wrapper} />;
+export const PostPreview: FC<WithPostProps> = ({ post }) => {
+  const summary = usePostSummary(post);
+  return (
+    <div style={{ marginBottom: '10px' }}>
+      <p>{summary}</p>
+      <div>
+        <Link href={post.url}><b>Continue reading...</b></Link>
+      </div>
+    </div>
+  );
+};
