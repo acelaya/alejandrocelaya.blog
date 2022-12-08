@@ -1,6 +1,7 @@
 import withPlugins from 'next-compose-plugins';
 import withFonts from 'next-fonts';
 import mdx from '@next/mdx';
+import rehypePrism from '@mapbox/rehype-prism';
 import inferDescription from 'rehype-infer-description-meta';
 import { rehypeMdxPluginPostSummary } from './plugins/rehype/mdx-post-summary-plugin.mjs';
 import { config as env } from './config/config.mjs';
@@ -11,6 +12,7 @@ const withMDX = mdx({
     rehypePlugins: [
       [inferDescription, { inferDescriptionHast: true, truncateSize: 280 }],
       rehypeMdxPluginPostSummary,
+      rehypePrism,
     ],
   },
 });
