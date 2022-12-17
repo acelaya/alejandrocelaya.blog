@@ -1,6 +1,6 @@
 # Alejandro Celaya | Blog
 
-[![Build Status](https://img.shields.io/github/workflow/status/acelaya/alejandrocelaya.blog/Continuous%20integration/main?logo=github&style=flat-square)](https://github.com/acelaya/alejandrocelaya.blog/actions?query=workflow%3A%22Continuous+integration%22)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/acelaya/alejandrocelaya.blog/ci.yml?branch=main&logo=github&style=flat-square)](https://github.com/acelaya/alejandrocelaya.blog/actions/workflows/ci.yml?query=workflow%3A%22Continuous+integration%22)
 [![Docker build status](https://img.shields.io/github/workflow/status/acelaya/alejandrocelaya.blog/Build%20docker%20image/main?logo=docker&style=flat-square)](https://github.com/acelaya/alejandrocelaya.blog/actions?query=workflow%3A%22Build+docker+image%22)
 [![GitHub release](https://img.shields.io/github/tag/acelaya/alejandrocelaya.blog.svg?style=flat-square)](https://github.com/acelaya/alejandrocelaya.blog/releases)
 [![GitHub license](https://img.shields.io/github/license/acelaya/alejandrocelaya.blog.svg?style=flat-square)](https://github.com/acelaya/alejandrocelaya.blog/blob/main/LICENSE)
