@@ -53,7 +53,7 @@ const Footer: FC<WithLatestPosts> = ({ latestPosts }) => (
                 <Link href="https://github.com/acelaya"><FontAwesomeIcon icon={faGithub} /></Link>
               </li>
               <li>
-                <Link href="https://mstdn.social/@acelaya" rel="me"><FontAwesomeIcon icon={faMastodon} /></Link>
+                <Link href="https://mastodon.social/@acelaya" rel="me"><FontAwesomeIcon icon={faMastodon} /></Link>
               </li>
               <li>
                 <Link href="https://twitter.com/acelayaa"><FontAwesomeIcon icon={faTwitter} /></Link>

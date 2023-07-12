@@ -1,17 +1,21 @@
 import { GetStaticPaths } from 'next';
 import { calcPagesForPosts, listPosts } from '../../utils/posts';
-import { range } from 'ramda';
 
 export { default, getStaticProps } from '../index';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await listPosts();
-  const pages = range(1, calcPagesForPosts(posts) + 1);
+  const totalPages = calcPagesForPosts(posts);
+  const paths = [];
+
+  for (let page = 1; page <= totalPages; page++) {
+    paths.push({
+      params: { pageNum: `${page}` }
+    });
+  }
 
   return {
-    paths: pages.map((page) => ({
-      params: { pageNum: `${page}` }
-    })),
+    paths,
     fallback: false,
   };
 };
