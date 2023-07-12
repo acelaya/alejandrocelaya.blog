@@ -3,7 +3,6 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { TaxonomiesPageProps } from '../components/pages/TaxonomiesPage';
 import { TaxonomiesType, TaxonomyType, WithLatestPosts } from '../components/types';
 import { TaxonomyPageProps } from '../components/pages/TaxonomyPage';
-import { range } from 'ramda';
 
 const TAXONOMY_PAGE_SIZE = 10;
 
@@ -39,11 +38,16 @@ export const getStaticPathsForTaxonomy = (type: TaxonomiesType): GetStaticPaths 
 
   const pathsByTaxonomy = await Promise.all(taxonomies.map(async (taxonomy) => {
     const posts = await (type === 'categories' ? listPosts(taxonomy) : listPosts(undefined, taxonomy));
-    const pages = range(1, calcPagesForPosts(posts, TAXONOMY_PAGE_SIZE) + 1);
+    const totalPages = calcPagesForPosts(posts);
+    const paths = [];
 
-    return pages.map((page) => ({
-      params: { taxonomy, pageNum: `${page}` }
-    }));
+    for (let page = 1; page <= totalPages; page++) {
+      paths.push({
+        params: { taxonomy, pageNum: `${page}` }
+      });
+    }
+
+    return paths;
   }))
 
   return {
