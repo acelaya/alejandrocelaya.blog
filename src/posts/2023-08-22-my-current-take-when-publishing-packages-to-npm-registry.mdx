@@ -1,0 +1,45 @@
+export const metadata = {
+  title: 'My current take when publishing packages to npm registry',
+  categories: ['tools', 'web'],
+  tags: ['npm', 'package', 'registry', 'javascript'],
+};
+
+I have always struggled with how packages are versioned and published to the npm registry.
+
+My main concern is that you probably want to also add a git tag to your source code when you are releasing a new version, but npm packages have their own versioning system, and include a "version" field in the package.json
+
+Because of this, most of the workflows I have seen, usually involve:
+
+1. Running `npm version ...`. This will update the "version" field in the package.json file.
+2. Publishing the package to the npm registry, using the version set in previous step.
+3. Committing to git, so that we track the change in package.json file.
+4. Adding a git tag.
+5. Pushing to git remote to track new commit and new tag.
+
+> Steps 3 and 4 are frequently done automatically as part of `npm version`.
+
+For me this flow has two main problems:
+
+* My personal preference is that everything is driven by git tags, making them the single source of truth.
+
+  This would allow to just have one manual step -> `git tag -a v1.0.0 -m "..." && git push origin --tags`. Then, this would trigger a number of potential automations, including publishing to the npm registry, but also others like creating a release with the appropriate release notes, building release artifacts, etc.
+
+* The "version" field in the package.json file can very easily become outdated, if you git-tag by mistake before publishing the package, or if pushing the changes fails after `npm version ...` has been run.
+
+  I've seen this happening more often than it seems.
+
+Because of this, my current take when publishing npm packages for my personal projects is:
+
+1. Get rid of the "version" field from the package.json file. It's misleading in source code, as it can very easily be out of date.
+
+    The only case where it's useful is when the package has been installed and is inside node_modules, as other packages will assume this field to exist and have the right value on it.
+
+    In this case it's always going to be correct due to  the`npm version ...` + `npm publish` tandem (see next point).
+
+2. Creating the git tag is the only "manual step". This triggers an automation running `npm version ${GIT_TAG} --git-tag-version=false && npm publish` (this is simplified. You probably also need to build your project and other potential extra steps).
+
+    The version to publish is inferred from the git tag (`${GIT_TAG}` is just a placeholder), and only at this stage we will set the "version" inside package.json, just before the package is published.
+
+3. Other automations that need to happen during releases, can be also triggered now, like publishing release notes, building artifacts, etc.
+
+> As an example, you can see [this GitHub actions workflow](https://github.com/shlinkio/github-actions/blob/24de7a2b89a9eb11b0acfd184de7187698b051b6/.github/workflows/js-lib-publish.yml), which follows this approach.

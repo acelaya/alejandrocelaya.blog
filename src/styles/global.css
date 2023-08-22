@@ -186,7 +186,7 @@ li.post {
   padding: 4px;
   max-width: 100%;
 }
-.post ul li {
+.post ul li, .post ol li {
   font-size: 1.2em;
   line-height: 1.5em;
 }
