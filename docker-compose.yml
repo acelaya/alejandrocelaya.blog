@@ -3,7 +3,7 @@ version: '3'
 services:
     acelaya_blog_node:
         container_name: acelaya_blog_node
-        image: node:18.12-alpine
+        image: node:20.5-alpine
         command: /bin/sh -c "cd /blog && npm install --force && npm run dev"
         volumes:
             - ./:/blog
