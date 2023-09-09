@@ -33,7 +33,7 @@
     "react-external-link": "^2.2.0",
     "react-image-lightbox": "^5.1.4",
     "react-tweet-embed": "^2.0.0",
-    "rehype-infer-description-meta": "^1.1.0"
+    "rehype-infer-description-meta": "^2.0.0"
   },
   "devDependencies": {
     "@mdx-js/loader": "^2.3.0",
