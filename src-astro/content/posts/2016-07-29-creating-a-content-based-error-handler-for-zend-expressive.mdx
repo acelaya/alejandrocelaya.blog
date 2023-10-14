@@ -1,10 +1,10 @@
-import TweetEmbed from 'react-tweet-embed';
+---
+title: 'Creating a content-based Error Handler for Zend Expressive'
+tags: ['zend-expressive', 'microframework', 'error-handling', 'content-negotiation', 'zf3']
+categories: ['php', 'zf']
+---
 
-export const metadata = {
-  title: 'Creating a content-based Error Handler for Zend Expressive',
-  tags: ['zend-expressive', 'microframework', 'error-handling', 'content-negotiation', 'zf3'],
-  categories: ['php', 'zf'],
-};
+import TweetEmbed from 'react-tweet-embed';
 
 The other day I was working on a [Zend Expressive](https://github.com/shlinkio/shlink/tree/develop) application I'm currently building. The application includes a REST API among other things, but it also has some endpoints which render HTML.
 
@@ -16,7 +16,7 @@ When a route is not matched (404) or it is matched with an incorrect HTTP method
 
 I asked on twitter if this was a bug or a feature, and [Abdul Malik](https://twitter.com/samsonasik) confirmed that it was the intended behavior.
 
-<TweetEmbed tweetId="757889412252307456" />
+<TweetEmbed tweetId="757889412252307456" client:only="react" />
 
 Before that, [Nikola Poša](https://twitter.com/nikolaposa) had already pointed me to the [Final Handler](https://docs.zendframework.com/zend-expressive/features/error-handling/) documentation, which is the element in Zend Expressive responsible of catching unhandled errors and recover gracefully. I read the documentation again, in case I missed something.
 
