@@ -1,8 +1,7 @@
----
-import { CommentCount } from 'disqus-react';
-import { disqusPropsForPost } from '../../utils/disqus';
+---;
 import Link from '../Link';
 import type { Post } from '../../utils/posts';
+import { PostCommentCount } from './PostCommentCount';
 
 export interface Props {
   post: Post;
@@ -17,7 +16,7 @@ const { post } = Astro.props;
       {post.formattedDate}
       &nbsp;&mdash;&nbsp;
       <Link href={`${post.url}#disqus_thread`}>
-        <CommentCount {...disqusPropsForPost(post.data.title, post.url)} client:load>Comments</CommentCount>
+        <PostCommentCount post={post} client:load />
       </Link>
     </i>
   </small>

@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import { config } from './config/config';
 import inferDescription from 'rehype-infer-description-meta';
 import { rehypeMdxPluginPostSummary } from './plugins/rehype/mdx-post-summary-plugin.mjs';
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,4 +17,17 @@ export default defineConfig({
       rehypeMdxPluginPostSummary,
     ]
   })],
+
+  vite: {
+    plugins: [
+      nodePolyfills({
+        include: [],
+        globals: {
+          // react-18-image-lightbox is no longer maintain and depends on the `global` object
+          // Enable temporarily until we can migrate to something else
+          global: true,
+        }
+      }),
+    ],
+  },
 });

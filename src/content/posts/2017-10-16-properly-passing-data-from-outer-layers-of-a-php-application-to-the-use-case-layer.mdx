@@ -4,7 +4,7 @@ tags: ['ddd', 'clean-architecture', 'clean-code', 'services']
 categories: ['php']
 ---
 
-import TweetEmbed from 'react-tweet-embed';
+import { Tweet } from '../../components/Tweet';
 
 <div className="well well-sm">
     <b>Update 2017-10-18</b>: After reading this article, I recommend you to read the <a href="#comment-3572607201">comment from <b>Rasmus Schultz</b></a>. It is very clarifying, and might make you think twice if this is really the best approach.
@@ -24,7 +24,7 @@ First of all, I want to start by talking about some of the approaches I have fol
 
 My main doubt has always been what's the right place to filter and validate data. And that's what I asked about a year ago on twitter.
 
-<TweetEmbed tweetId="777775855544242176" client:only="react" />
+<Tweet tweetId="777775855544242176" client:only="react" />
 
 The tweet received a lot of good answers, but my knowledge wasn't mature enough at the moment, and I couldn't "digest" it (I suppose).
 
