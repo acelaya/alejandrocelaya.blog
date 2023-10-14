@@ -1,7 +1,7 @@
 ---
 import { CommentCount } from 'disqus-react';
 import type { Post } from '../utils/posts';
-import { PostHeading } from '../components/post/PostHeading';
+import PostHeading from '../components/post/PostHeading.astro';
 import { PostTaxonomies } from '../components/post/PostTaxonomies';
 import { Paginator } from '../components/Paginator';
 import Layout from './Layout.astro';
@@ -26,9 +26,7 @@ const { posts, isFirstPage, isLastPage, currentPage } = Astro.props;
       {posts.map((post) => (
         <li class="post">
           <h2 class="post-title"><Link href={post.url}>{post.data.title}</Link></h2>
-          <PostHeading post={post}>
-            <CommentCount {...disqusPropsForPost(post.data.title, post.url)} client:only="react">Comments</CommentCount>
-          </PostHeading>
+          <PostHeading post={post} />
           <PostPreview post={post} />
           <PostTaxonomies post={post} />
         </li>
