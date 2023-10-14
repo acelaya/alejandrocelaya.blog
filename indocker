@@ -2,7 +2,7 @@
 
 # Run docker container if it's not up yet
 if ! [[ $(docker ps | grep acelaya_blog_node) ]]; then
-    docker-compose up -d
+    docker compose up -d
 fi
 
 docker exec -it acelaya_blog_node /bin/sh -c "cd /blog && $*"

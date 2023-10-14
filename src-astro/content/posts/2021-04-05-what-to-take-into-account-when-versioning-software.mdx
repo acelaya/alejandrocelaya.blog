@@ -1,0 +1,124 @@
+---
+title: 'What to take into account when versioning software'
+categories: ['tools']
+tags: ['semver', 'semantic-versioning']
+---
+
+I remember many years ago, when I released my first open source project, that every time I had a new release ready, I was never sure what should be the new version number.
+
+Versioning software is not as straightforward as it might look when you don't have a lot of experience.
+
+In this article I'll try to explain the [SemVer](https://semver.org/) approach to version software, and some things you might want to take into account on top of that.
+
+### Semantic Versioning
+
+The first thing you need is a solid set of rules that help you decide which should your next version be.
+
+I remember thinking *"is this version big enough as to jump from 1.0 to 2.0?"* or *"I have seen projects using three numbers for the version, X.Y.Z, should I do the same?"*
+
+Those questions are easier to answer if you stick to some standard that tells you what to do, and that will help others more easily understand your intention.
+
+My recommendation is to use [Semantic Versioning](https://semver.org/), as it defines a solid starting point, and it's quite adopted by the community.
+
+Semantic Versioning states that you should use three numbers to identify versions, `MAJOR.MINOR.PATCH`, and follow these rules in order to decide which one to increase:
+
+* `PATCH`: the new release includes only bug fixes. People are encouraged to update to this release and no changes are needed in their code bases.
+* `MINOR`: the new release includes new backwards-compatible features. People can update to this version without changing their code bases, and make use of the new features afterwards if they wish.
+* `MAJOR`: the new release includes [backward compatibility](https://en.wikipedia.org/wiki/Backward_compatibility) breaks. Changes in the code base will be needed when updating to this version.
+
+> These rules are easier to apply to libraries and frameworks than it is for apps and services. More about this later.
+
+### Try to keep backwards-compatibility
+
+Ok, we have some rules now. However, I have seen very frequently people mistaking what *can* be done with what *should* be done.
+
+Yes, if you introduce a breaking change, you can update the major version and that's it. However, if you do it too frequently, people won't be happy, and you will end up with a fragmented user base, that stop updating to newer versions.
+
+I remember using a library to deploy stuff that had a new major version every couple of months, changing things like "The `host` function is now called `server`". Yes, ok, but why do I have to change my stuff so frequently.
+
+It's usually better to try to implement things in a backwards-compatible way, and keep track of the things you want to change and do it all at a time.
+
+You can also deprecate things, and document the way you want those things to be done moving forward. That way you give people the chance to start changing their code and simplify a hypothetical upcoming major release.
+
+### Provide clear upgrade paths
+
+As mentioned above, too frequent major version changes are not desirable, but sooner or later you will want to release a new major version for different reasons.
+
+* Getting rid of that feature which is hard to maintain, introduces lots of bugs, and provides little value.
+* Supporting something new which is very hard to implement without breaking backwards compatibility.
+* Removing all those deprecated methods you have been dragging for months.
+* Fix design issues, where something was architected in the wrong way, and only spotted after some time.
+
+At the time this happens you will want your users to upgrade to the newer version, as you don't want people to report bugs that only affect older versions, or to expect you to backport fixes to older versions because they haven't updated to the new one.
+
+The best way to achieve this is to provide clear and simple upgrade paths:
+
+* Prepare your releases for the things to come: If you want to introduce new ways of doing things, do it before the major release, and deprecate the older ones. For example, you can have a new method that gets called by an older one, while you mark the old one as deprecated.
+
+  People will be more willing to update and change their code afterwards. By the time the major release is published, their code will be ready to upgrade.
+
+* Include a CHANGELOG file in your project, explaining the changes introduced in every version. A very good way to document a change log is the [Keep a changelog](https://keepachangelog.com/) initiative.
+
+  You can also use some other platform to document the change log, like GitHub releases.
+
+* Include documentation on how to upgrade to a major release: This is probably the most important one. Document all the steps that need to be followed and all the required changes to update from a release to the next major one.
+
+  A good way to do this is by including an UPGRADE file in your project. You can see [this example](https://github.com/acmailer/acmailer/blob/main/UPGRADE.md).
+
+### Versioning libraries vs apps
+
+Semantic Versioning is a good standard to version software, but it plays much better with libraries and frameworks that are installed using some kind of package manager, than it does with apps and services that are not directly depended on.
+
+For example, how do you identify a backward compatibility break on a web user interface?
+
+With this kind of software there are more grey areas, and you will end up using your intuition.
+
+For example, not long ago I released a [new major version](/2020/12/24/released-shlink-web-client-v3-0-0) for a web app I maintain, and it was completely compatible with the previous one. However, it introduced a larger amount of features than usual, and big UI changes, so I decided it was worth the bump.
+
+Because of this there are projects that use different approaches to version apps. For example:
+
+* Firefox and Chrome have 6-week cycles, and after each one of them they release a new major version no matter what.
+* Jetbrains publishes a few releases of their IDEs every year (I think 3) which always start with the year they were released on, like `2020.3.0`, and they increase the patch number for bugfixes.
+* Ubuntu releases 2 versions every year, one in April and one in October, and they are always identified by the year and month they were released on, like `19.04` or `20.10`.
+
+### Special versions
+
+There's also a set of special versions that can be used to publish the so-called **pre-release** versions. These [are covered](https://semver.org/#spec-item-9) by Semantic Versioning, but sometimes they are not so easy to understand.
+
+It is also very likely that you never have to use these, as only relatively big projects will need this level of granularity, but it's still good to know what's their purpose and what do they imply.
+
+#### 0.x.y
+
+It is possible to release a version of your software where the major number is `0`. When this happens, it means your software is still in its early stages.
+
+It does not mean it's necessarily unstable, but it means you are still introducing frequent changes on it, and therefore, it might be a bit more fragile than a version starting with a number greater than `0`.
+
+#### Alpha
+
+The intention of an alpha release is that a subset of people con test some new functionality, but you don't want people to use it in production
+
+Alpha versions are on their very early stages. Their public API is very likely to change, and they probably contain bugs.
+
+Semantic Versioning states that alpha versions are identified by this pattern: `MAJOR.MINOR.PATCH-alpha.NUMBER`, for example `2.0.0-alpha.1`.
+
+#### Beta
+
+Similar to alpha versions, beta versions are also prone to contain bugs, but their API will in theory not change. That means that you could potentially adapt your software to start using a beta version, and when the corresponding stable release is published, you shouldn't need that many changes.
+
+Semantic Versioning defines a pattern similar to the one for alpha versions: `MAJOR.MINOR.PATCH-beta.NUMBER`, for example `2.0.0-beta.1`.
+
+#### Release candidate
+
+Release candidates (RC) are pre-release versions that you will want to publish for the general user-base to test an upcoming release. You want to publish a RC so that it's battle tested by as many people as possible, in order to find possible bugs and edge cases.
+
+They should not contain many bugs, but some could be found. The public API should not change anymore.
+
+According to Semantic Versioning, the pattern to identify a RC is `MAJOR.MINOR.PATCH-rc.NUMBER`, for example `2.0.0-rc.1`.
+
+### Conclusion
+
+We have seen some approaches and considerations to properly version your software.
+
+Versioning is not so straightforward when you don't have a lot of experience, but as you have seen, you just need to know a small set of rules and use a bit your intuition.
+
+With those tools, you will be able to properly version your software.

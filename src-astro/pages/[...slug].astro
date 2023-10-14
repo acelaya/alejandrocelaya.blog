@@ -1,0 +1,73 @@
+---
+import { getAllPosts } from '../utils/posts';
+import { Post } from '../utils/posts';
+import Layout from '../layouts/Layout.astro';
+import { Container } from '../components/Container';
+import PostDetail from '../components/post/PostDetail.astro';
+import { PostTaxonomies } from '../components/post/PostTaxonomies';
+import { SecondaryContainer } from '../components/SecondaryContainer';
+import Link from '../components/Link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { PostComments } from '../components/post/PostComments';
+
+export interface Props {
+  post: Post;
+  prevPost: Post | null;
+  nextPost: Post | null;
+}
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+
+  return posts.map((post, indexOfPost) => {
+    const prevPost = posts[indexOfPost + 1] ?? null;
+    const nextPost = posts[indexOfPost - 1] ?? null;
+
+    return {
+      props: { post, prevPost, nextPost },
+      params: { slug: post.url },
+    };
+  });
+}
+
+const { post, prevPost, nextPost } = Astro.props;
+---
+
+<Layout title={post.data.title} url={post.url}>
+  <Container>
+    <article class="post post-detail">
+      <PostDetail post={post} />
+
+      <div>
+        <hr />
+        <PostTaxonomies post={post} />
+      </div>
+    </article>
+  </Container>
+
+  <SecondaryContainer>
+    <ul class="list-unstyled other-articles row">
+      <li class="col-sm-6 col-xs-12 article-next">
+        {prevPost && (
+          <Link class="previous" href={prevPost.url}>
+            <FontAwesomeIcon icon={faArrowLeft} />
+            <span class="title">{prevPost.data.title}</span>
+          </Link>
+        )}
+      </li>
+      <li class="col-sm-6 col-xs-12 article-prior">
+        {nextPost && (
+          <Link class="next" href={nextPost.url}>
+            <span class="title">{nextPost.data.title}</span>
+            <FontAwesomeIcon icon={faArrowRight} />
+          </Link>
+        )}
+      </li>
+    </ul>
+  </SecondaryContainer>
+
+  <Container>
+    <PostComments post={post} client:only="react" />
+  </Container>
+</Layout>

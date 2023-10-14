@@ -1,0 +1,17 @@
+---
+import { OldPostBanner } from './OldPostBanner';
+import { PostHeading } from './PostHeading';
+import PostContent from './PostContent.astro';
+import type { Post } from '../../utils/posts';
+
+export interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+---
+
+<div>
+  <PostHeading post={post} />
+  <OldPostBanner post={post} />
+  <PostContent post={post} />
+</div>

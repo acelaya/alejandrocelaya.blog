@@ -1,0 +1,13 @@
+---
+import { mdxComponents } from '../../utils/mdx';
+import type { Post } from '../../utils/posts';
+
+export interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Content components={mdxComponents} />

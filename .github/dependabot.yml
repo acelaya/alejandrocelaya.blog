@@ -8,6 +8,14 @@ updates:
       time: '09:00'
       timezone: 'Europe/Madrid'
     open-pull-requests-limit: 10
+    groups:
+      fontawesome:
+        patterns:
+          - '@fortawesome*'
+      astro:
+        patterns:
+          - 'astro'
+          - '@astrojs*'
     ignore:
       # Bootstrap can introduce visual breaking changes on styles
       # Ignore it, since it's very outdated and this template needs that version
