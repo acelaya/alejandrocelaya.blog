@@ -82,11 +82,11 @@ First, the balancer should be a classic load balancer, and it has to be configur
 
 It should also be configured to forward HTTP traffic on port 8200 (vault works on this port)
 
-![Load balancer]({{site.url}}/assets/img/vault-with-load-balancer/balancer-first-step.png)
+![Load balancer](/assets/img/vault-with-load-balancer/balancer-first-step.png)
 
 Then, when you are asked to configure the health check, use this params.
 
-![Health check]({{site.url}}/assets/img/vault-with-load-balancer/health-check.png)
+![Health check](/assets/img/vault-with-load-balancer/health-check.png)
 
 Configure the interval and healthy threshold according to your needs. Since for me it is a critical service, I reduced the interval to 15 seconds, and set the healthy threshold to 2. This way, when tha active instances goes down, it wont take more than 30 seconds to recover the service.
 
@@ -94,6 +94,6 @@ Finally add the instances to the balancer.
 
 If everything is properly configured, after some seconds, in the instances tab of the balancer, you should see that only one of the instances is *InService*.
 
-![Instances status]({{site.url}}/assets/img/vault-with-load-balancer/instances-status.png)
+![Instances status](/assets/img/vault-with-load-balancer/instances-status.png)
 
 Now the balancer and the vault instances are ready to work!
