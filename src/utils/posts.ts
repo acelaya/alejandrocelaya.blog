@@ -1,8 +1,9 @@
+import { getCollection, z } from 'astro:content';
 import { format, parse } from 'date-fns';
 import type { TaxonomiesType } from '../components/types';
-import { getCollection, z } from 'astro:content';
 
 export const PAGE_SIZE = 5;
+export const SUB_PAGE_SIZE = 10;
 
 export const postMetaSchema = z.object({
   title: z.string(),
@@ -50,21 +51,24 @@ export const summaryForPost = (post: Post) => import(/* @vite-ignore */`../conte
   ({ summary }) => summary,
 );
 
-// const filterByCategoryOrTag = (category?: string, tag?: string) => (post: Post) => {
-//   if (category) {
-//     return post.categories.includes(category);
-//   }
-//
-//   if (tag) {
-//     return post.tags.includes(tag);
-//   }
-//
-//   return true;
-// };
+const getTaxonomiesFactory = (taxonomy: TaxonomiesType) => async (): Promise<string[]> => {
+  const posts = await getAllPosts();
+  return [...new Set(posts.flatMap(({ data }) => data[taxonomy]))].sort();
+};
 
-// export const listTaxonomies = async (prop: TaxonomiesType): Promise<string[]> => {
-//   const posts = await listPosts();
-//   const taxonomies = posts.map((post) => post[prop]).flat();
-//
-//   return [ ...new Set(taxonomies) ].sort((a, b) => a < b ? -1 : 1);
-// }
+export const getCategories = getTaxonomiesFactory('categories');
+
+export const getTags = getTaxonomiesFactory('tags');
+
+export type PostFilter = { category: string } | { tag: string };
+
+export const filteredPosts = async (filter: PostFilter) => {
+  const posts = await getAllPosts();
+  return posts.filter((post) => {
+    if ('category' in filter) {
+      return post.data.categories.includes(filter.category);
+    }
+
+    return post.data.tags.includes(filter.tag);
+  });
+};

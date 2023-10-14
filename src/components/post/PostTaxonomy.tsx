@@ -1,4 +1,4 @@
-import type { FC, Fragment } from 'react';
+import type { FC } from 'react';
 import type { TaxonomyType } from '../types';
 import Link from '../Link';
 

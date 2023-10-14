@@ -1,0 +1,55 @@
+---
+import Layout from './Layout.astro';
+import { Container } from '../components/Container';
+import { SectionTitle } from '../components/SectionTitle';
+import type { TaxonomyType } from '../components/types';
+import { Paginator } from '../components/Paginator';
+import type { Post } from '../utils/posts';
+import PostHint from '../components/post/PostHint.astro';
+
+export interface Props {
+  taxonomy: string;
+  type: TaxonomyType;
+  posts: Post[];
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  currentPage: number;
+}
+
+const { taxonomy, type, posts, isLastPage, isFirstPage, currentPage } = Astro.props;
+let currentYear: string | null = null;
+---
+
+<Layout url={`/${type}/${taxonomy}`}>
+  <Container>
+    <SectionTitle>
+      <span class="taxonomies-title">{type}</span> Archive &mdash; &quot;{taxonomy}&quot;
+    </SectionTitle>
+
+    <div>
+      {posts.map((post) => {
+        const [,, year] = post.formattedDate.split(' ');
+        const shouldShowYear = currentYear !== year;
+
+        currentYear = year;
+
+        return (
+          <div key={post.slug}>
+            {shouldShowYear && <h3 class="article-date-group">&mdash; {year} &mdash;</h3>}
+            <PostHint post={post} />
+          </div>
+        );
+      })}
+    </div>
+
+    <div>
+      <hr />
+      <Paginator
+        isFirstPage={isFirstPage}
+        isLastPage={isLastPage}
+        currentPage={currentPage}
+        basePath={`/${type}/${taxonomy}`}
+      />
+    </div>
+  </Container>
+</Layout>

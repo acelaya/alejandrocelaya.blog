@@ -1,0 +1,34 @@
+---
+import { filteredPosts, getTags, Post, SUB_PAGE_SIZE } from '../../../utils/posts';
+import TaxonomyPage from '../../../layouts/TaxonomyPage.astro';
+
+export interface Props {
+  tag: string;
+  posts: Post[];
+  hasMorePages: boolean;
+}
+
+export async function getStaticPaths() {
+  const tags = await getTags();
+  return await Promise.all(tags.map(async (tag) => {
+    const posts = await filteredPosts({ tag })
+    const latestPosts = posts.slice(0, SUB_PAGE_SIZE);
+
+    return {
+      params: { taxonomy: tag },
+      props: { tag, posts: latestPosts, hasMorePages: posts.length > SUB_PAGE_SIZE }
+    };
+  }));
+}
+
+const { tag, posts, hasMorePages } = Astro.props;
+---
+
+<TaxonomyPage
+  taxonomy={tag}
+  type="tag"
+  posts={posts}
+  currentPage={1}
+  isFirstPage={true}
+  isLastPage={!hasMorePages}
+/>

@@ -1,9 +1,8 @@
 ---
 import TaxonomiesPage from '../layouts/TaxonomiesPage.astro';
-import { getAllPosts } from '../utils/posts';
+import { getTags } from '../utils/posts';
 
-const posts = await getAllPosts();
-const tags = [...new Set(posts.flatMap(({ data }) => data.tags))].sort();
+const tags = await getTags();
 ---
 
 <TaxonomiesPage type="tags" taxonomies={tags} />
