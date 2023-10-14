@@ -1,5 +1,5 @@
-import type { FC } from 'react';
-import type { WithPostProps } from '../types';
+import { FC } from 'react';
+import { WithPostProps } from '../types';
 import { PostTaxonomy } from './PostTaxonomy';
 
 const Categories: FC<{ categories: string[] }> = ({ categories }) => (
@@ -30,8 +30,8 @@ const Tags: FC<{ tags: string[] }> = ({ tags }) => (
 
 export const PostTaxonomies: FC<WithPostProps> = ({ post }) => (
   <ul className="list-unstyled">
-    {post.data.categories.length > 0 && <Categories categories={post.data.categories} />}
-    {post.data.tags.length > 0 && <Tags tags={post.data.tags} />}
+    {post.categories.length > 0 && <Categories categories={post.categories} />}
+    {post.tags.length > 0 && <Tags tags={post.tags} />}
     <li className="clearfix" />
   </ul>
 )

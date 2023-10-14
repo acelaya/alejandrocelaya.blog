@@ -1,5 +1,5 @@
-import type { FC, Fragment } from 'react';
-import type { TaxonomyType } from '../types';
+import { FC, Fragment } from 'react';
+import { TaxonomyType } from '../types';
 import Link from '../Link';
 
 interface TaxonomyProps {
@@ -9,10 +9,10 @@ interface TaxonomyProps {
 }
 
 export const PostTaxonomy: FC<TaxonomyProps> = ({ type, appendSpace, value }) => (
-  <>
+  <Fragment>
     <Link className={`label label-${type}`} href={`/${type}/${encodeURI(value)}`}>
       {value.replace(/-/g, ' ')}
     </Link>
     {appendSpace && <>&nbsp;</>}
-  </>
+  </Fragment>
 );

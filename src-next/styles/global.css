@@ -244,10 +244,12 @@ li.post {
 
 .post .categories-list {
   float: left;
+  margin: 40px 0 0 0 !important;
 }
 .post .tags-list {
   float: right;
   text-align: right;
+  margin: 40px 0 0 0 !important;
 }
 @media (max-width: 767px) {
   .post .categories-list, .post .tags-list {

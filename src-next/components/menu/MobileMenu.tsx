@@ -1,5 +1,4 @@
-import type { FC, MouseEventHandler } from 'react';
-import { useCallback } from 'react';
+import { FC } from 'react';
 import { LeftMenuItems } from './LeftMenuItems';
 import { RightMenuItems } from './RightMenuItems';
 
@@ -9,10 +8,10 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu: FC<MobileMenuProps> = ({ toggle, isVisible }) => {
-  const doToggle: MouseEventHandler<HTMLAnchorElement> = useCallback((e) => {
+  const doToggle = (e) => {
     e.preventDefault();
     toggle();
-  }, [toggle]);
+  };
 
   return (
     <>

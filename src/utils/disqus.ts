@@ -1,9 +1,10 @@
-import { Post } from './posts';
+import { config } from '../../config/config';
 
-export const disqusPropsForPost = (post: Post) => ({
-  shortname: process.env.DISQUS_SHORTNAME,
+
+export const disqusPropsForPost = (title: string, url: string) => ({
+  shortname: config.DISQUS_SHORTNAME,
   config: {
-    url: `${process.env.SITE_URL}${post.url}`,
-    title: post.title,
+    url: `${config.SITE_URL}${url}`,
+    title,
   },
 });

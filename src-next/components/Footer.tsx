@@ -1,10 +1,10 @@
-import { faGithub, faLinkedinIn, faXTwitter, faMastodon } from '@fortawesome/free-brands-svg-icons';
+import { faGithub, faLinkedinIn, faTwitter, faMastodon } from '@fortawesome/free-brands-svg-icons';
 import { faRss } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { FC } from 'react';
+import { FC } from 'react';
 import { ExternalLink } from 'react-external-link';
 import Link from './Link';
-import type { WithLatestPosts } from './types';
+import { WithLatestPosts } from './types';
 
 const Footer: FC<WithLatestPosts> = ({ latestPosts }) => (
   <footer id="fh5co-footer">
@@ -27,7 +27,7 @@ const Footer: FC<WithLatestPosts> = ({ latestPosts }) => (
           <div className="fh5co-footer-widget">
             <h3>Latest blog posts</h3>
             <ul className="fh5co-links blog-posts">
-              {latestPosts.map((post) => <li key={post.slug}><Link href={post.url}>{post.data.title}</Link></li>)}
+              {latestPosts.map((post) => <li key={post.slug}><Link href={post.url}>{post.title}</Link></li>)}
             </ul>
           </div>
         </div>
@@ -56,7 +56,7 @@ const Footer: FC<WithLatestPosts> = ({ latestPosts }) => (
                 <Link href="https://mastodon.social/@acelaya" rel="me"><FontAwesomeIcon icon={faMastodon} /></Link>
               </li>
               <li>
-                <Link href="https://x.com/acelayaa"><FontAwesomeIcon icon={faXTwitter} /></Link>
+                <Link href="https://twitter.com/acelayaa"><FontAwesomeIcon icon={faTwitter} /></Link>
               </li>
               <li><ExternalLink href="/feed/"><FontAwesomeIcon icon={faRss} /></ExternalLink></li>
             </ul>

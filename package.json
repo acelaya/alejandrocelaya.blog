@@ -3,12 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:astro": "astro dev --host 0.0.0.0",
-    "build": "next build",
-    "start": "next start",
-    "sitemap": "node scripts/generate-sitemap.mjs",
-    "export": "npm run build && next export && npm run sitemap"
+    "dev": "astro dev --host 0.0.0.0",
+    "build": "astro build"
   },
   "dependencies": {
     "@astrojs/mdx": "^1.1.1",

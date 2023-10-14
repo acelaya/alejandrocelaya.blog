@@ -16,7 +16,4 @@ export default defineConfig({
       rehypeMdxPluginPostSummary,
     ]
   })],
-
-  // FIXME Temp. Remove once Next.js is no longer needed
-  srcDir: './src-astro'
 });

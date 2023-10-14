@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren } from 'react';
 
 type ContainerProps = PropsWithChildren<{ className?: string }>;
 

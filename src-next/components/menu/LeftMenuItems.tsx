@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { FC } from 'react';
 import Link from '../Link';
 
 export const LeftMenuItems: FC = () => (

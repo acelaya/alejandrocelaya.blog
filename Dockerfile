@@ -2,7 +2,7 @@ FROM node:20.8-alpine as node
 COPY . /blog
 RUN cd /blog && \
     npm install --force && \
-    npm run export
+    npm run build
 
 FROM nginx:1.25-alpine
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"

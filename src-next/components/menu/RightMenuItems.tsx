@@ -1,7 +1,7 @@
 import { faCode, faRss } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ExternalLink } from 'react-external-link';
-import type { FC } from 'react';
+import { FC } from 'react';
 import { HeaderSearch } from '../HeaderSearch';
 import Link from '../Link';
 

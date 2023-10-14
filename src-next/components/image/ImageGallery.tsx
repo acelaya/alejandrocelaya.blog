@@ -1,8 +1,6 @@
-import type { FC } from 'react';
-import { useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import Lightbox from 'react-image-lightbox';
-import type { ImageProps } from './Image';
-import { Image } from './Image';
+import { Image, ImageProps } from './Image';
 
 type Images = [ImageProps] | [ImageProps, ImageProps];
 
