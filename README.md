@@ -8,4 +8,4 @@
 
 This is my blog. You can see it at https://alejandrocelaya.blog
 
-Built on top of [Next.js](https://nextjs.org/)
+Built on top of [Astro](https://astro.build/)

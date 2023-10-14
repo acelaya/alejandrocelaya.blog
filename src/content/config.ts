@@ -3,7 +3,7 @@ import { postMetaSchema } from '../utils/posts.ts';
 
 const posts = defineCollection({
   type: 'content',
-  // schema: postMetaSchema, // TODO Enable Once all posts are migrated
+  schema: postMetaSchema,
 });
 
 // Export a single `collections` object to register your collection(s)
