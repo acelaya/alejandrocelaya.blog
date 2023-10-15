@@ -1,10 +1,9 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
-  "private": true,
+  "name": "alejandrocelaya.blog",
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
-    "build": "astro build"
+    "build": "astro build",
+    "preview": "astro preview --host 0.0.0.0"
   },
   "dependencies": {
     "@astrojs/mdx": "^1.1.1",
@@ -23,15 +22,16 @@
     "disqus-react": "^1.1.5",
     "feed": "^4.2.2",
     "lunr": "^2.3.9",
+    "markdown-it": "^13.0.2",
     "react": "^18.2.0",
     "react-18-image-lightbox": "^5.1.4",
     "react-dom": "^18.2.0",
     "react-external-link": "^2.2.0",
-    "react-tweet-embed": "^2.0.0",
-    "rehype-infer-description-meta": "^1.1.0"
+    "react-tweet-embed": "^2.0.0"
   },
   "devDependencies": {
     "@types/lunr": "^2.3.4",
+    "@types/markdown-it": "^13.0.2",
     "@types/node": "^18.11.11",
     "@types/ramda": "^0.27.34",
     "@types/react": "18.0.26",

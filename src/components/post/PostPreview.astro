@@ -1,18 +1,18 @@
 ---
 import Link from '../Link';
 import type { Post } from '../../utils/posts';
-import { summaryForPost } from '../../utils/posts';
+import { postExcerpt } from '../../utils/posts';
 
 export interface Props {
   post: Post;
 };
 
 const { post } = Astro.props;
-const summary = await summaryForPost(post)
+const excerpt = postExcerpt(post)
 ---
 
 <div style={{ marginBottom: '10px' }}>
-  <p>{summary}</p>
+  <p>{excerpt}</p>
   <div>
     <Link href={post.url}><b>Continue reading...</b></Link>
   </div>
