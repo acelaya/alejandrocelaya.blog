@@ -1,23 +1,19 @@
 ---
-import { FC, useRef, useState } from 'react';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { MobileMenu } from '../components/menu/MobileMenu';
-import { WithLatestPosts } from '../components/types';
+import { ScrollToButton } from '../components/ScrollToButton';
 import { config } from '../../config/config';
+import { getLatestPosts } from '../utils/posts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-18-image-lightbox/style.css';
 import '../styles/theme.css';
 import '../styles/global.css';
-import { ScrollToButton } from '../components/ScrollToButton';
-import { getLatestPosts } from '../utils/posts';
 
 export interface Props {
   url: string
   title?: string;
-};
+}
 
 const { title, url } = Astro.props;
 const computedTitle = `${config.SITE_TITLE} — ${config.SITE_SUBTITLE}`;
@@ -41,8 +37,9 @@ const scrollTargetId = 'mainSectionId';
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,600,400italic,700' />
   </head>
   <body>
+    <MobileMenu client:load />
+
     <div id="fh5co-page">
-      <!--MobileMenu isVisible={mobileMenuVisible} toggle={() => setMobileMenuVisible(!mobileMenuVisible)} client:load /-->
       <Header client:load />
 
       <section id="fh5co-hero" class="no-js-fullheight">
@@ -70,3 +67,14 @@ const scrollTargetId = 'mainSectionId';
     </div>
   </body>
 </html>
+<script type="module">
+  document.addEventListener('mobile-menu-toggle', (e) => {
+    const page = document.getElementById('fh5co-page');
+
+    if (e.detail.visible) {
+      page.classList.add('offcanvas-visible');
+    } else {
+      page.classList.remove('offcanvas-visible');
+    }
+  });
+</script>

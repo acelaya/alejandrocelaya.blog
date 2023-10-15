@@ -1294,7 +1294,6 @@ h1, h2, h3, h4, h5, h6 {
   top: 40px;
   right: 20px;
   z-index: 9999;
-  display: block;
   margin: 0 auto;
   display: none;
   cursor: pointer;
