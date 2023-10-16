@@ -45,7 +45,7 @@ const postExcerpt = (body: string) => {
 }
 
 export const getAllPosts = (): Promise<Post[]> => getCollection('posts').then(
-  (posts) => posts.reverse().map(
+  (posts) => [...posts].reverse().map(
     ({ slug, ...rest }) => {
       const [year, month, day, ...restOfSlug] = slug.split('-');
       const url = `/${year}/${month}/${day}/${restOfSlug.join('-')}/`;

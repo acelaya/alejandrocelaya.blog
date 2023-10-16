@@ -5,5 +5,4 @@ home
 build
 docker-compose.*
 indocker
-package-lock.json
 .github

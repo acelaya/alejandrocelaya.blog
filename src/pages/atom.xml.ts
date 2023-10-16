@@ -8,7 +8,8 @@ export async function GET() {
   const posts = await getAllPosts();
   const toPlainMarkdownBody = (body: string) => body
     .split('\n')
-    .filter((line) => line.trim() !== '' && !line.startsWith('import '))
+    // Remove MDX import lines
+    .filter((line) => !line.startsWith('import '))
     .join('\n');
 
   return rss({

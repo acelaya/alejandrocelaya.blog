@@ -1,7 +1,7 @@
 FROM node:20.8-alpine as node
 COPY . /blog
 RUN cd /blog && \
-    npm install --force && \
+    npm ci && \
     npm run build
 
 FROM nginx:1.25-alpine
