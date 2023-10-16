@@ -1,8 +1,8 @@
 import { getCollection, z } from 'astro:content';
 import { format, parse } from 'date-fns';
 import { decode } from 'html-entities';
-import MarkdownIt from 'markdown-it';
 import type { TaxonomiesType } from '../components/types';
+import { renderMarkdown } from './markdown';
 
 export const PAGE_SIZE = 5;
 export const SUB_PAGE_SIZE = 10;
@@ -26,10 +26,8 @@ export interface Post {
   data: PostMeta;
 }
 
-const parser = new MarkdownIt();
 const postExcerpt = (body: string) => {
-  const excerpt = parser
-    .render(body)
+  const excerpt = renderMarkdown(body)
     .split('\n')
     // Remove HTML tags
     .flatMap((str) => str.replace(/<\/?[^>]+(>|$)/g, '').split('\n'))
@@ -46,7 +44,7 @@ const postExcerpt = (body: string) => {
   return `${excerpt}…`;
 }
 
-export const getAllPosts = () => getCollection('posts').then(
+export const getAllPosts = (): Promise<Post[]> => getCollection('posts').then(
   (posts) => posts.reverse().map(
     ({ slug, ...rest }) => {
       const [year, month, day, ...restOfSlug] = slug.split('-');

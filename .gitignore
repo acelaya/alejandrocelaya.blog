@@ -2,6 +2,5 @@
 /coverage
 docker-compose.override.yml
 /home
-/public/atom.xml
 .astro
 /build

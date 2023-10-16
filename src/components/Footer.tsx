@@ -58,7 +58,7 @@ const Footer: FC<WithLatestPosts> = ({ latestPosts }) => (
               <li>
                 <Link href="https://x.com/acelayaa"><FontAwesomeIcon icon={faXTwitter} /></Link>
               </li>
-              <li><ExternalLink href="/feed/"><FontAwesomeIcon icon={faRss} /></ExternalLink></li>
+              <li><ExternalLink href="/atom.xml"><FontAwesomeIcon icon={faRss} /></ExternalLink></li>
             </ul>
           </div>
         </div>

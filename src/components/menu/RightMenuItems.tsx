@@ -11,7 +11,7 @@ export const RightMenuItems: FC = () => (
       <HeaderSearch />
     </li>
     <li className="social-element" id="rss">
-      <ExternalLink href="/feed/"><FontAwesomeIcon icon={faRss} /></ExternalLink>
+      <ExternalLink href="/atom.xml"><FontAwesomeIcon icon={faRss} /></ExternalLink>
     </li>
     <li className="social-element">
       <Link href="https://www.alejandrocelaya.com"><FontAwesomeIcon icon={faCode} /></Link>
