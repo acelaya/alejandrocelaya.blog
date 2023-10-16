@@ -1,6 +1,8 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { DiscussionEmbed } from 'disqus-react';
 import { disqusPropsForPost } from '../../utils/disqus';
-import { WithPostProps } from '../types';
+import type { WithPostProps } from '../types';
 
-export const PostComments: FC<WithPostProps> = ({ post }) => <DiscussionEmbed {...disqusPropsForPost(post)} />;
+export const PostComments: FC<WithPostProps> = ({ post }) => (
+  <DiscussionEmbed {...disqusPropsForPost(post.data.title, post.url)} />
+);

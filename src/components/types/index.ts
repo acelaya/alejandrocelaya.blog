@@ -1,4 +1,4 @@
-import { Post } from '../../utils/posts';
+import type { Post } from '../../utils/posts';
 
 export type TaxonomiesType = 'categories' | 'tags';
 

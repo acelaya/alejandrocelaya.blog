@@ -12,6 +12,10 @@ updates:
       fontawesome:
         patterns:
           - '@fortawesome*'
+      astro:
+        patterns:
+          - 'astro'
+          - '@astrojs*'
     ignore:
       # Bootstrap can introduce visual breaking changes on styles
       # Ignore it, since it's very outdated and this template needs that version

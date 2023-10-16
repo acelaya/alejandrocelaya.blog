@@ -1,0 +1,8 @@
+---
+import PostsList from '../layouts/PostsList.astro';
+import { getLatestPosts } from '../utils/posts';
+
+const posts = await getLatestPosts();
+---
+
+<PostsList posts={posts} currentPage={1} isFirstPage={true} isLastPage={false} />

@@ -2,9 +2,5 @@
 /coverage
 docker-compose.override.yml
 /home
-/public/atom.xml
-
-# next.js
-/.next/
-/out/
+.astro
 /build

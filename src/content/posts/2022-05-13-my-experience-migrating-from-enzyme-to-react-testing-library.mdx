@@ -1,0 +1,124 @@
+---
+title: 'My experience migrating from enzyme to react testing library'
+categories: ['web', 'tools']
+tags: ['testing', 'tests', 'unit-testing', 'react', 'reactjs']
+---
+
+Recently ReactJS v18 was released. I started to look into its improvements, and checked which of my projects could benefit from them.
+
+The main react-based project I maintain at the moment of writing this article is [shlink-web-client](https://github.com/shlinkio/shlink-web-client), so I naturally created a new branch and started the process.
+
+The update was quite smooth, as most of the other dependencies I was using from the react ecosystem were already updated to support v18. All but one, [enzyme](https://enzymejs.github.io/enzyme/), the testing framework I was using to unit-test react components.
+
+To be precise, I was able to continue running my tests, but some of them (those using `mount` instead of `shallow`) were still rendering components with the "old" React v17 approach, causing them to behave as in that version and a warning being printed in the console.
+
+### First fix attempt
+
+The way enzyme integrates with the react version you are using is through an adapter library. The last official one supports only React v16, but someone released an [unofficial adapter for v17](https://github.com/wojtekmaj/enzyme-adapter-react-17) which, with close to 650k weekly downloads, quickly became the way to go.
+
+I checked if there was one for React 18, but sadly there wasn't.
+
+Also, the author of the adapter for v17 posted an article indicating [enzyme is dead](https://dev.to/wojtekmaj/enzyme-is-dead-now-what-ekl), he was not going to release one for v18, and publishing one for v17 was a mistake.
+
+With those facts in mind, I started to face what was probably going to be the moment to migrate to [react testing library](https://testing-library.com/docs/react-testing-library/intro).
+
+### Migration strategy
+
+I decided to follow a migration strategy similar to the one suggested in the article above, but with a couple of modifications:
+
+* I update to React 18 anyway, as tests still pass.
+* Migrate right away all tests using `mount`, as those are the ones behaving differently.
+* New tests should be written directly with react testing library (RTL from now on).
+* When an existing test needs to be changed, consider migrating it to RTL, and do it if there's time.
+* Introduce some PR from time to time just migrating a handful of tests.
+* Once everything is migrated, get rid of everything related with enzyme.
+
+### First contact and impressions
+
+I was a bit sceptical with RTL, as it was focused more on integration tests, instead of unit tests, which meant I had to completely change the mindset to write tests.
+
+It also didn't support shallow rendering, meaning that you will end up sometimes rendering a bigger component tree when testing container-like components, potentially causing side effects that could affect your test.
+
+On the other hand there's more and more people stating that [shallow rendering is an anti-pattern](https://kentcdodds.com/blog/why-i-never-use-shallow-rendering), and that's probably the reason of enzyme getting "discontinued".
+
+Also, RTL has become the [officially recommended framework](https://reactjs.org/docs/testing.html#tools) to test react components, it has become very popular, and it has even joined a wider group of testing libraries under the [`@testing-library`](https://testing-library.com/) organization.
+
+The thing is that I started to use it, and I was quickly surprised with how it felt to work with it, and all the benefits it was bringing to my tests.
+
+### Benefits I have experienced
+
+Once I started migrating the first tests I noticed some benefits:
+
+* Changing my mindset was actually easier than I thought. The docs are very well written, so it's relatively easy to start using RTL.
+* My tests got simpler, and required less of those nasty global mocks that jest allows (I'm looking at you, [`jest.mock`](https://jestjs.io/es-ES/docs/mock-functions#mocking-modules)).
+* Tests were way less coupled with implementation details. I moved from testing the component props, to test what the user would see on the screen.
+* Related with previous point, I started to write my tests by looking at the screen instead of the component's implementation.
+* Changes in source code led to fewer tests requiring to be changed.
+* A progressive migration was possible, where some tests still use enzyme and others are already using RTL.
+
+And overall, it felt good and I have already dedicated a couple of PRs just to migrate more tests.
+
+### Challenges I faced
+
+But of course, migrating to a new tool always comes with its own challenges, and this was not an exception. I'll explain the main ones I have faced so far and how I tackled them:
+
+* RTL lets you do some things in a couple of different ways, and the docs may not be super clear about what's the recommended option.
+
+  For this I recommend reading [this article](https://acel.me/DCMb1) from Kent C. Dodds, RTL's author, which explains some common mistakes when using the library.
+
+* At first, I struggled a bit with asynchronous side effects and state changes in components, which can easily end up printing a warning like `Warning: An update to MyComponent inside a test was not wrapped in act`.
+
+  The warning also explains how you are supposed to solve this by wrapping your code in `act()`, but this warning comes from React, not RTL, and what it is not telling you is that RTL already wraps all needed operations in `act()`.
+
+  What this error usually mean is that you are not waiting for something to happen. [This other article](https://acel.me/jnUdT), also from Kent C. Dodds, explains everything you need to know about the things that can lead to this warning, and how to solve them.
+
+* Since you start testing from the user point of view, some use cases can be challenging to test without coupling with implementation details. For example, when you have a component which dynamically renders different images or icons, I used to directly check the component properties.
+
+  For this I found the best solution was to use [jest snapshots](https://jestjs.io/docs/snapshot-testing). I didn't want to manually check which SVG was being rendered in the DOM, just that different ones were being used in every case.
+
+  ```tsx
+  // I went from this...
+  test('...', () => {
+    const wrapper = shallow(<MyComp dynamicValue="foo" />);
+    expect(wrapper.find(FontAwesomeIcon).prop('icon')).toEqual(someIcon);
+  })
+
+  // To this
+  test('...', () => {
+    const { container } = render(<MyComp dynamicValue="foo" />);
+    expect(container.firstChild).toMatchSnapshot();
+  })
+  ```
+
+* Something very similar happens if you use some library that renders canvas. There's no way to test that from a DOM point of view, which is what RTL does.
+
+  In my case I was using [Chart.js](https://www.chartjs.org/) to render some charts, so I used [jest-canvas-mock](https://github.com/hustcc/jest-canvas-mock), which exposes a method on the canvas to see which are all the events invoked from the library.
+
+  Then I used snapshots again to verify they had the expected "shape".
+
+  ```tsx
+  // I went from this...
+  test('...', () => {
+    const wrapper = shallow(<MyCompWithCanvas />);
+    expect(wrapper.find(Chart).prop('data').datasets).toEqual(...);
+  })
+
+  // To this
+  test('...', () => {
+    const { container } = render(<MyCompWithCanvas />);
+    const events = container.querySelector('canvas')?.getContext('2d')?.__getEvents();
+
+    expect(events).toBeTruthy();
+    expect(events).toMatchSnapshot();
+  })
+  ```
+
+### Conclusion
+
+For better or worst, enzyme should no longer be considered an option. If you are starting a new project or are using it on small ones, consider migrating to RTL as soon as possible.
+
+If you are using it in bigger projects, following the process described in this article will probably help you.
+
+In any case, you will get surprised. React testing library is a great tool and provides many benefits over enzyme.
+
+Its main issue is that it's not a drop-in replacement for enzyme, so you will have to change a bit your mindset.

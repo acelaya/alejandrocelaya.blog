@@ -1,0 +1,105 @@
+---
+title: 'AcMailer 7.0, the most important release in a long time'
+tags: ['mail', 'zf3', 'expressive']
+categories: ['zf', 'php']
+---
+
+import { Tweet } from '../../components/Tweet';
+
+A couple hours ago I have released the seventh major version of a module I created more than 4 years ago.
+
+<Tweet tweetId="939498067249762305" client:only="react" />
+
+It was born as an abstraction to send emails in Zend Framework 2 applications, but trying to make the process simpler than directly working with the lower-level zend/mail component.
+
+I initially created it to use it in my own project, but at some point decided to publish it as a packagist package to ease others to use it.
+
+The module used to receive more updates in the beginning, but the number of changes decreased with time.
+
+The thing is that there were a lot of things I wanted to do, but never had the time. It goes without saying that 4 years ago I didn't have the knowledge I have today (I hope 4 years from now I see my current self the same way), and the package had some design problems that needed to be fixed.
+
+In this post I'm going to explain the changes that come with this new version, and the reason they were made.
+
+### Stateless services
+
+Business services have to be, by definition, stateless. In AcMailer, that wasn't the case.
+
+I made a mistake when designing the `AcMailer\Service\MailService` class, and wrapped the `Message` object to be sent inside of it.
+
+That made the service to depend on the email data. That was a problem, when you wanted to send different emails on the same request, or even send the same email more than once.
+
+It needed a few internal ugly tricks to ensure headers were not duplicated and things like that.
+
+In this version the `AcMailer\Service\MailService` is stateless. It is just responsible of sending emails, and emails are passed or built at runtime. You can send any number of emails or send them as many times as you want. No side effects.
+
+### Real compatibility with expressive
+
+The module was already including a `ConfigProvider` for Zend Expressive, but it was not very functional.
+
+Yes, it was exposing the configuration to expressive apps, but the user was responsible of orchestrating and creating everything.
+
+Also, the module was tightly coupled with zendframework components that are not usually used in expressive, making it harder to integrate.
+
+This release reduces the number of dependencies to the bare minimum, and provides real compatibility with expressive, allowing any of their renderers to be used to render emails, while keeping backward compatibility as much as possible with the way things used to be.
+
+### Emails can be preconfigured
+
+As I've mentioned above, emails are no longer part of the service.
+
+Now, emails can be preconfigured with a name, the same way services are. Then, you can use any of the service instances to send them by just referencing to them by their name.
+
+A new service, the `EmailBuilder`, will create those emails and let the mail service send them.
+
+It is also possible to extend emails to reuse parts that are equal, the same way it is possible with mail services.
+
+### Code quality improved
+
+As I've said, I want to think my programming skills have been improved in the last four years.
+
+I was seeing a lot of parts of the code with the knowledge that they weren't fulfilling best coding practices, like clean code or object calisthenics, and that the cyclomatic complexity was high.
+
+I have refactored a lot of parts of the code, and the result is much better now. The code is cleaner and easier to maintain. No more `if/else` all over the place.
+
+I have also forced a stricter coding standard that extends PSR-2.
+
+### Tests rewritten
+
+As part of this code quality improvement, I have rewritten almost all unit tests.
+
+They are simpler now, and make use of data providers, which has reduced code duplication, and phpspec/prophecy, which allowed me to drop all custom mocks (I used to build my own mocks and stubs).
+
+The number of tests has been reduced, and they are now faster to run.
+
+### Goodbye PHP 5
+
+I have added support for PHP 7.2, and dropped support for PHP 5. The code now has stricter type hints and is more predictable.
+
+### Meaningful exceptions
+
+I have included more package exceptions. They are now better used, and the semantics are clearer.
+
+Also, exception messages include more information now, and explain how to fix the problem when possible.
+
+### Dropped controller plugin
+
+I used to include a controller plugin to use with Zend MVC controllers. I have completely removed it in this version.
+
+I want to promote constructor dependency injection, and controller plugins allow to pseudo-magically access external services, so I have decided to remove it.
+
+Also, controllers are not probably the best place to send emails.
+
+And finally, it made no sense in a zend expressive context, so ultimately I could create a separate package to bring back the controller plugin, but not include it in the main module.
+
+### Upgrading
+
+Sadly, most of these changes require the introduction of BC breaks. That's why this version increases the major version number.
+
+I have tried to properly document how to upgrade to this version, by including an [UPGRADE.md](https://github.com/acelaya/ZF-AcMailer/blob/master/UPGRADE.md#upgrade-from-5x6x-to-7x) document.
+
+I have also created a small console tool that currently allows to migrate from the old configuration to the new structure, but will probably include more features in the future. [https://github.com/acelaya/zf-acmailer-tooling](https://github.com/acelaya/zf-acmailer-tooling)
+
+### Conclusion
+
+And that's probably it.
+
+I have updated the module, improved the code, and made it worthy of modern Expressive and MVC applications. 

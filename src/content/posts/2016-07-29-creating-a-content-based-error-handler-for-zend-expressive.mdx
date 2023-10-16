@@ -1,0 +1,289 @@
+---
+title: 'Creating a content-based Error Handler for Zend Expressive'
+tags: ['zend-expressive', 'microframework', 'error-handling', 'content-negotiation', 'zf3']
+categories: ['php', 'zf']
+---
+
+import { Tweet } from '../../components/Tweet';
+
+The other day I was working on a [Zend Expressive](https://github.com/shlinkio/shlink/tree/develop) application I'm currently building. The application includes a REST API among other things, but it also has some endpoints which render HTML.
+
+In one of my tests of the REST API I saw that when an error occurs (404, 405 or 500), I was getting an HTML response, which is not easy to handle when the client is expecting JSON.
+
+I started to dig on how to fix this problem and thought that using [ErrorMiddleware](https://docs.zendframework.com/zend-stratigility/error-handlers/) (which is invoked in case of an error) should be the solution, but after some tests I saw that it is only invoked if a regular middleware invokes the next one by passing an error as the third argument or an uncaught exception is thrown.
+
+When a route is not matched (404) or it is matched with an incorrect HTTP method (405), the error middleware is not invoked.
+
+I asked on twitter if this was a bug or a feature, and [Abdul Malik](https://twitter.com/samsonasik) confirmed that it was the intended behavior.
+
+<Tweet tweetId="757889412252307456" client:only="react" />
+
+Before that, [Nikola Poša](https://twitter.com/nikolaposa) had already pointed me to the [Final Handler](https://docs.zendframework.com/zend-expressive/features/error-handling/) documentation, which is the element in Zend Expressive responsible of catching unhandled errors and recover gracefully. I read the documentation again, in case I missed something.
+
+<Tweet tweetId="757884384196386816" client:only="react" />
+
+When I told him that my intention was to return different content for errors based on what the client expects (the `Accept` header), he kindly showed me one of his implementations to solve this problem, and it gave me some ideas on how to implement something myself.
+
+### Standard implementations
+
+Well, Zend Expressive comes with some built-in Final Handler implementations. They are callables that get invoked with the request and response objects when no other middleware has returned a valid response or an exception is thrown, so that the application returns some kind of error instead of crashing.
+
+To achieve this, any final handler has to return a response, which is the one that will be finally sent to the client.
+
+The most simple one is provided by the [zend-stratigility](https://docs.zendframework.com/zend-stratigility/api/#finalhandler) package, the `Zend\Stratigility\FinalHandler`. It basically returns a plain text response with the error, but includes the correct status code in the response (404, 500, etc).
+
+Since that is too simple for most applications, Zend Expressive includes two other Final Handlers, the `Zend\Expressive\TemplatedErrorHandler` and the `Zend\Expressive\WhoopsErrorHandler`.
+
+The first one composes a template renderer, so that certain templates are rendered in case of error, returning a more human friendly error than the one returned by the stratigility's FinalHandler.
+
+The second one is intended to be used in development only, and returns very accurate information about any produced error, by using the [whoops!](https://filp.github.io/whoops/) package.
+
+These two error handlers come preconfigured when you install the [expressive skeleton application](https://github.com/zendframework/zend-expressive-skeleton), and you can find more documentation about them [here](https://docs.zendframework.com/zend-expressive/features/error-handling/).
+
+### The problem to solve
+
+The standard implementations are quiet useful, but none of them return JSON errors, so if you need JSON errors you have to write your own final handler.
+
+This is my implementation. It is an early version and there is probably some ways to improve it, but it works:
+
+```php
+<?php
+namespace Shlinkio\Shlink\Rest\ErrorHandler;
+
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Shlinkio\Shlink\Common\ErrorHandler\ErrorHandlerInterface;
+use Zend\Diactoros\Response\JsonResponse;
+use Zend\Expressive\Router\RouteResult;
+
+class JsonErrorHandler implements ErrorHandlerInterface
+{
+    /**
+     * Final handler for an application.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param null|mixed $err
+     * @return Response
+     */
+    public function __invoke(Request $request, Response $response, $err = null)
+    {
+        $hasRoute = $request->getAttribute(RouteResult::class) !== null;
+        $isNotFound = ! $hasRoute && ! isset($err);
+        if ($isNotFound) {
+            $responsePhrase = 'Not found';
+            $status = 404;
+        } else {
+            $status = $response->getStatusCode();
+            $responsePhrase = $status < 400 ? 'Internal Server Error' : $response->getReasonPhrase();
+            $status = $status < 400 ? 500 : $status;
+        }
+
+        return new JsonResponse([
+            'error' => $this->responsePhraseToCode($responsePhrase),
+            'message' => $responsePhrase,
+        ], $status);
+    }
+
+    /**
+     * @param string $responsePhrase
+     * @return string
+     */
+    protected function responsePhraseToCode($responsePhrase)
+    {
+        return strtoupper(str_replace(' ', '_', $responsePhrase));
+    }
+}
+```
+
+It is a little bit coupled with my app at this moment, but this is how it works:
+
+* It checks if a `Zend\Expressive\Router\RouteResult` was registered in the request. That means that this is not a 404 or 405 error, because the expressive's routing middleware registers the RouteResult when a route is matched.
+* If no `Zend\Expressive\Router\RouteResult` is registered, we have to check if current error is a 404 or 405 status. In the second case, expressive passes an error, but in the first one it doesn't.
+* In any other case we will use current response status if it is already an error status (>=400) or use the 500 status otherwise.
+* Finally we compose a JsonResponse with the status code and the reason phrase.
+
+That's pretty simple. If we register now this as a dependency with the **Zend\Expressive\FinalHandler** name, it will get invoked when an error occurs.
+
+However, this doesn't solve our initial problem. Now the application instead of always rendering HTML errors, it always renders JSON errors. We have solved the problem of the REST API, but when the application is loaded in a web browser and an error occurs, the JSON response won't make sense.
+
+### Content-based Error Handler
+
+My final solution was using the [strategy design pattern](https://en.wikipedia.org/wiki/Strategy_pattern) to decide which Error handler to use at runtime, based on the request's `Accept` header value.
+
+For my implementation I've used a [zend-servicemanager PluginManager](https://docs.zendframework.com/zend-servicemanager/plugin-managers/), but this could be easily done without it.
+
+> **Update 2016-07-30:** In the first version of this article, the `ContentBasedErrorHandler` was a `PluginManager` itself. If you read the comments, Nikola Po&#x161;a suggested to split it into two elements, the ErrorHandler and the PluginManager, and make the first one encapsulate the second.
+
+> It is a much cleaner approach, and properly segregates the two responsibilities, so I have updated the example.
+
+```php
+<?php
+namespace Shlinkio\Shlink\Common\ErrorHandler;
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Shlinkio\Shlink\Common\Exception\InvalidArgumentException;
+
+class ContentBasedErrorHandler implements ErrorHandlerInterface
+{
+    const DEFAULT_CONTENT = 'text/html';
+
+    /**
+     * @var ErrorHandlerManagerInterface
+     */
+    private $errorHandlerManager;
+
+    /**
+     * ContentBasedErrorHandler constructor.
+     * @param ErrorHandlerManager $errorHandlerManager
+     */
+    public function __construct(ErrorHandlerManager $errorHandlerManager)
+    {
+        $this->errorHandlerManager = $errorHandlerManager;
+    }
+
+    /**
+     * Final handler for an application.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param null|mixed $err
+     * @return Response
+     */
+    public function __invoke(Request $request, Response $response, $err = null)
+    {
+        // Try to get an error handler for provided request
+        $errorHandler = $this->resolveErrorHandlerFromAcceptHeader($request);
+        return $errorHandler($request, $response, $err);
+    }
+
+    /**
+     * Tries to resolve an error handler from the Accept header
+     *
+     * @param Request $request
+     * @return callable
+     */
+    protected function resolveErrorHandlerFromAcceptHeader(Request $request)
+    {
+        // Try to find an error handler for one of the accepted content types
+        $accepts = $request->hasHeader('Accept')
+            ? $request->getHeaderLine('Accept')
+            : self::DEFAULT_CONTENT;
+        $accepts = explode(',', $accepts);
+        foreach ($accepts as $accept) {
+            if (! $this->errorHandlerManager->has($accept)) {
+                continue;
+            }
+
+            return $this->errorHandlerManager->get($accept);
+        }
+
+        // If it wasn't possible to find an error handler for accepted content type, use default one if registered
+        if ($this->errorHandlerManager->has(self::DEFAULT_CONTENT)) {
+            return $this->errorHandlerManager->get(self::DEFAULT_CONTENT);
+        }
+
+        // It wasn't possible to find an error handler
+        throw new InvalidArgumentException(sprintf(
+            'It wasn\'t possible to find an error handler for ["%s"] content types. '
+            . 'Make sure you have registered at least the default "%s" content type',
+            implode('", "', $accepts),
+            self::DEFAULT_CONTENT
+        ));
+    }
+}
+```
+
+```php
+<?php
+namespace Shlinkio\Shlink\Common\ErrorHandler;
+
+use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Exception\InvalidServiceException;
+
+class ErrorHandlerManager extends AbstractPluginManager
+{
+    public function validate($instance)
+    {
+        if (is_callable($instance)) {
+            return;
+        }
+
+        throw new InvalidServiceException(sprintf(
+            'Only callables are valid plugins for "%s". "%s" provided',
+            __CLASS__,
+            is_object($instance) ? get_class($instance) : gettype($instance)
+        ));
+    }
+}
+```
+
+This error handler delegates the management of the error itself into another error handler by composing a plugin manager.
+
+When the plugin manager is created, it has to receive the plugins configuration, which maps different content types to the error handler that will manage that specific content type.
+
+For example, for text/html we will use the built-in `Zend\Expressive\TemplatedErrorHandler` (or the `Zend\Expressive\WhoopsErrorHandler` if we are in a development environment), but for application/json we will use the `JsonErrorHandler`.
+
+**error-handler.global.php:**
+
+```php
+<?php
+use Shlinkio\Shlink\Common\ErrorHandler\ContentBasedErrorHandler;
+use Shlinkio\Shlink\Rest\ErrorHandler\JsonErrorHandler;
+use Zend\Expressive\Container\TemplatedErrorHandlerFactory;
+use Zend\Stratigility\FinalHandler;
+
+return [
+
+    'error_handler' => [
+        'plugins' => [
+            'invokables' => [
+                'text/plain' => FinalHandler::class,
+                'application/json' => JsonErrorHandler::class,
+            ],
+            'factories' => [
+                ContentBasedErrorHandler::DEFAULT_CONTENT => TemplatedErrorHandlerFactory::class,
+            ],
+            'aliases' => [
+                'application/xhtml+xml' => ContentBasedErrorHandler::DEFAULT_CONTENT,
+                'application/x-json' => 'application/json',
+                'text/json' => 'application/json',
+            ],
+        ],
+    ],
+
+];
+```
+
+**error-handler.local.php:**
+
+```php
+<?php
+use Shlinkio\Shlink\Common\ErrorHandler\ContentBasedErrorHandler;
+use Zend\Expressive\Container\WhoopsErrorHandlerFactory;
+
+return [
+
+    'error_handler' => [
+        'plugins' => [
+            'factories' => [
+                ContentBasedErrorHandler::DEFAULT_CONTENT => WhoopsErrorHandlerFactory::class,
+            ],
+        ],
+    ],
+
+];
+```
+
+This way, if the application was loaded in a browser (which provides the `Accept: text/html` header) and an error occurs, the client will see a pretty HTML error page.
+
+On the other hand, if a REST client performs a request by passing the `Accept: application/json` header, the error will be JSON-formatted, preventing the client application to crash because of a parsing error.
+
+If you need any other content type to be managed by your application, you just need to write the specific Error Handler for that format and register it.
+
+Finally, you will have to register the `ContentBasedErrorHandler` with the **Zend\Expressive\FinalHandler** name, so that it is properly injected in the `Application` when created.
+
+And that's it. This approach can be clearly improved, but it is good starting point.
+
+> **Update 2016-08-12:** I have finally created a package implementing this solution, so that anyone can install it in his/her own project: [acelaya/ze-content-based-error-handler](https://github.com/acelaya/ze-content-based-error-handler).

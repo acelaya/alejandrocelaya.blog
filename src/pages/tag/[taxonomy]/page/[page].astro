@@ -1,0 +1,30 @@
+---
+import { filteredPosts, getTags, SUB_PAGE_SIZE } from '../../../../utils/posts';
+import TaxonomyPage from '../../../../layouts/TaxonomyPage.astro';
+
+export async function getStaticPaths({ paginate }) {
+  const tags = await getTags();
+  const result = await Promise.all(tags.map(async (tag) => {
+    const posts = await filteredPosts({ tag })
+    return paginate(posts, {
+      pageSize: SUB_PAGE_SIZE,
+      params: { taxonomy: tag },
+    });
+  }));
+
+  return result.flat();
+}
+
+const { taxonomy: tag } = Astro.params;
+const { page } = Astro.props;
+const { data, currentPage, lastPage } = page;
+---
+
+<TaxonomyPage
+  taxonomy={tag}
+  type="tag"
+  posts={data}
+  currentPage={currentPage}
+  isFirstPage={currentPage === 1}
+  isLastPage={currentPage >= lastPage}
+/>

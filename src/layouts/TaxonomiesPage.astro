@@ -1,0 +1,32 @@
+---
+import { FC } from 'react';
+import Layout from './Layout.astro';
+import { Container } from '../components/Container';
+import { SectionTitle } from '../components/SectionTitle';
+import Link from '../components/Link';
+import type { TaxonomiesType } from '../components/types';
+
+export interface Props {
+  taxonomies: string[];
+  type: TaxonomiesType;
+}
+
+const buildTaxonomyUrl = (taxonomy: string, type: TaxonomiesType) =>
+  `/${type === 'categories' ? 'category' : 'tag'}/${encodeURI(taxonomy)}`;
+
+const { taxonomies, type } = Astro.props;
+---
+
+<Layout url={`/${type}`}>
+  <Container>
+    <SectionTitle className="taxonomies-title">{type}</SectionTitle>
+
+    <div class="taxonomies-list">
+      {taxonomies.map((taxonomy) => (
+        <Link key={taxonomy} href={buildTaxonomyUrl(taxonomy, type)} className="btn btn-default">
+          {taxonomy.replace(/-/g, ' ')}
+        </Link>
+      ))}
+    </div>
+  </Container>
+</Layout>

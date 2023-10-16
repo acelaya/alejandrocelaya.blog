@@ -1,0 +1,19 @@
+---
+import PostsList from '../../layouts/PostsList.astro';
+import { getAllPosts, PAGE_SIZE } from '../../utils/posts';
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getAllPosts();
+  return paginate(posts, { pageSize: PAGE_SIZE });
+}
+
+const { page } = Astro.props;
+const { data, currentPage, lastPage } = page;
+---
+
+<PostsList
+  posts={data}
+  currentPage={currentPage}
+  isFirstPage={currentPage === 1}
+  isLastPage={currentPage >= lastPage}
+/>

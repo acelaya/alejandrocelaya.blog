@@ -1,6 +1,8 @@
-import { FC, useMemo, useState } from 'react';
-import Lightbox from 'react-image-lightbox';
-import { Image, ImageProps } from './Image';
+import type { FC } from 'react';
+import { useMemo, useState } from 'react';
+import Lightbox from 'react-18-image-lightbox';
+import type { ImageProps } from './Image';
+import { Image } from './Image';
 
 type Images = [ImageProps] | [ImageProps, ImageProps];
 
@@ -33,8 +35,8 @@ export const ImageGallery: FC<{ images: Images, modal?: boolean }> = ({ images, 
           nextSrc={images[nextIndex]?.url}
           prevSrc={images[prevIndex]?.url}
           onCloseRequest={() => openModal(false)}
-          onMoveNextRequest={() => setActiveIndex(activeIndex + 1)}
-          onMovePrevRequest={() => setActiveIndex(activeIndex - 1)}
+          onMoveNextRequest={() => setActiveIndex((prev) => prev + 1)}
+          onMovePrevRequest={() => setActiveIndex((prev) => prev - 1)}
         />
       )}
     </>

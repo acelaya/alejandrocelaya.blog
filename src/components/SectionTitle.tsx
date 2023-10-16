@@ -1,5 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
-import { CarbonAds } from './CarbonAds';
+import type { FC, PropsWithChildren } from 'react';
 
 type SectionTitleProps = PropsWithChildren<{
   className?: string;
@@ -7,7 +6,6 @@ type SectionTitleProps = PropsWithChildren<{
 
 export const SectionTitle: FC<SectionTitleProps> = ({ children, className }) => (
   <header className="clearfix">
-    <CarbonAds />
     <h2 className={className}>{children}</h2>
   </header>
 );

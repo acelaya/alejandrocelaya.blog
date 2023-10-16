@@ -1,0 +1,249 @@
+---
+title: 'Managing PUT requests with file uploads in psr-7 and middleware PHP applications'
+tags: ['file-uploads', 'zend-expressive', 'psr-7', 'middleware', 'put', 'ajax', 'rest']
+categories: ['php', 'zf']
+---
+
+It has been a long time since I first realized that handling file uploads in non-**POST** requests (like **PUT**) wasn't an easy task.
+
+One could assume the `$_FILES` array should be populated regardless the HTTP verb, but actually, PHP doesn't do it on its own.
+
+After a long time wanting to find a solution to this problem, I've finally dedicated the time to get something functional, that allows file uploads to be transparently handled regardless the HTTP verb (it works the same way in **POST**, **PUT** and **PATCH** requests).
+
+Since nowadays I try to work with psr-7/middleware based applications, I have created a [Zend Expressive](https://docs.zendframework.com/zend-expressive/) app that registers a middleware capable of parsing a `multipart/form-data` request body, populating the request's uploaded files array and parsed body array.
+
+This way, you can call `$request->getUploadedFiles()` or `$request->getParsedBody()` in any **PUT** or **PATCH** action, the same way you would do in a **POST** action.
+
+You can find the example application here: [https://github.com/acelaya-blog/put-patch-file-uploads](https://github.com/acelaya-blog/put-patch-file-uploads)
+
+### The example
+
+When you clone the application, enter the project directory and run `composer install && composer serve`. Then you should be able to access [http://localhost:8080](http://localhost:8080) and see something like this:
+
+![Example application](/assets/img/put-patch-uploads/app-screenshot.png)
+
+This is a simple form which submit event is captured via javascript in order to get it sent using the selected HTTP verb.
+
+The server then dumps the request's uploaded files and parsed body using [symfony/var-dumper](http://symfony.com/doc/current/components/var_dumper.html), and the result is appended to the bottom of the page.
+
+Using the browser's console you should be able to see the actual request. Regardless the selected HTTP method, the result should be exactly the same.
+
+Also, all the uploaded files will be stored in the `data/files` folder.
+
+This is done by the [UploadAction](https://github.com/acelaya-blog/put-patch-file-uploads/blob/master/src/App/Action/UploadAction.php) class, which is dispatched when the **/upload** route is resolved with **POST**, **PUT** or **PATCH** methods.
+
+### Let's see how it works
+
+If we wouldn't have done anything, this example would only work in **POST** requests. **PUT** and **PATCH** requests would always print an empty array of files and parsed body.
+
+The class responsible of doing the magic is the [MultipartRequestBodyParser](https://github.com/acelaya-blog/put-patch-file-uploads/blob/master/src/App/Middleware/MultipartRequestBodyParser.php). Let's analyze it.
+
+The first couple of lines is simple. This middleware should only be executed when the request uses one of the HTTP verbs that allows body, but **POST**, which is automatically parsed by PHP. Also, the content type of the request should be `multipart/form-data`
+
+```php
+<?php
+namespace App\Middleware;
+
+use App\File\UploadedFile;
+use Fig\Http\Message\RequestMethodInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+class MultipartRequestBodyParser implements RequestMethodInterface
+{
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        // Find content type
+        $contentTypeParts = explode('; boundary=', $request->getHeaderLine('content-type'));
+        if (count($contentTypeParts) === 1) {
+            $contentTypeParts[] = '';
+        }
+
+        // Apply this middleware only to PUT and PATCH requests when content type is multipart/form-data
+        list($contentType, $boundary) = $contentTypeParts;
+        if ($contentType !== 'multipart/form-data'
+            || ! in_array($request->getMethod(), [self::METHOD_PUT, self::METHOD_PATCH], true)
+        ) {
+            return $next($request, $response);
+        }
+        
+        // [...]
+    }
+}
+```
+
+First, we get the content type, and a boundary, that will be used later to identify every body part.
+
+If either the request method or content type are not correct, we just call the next middleware.
+
+But let's see now what happens when those conditions are met:
+
+```php
+class MultipartRequestBodyParser implements RequestMethodInterface
+{
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        // Find content type
+        // [...]
+
+        // Apply this middleware only to PUT and PATCH requests when content type is multipart/form-data
+        // [...]
+        
+        // Explode parts
+        $parts = explode('--' . $boundary, (string) $request->getBody());
+        // Discard first and last part, which are inconsistencies from previous explode
+        $parts = array_slice($parts, 1, count($parts) - 2);
+
+        $bodyParams = [];
+        $files = [];
+        foreach ($parts as $part) {
+            $this->processPart($files, $bodyParams, $part);
+        }
+
+        return $next(
+            $request->withUploadedFiles($files)
+                    ->withParsedBody($bodyParams),
+            $response
+        );
+    }
+}
+```
+
+Using the boundary (the identifier used in multipart requests to separate each part), we explode the body in order to get every separated part, and then iterate them in order to get them processed.
+
+The `processPart` protected method is responsible of finding out the type of the part, and appending it to the `$files` array or the `$bodyParams` array. Both of those arrays are passed by reference.
+
+Once both arrays have been populated, the next middleware is invoked, but the request now includes this information.
+
+Let's see the `processPart` method implementation:
+
+```php
+class MultipartRequestBodyParser implements RequestMethodInterface
+{
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        // [...]
+    }
+    
+    protected function processPart(array &$files, array &$bodyParams, $part)
+    {
+        // Separate part headers from part body
+        $part = ltrim($part, "\r\n");
+        list($partRawHeaders, $partBody) = explode("\r\n\r\n", $part, 2);
+
+        // Cast headers into associative array
+        $partRawHeaders = explode("\r\n", $partRawHeaders);
+        $partHeaders = array_reduce($partRawHeaders, function (array $headers, $header) {
+            list($name, $value) = explode(':', $header);
+            $headers[strtolower($name)] = ltrim($value, ' ');
+            return $headers;
+        }, []);
+
+        // Ignore any part without content disposition
+        if (! isset($partHeaders['content-disposition'])) {
+            return;
+        }
+
+        // Parse content disposition, in order to find out the nature of each field
+        $contentDisposition = $partHeaders['content-disposition'];
+        preg_match(
+            '/^(.+); *name="([^"]+)"(; *filename="([^"]+)")?/',
+            $contentDisposition,
+            $matches
+        );
+        $name = $matches[2];
+        $filename = isset($matches[4]) ? $matches[4] : null;
+
+        // Check if current part is a properly uploaded file, a not uploaded file or another field
+        if ($filename !== null) {
+            // If file was correctly uploaded, write into temp dir and create an UploadedFile instance
+            $tempFile = tempnam(ini_get('upload_tmp_dir'), 'php');
+            file_put_contents($tempFile, $partBody);
+
+            $this->addFile($files, $name, new UploadedFile(
+                $tempFile,
+                strlen($partBody),
+                UPLOAD_ERR_OK,
+                $filename,
+                isset($partHeaders['content-type']) ? $partHeaders['content-type'] : null
+            ));
+        } elseif (strpos($contentDisposition, 'filename') !== false) {
+            $this->addFile($files, $name, new UploadedFile(
+                null,
+                0,
+                UPLOAD_ERR_NO_FILE
+            ));
+        } else {
+            $bodyParams[$name] = substr($partBody, 0, -2);
+        }
+    }
+}
+```
+
+This is the most complex method. 
+
+Using a couple of explodes, an `array_reduce` and a regular expression, this method separates the headers from the body of every part, and then, depending on the information present in the **content-disposition** header of the part, it determines if it belongs to a properly uploaded file, a file element that has not been uploaded or a regular body parameter.
+
+When a properly uploaded file is found, it is written in the directory configured in the ini **upload_tmp_dir** option, using the same file pattern used by PHP when storing files uploaded to a POST request. 
+
+Finally, it appends the parsed field to the `$bodyParams` array or the `$files` array.
+
+There's only one thing left to see. When an uploaded file is found, the `addFile` protected method is called. Let's see it:
+
+```php
+class MultipartRequestBodyParser implements RequestMethodInterface
+{
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        // [...]
+    }
+    
+    protected function processPart(array &$files, array &$bodyParams, $part)
+    {
+        // [...]
+    }
+    
+    protected function addFile(array &$files, $name, UploadedFile $newFile)
+    {
+        $isArray = false;
+
+        // If name has array notation, append it as array
+        if (strpos($name, '[]') === strlen($name) - 2) {
+            $name = substr($name, 0, -2);
+            $isArray = true;
+        }
+
+        if (! isset($files[$name])) {
+            $files[$name] = $isArray ? [$newFile] : $newFile;
+            return;
+        }
+
+        $files[$name] = $isArray ? array_merge($files[$name], [$newFile]) : $newFile;
+    }
+}
+```
+
+Since files can be uploaded as arrays, we have to take it into account when generating the `$files` array.
+
+If the name of the array uses the array notation (including brackets at the end, like `someFile[]` instead of `someFile`), we have to make sure the value of that file element is an array of `UploadedFileInterface` objects, and any part that is a file and uses that same name is appended to the same array under the same name.
+
+And that's it. If you have made some tests with the example app, you have already seen how it works.
+
+### Considerations
+
+Regardless this works, it is just an experiment, and I wouldn't recommend you to do this in your project, unless it is essential for the application to be able to upload files in a **PUT** or **PATCH** request.
+
+If you can, I would rather change the endpoint, so that it works with the **POST** method.
+
+These are the main reasons:
+
+* The `UploadedFile` object implementation included in [zend/diactoros](https://docs.zendframework.com/zend-diactoros/) (and thus, in zend expressive), calls PHP's `move_uploaded_file` when the `$file->moveTo()` method is called (probably, other implementations do the same).<br />
+  This throws an exception in **PUT** and **PATCH** requests, since PHP doesn't consider those files to have been uploaded.<br />
+  In order to get this working, in this example I have included a new [UploadedFile](https://github.com/acelaya-blog/put-patch-file-uploads/blob/master/src/App/File/UploadedFile.php) implementation, which extend's from diactoros' implementation, but always moves the file using the resource, without checking if the file is really an uploaded file.<br />
+  While this solution works, it has some security concerns, and could be exploited by a malicious attacker.
+* This solution implies loading the whole body into memory, in order to parse files and temporarily save them in disk, which is a much less optimized process than having them already in disk, like in POST requests.
+* Generated temporary files are not deleted at the end of the request, like in **POST** requests. However, we could use `tmpfile` instead of `tempnam`, or delete the files after calling `$next`, if they already exist and have not been handled by other middlewares.
+
+Apart from that, I hope you learned reading the article as much as I did writing it.
+
+Now I can say I know better how multipart requests work.

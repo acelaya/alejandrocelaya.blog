@@ -1,2 +1,9 @@
+# *
 User-agent: *
-Sitemap: https://alejandrocelaya.blog/sitemap.xml
+Allow: /
+
+# Host
+Host: https://alejandrocelaya.blog
+
+# Sitemaps
+Sitemap: https://alejandrocelaya.blog/sitemap-index.xml

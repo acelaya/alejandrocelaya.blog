@@ -1,0 +1,41 @@
+---
+import { CommentCount } from 'disqus-react';
+import type { Post } from '../utils/posts';
+import PostHeading from '../components/post/PostHeading.astro';
+import { PostTaxonomies } from '../components/post/PostTaxonomies';
+import { Paginator } from '../components/Paginator';
+import Layout from './Layout.astro';
+import PostPreview from '../components/post/PostPreview.astro';
+import { Container } from '../components/Container';
+import Link from '../components/Link';
+import { disqusPropsForPost } from '../utils/disqus';
+
+export interface Props{
+  posts: Post[];
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  currentPage: number;
+};
+
+const { posts, isFirstPage, isLastPage, currentPage } = Astro.props;
+---
+
+<Layout url="/">
+  <Container>
+    <ul class="fh5co-faq-list">
+      {posts.map((post) => (
+        <li class="post">
+          <h2 class="post-title"><Link href={post.url}>{post.data.title}</Link></h2>
+          <PostHeading post={post} />
+          <PostPreview post={post} />
+          <PostTaxonomies post={post} />
+        </li>
+      ))}
+    </ul>
+
+    <div>
+      <hr />
+      <Paginator isFirstPage={isFirstPage} isLastPage={isLastPage} currentPage={currentPage} />
+    </div>
+  </Container>
+</Layout>

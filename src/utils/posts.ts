@@ -1,94 +1,93 @@
-import fs from 'fs';
-import path from 'path'
+import { getCollection, z } from 'astro:content';
 import { format, parse } from 'date-fns';
-import { TaxonomiesType } from '../components/types';
-import { renderPost } from './renderPost';
+import { decode } from 'html-entities';
+import type { TaxonomiesType } from '../components/types';
+import { renderMarkdown } from './markdown';
 
-const POSTS_DIR = path.join(process.cwd(), 'src/posts')
-const PAGE_SIZE = 5;
+export const PAGE_SIZE = 5;
+export const SUB_PAGE_SIZE = 10;
 
-export interface PostMeta {
-  title: string;
-  categories: string[];
-  tags: string[];
-}
+export const postMetaSchema = z.object({
+  title: z.string(),
+  categories: z.array(z.string()),
+  tags: z.array(z.string())
+})
 
-export interface Post extends PostMeta {
+export type PostMeta = z.infer<typeof postMetaSchema>;
+
+export interface Post {
+  id: string;
+  body: string;
+  excerpt: string;
   slug: string;
+  url: string;
   date: string;
   formattedDate: string;
-  fileName: string;
-  url: string;
-  content: string;
-  summary: string;
+  data: PostMeta;
 }
 
-interface PostsPagination {
-  posts: Post[];
-  isFirstPage: boolean;
-  isLastPage: boolean;
+const postExcerpt = (body: string) => {
+  const excerpt = renderMarkdown(body)
+    .split('\n')
+    // Remove HTML tags
+    .flatMap((str) => str.replace(/<\/?[^>]+(>|$)/g, '').split('\n'))
+    // Decode HTML entities into their actual character
+    .map((str) => decode(str))
+    // Filter out MDX imports
+    .filter((line) => !line.startsWith('import '))
+    // Get only first 6 paragraphs
+    .slice(0, 6)
+    .join(' ')
+    // Truncate to 300 characters
+    .substring(0, 300);
+
+  return `${excerpt}…`;
 }
 
-interface PageOptions {
-  page?: number;
-  category?: string;
-  tag?: string;
-  pageSize?: number;
-}
+export const getAllPosts = (): Promise<Post[]> => getCollection('posts').then(
+  (posts) => [...posts].reverse().map(
+    ({ slug, ...rest }) => {
+      const [year, month, day, ...restOfSlug] = slug.split('-');
+      const url = `/${year}/${month}/${day}/${restOfSlug.join('-')}/`;
+      const date = `${year}-${month}-${day}`;
+      const formattedDate = format(parse(date, 'y-M-d', new Date()), 'dd MMMM y');
+      const excerpt = postExcerpt(rest.body);
 
-const filterByCategoryOrTag = (category?: string, tag?: string) => (post: Post) => {
-  if (category) {
-    return post.categories.includes(category);
-  }
+      return {
+        slug,
+        url,
+        date,
+        formattedDate,
+        excerpt,
+        ...rest,
+      };
+    },
+  ),
+);
 
-  if (tag) {
-    return post.tags.includes(tag);
-  }
-
-  return true;
+export const getLatestPosts = async () => {
+  const posts = await getAllPosts();
+  return posts.slice(0, PAGE_SIZE);
 };
 
-export const listPosts = async (category?: string, tag?: string): Promise<Post[]> => {
-  const fileNames = fs.readdirSync(POSTS_DIR, { withFileTypes: true })
-    .filter((file) => file.isFile())
-    .map((file) => file.name);
-  const allPostsData = await Promise.all(fileNames.map(async (fileName) => {
-    // Remove ".md" from file name to get id
-    const [year, month, day, ...rest] = fileName.split('-');
-    const slug = rest.join('-').replace(/\.mdx$/, '');
-    const url = `/${year}/${month}/${day}/${slug}/`;
-    const date = `${year}-${month}-${day}`;
-    const formattedDate = format(parse(date, 'y-M-d', new Date()), 'dd MMMM y');
-
-    // Render post HTML and resolve its metadata
-    const { content, metadata, summary } = await renderPost(fileName);
-
-    // Combine the data with the id
-    return { slug, date, formattedDate, fileName, url, content, summary, ...metadata }
-  }))
-
-  // Filter posts by category or tag and sort by date
-  return allPostsData.filter(filterByCategoryOrTag(category, tag)).sort((a, b) =>  a.date < b.date ? 1 : -1)
+const getTaxonomiesFactory = (taxonomy: TaxonomiesType) => async (): Promise<string[]> => {
+  const posts = await getAllPosts();
+  return [...new Set(posts.flatMap(({ data }) => data[taxonomy]))].sort();
 };
 
-export const calcPagesForPosts = (posts: Post[], pageSize: number = PAGE_SIZE) => Math.ceil(posts.length / pageSize);
+export const getCategories = getTaxonomiesFactory('categories');
 
-export const getPostsForPage = async (
-  { page = 1, pageSize = PAGE_SIZE, category, tag }: PageOptions = {}
-): Promise<PostsPagination> => {
-  const allPosts = await listPosts(category, tag);
-  const posts = allPosts.slice(page * pageSize - pageSize, page * pageSize);
+export const getTags = getTaxonomiesFactory('tags');
 
-  return {
-    posts,
-    isFirstPage: page === 1,
-    isLastPage: page >= calcPagesForPosts(allPosts, pageSize),
-  }
-}
+export type PostFilter = { category: string } | { tag: string };
 
-export const listTaxonomies = async (prop: TaxonomiesType): Promise<string[]> => {
-  const posts = await listPosts();
-  const taxonomies = posts.map((post) => post[prop]).flat();
+export const filteredPosts = async (filter: PostFilter) => {
+  const posts = await getAllPosts();
+  return posts.filter((post) => {
+    if ('category' in filter) {
+      return post.data.categories.includes(filter.category);
+    }
 
-  return [ ...new Set(taxonomies) ].sort((a, b) => a < b ? -1 : 1);
-}
+    return post.data.tags.includes(filter.tag);
+  });
+};

@@ -1,0 +1,23 @@
+---
+import Link from '../Link';
+import type { Post } from '../../utils/posts';
+import { PostCommentCount } from './PostCommentCount';
+
+export interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+---
+
+<p class="text-right">
+  <small>
+    <i>
+      {post.formattedDate}
+      &nbsp;&mdash;&nbsp;
+      <Link href={`${post.url}#disqus_thread`}>
+        <PostCommentCount post={post} client:load />
+      </Link>
+    </i>
+  </small>
+</p>

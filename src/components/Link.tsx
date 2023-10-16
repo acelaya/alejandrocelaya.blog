@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { ExternalLink } from 'react-external-link';
 import InternalLink from './InternalLink';
 

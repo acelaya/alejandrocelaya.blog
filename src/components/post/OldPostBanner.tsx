@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { differenceInYears, parse, formatDistanceToNow } from 'date-fns';
-import { WithPostProps } from '../types';
+import type { WithPostProps } from '../types';
 
 export const OldPostBanner: FC<WithPostProps> = ({ post }) => {
   const { date } = post;

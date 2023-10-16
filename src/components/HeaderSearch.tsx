@@ -1,11 +1,10 @@
-import { FC, useRef, useState } from 'react';
+import type { FC } from 'react';
+import { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { useRouter } from 'next/router';
 
 export const HeaderSearch: FC = () => {
-  const { push } = useRouter();
-  const ref = useRef<HTMLInputElement>();
+  const ref = useRef<HTMLInputElement | null>(null);
   const [iconClass, setIconClass] = useState<'focus' | ''>('');
   const [q, setQuery] = useState('');
 
@@ -14,15 +13,16 @@ export const HeaderSearch: FC = () => {
       <input
         type="search"
         className="form-control"
-        placeholder="Search"
+        placeholder="Search…"
+        aria-label="Search"
         ref={ref}
         value={q}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setIconClass('focus')}
         onBlur={() => setIconClass('')}
         onKeyPress={(e) => {
-          if (q !== '' && e.key === 'Enter') {
-            push(`/search/?q=${q}`, undefined, { shallow: true });
+          if (q && e.key === 'Enter') {
+            window.location.href = `/search/?q=${q}`;
           }
         }}
       />
