@@ -48,8 +48,12 @@ export const Search: FC<SearchProps> = ({ index, posts }) => {
 
       <section>
         <div className="hfeed">
-          {results.length === 0 && searchValue === '' && <p className="text-center">Enter a search term in the field above</p>}
-          {results.length === 0 && searchValue !== '' && <p className="text-center">No results found</p>}
+          {results.length === 0 && (
+            <>
+              {searchValue === '' && <p className="text-center">Enter a search term in the field above</p>}
+              {searchValue !== '' && <p className="text-center">No results found</p>}
+            </>
+          )}
           {results.map((post, index) => <PostHint key={index} post={post as Post} />)}
         </div>
       </section>
