@@ -13,7 +13,8 @@ export const HeaderSearch: FC = () => {
       <input
         type="search"
         className="form-control"
-        placeholder="Search"
+        placeholder="Search…"
+        aria-label="Search"
         ref={ref}
         value={q}
         onChange={(e) => setQuery(e.target.value)}

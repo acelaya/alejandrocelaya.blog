@@ -6,4 +6,4 @@ Allow: /
 Host: https://alejandrocelaya.blog
 
 # Sitemaps
-Sitemap: https://alejandrocelaya.blog/sitemap_index.xml
+Sitemap: https://alejandrocelaya.blog/sitemap-index.xml

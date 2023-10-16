@@ -1,5 +1,6 @@
 import { getCollection, z } from 'astro:content';
 import { format, parse } from 'date-fns';
+import { decode } from 'html-entities';
 import MarkdownIt from 'markdown-it';
 import type { TaxonomiesType } from '../components/types';
 
@@ -17,6 +18,7 @@ export type PostMeta = z.infer<typeof postMetaSchema>;
 export interface Post {
   id: string;
   body: string;
+  excerpt: string;
   slug: string;
   url: string;
   date: string;
@@ -24,39 +26,15 @@ export interface Post {
   data: PostMeta;
 }
 
-export const getAllPosts = () => getCollection('posts').then(
-  (posts) => posts.reverse().map(
-    ({ slug, ...rest }) => {
-      const [year, month, day, ...restOfSlug] = slug.split('-');
-      const url = `/${year}/${month}/${day}/${restOfSlug.join('-')}/`;
-      const date = `${year}-${month}-${day}`;
-      const formattedDate = format(parse(date, 'y-M-d', new Date()), 'dd MMMM y');
-
-      return {
-        slug,
-        url,
-        date,
-        formattedDate,
-        ...rest,
-      };
-    },
-  ),
-);
-
-export const getLatestPosts = async () => {
-  const posts = await getAllPosts();
-  return posts.slice(0, PAGE_SIZE);
-};
-
 const parser = new MarkdownIt();
-export const postExcerpt = async (post: Post) => {
+const postExcerpt = (body: string) => {
   const excerpt = parser
-    .render(post.body)
+    .render(body)
     .split('\n')
     // Remove HTML tags
     .flatMap((str) => str.replace(/<\/?[^>]+(>|$)/g, '').split('\n'))
-    // Replace quote HTML entity by actual quote character
-    .map((str) => str.replaceAll("&quot;", '"'))
+    // Decode HTML entities into their actual character
+    .map((str) => decode(str))
     // Filter out MDX imports
     .filter((line) => !line.startsWith('import '))
     // Get only first 6 paragraphs
@@ -67,6 +45,32 @@ export const postExcerpt = async (post: Post) => {
 
   return `${excerpt}…`;
 }
+
+export const getAllPosts = () => getCollection('posts').then(
+  (posts) => posts.reverse().map(
+    ({ slug, ...rest }) => {
+      const [year, month, day, ...restOfSlug] = slug.split('-');
+      const url = `/${year}/${month}/${day}/${restOfSlug.join('-')}/`;
+      const date = `${year}-${month}-${day}`;
+      const formattedDate = format(parse(date, 'y-M-d', new Date()), 'dd MMMM y');
+      const excerpt = postExcerpt(rest.body);
+
+      return {
+        slug,
+        url,
+        date,
+        formattedDate,
+        excerpt,
+        ...rest,
+      };
+    },
+  ),
+);
+
+export const getLatestPosts = async () => {
+  const posts = await getAllPosts();
+  return posts.slice(0, PAGE_SIZE);
+};
 
 const getTaxonomiesFactory = (taxonomy: TaxonomiesType) => async (): Promise<string[]> => {
   const posts = await getAllPosts();

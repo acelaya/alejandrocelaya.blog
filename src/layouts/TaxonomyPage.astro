@@ -5,7 +5,7 @@ import { SectionTitle } from '../components/SectionTitle';
 import type { TaxonomyType } from '../components/types';
 import { Paginator } from '../components/Paginator';
 import type { Post } from '../utils/posts';
-import PostHint from '../components/post/PostHint.astro';
+import { PostHint } from '../components/post/PostHint.tsx';
 
 export interface Props {
   taxonomy: string;
@@ -34,7 +34,7 @@ let currentYear: string | null = null;
         currentYear = year;
 
         return (
-          <div key={post.slug}>
+          <div>
             {shouldShowYear && <h3 class="article-date-group">&mdash; {year} &mdash;</h3>}
             <PostHint post={post} />
           </div>
