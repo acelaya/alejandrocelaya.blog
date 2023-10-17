@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import { MobileMenu } from '../components/menu/MobileMenu';
 import { ScrollToButton } from '../components/ScrollToButton';
 import { config } from '../../config/config';
-import { getLatestPosts } from '../utils/posts';
+import { getCategories, getLatestPosts } from '../utils/posts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'photoswipe/dist/photoswipe.css';
 import '../styles/theme.css';
@@ -19,6 +19,7 @@ export interface Props {
 const { title, url } = Astro.props;
 const computedTitle = `${config.SITE_TITLE} — ${config.SITE_SUBTITLE}`;
 const latestPosts = await getLatestPosts();
+const categories = getCategories();
 const scrollTargetId = 'mainSectionId';
 ---
 
@@ -39,10 +40,10 @@ const scrollTargetId = 'mainSectionId';
     <GoogleAnalytics id={config.GA} />
   </head>
   <body>
-    <MobileMenu client:load />
+    <MobileMenu categories={categories} client:load />
 
     <div id="fh5co-page">
-      <Header client:load />
+      <Header categories={categories} client:load />
 
       <section id="fh5co-hero" class="no-js-fullheight">
         <div class="fh5co-overlay" />
@@ -65,7 +66,7 @@ const scrollTargetId = 'mainSectionId';
         <slot />
       </section>
 
-      <Footer latestPosts={latestPosts} />
+      <Footer latestPosts={latestPosts} categories={categories} />
     </div>
   </body>
 </html>

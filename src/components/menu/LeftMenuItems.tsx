@@ -1,13 +1,17 @@
 import type { FC } from 'react';
+import type { Categories } from '../../utils/posts';
+import { humanFriendlyCategory } from '../../utils/posts';
 import Link from '../Link';
 
-export const LeftMenuItems: FC = () => (
+export type LeftMenuItemsProps = {
+    categories: Categories;
+};
+
+export const LeftMenuItems: FC<LeftMenuItemsProps> = ({ categories }) => (
   <>
     <li><Link href="/">Home</Link></li>
-    <li><Link href="/category/php/">PHP</Link></li>
-    <li><Link href="/category/zf/">ZF</Link></li>
-    <li><Link href="/category/web/">Web</Link></li>
-    <li><Link href="/category/tools/">Tools</Link></li>
-    <li><Link href="/category/oss/">OSS</Link></li>
+    {categories.map((category) => (
+      <li key={category}><Link href={`/category/${category}/`}>{humanFriendlyCategory(category)}</Link></li>
+    ))}
   </>
 );

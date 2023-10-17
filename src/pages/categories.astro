@@ -2,7 +2,7 @@
 import TaxonomiesPage from '../layouts/TaxonomiesPage.astro';
 import { getCategories } from '../utils/posts';
 
-const categories = await getCategories();
+const categories = getCategories();
 ---
 
 <TaxonomiesPage type="categories" taxonomies={categories} />

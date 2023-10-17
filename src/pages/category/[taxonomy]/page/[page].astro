@@ -3,7 +3,7 @@ import { filteredPosts, getCategories, SUB_PAGE_SIZE } from '../../../../utils/p
 import TaxonomyPage from '../../../../layouts/TaxonomyPage.astro';
 
 export async function getStaticPaths({ paginate }) {
-  const categories = await getCategories();
+  const categories = getCategories();
   const result = await Promise.all(categories.map(async (category) => {
     const posts = await filteredPosts({ category })
     return paginate(posts, {

@@ -9,7 +9,7 @@ export interface Props {
 }
 
 export async function getStaticPaths() {
-  const categories = await getCategories();
+  const categories = getCategories();
   return await Promise.all(categories.map(async (category) => {
     const posts = await filteredPosts({ category })
     const latestPosts = posts.slice(0, SUB_PAGE_SIZE);
