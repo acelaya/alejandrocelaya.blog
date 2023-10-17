@@ -1,4 +1,5 @@
 ---
+import { GoogleAnalytics } from 'astro-google-analytics';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { MobileMenu } from '../components/menu/MobileMenu';
@@ -35,6 +36,7 @@ const scrollTargetId = 'mainSectionId';
     <meta property="og:type" content="development" />
     <meta property="og:image" content={`${config.SITE_URL}/assets/img/hero_bg.jpg`} />
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,600,400italic,700' />
+    <GoogleAnalytics id={config.GA} />
   </head>
   <body>
     <MobileMenu client:load />
