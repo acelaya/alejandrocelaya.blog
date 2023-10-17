@@ -7,10 +7,25 @@ import { renderMarkdown } from './markdown';
 export const PAGE_SIZE = 5;
 export const SUB_PAGE_SIZE = 10;
 
+const categories = ['web', 'php', 'tools', 'oss'] as const;
+
+export type Categories = typeof categories;
+
+type CategoryType = Categories[number];
+
+const capitalize = <T extends string>(value: T): string => {
+  const [firstLetter, ...rest] = value;
+  return `${firstLetter.toUpperCase()}${rest.join('')}`;
+};
+
+export const humanFriendlyCategory = (category: CategoryType): string => {
+  return ['web', 'tools'].includes(category) ? capitalize(category) : category.toUpperCase();
+};
+
 export const postMetaSchema = z.object({
   title: z.string(),
-  categories: z.array(z.string()),
-  tags: z.array(z.string())
+  categories: z.array(z.enum(categories)),
+  tags: z.array(z.string()),
 })
 
 export type PostMeta = z.infer<typeof postMetaSchema>;
@@ -75,11 +90,11 @@ const getTaxonomiesFactory = (taxonomy: TaxonomiesType) => async (): Promise<str
   return [...new Set(posts.flatMap(({ data }) => data[taxonomy]))].sort();
 };
 
-export const getCategories = getTaxonomiesFactory('categories');
+export const getCategories = () => categories;
 
 export const getTags = getTaxonomiesFactory('tags');
 
-export type PostFilter = { category: string } | { tag: string };
+export type PostFilter = { category: CategoryType } | { tag: string };
 
 export const filteredPosts = async (filter: PostFilter) => {
   const posts = await getAllPosts();

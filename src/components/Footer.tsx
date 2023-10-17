@@ -3,10 +3,16 @@ import { faRss } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { ExternalLink } from 'react-external-link';
+import type { Categories, Post } from '../utils/posts';
+import { humanFriendlyCategory } from '../utils/posts';
 import Link from './Link';
-import type { WithLatestPosts } from './types';
 
-const Footer: FC<WithLatestPosts> = ({ latestPosts }) => (
+export type FooterProps = {
+  latestPosts: Post[];
+  categories: Categories;
+}
+
+const Footer: FC<FooterProps> = ({ latestPosts, categories }) => (
   <footer id="fh5co-footer">
     <div className="container">
       <div className="row row-bottom-padded-md">
@@ -14,11 +20,9 @@ const Footer: FC<WithLatestPosts> = ({ latestPosts }) => (
           <div className="fh5co-footer-widget">
             <h3>Categories</h3>
             <ul className="fh5co-links">
-              <li><Link href="/category/php/">PHP</Link></li>
-              <li><Link href="/category/zf/">ZF</Link></li>
-              <li><Link href="/category/web/">Web</Link></li>
-              <li><Link href="/category/tools/">Tools</Link></li>
-              <li><Link href="/category/oss/">OSS</Link></li>
+              {categories.map((category) => (
+                <li key={category}><Link href={`/category/${category}/`}>{humanFriendlyCategory(category)}</Link></li>
+              ))}
             </ul>
           </div>
         </div>
