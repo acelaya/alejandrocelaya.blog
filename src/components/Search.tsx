@@ -1,12 +1,11 @@
 import type { FC } from 'react';
 import type { Post } from '../utils/posts.ts';
-import { useCallback, useState } from 'react';
-import { useLunr } from 'react-lunr';
+import { useCallback, useMemo, useState } from 'react';
 import { PostHint } from './post/PostHint.tsx';
+import Fuse from 'fuse.js';
 
 export interface SearchProps {
-  index: object;
-  posts: Record<string, Post>;
+  posts: Post[];
 }
 
 const loadSearchFromQueryParams = () => {
@@ -23,13 +22,15 @@ const updateSearchInQueryParams = (newSearchValue: string) => {
   window.history.replaceState(null, '', `?${params.toString()}`);
 };
 
-export const Search: FC<SearchProps> = ({ index, posts }) => {
+export const Search: FC<SearchProps> = ({ posts }) => {
   const [searchValue, setSearchValue] = useState<string>(loadSearchFromQueryParams);
   const updateSearch = useCallback((newSearchValue: string) => {
     setSearchValue(newSearchValue);
     updateSearchInQueryParams(newSearchValue);
   }, []);
-  const results = useLunr(searchValue, index, posts);
+  const fuse = useMemo(() => new Fuse(posts, { keys: ['body', 'title'],
+  }), [posts])
+  const results = useMemo(() => fuse.search(searchValue), [fuse, searchValue]);
 
   return (
     <>
@@ -54,7 +55,7 @@ export const Search: FC<SearchProps> = ({ index, posts }) => {
               {searchValue !== '' && <p className="text-center">No results found</p>}
             </>
           )}
-          {results.map((post, index) => <PostHint key={index} post={post as Post} />)}
+          {results.map((post, index) => <PostHint key={index} post={post.item} />)}
         </div>
       </section>
     </>
