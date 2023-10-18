@@ -1,19 +1,17 @@
 import type { FC } from 'react';
-import type { Post } from '../../utils/posts';
+import type { SimplePost } from '../../utils/posts';
 import Link from '../Link';
 
-export interface PostHintProps {
-  post: Post;
-}
+export type PostHintProps = Pick<SimplePost, 'url' | 'title' | 'excerpt'>
 
-export const PostHint: FC<PostHintProps> = ({ post }) => (
+export const PostHint: FC<PostHintProps> = ({ url, title, excerpt }) => (
   <article>
     <dl>
       <dt className="entry-title">
-        <Link href={post.url} rel="bookmark">{post.data.title}</Link>
+        <Link href={url} rel="bookmark">{title}</Link>
       </dt>
       <dd className="entry-summary">
-        <p>{post.excerpt}</p>
+        <p>{excerpt}</p>
       </dd>
     </dl>
   </article>

@@ -3,11 +3,11 @@ import { Container } from '../components/Container';
 import { SectionTitle } from '../components/SectionTitle';
 import { Search } from '../components/Search';
 import Layout from '../layouts/Layout.astro';
-import { getAllPosts } from '../utils/posts';
+import { getAllPosts, SimplePost } from '../utils/posts';
 
-const posts = await getAllPosts().then((posts) =>
+const posts: SimplePost[] = await getAllPosts().then((posts) =>
   // Get rid of the `render` function, which cannot be serialized
-  (posts as any[]).map(({ render, ...post }) => post)
+  posts.map(({ body, excerpt, url, data }) => ({ body, excerpt, url, title: data.title }))
 );
 ---
 

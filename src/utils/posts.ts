@@ -1,7 +1,6 @@
 import { getCollection, z } from 'astro:content';
 import { format, parse } from 'date-fns';
 import { decode } from 'html-entities';
-import type { TaxonomiesType } from '../components/types';
 import { renderMarkdown } from './markdown';
 
 export const PAGE_SIZE = 5;
@@ -39,6 +38,10 @@ export interface Post {
   date: string;
   formattedDate: string;
   data: PostMeta;
+}
+
+export type SimplePost = Pick<Post, 'body' | 'excerpt' | 'url'> & {
+  title: string;
 }
 
 const postExcerpt = (body: string) => {
@@ -85,14 +88,12 @@ export const getLatestPosts = async () => {
   return posts.slice(0, PAGE_SIZE);
 };
 
-const getTaxonomiesFactory = (taxonomy: TaxonomiesType) => async (): Promise<string[]> => {
-  const posts = await getAllPosts();
-  return [...new Set(posts.flatMap(({ data }) => data[taxonomy]))].sort();
-};
-
 export const getCategories = () => categories;
 
-export const getTags = getTaxonomiesFactory('tags');
+export const getTags = async (): Promise<string[]> => {
+  const posts = await getAllPosts();
+  return [...new Set(posts.flatMap(({ data }) => data.tags))].sort();
+};
 
 export type PostFilter = { category: CategoryType } | { tag: string };
 
