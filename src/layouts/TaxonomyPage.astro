@@ -36,7 +36,7 @@ let currentYear: string | null = null;
         return (
           <div>
             {shouldShowYear && <h3 class="article-date-group">&mdash; {year} &mdash;</h3>}
-            <PostHint post={post} />
+            <PostHint url={post.url} title={post.data.title} excerpt={post.excerpt} />
           </div>
         );
       })}

@@ -1,11 +1,11 @@
 import type { FC } from 'react';
-import type { Post } from '../utils/posts.ts';
+import type { SimplePost } from '../utils/posts.ts';
 import { useCallback, useMemo, useState } from 'react';
 import { PostHint } from './post/PostHint.tsx';
 import Fuse from 'fuse.js';
 
 export interface SearchProps {
-  posts: Post[];
+  posts: SimplePost[];
 }
 
 const loadSearchFromQueryParams = () => {
@@ -55,7 +55,9 @@ export const Search: FC<SearchProps> = ({ posts }) => {
               {searchValue !== '' && <p className="text-center">No results found</p>}
             </>
           )}
-          {results.map((post, index) => <PostHint key={index} post={post.item} />)}
+          {results.map(({ item: post }, index) => (
+            <PostHint key={index} url={post.url} title={post.title} excerpt={post.excerpt} />
+          ))}
         </div>
       </section>
     </>
