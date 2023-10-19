@@ -10,7 +10,7 @@ interface TaxonomyProps {
 
 export const PostTaxonomy: FC<TaxonomyProps> = ({ type, appendSpace, value }) => (
   <>
-    <Link className={`label label-${type}`} href={`/${type}/${encodeURI(value)}`}>
+    <Link className={`label label-${type}`} href={`/${type}/${encodeURI(value)}/`}>
       {value.replace(/-/g, ' ')}
     </Link>
     {appendSpace && <>&nbsp;</>}

@@ -1,0 +1,139 @@
+---
+title: 'My thoughts after migrating content-centric websites from Next.js to Astro'
+categories: ['web', 'tools']
+tags: ['static-site', 'astro', 'next-js', 'javascript']
+---
+
+### Context
+
+Around four years ago, I started to use [Next.js](https://nextjs.org/) in some projects, including this blog.
+
+These projects were not applications, but simple landing pages and documentation sites, where content written in markdown was a first class citizen.
+
+I remember that I was looking for a modern static site generator, as the ones I had been using so far were either unmaintained, or felt "old".
+
+One requirement was that I could use React/JSX for templates, as I was then working a lot with the technology, and it felt right for the task.
+
+The most popular option back then was Gatsby, but it felt too complicated to just build static sites, so I continued searching and eventually found Next.js
+
+Next felt like a way simpler option. It was not focused exclusively in static sites, but it had an option to build the project and then export it to a fully non-backend site.
+
+Generated sites relied more on client-side JS than the tools I previously used, but working with it was a big improvement over them, so I decided to give it a try, and eventually migrated three projects to use it.
+
+### Next.js evolution
+
+Over the years, Next.js gained popularity, and started to compete with other similar frameworks, like [Remix](https://remix.run/).
+
+Its full-stack nature became more obvious, and the static-site capabilities started to feel marginal and just supported for historical reasons.
+
+They started to add more tools and features, like their own rust-base compiler, custom components (Image, Script, etc), a new project structure, and recently they started to move towards React Server Components.
+
+This, which should be something good, started to become annoying. I'm probably biased, but my personal experience when giving those features a try was that they never worked on the first attempt, they were never properly documented and they were mostly experimental.
+
+Also, the project had a too aggressive release cycle, with one major version every year (or even less! v11 released on June 2021 and v12 on October 2021), making it very hard to keep up to date, specially with multiple projects using the tool.
+
+This is something I have complained in the past, that happens too often in the JS ecosystem, where projects use SemVer as an excuse to constantly introduce breaking changes, instead of focusing on long-term stability and reducing fragmentation.
+
+### Migration to Astro
+
+The feeling of joy I had when first adopted the framework evolved into frustration as the time passed, and I started to look for alternative tools.
+
+By that time, I already had migrated one of those three projects away from Next.js, but this one was a very simple wrapper around Swagger UI, and didn't need to be SEO-friendly, so I just made it an SPA with [vite](https://vitejs.dev/).
+
+But there were two projects left on Next.js. I then tried to remember what were the initial requirements:
+
+* It should be possible to write most of the content in Markdown/MDX.
+* A backend is not needed, so fully static is preferable.
+* Search engines need to be able to index the content.
+
+[Astro](https://astro.build/) was this new tool quickly gaining popularity. Some people talked me about it at the beginning of the year, so I decided to take a look.
+
+As opposed to Next.js, it is static-site-first, and if you want a backend, you have to opt-in. With Next.js it is the opposite.
+
+It almost does not include client-side JS on built sites, unless you specifically enable it for some components via [islands](https://docs.astro.build/en/concepts/islands/).
+
+It is currently based on vite, a tool I have also become a fan of, and happily used in many other projects.
+
+They have a very good documentation, including a guide on how to [migrate from Next.js](https://docs.astro.build/en/guides/migrate-to-astro/from-nextjs/), which became very useful.
+
+### Pros and cons
+
+Every tool has its benefits, but it always comes with some drawbacks.
+
+For me, the conclusion was that the benefits were worth it, but I'm going to try and list what benefits Astro brought, and what challenges I had to face.
+
+**Pros:**
+
+* Astro has a much better support to write pages in Markdown/MDX.
+
+  With Next.js I had to manually write the logic to dynamically load the proper file. On the other hand, Astro allows you to provide a [layout property](https://docs.astro.build/en/guides/markdown-content/#frontmatter-layout) in the file's frontmatter, to automatically render Markdown/MDX pages in a breeze.
+
+  It also has the concept of [content collections](https://docs.astro.build/en/guides/content-collections/), being markdown one of the supported contents. This also provides a set of useful tools to dynamically load content entries and their metadata.
+
+* Paginating content lists (like blog posts) is also much easier.
+
+  In Next.js I had to maintain my own logic to load the right chunk and calculate how many pages there were.
+
+  Astro has a `paginate` helper where you can basically pass the full list and the size of the chunk, and get everything else back: `paginate(posts, { pageSize: 10 })`.
+
+* There's less magic around where and when your JS code runs.
+
+  Astro introduces its own format to write pages, where server-side JS goes in its own "fence" at the top of the file. This JS runs during the project build, or during SSR if you opt in.
+
+  If you need client-side JS, it goes in `<script />` tags in the template part of the page, or using [islands](https://docs.astro.build/en/concepts/islands/).
+
+* Support for most popular client-side frameworks.
+
+  If you are migrating from Next.js or similar, you probably have a bunch of components written in react. Astro allows importing React components inside astro files out of the box, with very little limitations, so you don't have to rewrite absolutely everything from the beginning.
+
+* It is much easier to write non-html pages (AKA [endpoints](https://docs.astro.build/en/core-concepts/endpoints/)).
+
+  If you are writing a blog and want to include an `atom.xml` file, or you need to include some kind of static JSON file, you can just write a regular page inside the `src/pages` folder.
+
+  You can use any format you want for the page, be it astro, js, ts, etc. You just need to include the name of the resulting file with its resulting extension, followed by the original format extension.
+
+  For example, an `atom.xml.ts` file is a TypeScript file that will produce an `atom.xml` file.
+
+  This is very convenient, as it allows to dynamically produce files that require some building logic, without having to create separated scripts for the task. Astro will build them together with the rest of the pages when running `astro build`.
+
+* Built-in validation for content collections using [zod](https://zod.dev/).
+
+  This is very useful to make sure all your content entries fulfil certain schema. For example, you may want to require all of them to have a `title` in the frontmatter, or to limit the values they can use as `tags`.
+
+  This ensures you won't forget or make mistakes when creating new entries in the future.
+
+* I already mentioned this, but Astro is static-site-first, while in Next.js you need to explicitly opt in for this.
+
+  That affects the philosophy of the whole project, making Astro more adequate if that's your target.
+
+**Cons:**
+
+* One of the main "issues" I found is that IDE support for `.astro` files is still limited.
+
+  I use WebStorm, and while they have a plugin which adds a lot of intellisense, I still found some issues, like not autocompleting component props, incorrectly marking imports as unused, etc.
+
+  I also found some JS syntax not being recognized, like `Promise` or some array methods like `map` or `flat`.
+
+  This of course is not Astro's fault, but it makes it less convenient to work with it.
+
+* Something similar happened when trying to lint `.astro` files with ESLint, as it requires a plugin, and still couldn't make it work.
+
+  I have to go back to this at some point.
+
+* Components written for other frameworks cannot import `.astro` components.
+
+  Astro islands are useful when you need some client-side JS and don't want to write the logic in vanilla JS.
+
+  However, while `.astro` files can import components written for other frameworks, you cannot do it the other way around.
+
+  That means that, if you had an `.astro` component that now needs to be used inside a React component, you will have to rewrite/migrate it to React.
+
+* It shares the same aggressive release cycle as Next.js, with 3 major releases in less than 2 years.
+
+  Let's see how this evolves.
+
+### Conclusion
+
+While the migration took a bit of time, Astro provides some nice tools and feels more convenient to work with for static sites, specially those focused on content.
+
+Of course, I also felt the same after migrating to Next.js, so let's see how this evolves :)

@@ -28,7 +28,7 @@ export const Search: FC<SearchProps> = ({ posts }) => {
     setSearchValue(newSearchValue);
     updateSearchInQueryParams(newSearchValue);
   }, []);
-  const fuse = useMemo(() => new Fuse(posts, { keys: ['body', 'data.title'],
+  const fuse = useMemo(() => new Fuse(posts, { keys: ['body', 'title'],
   }), [posts])
   const results = useMemo(() => fuse.search(searchValue), [fuse, searchValue]);
 
