@@ -1,15 +1,15 @@
 ---
 import { GoogleAnalytics } from 'astro-google-analytics';
+import classNames from 'classnames';
+import { Container } from '../components/Container';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { MobileMenu } from '../components/menu/MobileMenu';
 import { ScrollToButton } from '../components/ScrollToButton';
 import { config } from '../../config/config';
 import { getCategories, getLatestPosts } from '../utils/posts';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'photoswipe/dist/photoswipe.css';
-import '../styles/theme.css';
-import '../styles/global.css';
+import '../styles/main.css';
 
 export interface Props {
   url: string
@@ -25,50 +25,50 @@ const scrollTargetId = 'mainSectionId';
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>{computedTitle}</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={computedTitle} />
-    <meta name="theme-color" content="#2a2d36" />
-    <meta property="og:title" content={title ?? computedTitle} />
-    <meta property="og:url" content={`${config.SITE_URL}${url}`} />
-    <meta property="og:type" content="development" />
-    <meta property="og:image" content={`${config.SITE_URL}/assets/img/hero_bg.jpg`} />
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,600,400italic,700' />
-    <GoogleAnalytics id={config.GA} />
-  </head>
-  <body>
-    <MobileMenu categories={categories} client:load />
+<head>
+  <title>{computedTitle}</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="generator" content={Astro.generator} />
+  <meta name="description" content={computedTitle} />
+  <meta name="theme-color" content="#2a2d36" />
+  <meta property="og:title" content={title ?? computedTitle} />
+  <meta property="og:url" content={`${config.SITE_URL}${url}`} />
+  <meta property="og:type" content="development" />
+  <meta property="og:image" content={`${config.SITE_URL}/assets/img/hero_bg.jpg`} />
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,600,400italic,700' />
+  <GoogleAnalytics id={config.GA} />
+</head>
+<body>
+<MobileMenu categories={categories} client:load />
 
-    <div id="fh5co-page">
-      <Header categories={categories} client:load />
+<div id="fh5co-page">
+  <Header categories={categories} client:load />
 
-      <section id="fh5co-hero" class="no-js-fullheight">
-        <div class="fh5co-overlay" />
-        <div class="container">
-          <div class="fh5co-intro no-js-fullheight">
-            <div class="fh5co-intro-text">
-              <div class={`fh5co-center-position ${title ? 'post-title' : ''}`}>
-                <h2>{title ?? config.SITE_TITLE}</h2>
-                {!title && <h3 style={{ margin: 0 }}>{config.SITE_SUBTITLE}.</h3>}
-              </div>
-            </div>
+  <section id="fh5co-hero" class="no-js-fullheight">
+    <div class="fh5co-overlay" />
+    <Container>
+      <div class="fh5co-intro no-js-fullheight">
+        <div class="fh5co-intro-text">
+          <div class={classNames('font-thin mx-auto text-center', { 'w-full': title, 'w-[65%]': !title })}>
+            <h1 class={classNames({ 'text-[57px]': title })}>{title ?? config.SITE_TITLE}</h1>
+            {!title && <p class="text-md">{config.SITE_SUBTITLE}.</p>}
           </div>
         </div>
-        <div class="fh5co-learn-more">
-          <ScrollToButton targetId={scrollTargetId} client:load />
-        </div>
-      </section>
-
-      <section id={scrollTargetId}>
-        <slot />
-      </section>
-
-      <Footer latestPosts={latestPosts} categories={categories} />
+      </div>
+    </Container>
+    <div class="fh5co-learn-more">
+      <ScrollToButton targetId={scrollTargetId} client:load />
     </div>
-  </body>
+  </section>
+
+  <section id={scrollTargetId}>
+    <slot />
+  </section>
+
+  <Footer latestPosts={latestPosts} categories={categories} />
+</div>
+</body>
 </html>
 <script>
   document.addEventListener('mobile-menu-toggle', (e) => {

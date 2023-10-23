@@ -1,9 +1,10 @@
 import type { FC, PropsWithChildren } from 'react';
+import { Container } from './Container';
 
 export const SecondaryContainer: FC<PropsWithChildren> = ({ children }) => (
-  <div id="fh5co-subscribe">
-    <div className="container">
+  <div className="bg-gray-50 py-10">
+    <Container>
       {children}
-    </div>
+    </Container>
   </div>
 );

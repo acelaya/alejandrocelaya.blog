@@ -10,14 +10,10 @@ export interface Props {
 const { post } = Astro.props;
 ---
 
-<p class="text-right">
-  <small>
-    <i>
-      {post.formattedDate}
-      &nbsp;&mdash;&nbsp;
-      <Link href={`${post.url}#disqus_thread`}>
-        <PostCommentCount post={post} client:load />
-      </Link>
-    </i>
-  </small>
+<p class="text-right italic space-x-2 my-4 text-sm">
+  <span>{post.formattedDate}</span>
+  <span>&mdash;</span>
+  <Link href={`${post.url}#disqus_thread`}>
+    <PostCommentCount post={post} client:load />
+  </Link>
 </p>

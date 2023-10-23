@@ -20,8 +20,8 @@ type ImageGalleryProps = {
 export const ImageGallery: FC<ImageGalleryProps> = ({ images, modal }) => {
   return (
     <Gallery withCaption>
-      <div className="row">
-        {images.map(({ footerText, url, size, centered, ...dimensions }, index) => (
+      <div className="flex gap-x-5">
+        {images.map(({ footerText, url, size, ...dimensions }, index) => (
           <Item key={index} original={url} thumbnail={url} caption={footerText} {...dimensions}>
             {({ ref, open }) => (
               <Image
@@ -29,7 +29,6 @@ export const ImageGallery: FC<ImageGalleryProps> = ({ images, modal }) => {
                 url={url}
                 footerText={footerText}
                 size={size ?? (images.length === 1 ? 'big' : 'small')}
-                centered={centered ?? images.length === 1}
                 onClick={modal && open}
               />
             )}

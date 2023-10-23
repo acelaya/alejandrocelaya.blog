@@ -14,10 +14,8 @@ export const ScrollToButton: FC<ScrollToButtonProps> = ({ targetId }) => {
   }, []);
 
   return (
-    <a href="#" className="scroll-btn" onClick={scrollTo}>
-      <span className="arrow">
-        <FontAwesomeIcon icon={faChevronDown} />
-      </span>
+    <a href="#" className="bg-primary text-white hover:text-white p-3 rounded-full mx-auto" onClick={scrollTo}>
+      <FontAwesomeIcon icon={faChevronDown} />
     </a>
   );
 };

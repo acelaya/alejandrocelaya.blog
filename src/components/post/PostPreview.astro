@@ -9,9 +9,9 @@ export interface Props {
 const { post } = Astro.props;
 ---
 
-<div style={{ marginBottom: '10px' }}>
+<div class="mb-4">
   <p>{post.excerpt}</p>
-  <div>
-    <Link href={post.url}><b>Continue reading...</b></Link>
+  <div class="font-bold mt-2">
+    <Link href={post.url}>Continue reading...</Link>
   </div>
 </div>

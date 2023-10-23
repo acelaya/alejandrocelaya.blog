@@ -22,20 +22,18 @@ const { posts, isFirstPage, isLastPage, currentPage } = Astro.props;
 
 <Layout url="/">
   <Container>
-    <ul class="fh5co-faq-list">
+    <ul>
       {posts.map((post) => (
-        <li class="post">
-          <h2 class="post-title"><Link href={post.url}>{post.data.title}</Link></h2>
+        <li>
+          <h2><Link href={post.url}>{post.data.title}</Link></h2>
           <PostHeading post={post} />
           <PostPreview post={post} />
           <PostTaxonomies post={post} />
         </li>
+        <hr class="mt-4 mb-20" />
       ))}
     </ul>
 
-    <div>
-      <hr />
-      <Paginator isFirstPage={isFirstPage} isLastPage={isLastPage} currentPage={currentPage} />
-    </div>
+    <Paginator isFirstPage={isFirstPage} isLastPage={isLastPage} currentPage={currentPage} />
   </Container>
 </Layout>

@@ -3,35 +3,28 @@ import type { WithPostProps } from '../types';
 import { PostTaxonomy } from './PostTaxonomy';
 
 const Categories: FC<{ categories: string[] }> = ({ categories }) => (
-  <li className="categories-list">
-    {categories.map((category, index) => (
-      <PostTaxonomy
-        key={category}
-        type="category"
-        value={category}
-        appendSpace={index < categories.length - 1}
-      />
+  <ul className="flex space-x-1 justify-center">
+    {categories.map((category) => (
+      <li key={category}>
+        <PostTaxonomy type="category" value={category} />
+      </li>
     ))}
-  </li>
+  </ul>
 )
 
 const Tags: FC<{ tags: string[] }> = ({ tags }) => (
-  <li className="tags-list">
-    {tags.map((tag, index) => (
-      <PostTaxonomy
-        key={tag}
-        type="tag"
-        value={tag}
-        appendSpace={index < tags.length - 1}
-      />
+  <ul className="flex space-x-1 justify-center">
+    {tags.map((tag) => (
+      <li key={tag}>
+        <PostTaxonomy type="tag" value={tag} />
+      </li>
     ))}
-  </li>
+  </ul>
 );
 
 export const PostTaxonomies: FC<WithPostProps> = ({ post }) => (
-  <ul className="list-unstyled">
-    {post.data.categories.length > 0 && <Categories categories={post.data.categories} />}
-    {post.data.tags.length > 0 && <Tags tags={post.data.tags} />}
-    <li className="clearfix" />
-  </ul>
+  <div className="md:flex space-y-2 justify-between">
+    <Categories categories={post.data.categories} />
+    <Tags tags={post.data.tags} />
+  </div>
 )
