@@ -1,30 +1,41 @@
 ---
-import { FC } from 'react';
+import classNames from 'classnames';
 import Layout from './Layout.astro';
 import { Container } from '../components/Container';
 import { SectionTitle } from '../components/SectionTitle';
 import Link from '../components/Link';
 import type { TaxonomiesType } from '../components/types';
+import { humanFriendlyCategory } from '../utils/posts';
 
 export interface Props {
   taxonomies: string[];
   type: TaxonomiesType;
 }
 
-const buildTaxonomyUrl = (taxonomy: string, type: TaxonomiesType) =>
-  `/${type === 'categories' ? 'category' : 'tag'}/${encodeURI(taxonomy)}`;
-
 const { taxonomies, type } = Astro.props;
+const taxonomyUrl = (taxonomy: string) =>
+  `/${type === 'categories' ? 'category' : 'tag'}/${encodeURI(taxonomy)}/`;
+const taxonomyText = (taxonomy: string) =>
+  type === 'categories' ? humanFriendlyCategory(taxonomy) : taxonomy.replace(/-/g, ' ');
 ---
 
 <Layout url={`/${type}`}>
   <Container>
-    <SectionTitle className="taxonomies-title">{type}</SectionTitle>
+    <SectionTitle className="capitalize mb-4">{type}</SectionTitle>
 
-    <div class="taxonomies-list">
+    <div
+      class={classNames(
+        'flex flex-wrap gap-2 justify-items-stretch',
+        { 'justify-between': taxonomies.length > 20 },
+      )}
+    >
       {taxonomies.map((taxonomy) => (
-        <Link key={taxonomy} href={buildTaxonomyUrl(taxonomy, type)} className="btn btn-default">
-          {taxonomy.replace(/-/g, ' ')}
+        <Link
+          key={taxonomy}
+          href={taxonomyUrl(taxonomy)}
+          className="border rounded px-2 py-1 text-grey hover:text-grey hover:bg-gray-200 transition"
+        >
+          {taxonomyText(taxonomy)}
         </Link>
       ))}
     </div>

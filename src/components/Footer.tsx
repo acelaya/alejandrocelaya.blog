@@ -66,7 +66,7 @@ const FollowMe = () => (
 );
 
 const Footer: FC<FooterProps> = ({ latestPosts, categories }) => (
-  <footer className="mt-4">
+  <footer className="mt-12">
     <SecondaryContainer>
       <div className="flex flex-col md:flex-row space-y-6 md:space-x-4 md:space-y-0">
         <div className="w-full md:w-1/6">
