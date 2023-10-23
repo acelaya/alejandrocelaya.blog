@@ -24,9 +24,9 @@ Finally we can [refactor](https://en.wikipedia.org/wiki/Code_refactoring) the co
 
 This is knonwn as **red light, green light, refactor**.
 
-* <span className="text-danger">**Red light:**</span> the test fails the first time.
-* <span className="text-success">**Green light:**</span> the test passes after the code is implemented.
-* <span className="text-info">**Refactor:**</span> the tested code is refactored to improve performance and make it maintainable.
+* <span className="text-red-600">**Red light:**</span> the test fails the first time.
+* <span className="text-green-600">**Green light:**</span> the test passes after the code is implemented.
+* <span className="text-blue-600">**Refactor:**</span> the tested code is refactored to improve performance and make it maintainable.
 
 To make it possible to test an application it is better if it is object oriented, and it follows the [SOLID principles](https://es.wikipedia.org/wiki/SOLID_(object-oriented_design)). PHPUnit can be used to test procedural code, but we are not going to discuss that in this article.
 
@@ -38,7 +38,7 @@ If everything went ok we are now ready to run PHP unit tests from the command li
 
 Lets asume we need to test a `Calculator` class, which is used to perform mathematical operations. The first step is to write the empty class that will fail the tests. We know the behavior of the class, but we will avoid the concrete implementation by the moment.
 
-<small>**Note**. <i className="text-muted">It is assumed the classes in these examples can be loaded somehow, by including them or autoloading them.</i></small>
+> **Note**. It is assumed the classes in these examples can be loaded somehow, by including them or auto-loading them.
 
 ```php
 <?php

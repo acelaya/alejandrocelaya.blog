@@ -41,7 +41,7 @@ const { post, prevPost, nextPost } = Astro.props;
     <PostTaxonomies post={post} />
   </Container>
 
-  <SecondaryContainer>
+  <SecondaryContainer className="my-10">
     <ul class="flex flex-col md:flex-row justify-between space-y-3 md:space-y-0 space-x-0 md:space-x-3 text-sm">
       <li>
         {prevPost && (

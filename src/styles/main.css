@@ -19,12 +19,20 @@
         @apply text-lg;
     }
 
+    h3 {
+        @apply text-md;
+    }
+
+    b, strong {
+        @apply font-bold;
+    }
+
     /*
      * Posts are generated from MDX. This removes the need to apply TW classes to every element, which would defeat the
      * purpose of using markdown
      */
     .post h3 {
-        @apply text-md text-center text-primary mt-8 mb-4;
+        @apply text-center text-primary mt-8 mb-4;
     }
     .post pre {
         @apply p-3 rounded text-xs;
