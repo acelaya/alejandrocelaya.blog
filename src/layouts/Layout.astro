@@ -51,8 +51,13 @@ const scrollTargetId = 'mainSectionId';
       <div class="fh5co-intro no-js-fullheight">
         <div class="fh5co-intro-text">
           <div class={classNames('font-thin mx-auto text-center', { 'w-full': title, 'w-[65%]': !title })}>
-            <h1 class={classNames({ 'text-[57px]': title })}>{title ?? config.SITE_TITLE}</h1>
-            {!title && <p class="text-md">{config.SITE_SUBTITLE}.</p>}
+            <h1 class={classNames('text-lg', {
+              'md:text-[57px]': title,
+              'md:text-xl': !title
+            })}>
+              {title ?? config.SITE_TITLE}
+            </h1>
+            {!title && <p class="text-base md:text-md">{config.SITE_SUBTITLE}.</p>}
           </div>
         </div>
       </div>
