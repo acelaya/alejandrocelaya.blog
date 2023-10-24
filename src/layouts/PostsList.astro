@@ -25,7 +25,7 @@ const { posts, isFirstPage, isLastPage, currentPage } = Astro.props;
     <ul>
       {posts.map((post) => (
         <li>
-          <h2><Link href={post.url}>{post.data.title}</Link></h2>
+          <h2 class="text-justify"><Link href={post.url}>{post.data.title}</Link></h2>
           <PostHeading post={post} />
           <PostPreview post={post} />
           <PostTaxonomies post={post} />
