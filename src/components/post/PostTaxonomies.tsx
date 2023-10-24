@@ -1,37 +1,24 @@
+import { clsx } from 'clsx';
 import type { FC } from 'react';
-import type { WithPostProps } from '../types';
+import type { TaxonomyType, WithPostProps } from '../types';
 import { PostTaxonomy } from './PostTaxonomy';
 
-const Categories: FC<{ categories: string[] }> = ({ categories }) => (
-  <li className="categories-list">
-    {categories.map((category, index) => (
-      <PostTaxonomy
-        key={category}
-        type="category"
-        value={category}
-        appendSpace={index < categories.length - 1}
-      />
+const Taxonomies: FC<{ taxonomies: string[]; type: TaxonomyType }> = ({ taxonomies, type }) => (
+  <ul className={clsx('flex flex-wrap space-x-1 justify-center', {
+    'md:justify-end': type === 'tag',
+    'md:justify-start': type === 'category',
+  })}>
+    {taxonomies.map((taxonomy) => (
+      <li key={taxonomy}>
+        <PostTaxonomy type={type} value={taxonomy} />
+      </li>
     ))}
-  </li>
-)
-
-const Tags: FC<{ tags: string[] }> = ({ tags }) => (
-  <li className="tags-list">
-    {tags.map((tag, index) => (
-      <PostTaxonomy
-        key={tag}
-        type="tag"
-        value={tag}
-        appendSpace={index < tags.length - 1}
-      />
-    ))}
-  </li>
+  </ul>
 );
 
 export const PostTaxonomies: FC<WithPostProps> = ({ post }) => (
-  <ul className="list-unstyled">
-    {post.data.categories.length > 0 && <Categories categories={post.data.categories} />}
-    {post.data.tags.length > 0 && <Tags tags={post.data.tags} />}
-    <li className="clearfix" />
-  </ul>
+  <div className="md:flex space-y-2 md:space-y-0 justify-between">
+    <Taxonomies type="category" taxonomies={post.data.categories} />
+    <Taxonomies type="tag" taxonomies={post.data.tags} />
+  </div>
 )

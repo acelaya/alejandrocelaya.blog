@@ -5,7 +5,7 @@ import { SectionTitle } from '../components/SectionTitle';
 import type { TaxonomyType } from '../components/types';
 import { Paginator } from '../components/Paginator';
 import type { Post } from '../utils/posts';
-import { PostHint } from '../components/post/PostHint.tsx';
+import { PostHint } from '../components/post/PostHint';
 
 export interface Props {
   taxonomy: string;
@@ -22,20 +22,20 @@ let currentYear: string | null = null;
 
 <Layout url={`/${type}/${taxonomy}`}>
   <Container>
-    <SectionTitle>
-      <span class="taxonomies-title">{type}</span> Archive &mdash; &quot;{taxonomy}&quot;
+    <SectionTitle className="font-normal mb-4">
+      <span class="capitalize">{type}</span> Archive &mdash; &quot;{taxonomy}&quot;
     </SectionTitle>
 
     <div>
       {posts.map((post) => {
-        const [,, year] = post.formattedDate.split(' ');
+        const [year] = post.slug.split('-');
         const shouldShowYear = currentYear !== year;
 
         currentYear = year;
 
         return (
           <div>
-            {shouldShowYear && <h3 class="article-date-group">&mdash; {year} &mdash;</h3>}
+            {shouldShowYear && <h3 class="text-center mb-3 mt-4">&mdash; {year} &mdash;</h3>}
             <PostHint url={post.url} title={post.data.title} excerpt={post.excerpt} />
           </div>
         );
@@ -43,7 +43,7 @@ let currentYear: string | null = null;
     </div>
 
     <div>
-      <hr />
+      <hr class="mb-10" />
       <Paginator
         isFirstPage={isFirstPage}
         isLastPage={isLastPage}

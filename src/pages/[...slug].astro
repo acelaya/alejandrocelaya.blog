@@ -36,30 +36,25 @@ const { post, prevPost, nextPost } = Astro.props;
 
 <Layout title={post.data.title} url={post.url}>
   <Container>
-    <article class="post post-detail">
-      <PostDetail post={post} />
-
-      <div>
-        <hr />
-        <PostTaxonomies post={post} />
-      </div>
-    </article>
+    <PostDetail post={post} />
+    <hr class="mt-10 mb-4" />
+    <PostTaxonomies post={post} />
   </Container>
 
-  <SecondaryContainer>
-    <ul class="list-unstyled other-articles row">
-      <li class="col-sm-6 col-xs-12 article-next">
+  <SecondaryContainer className="my-10">
+    <ul class="flex flex-col md:flex-row justify-between space-y-3 md:space-y-0 space-x-0 md:space-x-3 text-sm">
+      <li>
         {prevPost && (
-          <Link class="previous" href={prevPost.url}>
+          <Link className="text-grey-light hover:text-grey-light hover:underline" href={prevPost.url}>
             <FontAwesomeIcon icon={faArrowLeft} />
-            <span class="title">{prevPost.data.title}</span>
+            <span class="ml-1">{prevPost.data.title}</span>
           </Link>
         )}
       </li>
-      <li class="col-sm-6 col-xs-12 article-prior">
+      <li>
         {nextPost && (
-          <Link class="next" href={nextPost.url}>
-            <span class="title">{nextPost.data.title}</span>
+          <Link className="text-grey-light hover:text-grey-light hover:underline" href={nextPost.url}>
+            <span class="mr-1">{nextPost.data.title}</span>
             <FontAwesomeIcon icon={faArrowRight} />
           </Link>
         )}

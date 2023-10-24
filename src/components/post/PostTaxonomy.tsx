@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import type { FC } from 'react';
 import type { TaxonomyType } from '../types';
 import Link from '../Link';
@@ -10,7 +11,13 @@ interface TaxonomyProps {
 
 export const PostTaxonomy: FC<TaxonomyProps> = ({ type, appendSpace, value }) => (
   <>
-    <Link className={`label label-${type}`} href={`/${type}/${encodeURI(value)}/`}>
+    <Link
+      className={clsx('px-2 py-1 rounded text-white hover:text-white font-bold text-xs', {
+        'bg-primary': type === 'tag',
+        'bg-grey-dark': type === 'category',
+      })}
+      href={`/${type}/${encodeURI(value)}/`}
+    >
       {value.replace(/-/g, ' ')}
     </Link>
     {appendSpace && <>&nbsp;</>}

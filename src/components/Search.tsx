@@ -34,31 +34,29 @@ export const Search: FC<SearchProps> = ({ posts }) => {
 
   return (
     <>
-      <section>
+      <section className="mb-6">
         <input
+          className="w-full border-2 focus:border-primary rounded p-2 outline-0 transition"
           type="search"
           name="q"
           placeholder="Search…"
           aria-label="Search"
           autoComplete="off"
-          className="form-control"
           value={searchValue}
           onChange={(e) => updateSearch(e.target.value)}
         />
       </section>
 
       <section>
-        <div className="hfeed">
-          {results.length === 0 && (
-            <>
-              {searchValue === '' && <p className="text-center">Enter a search term in the field above</p>}
-              {searchValue !== '' && <p className="text-center">No results found</p>}
-            </>
-          )}
-          {results.map(({ item: post }, index) => (
-            <PostHint key={index} url={post.url} title={post.title} excerpt={post.excerpt} />
-          ))}
-        </div>
+        {results.length === 0 && (
+          <>
+            {searchValue === '' && <p className="text-center">Enter a search term in the field above</p>}
+            {searchValue !== '' && <p className="text-center">No results found</p>}
+          </>
+        )}
+        {results.map(({ item: post }, index) => (
+          <PostHint key={index} url={post.url} title={post.title} excerpt={post.excerpt} />
+        ))}
       </section>
     </>
   );

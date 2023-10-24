@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply text-main text-base font-light;
+    }
+
+    a {
+        @apply text-primary hover:text-primary-dark;
+    }
+
+    h1 {
+        @apply text-xl;
+    }
+
+    h2 {
+        @apply text-lg;
+    }
+
+    h3 {
+        @apply text-md;
+    }
+
+    b, strong {
+        @apply font-bold;
+    }
+
+    /*
+     * Posts are generated from MDX. This removes the need to apply TW classes to every element, which would defeat the
+     * purpose of using markdown
+     */
+    .post h3 {
+        @apply text-center text-primary mt-8 mb-4;
+    }
+    .post pre {
+        @apply p-3 mb-4 rounded text-xs;
+    }
+    .post p, .post ul, .post ol, .post blockquote {
+        @apply mb-4;
+    }
+    .post blockquote {
+        @apply bg-gray-50 p-3 border-l-4;
+    }
+    .post blockquote p:last-child {
+        @apply mb-0;
+    }
+    .post code:not(pre code) {
+        @apply text-[90%] text-code bg-fuchsia-50 p-[4px] rounded break-words;
+    }
+    .post ol {
+        @apply list-decimal list-outside pl-10
+    }
+    .post ul {
+        @apply list-disc list-outside pl-10
+    }
+    .post img {
+        @apply p-1 rounded border mx-auto;
+    }
+    .post em {
+        @apply font-medium;
+    }
+}

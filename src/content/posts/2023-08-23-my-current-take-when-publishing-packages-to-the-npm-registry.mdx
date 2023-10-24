@@ -34,7 +34,7 @@ Because of this, my current take when publishing npm packages for my personal pr
 
     The only case where it's useful is when the package has been installed and is inside node_modules, as other packages will assume this field to exist and have the right value on it.
 
-    In this case it's always going to be correct due to  the`npm version ...` + `npm publish` tandem (see next point).
+    In this case it's always going to be correct due to  the `npm version ...` + `npm publish` tandem (see next point).
 
 2. Creating the git tag is the only "manual step". This triggers an automation running `npm version ${GIT_TAG} --git-tag-version=false && npm publish` (this is simplified. You probably also need to build your project and other potential extra steps).
 

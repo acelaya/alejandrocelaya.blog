@@ -1,4 +1,8 @@
 import type { FC } from 'react';
-import TweetEmbed from 'react-tweet-embed';
+import { Tweet as TweetEmbed } from 'react-tweet'
 
-export const Tweet: FC<{ tweetId: string }> = ({ tweetId }) => <TweetEmbed tweetId={tweetId} />;
+export const Tweet: FC<{ tweetId: string }> = ({ tweetId }) => (
+  <div className="flex justify-center">
+    <TweetEmbed id={tweetId} />
+  </div>
+);

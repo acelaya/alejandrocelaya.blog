@@ -5,9 +5,9 @@ import Link from '../Link';
 export type PostHintProps = Pick<SimplePost, 'url' | 'title' | 'excerpt'>
 
 export const PostHint: FC<PostHintProps> = ({ url, title, excerpt }) => (
-  <article>
+  <article className="mb-4">
     <dl>
-      <dt className="entry-title">
+      <dt className="mb-2 font-semibold">
         <Link href={url} rel="bookmark">{title}</Link>
       </dt>
       <dd className="entry-summary">

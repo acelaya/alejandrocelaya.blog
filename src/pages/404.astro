@@ -6,12 +6,14 @@ import Layout from '../layouts/Layout.astro'
 
 <Layout url="/" title="404. Page not found">
   <Container>
-    <div class="text-center" style={{ margin: '5rem 0' }}>
-      <h3 style={{ lineHeight: '40px' }}>
+    <div class="text-center my-10">
+      <h3 class="mb-10 leading-10">
         The page you requested could not be found. Use your browser's Back button to navigate to the page you
         have previously come from or just press this button.
       </h3>
-      <Link className="btn btn-primary btn-lg" href="/">Home</Link>
+      <Link href="/" className="text-white hover:text-white px-6 py-4 rounded bg-primary hover:bg-primary-dark">
+        Home
+      </Link>
     </div>
   </Container>
 </Layout>

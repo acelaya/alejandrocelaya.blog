@@ -3,6 +3,7 @@ import { OldPostBanner } from './OldPostBanner';
 import PostHeading from './PostHeading.astro';
 import PostContent from './PostContent.astro';
 import type { Post } from '../../utils/posts';
+import { Container } from '../Container';
 
 export interface Props {
   post: Post;
@@ -10,8 +11,8 @@ export interface Props {
 const { post } = Astro.props;
 ---
 
-<div>
+<article class="post text-justify">
   <PostHeading post={post} />
   <OldPostBanner post={post} />
   <PostContent post={post} />
-</div>
+</article>
