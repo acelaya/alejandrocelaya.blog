@@ -1,5 +1,5 @@
 ---
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import Layout from './Layout.astro';
 import { Container } from '../components/Container';
 import { SectionTitle } from '../components/SectionTitle';
@@ -24,7 +24,7 @@ const taxonomyText = (taxonomy: string) =>
     <SectionTitle className="capitalize mb-4">{type}</SectionTitle>
 
     <div
-      class={classNames(
+      class={clsx(
         'flex flex-wrap gap-2 justify-items-stretch',
         { 'justify-between': taxonomies.length > 20 },
       )}

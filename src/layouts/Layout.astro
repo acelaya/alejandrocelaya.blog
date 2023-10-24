@@ -1,10 +1,9 @@
 ---
 import { GoogleAnalytics } from 'astro-google-analytics';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import { Container } from '../components/Container';
 import Footer from '../components/Footer';
-import Header from '../components/Header';
-import { MobileMenu } from '../components/menu/MobileMenu';
+import { Header } from '../components/header/Header';
 import { ScrollToButton } from '../components/ScrollToButton';
 import { config } from '../../config/config';
 import { getCategories, getLatestPosts } from '../utils/posts';
@@ -25,33 +24,29 @@ const scrollTargetId = 'mainSectionId';
 
 <!doctype html>
 <html lang="en">
-<head>
-  <title>{computedTitle}</title>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width" />
-  <meta name="generator" content={Astro.generator} />
-  <meta name="description" content={computedTitle} />
-  <meta name="theme-color" content="#2a2d36" />
-  <meta property="og:title" content={title ?? computedTitle} />
-  <meta property="og:url" content={`${config.SITE_URL}${url}`} />
-  <meta property="og:type" content="development" />
-  <meta property="og:image" content={`${config.SITE_URL}/assets/img/hero_bg.jpg`} />
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,600,400italic,700' />
-  <GoogleAnalytics id={config.GA} />
-</head>
-<body>
-<MobileMenu categories={categories} client:load />
+  <head>
+    <title>{computedTitle}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={computedTitle} />
+    <meta name="theme-color" content="#2a2d36" />
+    <meta property="og:title" content={title ?? computedTitle} />
+    <meta property="og:url" content={`${config.SITE_URL}${url}`} />
+    <meta property="og:type" content="development" />
+    <meta property="og:image" content={`${config.SITE_URL}/assets/img/hero_bg.jpg`} />
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,600,400italic,700' />
+    <GoogleAnalytics id={config.GA} />
+  </head>
+  <body>
+    <Header categories={categories} client:load />
 
-<div id="fh5co-page">
-  <Header categories={categories} client:load />
-
-  <section id="fh5co-hero" class="no-js-fullheight">
-    <div class="fh5co-overlay" />
-    <Container>
-      <div class="fh5co-intro no-js-fullheight">
-        <div class="fh5co-intro-text">
-          <div class={classNames('font-thin mx-auto text-center', { 'w-full': title, 'w-[65%]': !title })}>
-            <h1 class={classNames('text-lg', {
+    <section class="bg-hero bg-cover bg-fixed bg-no-repeat w-full relative h-[400px] md:h-[500px]">
+      <div class="absolute inset-0 opacity-50 z-10 bg-grey-dark" />
+      <div class="container mx-auto">
+        <div class="h-[400px] md:h-[500px] grid place-content-around">
+          <div class="font-thin mx-auto text-center text-white z-20 relative w-full p-3">
+            <h1 class={clsx('text-lg mb-2', {
               'md:text-[57px]': title,
               'md:text-xl': !title
             })}>
@@ -61,28 +56,15 @@ const scrollTargetId = 'mainSectionId';
           </div>
         </div>
       </div>
-    </Container>
-    <div class="fh5co-learn-more">
-      <ScrollToButton targetId={scrollTargetId} client:load />
-    </div>
-  </section>
+      <div class="z-20 absolute left-[calc(50%-21px)] bottom-[-14px]">
+        <ScrollToButton targetId={scrollTargetId} client:load />
+      </div>
+    </section>
 
-  <section id={scrollTargetId}>
-    <slot />
-  </section>
+    <section id={scrollTargetId} class="pt-10">
+      <slot />
+    </section>
 
-  <Footer latestPosts={latestPosts} categories={categories} />
-</div>
-</body>
+    <Footer latestPosts={latestPosts} categories={categories} />
+  </body>
 </html>
-<script>
-  document.addEventListener('mobile-menu-toggle', (e) => {
-    const page = document.getElementById('fh5co-page');
-
-    if (e.detail.visible) {
-      page.classList.add('offcanvas-visible');
-    } else {
-      page.classList.remove('offcanvas-visible');
-    }
-  });
-</script>

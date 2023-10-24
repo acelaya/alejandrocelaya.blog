@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import type { FC } from 'react';
 import type { TaxonomyType } from '../types';
 import Link from '../Link';
@@ -12,7 +12,7 @@ interface TaxonomyProps {
 export const PostTaxonomy: FC<TaxonomyProps> = ({ type, appendSpace, value }) => (
   <>
     <Link
-      className={classNames('px-2 py-1 rounded text-white hover:text-white font-bold text-xs', {
+      className={clsx('px-2 py-1 rounded text-white hover:text-white font-bold text-xs', {
         'bg-primary': type === 'tag',
         'bg-grey-dark': type === 'category',
       })}

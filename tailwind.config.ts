@@ -31,7 +31,13 @@ export default {
         md: '24px',
         lg: '30px',
         xl: '70px',
-      }
+      },
+      backgroundImage: {
+        hero: "url('/assets/img/hero_bg.jpg')",
+      },
+      transitionProperty: {
+        appear: 'width, opacity',
+      },
     },
   },
   plugins: [],

@@ -46,7 +46,7 @@
     .post blockquote p:last-child {
         @apply mb-0;
     }
-    .post p code {
+    .post :not(pre) code {
         @apply text-[90%] text-code bg-fuchsia-50 p-[4px] rounded;
     }
     .post ol {
