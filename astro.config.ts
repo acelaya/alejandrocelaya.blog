@@ -20,5 +20,8 @@ export default defineConfig({
         ignored: ['**/home/**', '**/build/**', '**/.idea/**', '**/node_modules/**', '**/.git/**']
       }
     },
+    ssr: {
+      noExternal: 'react-tweet'
+    }
   },
 });

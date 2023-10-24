@@ -35,7 +35,7 @@
         @apply text-center text-primary mt-8 mb-4;
     }
     .post pre {
-        @apply p-3 rounded text-xs;
+        @apply p-3 mb-4 rounded text-xs;
     }
     .post p, .post ul, .post ol, .post blockquote {
         @apply mb-4;
@@ -57,5 +57,8 @@
     }
     .post img {
         @apply p-1 rounded border mx-auto;
+    }
+    .post em {
+        @apply font-medium;
     }
 }

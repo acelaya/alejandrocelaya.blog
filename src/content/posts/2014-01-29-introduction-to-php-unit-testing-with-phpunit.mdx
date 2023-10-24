@@ -157,7 +157,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
 As we can see, the behavior of Calculator class has been assumed while writing the test, but as the class is not implemented, the tests will fail.
 
-### Running the tests for the first time. <span className="text-danger">Red light.</span>
+### Running the tests for the first time. <span className="text-red-600">Red light.</span>
 
 To run a PHPUnit test suite, a small configuration script has to be defined. It is a xml script that PHPUnit will read to know how to run the tests. We will define on it the test classes and a so called bootstrap script, which is a php script that is runned after all the test cases to perform any operation needed for the code to work, like load configuration, set up autoloaders, loggers, database connections (not recommended, we will see this latter) and such.
 
