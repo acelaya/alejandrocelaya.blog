@@ -13,8 +13,7 @@ const posts: SimplePost[] = await getAllPosts().then((posts) =>
 
 <Layout url="/search/">
   <Container className="search-section">
-    <SectionTitle>Search</SectionTitle>
-
+    <SectionTitle className="mb-4">Search</SectionTitle>
     <Search posts={posts} client:only="react" />
   </Container>
 </Layout>
