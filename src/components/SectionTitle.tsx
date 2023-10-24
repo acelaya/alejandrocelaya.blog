@@ -5,7 +5,7 @@ type SectionTitleProps = PropsWithChildren<{
 }>;
 
 export const SectionTitle: FC<SectionTitleProps> = ({ children, className }) => (
-  <header className="clearfix">
+  <header>
     <h2 className={className}>{children}</h2>
   </header>
 );
