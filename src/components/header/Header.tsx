@@ -8,7 +8,7 @@ import { Container } from '../Container';
 import Link from '../Link.tsx';
 import { HeaderSearch } from './HeaderSearch.tsx';
 import { clsx } from 'clsx';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const HeaderList: FC<PropsWithChildren<{ className?: string }>> = ({ children, className }) => (
   <ul className={clsx('flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-6', className)}>
@@ -20,9 +20,24 @@ const linkClasses = 'text-white hover:text-white font-medium opacity-70 hover:op
 
 export const Header: FC<{ categories: Categories }> = ({ categories }) => {
   const [visible, setVisible] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      // Hide menu when clicking outside of it
+      if (wrapperRef.current && !e.composedPath().includes(wrapperRef.current)) {
+        setVisible(false);
+      }
+    }
+
+    document.body.addEventListener('click', handler);
+    return () => {
+      document.body.removeEventListener('click', handler);
+    };
+  }, []);
 
   return (
-    <>
+    <div ref={wrapperRef}>
       <button
         onClick={() => setVisible((prev) => !prev)}
         className={clsx('md:hidden fixed right-6 top-4 z-50 text-white')}
@@ -31,7 +46,7 @@ export const Header: FC<{ categories: Categories }> = ({ categories }) => {
       </button>
       <section className={clsx('z-40 top-0 transition-[right]', [
         // Default (mobile)
-        'fixed w-64 h-screen bg-black p-3',
+        'fixed w-64 h-full bg-black p-3',
         // Bigger devices
         'md:absolute md:w-full md:h-auto md:bg-transparent md:p-0 md:pt-8 md:right-0',
       ], {
@@ -68,6 +83,6 @@ export const Header: FC<{ categories: Categories }> = ({ categories }) => {
           </nav>
         </Container>
       </section>
-    </>
+    </div>
   );
 };
