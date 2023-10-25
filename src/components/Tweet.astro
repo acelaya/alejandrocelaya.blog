@@ -1,0 +1,14 @@
+---
+import { Tweet } from '@astro-community/astro-embed-twitter';
+
+export interface Props {
+  tweetId: string;
+}
+
+const { tweetId } = Astro.props;
+---
+
+<div class="flex justify-center mb-4">
+  <Tweet id={`https://twitter.com/twitter/status/${tweetId}`} />
+</div>
+<script async src="https://platform.twitter.com/widgets.js" />

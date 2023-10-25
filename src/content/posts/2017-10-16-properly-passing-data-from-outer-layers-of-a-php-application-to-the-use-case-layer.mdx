@@ -4,11 +4,9 @@ tags: ['ddd', 'clean-architecture', 'clean-code', 'services']
 categories: ['php']
 ---
 
-import { Tweet } from '../../components/Tweet';
+import Tweet from '../../components/Tweet.astro';
 
-<div className="well well-sm">
-    <b>Update 2017-10-18</b>: After reading this article, I recommend you to read the <a href="#comment-3572607201">comment from <b>Rasmus Schultz</b></a>. It is very clarifying, and might make you think twice if this is really the best approach.
-</div>
+> **Update 2017-10-18**: After reading this article, I recommend you to read the [comment from **Rasmus Schultz**](#comment-3572607201). It is very clarifying, and might make you think twice if this is really the best approach.
 
 Lately, I've been digging a lot in different ways of improving software architecture. Mainly subjects like [Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html), [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design), and such.
 
@@ -24,7 +22,7 @@ First of all, I want to start by talking about some of the approaches I have fol
 
 My main doubt has always been what's the right place to filter and validate data. And that's what I asked about a year ago on twitter.
 
-<Tweet tweetId="777775855544242176" client:only="react" />
+<Tweet tweetId="777775855544242176" />
 
 The tweet received a lot of good answers, but my knowledge wasn't mature enough at the moment, and I couldn't "digest" it (I suppose).
 

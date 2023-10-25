@@ -4,7 +4,7 @@ categories: ['tools', 'web']
 tags: ['react', 'reactjs', 'redux', 'rtk']
 ---
 
-import { Tweet } from '../../components/Tweet';
+import Tweet from '../../components/Tweet.astro';
 
 A couple of weeks ago I migrated a React project using redux to [Redux Toolkit](https://redux-toolkit.js.org/).
 
@@ -64,7 +64,7 @@ This caused the next challenges for my particular case:
 
   I was not following this pattern (my actions had the payload "mixed" on the first object level), so I had to adapt all my actions first, fix the tests, then migrate the reducer to RTK and make sure the tests kept passing.
 
-  <Tweet tweetId="1588534092915933186" client:only="react" />
+  <Tweet tweetId="1588534092915933186" />
 
 * Immutability is no longer promoted in reducers. Instead, the library requires [immer](https://immerjs.github.io/immer/) internally, and using proxies they automatically ensure immutability, even if you "mutate" the state.
 
@@ -72,13 +72,13 @@ This caused the next challenges for my particular case:
 
   However, they have [good reasons](https://redux-toolkit.js.org/usage/immer-reducers#why-immer-is-built-in) to do it, and if your reducers return a state object, you can still use the immutable approach. It's up to you.
 
-  <Tweet tweetId="1588534364492947456" client:only="react" />
+  <Tweet tweetId="1588534364492947456" />
 
 * Action creators resulting of `createAsyncThunk` can only have one argument.
 
   This is because the async thunk callback receives a second argument containing the `dispatch` and `getState` functions, as well as a couple of other goodies, enforcing this convention to avoid human errors.
 
-  <Tweet tweetId="1588448203770322952" client:only="react" />
+  <Tweet tweetId="1588448203770322952" />
 
 * You cannot dispatch other actions after the callback passed to `createAsyncThunk`, because it has to return the payload and RTK dispatches the action for you.
 
