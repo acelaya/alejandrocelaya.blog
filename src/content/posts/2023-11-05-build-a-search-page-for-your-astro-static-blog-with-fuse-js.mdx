@@ -1,0 +1,290 @@
+---
+title: 'Build a search page for your astro static blog with fuse.js'
+categories: ['web', 'tools']
+tags: ['static-site', 'astro', 'javascript', 'search', 'fuse.js']
+---
+
+Recently, I [migrated this very blog](/2023/10/19/my-thoughts-after-migrating-content-centric-websites-from-next-js-to-astro/) to [Astro](https://astro.build/), and I took the opportunity to modernize the search system.
+
+I was then using lunr, which was a bit unmaintained, and not playing well with modern build tools.
+
+### Introducing fuse.js
+
+Looking for alternatives I found [fuse.js](https://www.fusejs.io/), a [fuzzy-search](https://www.fusejs.io/#what-is-fuzzy-searching) library, with zero dependencies, very popular, modern, TypeScript-friendly and very easy to use.
+
+Integrating Fuse turned out to be very simple. You need to provide an array of "searchable things" (usually the objects representing your blog posts), and then determine which are the properties in which you want to search.
+
+```ts
+import Fuse from 'fuse.js';
+
+const posts = [
+  // ...
+];
+const fuse = new Fuse(posts, {
+  keys: ['body', 'title']
+});
+```
+
+Fuse will then create an index for the provided list of objects, and allow you to search on them.
+
+```ts
+const results = fuse.search('astro');
+```
+
+When calling `search`, fuse will return the list of objects that match the search term, ordered by relevance.
+
+Then, it's up to you to decide how to use the result. In my case I iterate over them and build a page listing the post titles and an excerpt. Feel free to [take a look](https://github.com/acelaya/alejandrocelaya.blog/blob/48322649c5f9d9eeaeb20421b2fa259843ccb035/src/components/Search.tsx#L31).
+
+> Fuse accepts many other options. Take a look at [their documentation](https://www.fusejs.io/api/options.html) in order to fine tune it.
+
+### Creating your search island
+
+As the title of this post says, this article assumes your blog does not have a backend, and Fuse will have to run the search in the browser.
+
+For that, you will need an [island](https://docs.astro.build/en/concepts/islands/), a component with logic that runs in the browser. We'll be using react to write that component, and it will receive a list of posts and use Fuse with them.
+
+```tsx
+import Fuse from 'fuse.js';
+import { useState, useMemo } from 'react';
+
+export function Search({ posts }) {
+  const [searchValue, setSearchValue] = useState('');
+  const fuse = useMemo(() => new Fuse(posts, { keys: ['body', 'title'] }), [posts])
+  const results = useMemo(() => fuse.search(searchValue), [fuse, searchValue]);
+
+  return (
+    <>
+      <section>
+        <input
+          type="search"
+          placeholder="Search…"
+          aria-label="Search"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+      </section>
+
+      <section>
+        {results.length === 0 && (
+          <>
+            {searchValue === '' && <p>Enter a search term</p>}
+            {searchValue !== '' && <p>No results found</p>}
+          </>
+        )}
+        {results.map(({ item: post }, index) => (
+          <p key={index}>
+            <a href={post.url}>{post.title}</a>
+          </p>
+        ))}
+      </section>
+    </>
+  );
+}
+```
+
+### Content collections vs markdown pages
+
+Let's now build the search page. Assuming you write your posts in markdown/MDX, there are a couple of ways in which you can get the list of posts to pass to fuse.
+
+In this blog I use Astro's [content collections](https://docs.astro.build/en/guides/content-collections/) to handle the posts. That allows me to take advantage of the helpers exposed by `astro:content`.
+
+```astro
+---
+// pages/search.astro
+import { getCollection } from 'astro:content';
+import { Search } from '../components/Search';
+
+const rawPosts = await getCollection('posts');
+const posts = rawPosts.map((post) => ({
+  body: post.body,
+  title: post.data.title,
+  // Anything else you need...
+}));
+---
+
+<div>
+  <Search posts={posts} client:only="react" />
+</div>
+```
+
+If you write your posts as regular pages, it's slightly harder to get the bodies of your posts, but you can use [`Astro.glob()`](https://docs.astro.build/en/reference/api-reference/#astroglob) to list your posts and metadata, and then manually render each post to get its body.
+
+```astro
+---
+// pages/search.astro
+import { Search } from '../components/Search';
+
+const rawPosts = await Astro.glob('./posts/*.mdx');
+const posts =  rawPosts.map((post) => ({
+  body: post.render(),
+  title: post.frontmatter.title,
+  // Anything else you need...
+}));
+---
+
+<div>
+  <Search posts={posts} client:only="react" />
+</div>
+```
+
+As you can see, the second option is a bit less convenient, so I would recommend using content collections if possible.
+
+### Embedded search vs endpoint
+
+The next thing you need to decide is how the `Search` component will get the list of posts.
+
+You need to take into consideration that you are exposing the whole body of every post so that fuse can search on it. That means the list can be relatively big depending on how many posts you have.
+
+In the examples above we have embedded the list of posts in the search page itself. When you build it you'll see all posts are part of the generated `search.html` file, which can make it relatively big.
+
+This approach is very convenient and simple, but will block the page rendering until everything is downloaded.
+
+Another approach would be to expose the list of posts via a separated JSON file (AKA [Astro endpoint](https://docs.astro.build/en/core-concepts/endpoints/)), and let the `Search` component load it asynchronously.
+
+With that, you can define an individual caching strategy for this JSON file itself, load the search page faster and display a loading state, etc.
+
+First, we would need to create the endpoint that would serve the list of posts.
+
+```ts
+// pages/posts.json.ts
+export async function GET() {
+  const posts = [
+    // Get posts...
+  ];
+
+  return new Response(
+    JSON.stringify({ posts }),
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+}
+```
+
+Then we need to edit the `Search` component to fetch this itself:
+
+```diff
+import Fuse from 'fuse.js';
+import { useState, useMemo } from 'react';
+
+-export function Search({ posts }) {
++export function Search() {
++ const [posts, setPosts] = useState<Post[] | null>(null);
+  const [searchValue, setSearchValue] = useState('');
+- const fuse = useMemo(() => new Fuse(posts { keys: ['body', 'title'] }), [posts]);
++ const fuse = useMemo(() => new Fuse(posts ?? [], { keys: ['body', 'title'] }), [posts]);
+  const results = useMemo(() => fuse.search(searchValue), [fuse, searchValue]);
+
++ useEffect(() => {
++   fetch('/posts.json')
++     .then((resp) => resp.json())
++     .then(({ posts }) => setPosts(posts));
++ }, []);
+
++ if (!posts) {
++   return <p>Loading posts...</p>;
++ }
+
+  return <>...</>;
+}
+```
+
+> Take into consideration this is simplified. You should probably handle potential errors when loading the posts, abort the request when the component unmounts, etc.
+
+And finally, we can update the search page so that it does not load the posts itself.
+
+```astro
+---
+// pages/search.astro
+import { Search } from '../components/Search';
+---
+
+<div>
+  <Search client:only="react" />
+</div>
+```
+
+### Pre-generated index
+
+The last thing you might want to consider is pre-generating fuse's index.
+
+In all examples above we have always been exposing the list of posts, and letting fuse generate the index on the fly.
+
+This is fine as long as you don't have hundreds of blog posts. This blog has more than 60 posts, and this approach is working fine.
+
+However, if you decide to pre-generate the index, you should not embed it in the search page, and instead expose it via an endpoint to avoid a very big `search.html` file.
+
+Let's evolve the `posts.json.ts` endpoint to expose a pre-generated index.
+
+```ts
+// pages/posts.json.ts
+import Fuse from 'fuse.js';
+
+export async function GET() {
+  const posts = [
+    // Get posts...
+  ];
+  const postsIndex = Fuse.createIndex(['body', 'title'], posts);
+
+  return new Response(
+    JSON.stringify({
+      posts,
+      index: postsIndex.toJSON(),
+    }),
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+}
+```
+
+And then, the `Search` component needs to take the index into consideration.
+
+```diff
+import Fuse from 'fuse.js';
+import { useState, useMemo } from 'react';
+
+export function Search() {
+  const [posts, setPosts] = useState<Post[] | null>(null);
++ const [index, setIndex] = useState(null);
+  const [searchValue, setSearchValue] = useState('');
+- const fuse = useMemo(() => new Fuse(posts ?? [], { keys: ['body', 'title'] }), [posts]);
++ const fuse = useMemo(() => {
++   const parsedIndex = index ? Fuse.parseIndex(index) : undefined;
++   return new Fuse(posts ?? [], { keys: ['body', 'title'] }, parsedIndex);
++ }, [posts, index]);
+  const results = useMemo(() => fuse.search(searchValue), [fuse, searchValue]);
+
+  useEffect(() => {
+    fetch('/posts.json')
+      .then((resp) => resp.json())
+-     .then(({ posts }) => setPosts(posts));
++     .then(({ posts, index }) => {
++       setPosts(posts);
++       setIndex(index);
++     });
+  }, []);
+
+  if (!posts) {
+    return <p>Loading posts...</p>;
+  }
+
+  return <>...</>;
+}
+```
+
+> More information on how to pre-generate fuse's index can be found in [their docs](https://www.fusejs.io/api/indexing.html).
+
+### Conclusion
+
+This article highlights different ways to use fuse.js to index the posts of a static Astro blog.
+
+The tool is very flexible. It lets you start simple, and then evolve from there as your needs change.
+
+Search results are not perfect, but as long as you don't need high accuracy, fuse.js is a very useful tool.
