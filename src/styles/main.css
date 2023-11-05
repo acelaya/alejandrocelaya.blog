@@ -41,7 +41,7 @@
         @apply mb-4;
     }
     .post blockquote {
-        @apply bg-gray-50 p-3 border-l-4;
+        @apply bg-gray-50 p-3 border-l-4 text-gray-500;
     }
     .post blockquote p:last-child {
         @apply mb-0;

@@ -112,11 +112,12 @@ If you write your posts as regular pages, it's slightly harder to get the bodies
 ```astro
 ---
 // pages/search.astro
+import fs from 'node:fs';
 import { Search } from '../components/Search';
 
 const rawPosts = await Astro.glob('./posts/*.mdx');
 const posts =  rawPosts.map((post) => ({
-  body: post.render(),
+  body: fs.readFileSync(post.file).toString(),
   title: post.frontmatter.title,
   // Anything else you need...
 }));
@@ -127,7 +128,7 @@ const posts =  rawPosts.map((post) => ({
 </div>
 ```
 
-As you can see, the second option is a bit less convenient, so I would recommend using content collections if possible.
+As you can see, the second option is a bit less convenient, and requires to manually manipulate the filesystem, so I would recommend using content collections if possible.
 
 ### Embedded search vs endpoint
 
@@ -192,7 +193,9 @@ import { useState, useMemo } from 'react';
 }
 ```
 
-> Take into consideration this is simplified. You should probably handle potential errors when loading the posts, abort the request when the component unmounts, etc.
+> Take into consideration this is a simplified example. You should probably handle potential errors when loading the posts, abort the request when the component unmounts, etc.
+>
+> You might even want to use something other than `useEffect` + `fetch`, like [React Query/TanStack Query](https://tanstack.com/query/latest) and similar.
 
 And finally, we can update the search page so that it does not load the posts itself.
 
