@@ -4,7 +4,11 @@
 
 @layer base {
     body {
-        @apply text-main text-base font-light;
+        @apply text-main dark:text-white text-base font-light dark:bg-grey-dark;
+    }
+
+    hr {
+        @apply dark:border-grey-light;
     }
 
     a {

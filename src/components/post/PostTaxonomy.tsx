@@ -13,8 +13,8 @@ export const PostTaxonomy: FC<TaxonomyProps> = ({ type, appendSpace, value }) =>
   <>
     <Link
       className={clsx('px-2 py-1 rounded text-white hover:text-white font-bold text-xs', {
-        'bg-primary': type === 'tag',
-        'bg-grey-dark': type === 'category',
+        'bg-primary dark:text-grey-dark': type === 'tag',
+        'bg-grey-dark dark:bg-grey': type === 'category',
       })}
       href={`/${type}/${encodeURI(value)}/`}
     >
