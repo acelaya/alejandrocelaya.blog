@@ -1,0 +1,11 @@
+---
+import { clsx } from 'clsx';
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+console.log(className);
+---
+
+<hr class={clsx(className, 'dark:border-grey-light')} />

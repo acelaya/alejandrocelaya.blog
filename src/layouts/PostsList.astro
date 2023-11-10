@@ -7,6 +7,7 @@ import { Paginator } from '../components/Paginator';
 import Layout from './Layout.astro';
 import PostPreview from '../components/post/PostPreview.astro';
 import { Container } from '../components/Container';
+import Divider from '../components/Divider.astro';
 import Link from '../components/Link';
 import { disqusPropsForPost } from '../utils/disqus';
 
@@ -30,7 +31,7 @@ const { posts, isFirstPage, isLastPage, currentPage } = Astro.props;
           <PostPreview post={post} />
           <PostTaxonomies post={post} />
         </li>
-        <hr class="mt-4 mb-20" />
+        <Divider class="mt-4 mb-20" />
       ))}
     </ul>
 

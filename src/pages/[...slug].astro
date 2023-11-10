@@ -10,6 +10,7 @@ import Link from '../components/Link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { PostComments } from '../components/post/PostComments';
+import Divider from '../components/Divider.astro';
 
 export interface Props {
   post: Post;
@@ -37,7 +38,7 @@ const { post, prevPost, nextPost } = Astro.props;
 <Layout title={post.data.title} url={post.url}>
   <Container>
     <PostDetail post={post} />
-    <hr class="mt-10 mb-4" />
+    <Divider class="mt-10 mb-4" />
     <PostTaxonomies post={post} />
   </Container>
 
@@ -45,7 +46,7 @@ const { post, prevPost, nextPost } = Astro.props;
     <ul class="flex flex-col md:flex-row justify-between space-y-3 md:space-y-0 space-x-0 md:space-x-3 text-sm">
       <li>
         {prevPost && (
-          <Link className="text-grey-light hover:text-grey-light hover:underline" href={prevPost.url}>
+          <Link className="light-link" href={prevPost.url}>
             <FontAwesomeIcon icon={faArrowLeft} />
             <span class="ml-1">{prevPost.data.title}</span>
           </Link>
@@ -53,7 +54,7 @@ const { post, prevPost, nextPost } = Astro.props;
       </li>
       <li>
         {nextPost && (
-          <Link className="text-grey-light hover:text-grey-light hover:underline" href={nextPost.url}>
+          <Link className="light-link" href={nextPost.url}>
             <span class="mr-1">{nextPost.data.title}</span>
             <FontAwesomeIcon icon={faArrowRight} />
           </Link>

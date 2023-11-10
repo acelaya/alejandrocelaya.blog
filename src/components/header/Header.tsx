@@ -9,6 +9,7 @@ import Link from '../Link.tsx';
 import { HeaderSearch } from './HeaderSearch.tsx';
 import { clsx } from 'clsx';
 import { useEffect, useRef, useState } from 'react';
+import { ThemeToggle } from '../ThemeToggle.tsx';
 
 const HeaderList: FC<PropsWithChildren<{ className?: string }>> = ({ children, className }) => (
   <ul className={clsx('flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-6', className)}>
@@ -78,6 +79,9 @@ export const Header: FC<{ categories: Categories }> = ({ categories }) => {
                   <FontAwesomeIcon fixedWidth icon={faCode} />
                   <span className="ml-2 md:sr-only">About me</span>
                 </Link>
+              </li>
+              <li>
+                <ThemeToggle className={linkClasses} />
               </li>
             </HeaderList>
           </nav>

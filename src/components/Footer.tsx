@@ -22,7 +22,7 @@ const FooterList: FC<{ title: string; links: [string, string][] }> = ({ title, l
         <li key={href} className="truncate">
           <Link
             href={href}
-            className="text-grey-light hover:text-grey-light hover:underline text-sm"
+            className="light-link text-sm"
           >
             {text}
           </Link>
@@ -96,7 +96,7 @@ const Footer: FC<FooterProps> = ({ latestPosts, categories }) => (
     <Container className="py-8 flex flex-col md:flex-row items-center md:justify-between">
       <p className="text-sm">
         &copy;{`${new Date().getFullYear()} `}
-        <Link className="text-grey-light hover:text-grey-light hover:underline font-bold" href="https://www.alejandrocelaya.com">
+        <Link className="light-link font-bold" href="https://www.alejandrocelaya.com">
           Alejandro Celaya Alastrué
         </Link>
       </p>

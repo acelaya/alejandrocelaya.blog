@@ -14,7 +14,7 @@ export const HeaderSearch: FC<{ className?: string }> = ({ className }) => {
       <input
         type="search"
         className={clsx(
-          'md:absolute right-0 rounded p-2 md:pr-9 outline-0',
+          'md:absolute right-0 rounded p-2 md:pr-9 outline-0 text-main',
           'w-full md:w-0 md:opacity-0 md:focus:w-80 focus:opacity-100 transition-appear',
         )}
         placeholder="Search…"

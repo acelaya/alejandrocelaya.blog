@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 
 export default {
   content: ['./src/**/*.{astro,md,mdx,ts,tsx}'],
+  darkMode: ['class', '[data-theme="dark"]'], // Use data-theme attribute to determine theme
   theme: {
     screens: {
       'sm': '480px',
@@ -19,6 +20,7 @@ export default {
           DEFAULT: '#8dc63f',
         },
         grey: {
+          darker: '#24272d',
           dark: '#2a2d36',
           DEFAULT: '#484c50',
           light: '#6a7885'
