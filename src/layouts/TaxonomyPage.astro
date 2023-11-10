@@ -6,6 +6,7 @@ import type { TaxonomyType } from '../components/types';
 import { Paginator } from '../components/Paginator';
 import type { Post } from '../utils/posts';
 import { PostHint } from '../components/post/PostHint';
+import Divider from '../components/Divider.astro';
 
 export interface Props {
   taxonomy: string;
@@ -43,7 +44,7 @@ let currentYear: string | null = null;
     </div>
 
     <div>
-      <hr class="mb-10" />
+      <Divider class="mb-10" />
       <Paginator
         isFirstPage={isFirstPage}
         isLastPage={isLastPage}
