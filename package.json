@@ -37,7 +37,7 @@
   "devDependencies": {
     "@types/markdown-it": "^13.0.5",
     "@types/node": "^20.8.10",
-    "@types/react": "18.2.34",
+    "@types/react": "18.2.37",
     "typescript": "^5.2.2"
   }
 }
