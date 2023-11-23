@@ -1,4 +1,4 @@
-import type { FC, MutableRefObject } from 'react';
+import type { FC } from 'react';
 import type { ImageProps } from './Image';
 import { Image } from './Image';
 import { Gallery, Item } from 'react-photoswipe-gallery';
@@ -25,7 +25,7 @@ export const ImageGallery: FC<ImageGalleryProps> = ({ images, modal }) => {
           <Item key={index} original={url} thumbnail={url} caption={footerText} {...dimensions}>
             {({ ref, open }) => (
               <Image
-                ref={ref as MutableRefObject<HTMLDivElement>}
+                ref={ref}
                 url={url}
                 footerText={footerText}
                 size={size ?? (images.length === 1 ? 'big' : 'small')}
