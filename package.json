@@ -6,7 +6,7 @@
     "preview": "astro preview --host 0.0.0.0"
   },
   "dependencies": {
-    "@astro-community/astro-embed-twitter": "^0.5.2",
+    "@astro-community/astro-embed-twitter": "^0.5.3",
     "@astrojs/mdx": "^1.1.5",
     "@astrojs/react": "^3.0.6",
     "@astrojs/rss": "^3.0.0",
