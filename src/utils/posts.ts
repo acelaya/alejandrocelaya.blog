@@ -47,7 +47,7 @@ export type SimplePost = Pick<Post, 'body' | 'excerpt' | 'url'> & {
 const postExcerpt = (body: string) => {
   const excerpt = renderMarkdown(body)
     .split('\n')
-    // Remove HTML tags
+    // Remove HTML/JSX tags
     .flatMap((str) => str.replace(/<\/?[^>]+(>|$)/g, '').split('\n'))
     // Decode HTML entities into their actual character
     .map((str) => decode(str))
