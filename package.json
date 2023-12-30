@@ -21,7 +21,7 @@
     "@mdx-js/react": "^3.0.0",
     "astro": "^4.0.7",
     "astro-google-analytics": "^1.0.3",
-    "clsx": "^2.0.0",
+    "clsx": "^2.1.0",
     "date-fns": "^3.0.6",
     "disqus-react": "^1.1.5",
     "fuse.js": "^7.0.0",
