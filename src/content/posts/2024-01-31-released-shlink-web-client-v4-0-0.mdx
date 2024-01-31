@@ -40,7 +40,7 @@ This component can be installed as a standalone package and potentially used by 
 Extracting this component also required two more packages to be created.
 
 * [shlink-frontend-kit](https://github.com/shlinkio/shlink-frontend-kit): It includes UI components and utilities used both by shlink-web-client and shlink-web-component. Shlink Dashboard will very likely use it as well.
-* [shlink-js-sdk](https://github.com/shlinkio/shlink-js-sdk): It wraps the logic to consume a Shlink API from a Javascript app. It exposes type contracts for shlink-web-component, and implementations for consumers running in the browser (shlink-web-client) or the backend (Shlink Dashboard).
+* [shlink-js-sdk](https://github.com/shlinkio/shlink-js-sdk): It wraps the logic to consume Shlink's API from a Javascript app. It exposes type contracts for shlink-web-component, and implementations for consumers running in the browser (shlink-web-client) or the backend (Shlink Dashboard).
 
 #### Packages stability
 
@@ -93,7 +93,7 @@ This is very much a technical detail, but it was important to make the visits im
 These are some of the reasons that motivated this migration:
 
 * It fits nicely in a React app, as it is natively built for React. Chart.js is a standalone JS library, so you have to either implement the integration with React yourself, or rely on frequently outdated third party libraries.
-* It's much easier to test via snapshots, as it renders charts via `SVG` elements, which gets reflected in the DOM tree. Chart.js renders via `Canvas` elements, so you need to somehow capture events in order to check the chart is rendered as expected.
+* It's much easier to test via snapshots, as it renders charts via `SVG` elements, which get reflected in the DOM tree. Chart.js renders via `Canvas` elements, so you need to somehow capture events in order to check the chart is rendered as expected.
 * The userland code is much simpler, again, thanks to the fact that it is built specifically for React.
 
 ### Other improvements
@@ -109,8 +109,6 @@ These are a few other small improvements that are also worth mentioning:
   Supporting 3 major versions at once would be too much.
 * The official Docker image no longer runs as root, which improves security, and is frequently a requirement for many companies.
 
-  As a side effect, this means it can no longer expose port 80, but 8080.
-
 ### Next steps
 
 As always, even with everything introduced in this version, there is still room for improvement, and these are some of the things that will come in following versions.
@@ -123,7 +121,7 @@ As always, even with everything introduced in this version, there is still room 
 
   I have been using Tailwind a lot for the past year, and I feel like it's a better option for this app as it is now.
 
-* **Add E2E tests with [Playwright](https://playwright.dev/)**: This is another task that I have been delaying for a long time, but shlink-web-client will reach v5.0.0 with E2E tests.
+* **Add E2E tests with [Playwright](https://playwright.dev/)**: This is another task that I have been delaying for a long time, but shlink-web-client v5.0.0 will ship with E2E tests.
 * **Improve color contrast**: Many accessibility improvements have been introduced, but there are still others left.
 
-  The most important ones are around color contrast, and specifically, around the fact that Shlink's brand color (`#4696e5`) doesn't have enough contrast with white backgrounds.
+  The most important ones are around color contrast, and specifically, around the fact that Shlink's brand color (`#4696e5`) doesn't have enough contrast with white backgrounds, and this needs to be addressed.
