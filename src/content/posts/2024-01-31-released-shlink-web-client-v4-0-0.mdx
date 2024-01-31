@@ -1,0 +1,127 @@
+---
+title: 'Released shlink-web-client v4.0.0'
+categories: ['web', 'oss']
+tags: ['shlink', 'ui', 'js', 'javascript', 'react', 'reactjs']
+---
+
+After more than 10 months since v3.10.0 was released, with only a couple patch releases in between, and a lot of effort put into pushing this release out, in January 2024, shlink-web-client 4.0.0 has been finally released.
+
+As opposed to v3.0.0, which introduced many visual changes, v4.0.0 focuses on internal architectural changes, accessibility, and deeply refactoring code around loading visits to support comparisons.
+
+In this post I will highlight the most important additions from this release.
+
+### Since v3.0.0
+
+The last major version, 3.0.0, was released more than three years ago.
+
+[The announcement post](/2020/12/24/released-shlink-web-client-v3-0-0/) had a section at the end with some features that were planned to be released during the v3.x cycle. Let's go over them:
+
+* Dark theme: ![Green tick](/assets/img/icons/green-tick.svg)
+* URL-based list filters: ![Green tick](/assets/img/icons/green-tick.svg)
+* Exporting visits to CSV: ![Green tick](/assets/img/icons/green-tick.svg)
+* Shlink Dashboard: ![Red cross](/assets/img/icons/red-cross.svg)
+
+The only one that was not achieved was the release of a next-gen Shlink Dashboard, as it required big architectural changes in shlink-web-client, so it ended up constantly deprioritized in favor of smaller quick wins.
+
+### New architecture
+
+One of the first tasks that started the work for v4.0.0 milestone, was a change in the app's architecture.
+
+The "Shlink Dashboard" initiative aims to release a new web app with its own backend, supporting user accounts, which doesn't expose Shlink server details.
+
+However, 80% of the logic and capabilities will be shared with shlink-web-client. Only settings, users and servers will be handled differently.
+
+Because of that, a new [shlink-web-component](https://github.com/shlinkio/shlink-web-component) project was extracted from shlink-web-client.
+
+It ships as a "big" React component wrapping all the functionality and UI around consuming a Shlink server. It's basically everything you can see under the toolbar.
+
+This component can be installed as a standalone package and potentially used by any React application, with the intention that both shlink-web-client and "Shlink Dashboard" use it and benefit from everything that's added to it.
+
+Extracting this component also required two more packages to be created.
+
+* [shlink-frontend-kit](https://github.com/shlinkio/shlink-frontend-kit): It includes UI components and utilities used both by shlink-web-client and shlink-web-component. Shlink Dashboard will very likely use it as well.
+* [shlink-js-sdk](https://github.com/shlinkio/shlink-js-sdk): It wraps the logic to consume Shlink's API from a Javascript app. It exposes type contracts for shlink-web-component, and implementations for consumers running in the browser (shlink-web-client) or the backend (Shlink Dashboard).
+
+#### Packages stability
+
+The three new packages were originally part of shlink-web-client's codebase, and thus, they are still a bit coupled with it, so they have been released as v0.x for now.
+
+Once they have passed a few more rounds of refactoring and have been consolidated to be truly decoupled and usable anywhere, stable versions will be released.
+
+They are usable as they are though, and any reported issues will be addressed, but they may get breaking changes more frequently at first.
+
+### Visits comparison capabilities
+
+The second big change on this release is the implementation of visits comparison capabilities, in the form of two features:
+
+* **Compare visits from multiple short URLs, tags or domains over a period of time**: This allows you to see which one performed better.
+
+  ![Compare multiple items](/assets/img/shlink-web-client-4/compare-multiple-items.png)
+
+* **Compare visits of any kind, with the previous period**. For example, this month vs previous month, or this year vs previous year: This allows to check the evolution over time, to see if visits increase, decrease or remain stable.
+
+  ![Compare with previous period](/assets/img/shlink-web-client-4/compare-with-previous-period.png)
+
+These features have been planned for over three years, but their complexity made them be constantly delayed, version after version.
+
+However, they are key parts when building an analytics application, and had to be added eventually.
+
+Implementing them was possible thanks to some deep refactorings on the code responsible to handle visits, and the replacement of some dependencies that also contributed to get this done.
+
+### Accessibility improvements
+
+Another big task that was performed as part of v4.0.0, was a deep accessibility assessment of the application.
+
+This task was divided in two parts:
+
+#### Manual tasks
+
+* Tested with screen readers, to make sure the key information is properly announced.
+* Many elements have been refactored, making sure all actionable items can be interacted with the keyboard.
+* Tab sequences have been reworked in some places, so that you can move between actionable items in an intuitive order.
+* Some colors have been changed to improve contrast.
+
+#### Automated tasks
+
+* All UI components are now automatically tested with [Axe](https://github.com/dequelabs/axe-core), to make sure they do not introduce accessibility guideline violations.
+* New linting rules around accessibility have been enabled, to capture potential accessibility issues during early development.
+
+### Migration to Recharts
+
+This is very much a technical detail, but it was important to make the visits improvements possible: All charts in the application are now generated with [Recharts](https://recharts.org/en-US/) instead of [Chart.js](https://www.chartjs.org/).
+
+These are some of the reasons that motivated this migration:
+
+* It fits nicely in a React app, as it is natively built for React. Chart.js is a standalone JS library, so you have to either implement the integration with React yourself, or rely on frequently outdated third party libraries.
+* It's much easier to test via snapshots, as it renders charts via `SVG` elements, which get reflected in the DOM tree. Chart.js renders via `Canvas` elements, so you need to somehow capture events in order to check the chart is rendered as expected.
+* The userland code is much simpler, again, thanks to the fact that it is built specifically for React.
+
+### Other improvements
+
+These are a few other small improvements that are also worth mentioning:
+
+* New visits options section for orphan visits and short URL visits. It is currently used only to display the option to delete visits, but can be used to add more stuff in the future.
+
+  ![Visits options](/assets/img/shlink-web-client-4/visits-options.png)
+
+* Shlink 2.0 is no longer supported. This should be fine for everyone, as Shlink 3.0.0 was released more than two years ago, and the next version is going to be 4.0.0.
+
+  Supporting 3 major versions at once would be too much.
+* The official Docker image no longer runs as root, which improves security, and is frequently a requirement for many companies.
+
+### Next steps
+
+As always, even with everything introduced in this version, there is still room for improvement, and these are some of the things that will come in following versions.
+
+* **Shlink Dashboard**: The whole point of the big refactor is to be able to build a next-gen web application for Shlink, that will coexist with shlink-web-client.
+
+  The initial plan is to build this application with [Remix](https://remix.run/), and you can read more around its rationale in [this issue](https://github.com/shlinkio/shlink-web-client/issues/338).
+
+* **Migrate to [Tailwind](https://tailwindcss.com/)**: shlink-web-client has been using [bootstrap](https://getbootstrap.com/) since forever, which is great to get something done fast, but becomes harder to evolve when you need to customize stuff.
+
+  I have been using Tailwind a lot for the past year, and I feel like it's a better option for this app as it is now.
+
+* **Add E2E tests with [Playwright](https://playwright.dev/)**: This is another task that I have been delaying for a long time, but shlink-web-client v5.0.0 will ship with E2E tests.
+* **Improve color contrast**: Many accessibility improvements have been introduced, but there are still others left.
+
+  The most important ones are around color contrast, and specifically, around the fact that Shlink's brand color (`#4696e5`) doesn't have enough contrast with white backgrounds, and this needs to be addressed.
