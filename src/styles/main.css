@@ -38,6 +38,9 @@
     .post h3 {
         @apply text-center text-primary mt-8 mb-4;
     }
+    .post h4 {
+        @apply text-center font-bold mt-6 mb-4;
+    }
     .post pre {
         @apply p-3 mb-4 rounded text-xs;
     }
@@ -62,8 +65,13 @@
     .post ul {
         @apply list-disc list-outside pl-10
     }
-    .post img {
+    /* Treat as blocks all images which do not contain `/icon/` in the URL */
+    .post img:not([src*='/icons/']) {
         @apply p-1 rounded border mx-auto dark:border-grey;
+    }
+    /* Display icons inline */
+    .post img[src*='/icons/'] {
+        @apply inline;
     }
     .post em {
         @apply font-medium;
