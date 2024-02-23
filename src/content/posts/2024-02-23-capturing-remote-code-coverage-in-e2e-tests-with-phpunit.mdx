@@ -1,0 +1,318 @@
+---
+title: 'Capturing remote code coverage in E2E tests with PHPUnit'
+categories: ['php']
+tags: ['phpunit', 'testing', 'tests', 'coverage', 'e2e-testing']
+---
+
+A couple of years ago I wrote about how to [capture code coverage in API tests](/2022/02/12/capturing-remote-code-coverage-in-api-tests-with-phpunit/). In that article I explained the implications of code coverage collection when the code under test does not run in the same process as the test itself.
+
+However, the process explained there was a bit hacky and limited to API tests. Over time, I have improved it, made it a bit less hacky, more performant and extended to other cases that require running multiple processes, like when E2E-testing a CLI tool.
+
+### How code coverage works
+
+Before going any further, lets' try to explain, from a high level perspective, how code coverage works.
+
+When you run PHPUnit and enable code coverage collection, it will check which of the supported drivers is available ([XDebug](https://xdebug.org/) and [pcov](https://github.com/krakjoe/pcov) at the moment of writing this). If one is found, PHPUnit will use it to collect all the files that are "imported"/"required" during the execution of a test, and which lines of those files are affected.
+
+In order to know which tests cover every particular line of source code, PHPUnit generates what are called "coverage IDs", which is basically the test class, followed by the test method, followed by the data provider name, if any.
+
+For example, let's imagine we have this test class:
+
+```php
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+
+class MyCoolTest extends TestCase
+{
+    #[Test]
+    public function somethingExpectedHappens(): void
+    {}
+
+    #[Test, DataProvider('provideData')]
+    public function somethingElseHappensAsWell(string $foo, int $bar): void
+    {}
+
+    public static functionProvideData(): iterable
+    {
+        yield 'some data' => ['foo', 123];
+        yield 'other data' => ['bar', 456];
+    }
+}
+```
+
+With this, any line of code that's covered by the `somethingExpectedHappens` test method, will be referenced as covered by `MyCoolTest::somethingExpectedHappens`, and lines of code covered by `somethingElseHappensAsWell` will be referenced as `MyCoolTest::somethingElseHappensAsWell#some data` and/or `MyCoolTest::somethingElseHappensAsWell#other data`.
+
+### Remote code coverage
+
+This is nice, and works out of the box when the code under test is executed in the test itself (the usual for unit tests), and therefore, it is loaded in memory for the same process which is doing code coverage collection.
+
+However, there are tests in which the test runner executes a process, and the code under test runs in one or more different processes.
+
+Some examples:
+
+* **API E2E tests**: Just before running your tests, you spin-up an app server. Your tests mainly do API/HTTP calls and assert on the response.
+
+  In this case, the source code is executed only in the process/es handled by the app server, and it is therefore not available to the process running the tests.
+
+* **CLI E2E tests**: Your tests run a command line tool in a child process, capture the output and assert on it.
+
+  Like in the previous case, the main process which is the one running the tests is not importing the actual source code, so coverage cannot be collected using standard mechanisms either.
+
+### Solving this problem
+
+In order to solve this, we will have to manually collect the coverage ourselves, something that is usually done transparently by PHPUnit. For that, we will use the [`phpunit/php-code-coverage`](https://github.com/sebastianbergmann/php-code-coverage) package.
+
+Let's list the steps we will have to follow:
+
+1. Find a way to generate coverage IDs.
+2. Pass the coverage ID to the process running the source code.
+    * For API tests we can pass this as an HTTP header, as all the code used during the HTTP request lifecycle should be considered covered by the test that triggered that call.
+    * For CLI tests one option is to define an environment variable.
+3. When the "remote" process starts (web workers, php-fpm processes, console commands, etc.) we need to create a `SebastianBergmann\CodeCoverage\CodeCoverage` object that will be used during the whole process.
+4. Some processes will handle only one coverage ID (console commands or php-fpm processes), but if you use an app server with long-running processes that keep your code in memory (like [RoadRunner](https://roadrunner.dev/) or [FrankenPHP](https://frankenphp.dev/)) it may end up handling multiple coverage IDs before being killed.
+5. Every process running source code is independent, and they don't know about each other, so they will all dump a temporary partial coverage report when the process ends, using the coverage object generated in step 3. We will use [`register_shutdown_function`](https://www.php.net/manual/en/function.register-shutdown-function.php) for that.
+6. When all tests have been executed, we will "kill" processes running source code, if needed. Console commands, php-fpm processes and such will end by themselves, but persistent app servers will need to be stopped.
+7. Once all tests are executed, we should have a bunch of partial coverage reports. To merge them into a full coverage report in whatever format we want, we will use the [`phpunit/phpcov`](https://github.com/sebastianbergmann/phpcov) package, which provides a CLI tool for that.
+
+### Generating the coverage ID
+
+As we've seen in the first block, code coverage IDs are composed by three parts:
+
+1. **The test class name**: You can easily get it with `static::class`.
+2. **The test method**: This is the trickiest part to get. More on this in the example below.
+3. **The dataset name**: There's no officially documented way to get this, but you can call `$this->dataName()` from any class extending PHPUnit's `TestCase` to get it. Just take into consideration this method is tagged as internal, and not covered by the SemVer's backward compatibility promise.
+
+With this in mind, we could create a helper that handles coverage ID generation:
+
+```php
+use PHPUnit\Framework\Attributes\Test;
+use ReflectionMethod;
+
+use function debug_backtrace;
+
+class CoverageHelper
+{
+    public static function resolveCoverageId(string $baseClass, string|int $dataName): string
+    {
+        return $baseClass . self::resolveTestMethod($baseClass) . self::resolveTestDataSet($dataName);
+    }
+
+    private static function resolveTestMethod(string $baseClass): string
+    {
+        $stack = debug_backtrace();
+
+        // Get the first class in the stack which is baseClass, then get its first test method
+        foreach ($stack as $t) {
+            if (! isset($t['object'], $t['class']) || $t['class'] !== $baseClass) {
+                continue;
+            }
+
+            // The test method is the first one in the backtrace which has the Test attribute
+            $ref = new ReflectionMethod($t['object'], $t['function']);
+            $attributes = $ref->getAttributes();
+            foreach ($attributes as $attr) {
+                if ($attr->getName() === Test::class) {
+                    return '::' . $t['function'];
+                }
+            }
+        }
+
+        return '';
+    }
+
+    private static function resolveTestDataSet(string|int $dataName): string
+    {
+        return ! empty($dataName) ? '#' . $dataName : '';
+    }
+}
+```
+
+Then you could call `CoverageHelper::resolveCoverageId(static::class, $this->dataName())` from any test extending PHPUnit's `TestCase`, and you would get the right coverage ID.
+
+Resolving the method depends a bit on how you define your tests. The logic above looks for a method "tagged" with the `#[Test]` attribute, but you could still be using the old `@test` annotation, just prefixing your test method names with `test`, or even using a combination of all of them, so make sure to edit that logic accordingly.
+
+Finally, you need to "send" this value to the "remote" process:
+
+* For tests that perform API requests, the simplest approach is to send a `X-Coverage-Id` header with the value generated above.
+* For tests that run a child process for command line tools and such, you can pass a `COVERAGE_ID` environment variable down to it.
+
+> One thing I have been doing is have my own base test classes extending `PHPUnit\Framework\TestCase`, which define helper methods to make HTTP requests or run a child process, and transparently "inject" the coverage ID.
+>
+> See [`ApiTestCase`](https://github.com/shlinkio/shlink-test-utils/blob/d8e02c97e31f7d9ccdec5e5aff9f4381699760ca/src/ApiTest/ApiTestCase.php#L65) and [`CliTestCase`](https://github.com/shlinkio/shlink-test-utils/blob/d8e02c97e31f7d9ccdec5e5aff9f4381699760ca/src/CliTest/CliTestCase.php#L25) if you need some inspiration.
+
+### Collecting and dumping coverage
+
+The next thing we need to do is create the `SebastianBergmann\CodeCoverage\CodeCoverage` object that we'll use to collect coverage, and dump the partial report at the end of the process.
+
+```php
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
+use SebastianBergmann\CodeCoverage\Filter;
+use SebastianBergmann\CodeCoverage\Report\PHP;
+use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+
+use function microtime;
+use function register_shutdown_function;
+
+class CoverageHelper
+{
+    // ...
+
+    /**
+     * @param string[] $dirs - List of directories to collect coverage from
+     * @param $shutdownExportBasePath - Directory where the coverage report will be dumped
+     */
+    public static function createCoverageForDirectories(
+        array $dirs,
+        string $shutdownExportBasePath,
+    ): CodeCoverage {
+        // Determine from what directories we want coverage to be collected
+        $filter = new Filter();
+        foreach ($dirs as $dir) {
+            foreach ((new FileIteratorFacade())->getFilesAsArray($dir) as $file) {
+                $filter->includeFile($file);
+            }
+        }
+
+        $coverage = new CodeCoverage((new Selector())->forLineCoverage($filter), $filter);
+
+        // When the process is shut down, dump a partial coverage report in PHP format
+        register_shutdown_function(function () use ($shutdownExportBasePath, $coverage): void {
+            $id = (string) microtime(as_float: true);
+            $covPath = $shutdownExportBasePath . '/' . $id . '.cov';
+            (new PHP())->process($coverage, $covPath);
+        });
+
+        return $coverage;
+    }
+}
+```
+
+Take into account that you need to call `CoverageHelper::createCoverageForDirectories(...)` only once, when the process running your source code is executed.
+
+But this itself will generate an empty coverage report, as we are not collecting anything yet. The next step is to set up the appropriate "hooks" for collection.
+
+This again depends on how your application works, but most PHP web frameworks allow you to configure events, hooks or similar to trigger code just before a request is dispatched, and just after it has been dispatched.
+
+This example shows, in pseudocode, how you would do it on a middleware-based web app:
+
+```php
+// App's bootstrap script or entry point...
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+$coverage = CoverageHelper::createCoverageForDirectories(...);
+$app = ...;
+
+$app->middleware(
+  function(ServerRequestInterface $request, RequestHandlerInterface $handler) use ($coverage): ResponseInterface {
+      $coverageId = $request->getHeaderLine('X-Coverage-Id');
+      if ($coverageId === '') {
+          return $handler->handle($request);
+      }
+
+      $coverage->start($coverageId);
+      try {
+          return $handler->handle($request);
+      } finally {
+          $coverage->stop();
+      }
+  },
+);
+
+// ...
+
+$app->run();
+```
+
+Something similar can be done for CLI applications. Once again, the implementation will vary, but let's use a `symfony/console` application for this example, as it's the most popular package to build CLI apps.
+
+```php
+// App's entry point...
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+$coverage = CoverageHelper::createCoverageForDirectories(...);
+$app = new Application();
+$dispatcher = new EventDispatcher();
+
+// Set up commands...
+
+// When the command starts, start collecting coverage
+$dispatcher->addListener(
+    'console.command',
+    static function () use ($coverage): void {
+        $id = getenv('COVERAGE_ID');
+        if ($id) {
+            $coverage->start($id);
+        }
+    },
+);
+
+// When the command ends, stop collecting coverage
+$dispatcher->addListener(
+    'console.terminate',
+    static function () use ($coverage): void {
+        $id = getenv('COVERAGE_ID');
+        if ($id) {
+            $coverage->stop();
+        }
+    },
+);
+
+$app->setDispatcher($dispatcher);
+$app->run();
+```
+
+That example will "hook" starting and stopping code coverage collection for provided coverage ID, right before and after your code runs as part of the Symfony command.
+
+> If you are not running a Symfony command, you will have to find alternative ways to wrap coverage collection "around" your code.
+
+### Generating the final report
+
+With everything explained so far, you can now run your tests, and you'll end-up with a bunch of partial coverage reports, in PHP format (with `.cov` extension).
+
+The final step consists in merging all of those files into a single full report with the format of your choice, using `phpunit/phpcov`.
+
+What I would recommend is defining a composer script that runs the tests, merges partial reports, and deletes them if merging succeeded.
+
+```json
+// composer.json
+{
+    // [...]
+    "scripts": {
+        "test:api": "phpunit -c phpunit-api.xml",
+        "test:api:coverage": "@test:api && vendor/bin/phpcov merge coverage-api --html=coverage-api/html --clover=coverage-api/clover.xml && rm coverage-api/*.cov",
+        "test:cli": "phpunit -c phpunit-cli.xml",
+        "test:cli:coverage": "@test:cli && vendor/bin/phpcov merge coverage-cli --html=coverage-cli/html --clover=coverage-cli/clover.xml && rm coverage-cli/*.cov"
+    }
+}
+```
+
+After running any of the `:coverage` scripts above, you will end up with html and clover coverage reports for the corresponding test suite.
+
+You could even evolve that to generate a coverage report that merges all reports from all individual test suites, to see what code is covered by at least one of them.
+
+> In those examples, when calling `vendor/bin/phpcov merge`, the very next arg (either `coverage-api` or `coverage-cli`) should be the same directory we passed as the second argument to `CoverageHelper::createCoverageForDirectories`. In other words, the location where partial reports are dumped.
+
+### Final considerations
+
+The good thing about the approach explained here is that it is not very coupled to running your app in one specific way. It can definitely be trickier depending on the tools and libraries your project uses, but it should be doable.
+
+That said, there is still room for improvement and a few things to have in mind.
+
+* The first and most obvious problem is that you will have to write and maintain some logic that comes for free for unit tests. If PHPUnit was able to collect code coverage remotely, this could be simplified.
+* This approach leaks a bit of logic in your source code which is meant for testing only. That means you will have to find a way to conditionally run it only when it's appropriate.
+
+  What I usually do is load some config files conditionally, in the same way there's differences between development and production environments.
+
+* Depending on how many "remote" processes are triggered by your test suite, you can end up with a lot of partial reports. If merging them fails, or the test execution halts, you may have a bunch of not-deleted artifacts.
+* API tests will usually require starting some kind of app server which can handle the requests sent by your tests. That means you'll probably need a script that starts the server, waits for it to be ready, runs the test suite and stops the server at the end.
+
+  I use [this script](https://github.com/shlinkio/shlink/blob/0bacb215c59ca55bce26dec265da4428e9fbde01/bin/test/run-api-tests.sh) in a project, in case you need to see an example.
+
+* The logic to generate coverage IDs relies on an internal PHPUnit method that could change at any moment, breaking it.
