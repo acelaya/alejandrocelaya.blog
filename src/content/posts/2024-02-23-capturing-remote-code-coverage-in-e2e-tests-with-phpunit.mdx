@@ -16,7 +16,7 @@ When you run PHPUnit and enable code coverage collection, it will check which of
 
 In order to know which tests cover every particular line of source code, PHPUnit generates what are called "coverage IDs", which is basically the test class, followed by the test method, followed by the data provider name, if any.
 
-For example, if we have this test class:
+For example, let's imagine we have this test class:
 
 ```php
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -70,10 +70,10 @@ Let's list the steps we will have to follow:
     * For API tests we can pass this as an HTTP header, as all the code used during the HTTP request lifecycle should be considered covered by the test that triggered that call.
     * For CLI tests one option is to define an environment variable.
 3. When the "remote" process starts (web workers, php-fpm processes, console commands, etc.) we need to create a `SebastianBergmann\CodeCoverage\CodeCoverage` object that will be used during the whole process.
-4. Some processes will handle only one coverage ID (console commands or php-fpm processes), but if you use an app server that persist processes in memory (like [RoadRunner](https://roadrunner.dev/) or [FrankenPHP](https://frankenphp.dev/)) it may end up handling multiple coverage IDs before being killed.
+4. Some processes will handle only one coverage ID (console commands or php-fpm processes), but if you use an app server with long-running processes that keep your code in memory (like [RoadRunner](https://roadrunner.dev/) or [FrankenPHP](https://frankenphp.dev/)) it may end up handling multiple coverage IDs before being killed.
 5. Every process running source code is independent, and they don't know about each other, so they will all dump a temporary partial coverage report when the process ends, using the coverage object generated in step 3. We will use [`register_shutdown_function`](https://www.php.net/manual/en/function.register-shutdown-function.php) for that.
-6. When all tests have been executed, we will "kill" processes running source code, if needed. Console commands, php-fpm processes and such will end themselves, but persistent app servers will need to be stopped.
-7. Once all tests are executed, we should have a bunch of partial coverage reports. To generate a full coverage report in whatever format we want, we will use the [`phpunit/phpcov`](https://github.com/sebastianbergmann/phpcov) package, which provides a CLI tool for that.
+6. When all tests have been executed, we will "kill" processes running source code, if needed. Console commands, php-fpm processes and such will end by themselves, but persistent app servers will need to be stopped.
+7. Once all tests are executed, we should have a bunch of partial coverage reports. To merge them into a full coverage report in whatever format we want, we will use the [`phpunit/phpcov`](https://github.com/sebastianbergmann/phpcov) package, which provides a CLI tool for that.
 
 ### Generating the coverage ID
 
@@ -81,7 +81,7 @@ As we've seen in the first block, code coverage IDs are composed by three parts:
 
 1. **The test class name**: You can easily get it with `static::class`.
 2. **The test method**: This is the trickiest part to get. More on this in the example below.
-3. **The dataset name**: There's no officially documented way to get this, but PHPUnit `TestCase` class has a `dataName()` method that you can use from any test to get it: `$this->dataName()`. Just take into consideration this method is tagged as internal, and not covered by the SemVer's backward compatibility promise.
+3. **The dataset name**: There's no officially documented way to get this, but you can call `$this->dataName()` from any class extending PHPUnit's `TestCase` to get it. Just take into consideration this method is tagged as internal, and not covered by the SemVer's backward compatibility promise.
 
 With this in mind, we could create a helper that handles coverage ID generation:
 
@@ -130,16 +130,16 @@ class CoverageHelper
 
 Then you could call `CoverageHelper::resolveCoverageId(static::class, $this->dataName())` from any test extending PHPUnit's `TestCase`, and you would get the right coverage ID.
 
-Resolving the method depends a bit on how you define your tests. The logic above looks for a method "tagged" with the `#[Test]` attribute, but you could be still using the old `@test` annotation, just prefixing your test method names with `test`, or even using a combination of all of them, so make sure to edit that logic accordingly.
+Resolving the method depends a bit on how you define your tests. The logic above looks for a method "tagged" with the `#[Test]` attribute, but you could still be using the old `@test` annotation, just prefixing your test method names with `test`, or even using a combination of all of them, so make sure to edit that logic accordingly.
 
 Finally, you need to "send" this value to the "remote" process:
 
-* For tests that perform API requests, the simplest approach is sending a `X-Coverage-Id` header with the value generated above.
+* For tests that perform API requests, the simplest approach is to send a `X-Coverage-Id` header with the value generated above.
 * For tests that run a child process for command line tools and such, you can pass a `COVERAGE_ID` environment variable down to it.
 
 > One thing I have been doing is have my own base test classes extending `PHPUnit\Framework\TestCase`, which define helper methods to make HTTP requests or run a child process, and transparently "inject" the coverage ID.
 >
-> See [`CliTestCase`](https://github.com/shlinkio/shlink-test-utils/blob/d8e02c97e31f7d9ccdec5e5aff9f4381699760ca/src/CliTest/CliTestCase.php#L25) and [`ApiTestCase`](https://github.com/shlinkio/shlink-test-utils/blob/d8e02c97e31f7d9ccdec5e5aff9f4381699760ca/src/ApiTest/ApiTestCase.php#L65) if you need inspiration.
+> See [`ApiTestCase`](https://github.com/shlinkio/shlink-test-utils/blob/d8e02c97e31f7d9ccdec5e5aff9f4381699760ca/src/ApiTest/ApiTestCase.php#L65) and [`CliTestCase`](https://github.com/shlinkio/shlink-test-utils/blob/d8e02c97e31f7d9ccdec5e5aff9f4381699760ca/src/CliTest/CliTestCase.php#L25) if you need some inspiration.
 
 ### Collecting and dumping coverage
 
@@ -189,9 +189,9 @@ class CoverageHelper
 }
 ```
 
-Take into consideration that you need to call this only once, when the process running your source code is executed.
+Take into account that you need to call `CoverageHelper::createCoverageForDirectories(...)` only once, when the process running your source code is executed.
 
-But this itself will generate an empty coverage report, as we are not collecting anything yet. The next step is set up the appropriate "hooks" for collection.
+But this itself will generate an empty coverage report, as we are not collecting anything yet. The next step is to set up the appropriate "hooks" for collection.
 
 This again depends on how your application works, but most PHP web frameworks allow you to configure events, hooks or similar to trigger code just before a request is dispatched, and just after it has been dispatched.
 
@@ -228,7 +228,7 @@ $app->middleware(
 $app->run();
 ```
 
-Something similar can be done for CLI applications. Once again, the implementation will vary, but let's use a `symfony/console` application for the example, as it's the most popular package to build CLI apps.
+Something similar can be done for CLI applications. Once again, the implementation will vary, but let's use a `symfony/console` application for this example, as it's the most popular package to build CLI apps.
 
 ```php
 // App's entry point...
@@ -313,6 +313,6 @@ That said, there is still room for improvement and a few things to have in mind.
 * Depending on how many "remote" processes are triggered by your test suite, you can end up with a lot of partial reports. If merging them fails, or the test execution halts, you may have a bunch of not-deleted artifacts.
 * API tests will usually require starting some kind of app server which can handle the requests sent by your tests. That means you'll probably need a script that starts the server, waits for it to be ready, runs the test suite and stops the server at the end.
 
-  I use [this script](https://github.com/shlinkio/shlink/blob/0bacb215c59ca55bce26dec265da4428e9fbde01/bin/test/run-api-tests.sh) in a project. Use it for inspiration if needed.
+  I use [this script](https://github.com/shlinkio/shlink/blob/0bacb215c59ca55bce26dec265da4428e9fbde01/bin/test/run-api-tests.sh) in a project, in case you need to see an example.
 
 * The logic to generate coverage IDs relies on an internal PHPUnit method that could change at any moment, breaking it.
