@@ -1,5 +1,5 @@
-import { faGithub, faLinkedinIn, faXTwitter, faMastodon } from '@fortawesome/free-brands-svg-icons';
-import { faCloud, faRss } from '@fortawesome/free-solid-svg-icons';
+import { faBluesky, faGithub, faLinkedinIn, faXTwitter, faMastodon } from '@fortawesome/free-brands-svg-icons';
+import { faRss } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { ExternalLink } from 'react-external-link';
@@ -37,38 +37,48 @@ const FollowMe = () => (
     <h3 className="font-normal mb-4">Follow me</h3>
     <ul className="space-x-1 lg:space-x-4">
       <li className="inline text-md">
-        <Link className="text-grey-light" href="https://www.linkedin.com/in/alejandro-celaya-alastrue/" title="LinkedIn">
-          <span className="sr-only">LinkedIn</span>
+        <Link
+          className="text-grey-light"
+          href="https://www.linkedin.com/in/alejandro-celaya-alastrue/"
+          title="LinkedIn"
+          aria-label="LinkedIn"
+        >
           <FontAwesomeIcon icon={faLinkedinIn} />
         </Link>
       </li>
       <li className="inline text-md">
-        <Link className="text-grey-light" href="https://github.com/acelaya" title="GitHub">
-          <span className="sr-only">GitHub</span>
+        <Link className="text-grey-light" href="https://github.com/acelaya" title="GitHub" aria-label="GitHub">
           <FontAwesomeIcon icon={faGithub} />
         </Link>
       </li>
       <li className="inline text-md">
-        <Link className="text-grey-light" href="https://mastodon.social/@acelaya" rel="me" title="Mastodon">
-          <span className="sr-only">Mastodon</span>
+        <Link
+          className="text-grey-light"
+          href="https://mastodon.social/@acelaya"
+          rel="me"
+          title="Mastodon"
+          aria-label="Mastodon"
+        >
           <FontAwesomeIcon icon={faMastodon} />
         </Link>
       </li>
       <li className="inline text-md">
-        <Link className="text-grey-light" href="https://bsky.app/profile/acelaya.bsky.social" title="Bkuesky">
-          <span className="sr-only">Bkuesky</span>
-          <FontAwesomeIcon icon={faCloud} />
+        <Link
+          className="text-grey-light"
+          href="https://bsky.app/profile/acelaya.bsky.social"
+          title="Bluesky"
+          aria-label="Bluesky"
+        >
+          <FontAwesomeIcon icon={faBluesky} />
         </Link>
       </li>
       <li className="inline text-md">
-        <Link className="text-grey-light" href="https://x.com/acelayaa" title="Twitter">
-          <span className="sr-only">Twitter</span>
+        <Link className="text-grey-light" href="https://x.com/acelayaa" title="Twitter" aria-label="Twitter">
           <FontAwesomeIcon icon={faXTwitter} />
         </Link>
       </li>
       <li className="inline text-md">
-        <ExternalLink className="text-grey-light" href="/atom.xml" title="RSS">
-          <span className="sr-only">RSS</span>
+        <ExternalLink className="text-grey-light" href="/atom.xml" title="RSS" aria-label="RSS">
           <FontAwesomeIcon icon={faRss} />
         </ExternalLink>
       </li>
