@@ -38,6 +38,6 @@
     "@types/markdown-it": "^14.0.0",
     "@types/node": "^20.12.5",
     "@types/react": "18.2.74",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   }
 }
