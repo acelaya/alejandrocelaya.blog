@@ -7,8 +7,8 @@
   },
   "dependencies": {
     "@astro-community/astro-embed-twitter": "^0.5.4",
-    "@astrojs/mdx": "^2.3.1",
-    "@astrojs/react": "^3.3.2",
+    "@astrojs/mdx": "^3.0.0",
+    "@astrojs/react": "^3.3.4",
     "@astrojs/rss": "^4.0.5",
     "@astrojs/sitemap": "^3.1.4",
     "@astrojs/tailwind": "^5.1.0",
