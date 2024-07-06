@@ -19,7 +19,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mdx-js/react": "^3.0.1",
-    "astro": "^4.11.3",
+    "astro": "^4.11.5",
     "astro-google-analytics": "^1.0.3",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
