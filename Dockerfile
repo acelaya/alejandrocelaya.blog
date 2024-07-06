@@ -1,4 +1,4 @@
-FROM node:22.3-alpine as node
+FROM node:22.4-alpine as node
 COPY . /blog
 RUN cd /blog && \
     npm ci && \
