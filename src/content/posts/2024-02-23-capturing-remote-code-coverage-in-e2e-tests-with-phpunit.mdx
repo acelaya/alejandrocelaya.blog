@@ -18,7 +18,7 @@ In order to know which tests cover every particular line of source code, PHPUnit
 
 For example, let's imagine we have this test class:
 
-```php
+```php title="MyCoolTest.php"
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -85,7 +85,7 @@ As we've seen in the first block, code coverage IDs are composed by three parts:
 
 With this in mind, we could create a helper that handles coverage ID generation:
 
-```php
+```php title="CoverageHelper.php"
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionMethod;
 
@@ -145,7 +145,7 @@ Finally, you need to "send" this value to the "remote" process:
 
 The next thing we need to do is create the `SebastianBergmann\CodeCoverage\CodeCoverage` object that we'll use to collect coverage, and dump the partial report at the end of the process.
 
-```php
+```php title="CoverageHelper.php"
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Filter;
@@ -197,7 +197,7 @@ This again depends on how your application works, but most PHP web frameworks al
 
 This example shows, in pseudocode, how you would do it on a middleware-based web app:
 
-```php
+```php title="app.php"
 // App's bootstrap script or entry point...
 
 use Psr\Http\Message\ResponseInterface;
@@ -230,7 +230,7 @@ $app->run();
 
 Something similar can be done for CLI applications. Once again, the implementation will vary, but let's use a `symfony/console` application for this example, as it's the most popular package to build CLI apps.
 
-```php
+```php title="console.php"
 // App's entry point...
 
 use Symfony\Component\Console\Application;
@@ -280,10 +280,8 @@ The final step consists in merging all of those files into a single full report 
 
 What I would recommend is defining a composer script that runs the tests, merges partial reports, and deletes them if merging succeeded.
 
-```json
-// composer.json
+```json title="composer.json"
 {
-    // [...]
     "scripts": {
         "test:api": "phpunit -c phpunit-api.xml",
         "test:api:coverage": "@test:api && vendor/bin/phpcov merge coverage-api --html=coverage-api/html --clover=coverage-api/clover.xml && rm coverage-api/*.cov",

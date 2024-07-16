@@ -76,4 +76,7 @@
     .post em {
         @apply font-medium;
     }
+    .post .expressive-code {
+        @apply mb-4;
+    }
 }
