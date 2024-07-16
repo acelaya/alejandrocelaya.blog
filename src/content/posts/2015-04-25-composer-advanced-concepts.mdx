@@ -76,7 +76,7 @@ The composer.json file can include a **repositories** block, where we define oth
 
 There are several repository types supported by composer, from a VCS repository to a plain local directory containing zip files.
 
-```javascript
+```json
 {
     "repositories": [
         {
@@ -105,7 +105,7 @@ Sometimes a library includes some command line interface scripts that the user c
 
 If you want to include your own CLI scripts and allow any user to find them when installing your library as a dependency, you will want to define them in the **bin** block.
 
-```javascript
+```json
 {
     "bin": [
         "scripts/generate-foo",
@@ -127,7 +127,7 @@ Composer will trigger some events during the process of installing dependencies,
 
 These event listeners are defined in the **scripts** block. They can be either CLI commands or static class methods.
  
-```javascript
+```json
 {
     "scripts": {
         "post-package-install": "Acelaya\\MyClass::postPkgInstall",

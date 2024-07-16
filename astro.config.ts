@@ -2,6 +2,7 @@ import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
+import expressiveCode from 'astro-expressive-code';
 import { defineConfig } from 'astro/config';
 import { config } from './config/config';
 
@@ -9,7 +10,7 @@ import { config } from './config/config';
 export default defineConfig({
   site: config.SITE_URL,
   outDir: './build',
-  integrations: [sitemap(), react(), mdx(), tailwind({
+  integrations: [sitemap(), react(), expressiveCode(), mdx(), tailwind({
     // Disable base @tailwind directives to apply manually
     applyBaseStyles: false,
   })],
@@ -18,7 +19,7 @@ export default defineConfig({
     server: {
       watch: {
         ignored: ['**/home/**', '**/build/**', '**/.idea/**', '**/node_modules/**', '**/.git/**']
-      }
+      },
     },
   },
 });

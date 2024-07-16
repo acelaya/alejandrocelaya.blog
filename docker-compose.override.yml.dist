@@ -1,5 +1,3 @@
-version: '3'
-
 services:
     acelaya_blog_node:
         user: 1000:1000
