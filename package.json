@@ -33,7 +33,7 @@
     "react-dom": "^18.3.1",
     "react-external-link": "^2.3.1",
     "react-photoswipe-gallery": "^3.0.1",
-    "tailwindcss": "^3.4.4"
+    "tailwindcss": "^3.4.7"
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.1",
