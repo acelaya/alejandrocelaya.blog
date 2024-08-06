@@ -1,5 +1,4 @@
 ---
-import { GoogleAnalytics } from 'astro-google-analytics';
 import { clsx } from 'clsx';
 import { Container } from '../components/Container';
 import Footer from '../components/Footer';
@@ -35,7 +34,6 @@ const scrollTargetId = 'mainSectionId';
     <meta property="og:url" content={`${config.SITE_URL}${url}`} />
     <meta property="og:type" content="development" />
     <meta property="og:image" content={`${config.SITE_URL}/assets/img/hero_bg.jpg`} />
-    <GoogleAnalytics id={config.GA} />
   </head>
   <body>
     <Header categories={categories} client:load />
