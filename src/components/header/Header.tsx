@@ -1,4 +1,4 @@
-import { faBars, faCode, faRss, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faRss, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC, PropsWithChildren } from 'react';
 import { ExternalLink } from 'react-external-link';
@@ -73,12 +73,6 @@ export const Header: FC<{ categories: Categories }> = ({ categories }) => {
                   <FontAwesomeIcon fixedWidth icon={faRss} />
                   <span className="ml-2 md:sr-only">RSS feed</span>
                 </ExternalLink>
-              </li>
-              <li>
-                <Link className={linkClasses} href="https://www.alejandrocelaya.com">
-                  <FontAwesomeIcon fixedWidth icon={faCode} />
-                  <span className="ml-2 md:sr-only">About me</span>
-                </Link>
               </li>
               <li>
                 <ThemeToggle className={linkClasses} />

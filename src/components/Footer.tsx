@@ -1,4 +1,4 @@
-import { faBluesky, faGithub, faLinkedinIn, faXTwitter, faMastodon } from '@fortawesome/free-brands-svg-icons';
+import { faBluesky, faGithub, faLinkedinIn, faMastodon } from '@fortawesome/free-brands-svg-icons';
 import { faRss } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
@@ -73,11 +73,6 @@ const FollowMe = () => (
         </Link>
       </li>
       <li className="inline text-md">
-        <Link className="text-grey-light" href="https://x.com/acelayaa" title="Twitter" aria-label="Twitter">
-          <FontAwesomeIcon icon={faXTwitter} />
-        </Link>
-      </li>
-      <li className="inline text-md">
         <ExternalLink className="text-grey-light" href="/atom.xml" title="RSS" aria-label="RSS">
           <FontAwesomeIcon icon={faRss} />
         </ExternalLink>
@@ -117,9 +112,7 @@ const Footer: FC<FooterProps> = ({ latestPosts, categories }) => (
     <Container className="py-8 flex flex-col md:flex-row items-center md:justify-between">
       <p className="text-sm">
         &copy;{`${new Date().getFullYear()} `}
-        <Link className="light-link font-bold" href="https://www.alejandrocelaya.com">
-          Alejandro Celaya Alastrué
-        </Link>
+        Alejandro Celaya Alastrué
       </p>
       <p className="text-sm">Full-stack developer</p>
     </Container>
