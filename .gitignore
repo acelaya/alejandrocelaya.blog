@@ -1,6 +1,4 @@
 /node_modules
 /coverage
-docker-compose.override.yml
-/home
 .astro
 /build

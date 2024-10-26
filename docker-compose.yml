@@ -1,7 +1,8 @@
 services:
     acelaya_blog_node:
         container_name: acelaya_blog_node
-        image: node:21.0-alpine
+        user: 1000:1000
+        image: node:22.10-alpine
         command: /bin/sh -c "cd /blog && npm install && npm run dev"
         volumes:
             - ./:/blog
