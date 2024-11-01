@@ -65,7 +65,7 @@ const FollowMe = () => (
       <li className="inline text-md">
         <Link
           className="text-grey-light"
-          href="https://bsky.app/profile/acelaya.bsky.social"
+          href="https://bsky.app/profile/acelaya.com"
           title="Bluesky"
           aria-label="Bluesky"
         >
