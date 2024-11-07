@@ -4,8 +4,6 @@ tags: ['zf2', 'zf3', 'di', 'dependency-injection', 'services', 'factories', 'ser
 categories: ['php']
 ---
 
-import Tweet from '../../components/Tweet.astro';
-
 I think it is doubtless that modern PHP embraces SOLID principles, and therefore, [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection).
 
 That's why every modern PHP application needs a dependency injection container to deal with it.
@@ -27,8 +25,6 @@ Since this container expects you to define factories for every service, you usua
 That's why it is **so important** to properly reuse factories when possible, not only because you will have to maintain less classes, but because the ServiceManager will instantiate less objects at runtime when it can reuse a factory.
 
 This article is born because of the question of a reader of this blog, which asked me what did I mean with the *"redundancy mitigated by reusing same factory"* sentence, in one of my [Zend Expressive articles](/2016/07/21/project-scalability-with-zend-expressive/).
-
-<Tweet tweetId="888402105341530112" />
 
 I created a [gist](https://gist.github.com/acelaya/41cf7457c2dbc434c4bb919a21e002da) with some of the approaches to reuse factories, but I think it deserves a blog post, so here it is.
 
