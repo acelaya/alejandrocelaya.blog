@@ -295,7 +295,7 @@ return [
 
 ### Delegator factories
 
-Delegator factories allow us to override the behavior of certain factories without code duplication. [Here](https://ocramius.github.io/blog/zend-framework-2-delegator-factories-explained/) is an excelent article about delegator factories by [Marco Pivetta](https://twitter.com/Ocramius), who originally created the implementation in Zend Framework 2.
+Delegator factories allow us to override the behavior of certain factories without code duplication. [Here](https://ocramius.github.io/blog/zend-framework-2-delegator-factories-explained/) is an excelent article about delegator factories by [Marco Pivetta](https://github.com/Ocramius/), who originally created the implementation in Zend Framework 2.
 
 It could happen we have a service that is created in a third party factory and we need to update the way it is created because we don't need some of the soft dependencies injected on it but instead we need to do "whatever" before returning it.
 

@@ -14,7 +14,7 @@ Swoole is an asynchronous non-blocking I/O framework which works in a similar wa
 
 It has been conceived in a way that the app stays in memory between requests, removing the bootstrapping step and making apps to be served much faster.
 
-Swoole can serve as many simultaneous requests as you tell it to. For this it makes use of workers. Each worker can serve one request at a time, and every worker has a separate instance of the app loaded in memory (this is something I [learned recently](https://twitter.com/dominikzogg/status/1189403552399134720)).
+Swoole can serve as many simultaneous requests as you tell it to. For this it makes use of workers. Each worker can serve one request at a time, and every worker has a separate instance of the app loaded in memory.
 
 Because of this, you have to sometimes change a bit the way you design your code. For example, if a service needs to be stateful (it shouldn't, but shit happens), you will have to remember that the state will persist between requests, and you will want to somehow reset it to avoid unexpected side effects.
 

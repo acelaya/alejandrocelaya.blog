@@ -13,7 +13,7 @@ It has a number of advantages. The first one, as I already said, is the fact tha
 * A UUID (**U**niversally **U**nique **ID**entifier) is universally unique. That menas that it is not unique only in the scope of a table, like an autoincrement, but unique accross any system in the world.
 * Since it is globally unique, it can be generated before being stored in the database or even in client-side, and we can be sure (almost) it won't be duplicated.
 * Allows to easily migrate and merge information from different tables and databases, by keeping their identifier, since it will still be unique.
-* Decouples your application with the persistence layer, since all the information is generated before being persisted. (Thanks to **<a href="https://twitter.com/tomas2387/status/658237457117368320" target="_blank">@tomas2387</a>** for mentioning this)
+* Decouples your application with the persistence layer, since all the information is generated before being persisted.
 
 I'm going to explain now, how to take advantage of UUIDs when working with databases in PHP applications by using Doctrine and the fantastic [ramsey/uuid](https://github.com/ramsey/uuid) package, with the bridge library [ramsey/uuid-doctrine](https://github.com/ramsey/uuid-doctrine).
 

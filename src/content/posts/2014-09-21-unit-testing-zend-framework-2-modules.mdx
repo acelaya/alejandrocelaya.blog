@@ -80,7 +80,7 @@ function findParentPath($path)
 
 What this script does is basically trying to recursively find the vendor folder in a parent directory. If it finds it, it includes the autoloader, if not, it throws a `RuntimeException`.
 
-This approach is not my own idea, I think I saw it in an [@ocramius](https://twitter.com/Ocramius) module and really liked its simplicity.
+This approach is not my own idea, I think I saw it in one of [Marco Pivetta](https://github.com/Ocramius/)'s modules, and really liked its simplicity.
 
 That makes us not having to use `Zend\Loader`, loading modules, preparing a `ServiceManager` and such. The only thing you need is to define the autoloading strategy of your module in the composer.json file, and the rest of the dependencies will be available too.
 
