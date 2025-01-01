@@ -1,6 +1,7 @@
 ---
 import PostsList from '../../layouts/PostsList.astro';
-import { getAllPosts, PAGE_SIZE } from '../../utils/posts';
+import { PAGE_SIZE } from '../../utils/posts';
+import { getAllPosts } from '../../utils/posts-content';
 
 export async function getStaticPaths({ paginate }) {
   const posts = await getAllPosts();

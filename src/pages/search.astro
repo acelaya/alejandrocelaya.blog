@@ -3,7 +3,7 @@ import { Container } from '../components/Container';
 import { SectionTitle } from '../components/SectionTitle';
 import { Search } from '../components/Search';
 import Layout from '../layouts/Layout.astro';
-import { getAllPosts, SimplePost } from '../utils/posts';
+import { getAllPosts, SimplePost } from '../utils/posts-content';
 
 const posts: SimplePost[] = await getAllPosts().then((posts) =>
   // Get rid of the `render` function, which cannot be serialized
