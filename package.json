@@ -37,6 +37,6 @@
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.10.5",
     "@types/react": "18.3.12",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   }
 }
