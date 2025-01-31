@@ -6,11 +6,11 @@
     "preview": "astro preview --host 0.0.0.0"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.0.7",
-    "@astrojs/react": "^4.1.6",
+    "@astrojs/mdx": "^4.0.8",
+    "@astrojs/react": "^4.2.0",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.2.1",
-    "@astrojs/tailwind": "^5.1.5",
+    "@astrojs/tailwind": "^6.0.0",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
@@ -18,7 +18,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mdx-js/react": "^3.1.0",
-    "astro": "^5.1.9",
+    "astro": "^5.2.1",
     "astro-expressive-code": "^0.40.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.10.10",
-    "@types/react": "18.3.12",
+    "@types/react": "^18.3.12",
     "typescript": "^5.7.3"
   }
 }
