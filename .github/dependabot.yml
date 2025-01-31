@@ -16,6 +16,10 @@ updates:
         patterns:
           - 'astro'
           - '@astrojs*'
+      tailwindcss:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
   - package-ecosystem: docker
     directory: '/'
     schedule:

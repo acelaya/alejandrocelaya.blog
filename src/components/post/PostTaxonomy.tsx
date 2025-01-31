@@ -12,7 +12,7 @@ interface TaxonomyProps {
 export const PostTaxonomy: FC<TaxonomyProps> = ({ type, appendSpace, value }) => (
   <>
     <Link
-      className={clsx('px-2 py-1 rounded text-white hover:text-white font-bold text-xs', {
+      className={clsx('px-2 py-1 rounded-sm text-white hover:text-white font-bold text-xs', {
         'bg-primary dark:text-grey-dark': type === 'tag',
         'bg-grey-dark dark:bg-grey': type === 'category',
       })}

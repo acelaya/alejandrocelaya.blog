@@ -43,7 +43,7 @@ export const Header: FC<{ categories: Categories }> = ({ categories }) => {
         onClick={() => setVisible((prev) => !prev)}
         className={clsx('md:hidden fixed right-6 top-4 z-50 text-white')}
       >
-        <FontAwesomeIcon icon={visible ? faTimes : faBars} size="xl" className="drop-shadow" />
+        <FontAwesomeIcon icon={visible ? faTimes : faBars} size="xl" className="drop-shadow-sm" />
       </button>
       <section className={clsx('z-40 top-0 transition-[right]', [
         // Default (mobile)

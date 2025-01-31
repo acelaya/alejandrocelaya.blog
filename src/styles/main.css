@@ -1,6 +1,54 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:is([data-theme="dark"] *));
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+
+  --color-main: #494e57;
+  --color-code: #c7254e;
+
+  --color-primary-dark: #61931a;
+  --color-primary: #8dc63f;
+
+  --color-grey-darker: #24272d;
+  --color-grey-dark: #2a2d36;
+  --color-grey: #484c50;
+  --color-grey-light: #6a7885;
+
+  --text-xs: 14px;
+  --text-sm: 16px;
+  --text-base: 18px;
+  --text-md: 24px;
+  --text-lg: 30px;
+  --text-xl: 70px;
+
+  --background-image-hero: url('/assets/img/hero_bg.jpg');
+
+  --transition-property-appear: width, opacity;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 @layer base {
     body {
@@ -42,7 +90,7 @@
         @apply text-center font-bold mt-6 mb-4;
     }
     .post pre {
-        @apply p-3 mb-4 rounded text-xs;
+        @apply p-3 mb-4 rounded-sm text-xs;
     }
     .post p, .post ul, .post ol, .post blockquote {
         @apply mb-4;
@@ -54,7 +102,7 @@
         @apply mb-0;
     }
     .post code:not(pre code) {
-        @apply text-[90%] text-code bg-fuchsia-50 dark:text-blue-300 dark:bg-grey p-[4px] rounded break-words;
+        @apply text-[90%] text-code bg-fuchsia-50 dark:text-blue-300 dark:bg-grey p-[4px] rounded-sm break-words;
     }
     .post a code:not(pre code) {
         @apply underline;
@@ -67,7 +115,7 @@
     }
     /* Treat as blocks all images which do not contain `/icon/` in the URL */
     .post img:not([src*='/icons/']) {
-        @apply p-1 rounded border mx-auto dark:border-grey;
+        @apply p-1 rounded-sm border mx-auto dark:border-grey;
     }
     /* Display icons inline */
     .post img[src*='/icons/'] {

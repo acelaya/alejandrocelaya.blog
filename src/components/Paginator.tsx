@@ -23,7 +23,7 @@ const Next: FC = () => <><FontAwesomeIcon icon={faArrowLeft} /> Older posts</>;
 const Prev: FC = () => <>Newer posts <FontAwesomeIcon icon={faArrowRight} /></>;
 
 const EnabledItem: FC<{ href: string; type: ItemType }> = ({ href, type }) => (
-  <Link href={href} className={clsx(itemClasses, 'hover:bg-gray-100 hover:dark:bg-grey-darker transition')}>
+  <Link href={href} className={clsx(itemClasses, 'hover:bg-gray-100 dark:hover:bg-grey-darker transition')}>
     {type === 'prev' && <Prev />}
     {type === 'next' && <Next />}
   </Link>

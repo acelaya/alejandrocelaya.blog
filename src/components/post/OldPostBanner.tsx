@@ -12,7 +12,7 @@ export const OldPostBanner: FC<WithPostProps> = ({ post }) => {
   }
 
   return (
-    <div className="mb-6 mt-6 p-2 rounded border border-yellow-300 bg-yellow-100 text-yellow-900 text-center">
+    <div className="mb-6 mt-6 p-2 rounded-sm border border-yellow-300 bg-yellow-100 text-yellow-900 text-center">
       <b>Warning!</b> This post was published <b>{formatDistanceToNow(postDate)}</b> ago, so it can contain outdated
       information. Bear this in mind when putting it into practice or leaving new comments.
     </div>
