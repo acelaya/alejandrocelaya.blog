@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "lib": [
       "dom",
       "dom.iterable",

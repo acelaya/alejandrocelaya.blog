@@ -36,7 +36,7 @@ export const Search: FC<SearchProps> = ({ posts }) => {
     <>
       <section className="mb-6">
         <input
-          className="w-full border-2 focus:border-primary rounded p-2 outline-0 transition text-main"
+          className="w-full border-2 focus:border-primary rounded-sm p-2 outline-0 transition text-main"
           type="search"
           name="q"
           placeholder="Search…"
