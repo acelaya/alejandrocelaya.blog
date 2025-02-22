@@ -9,6 +9,13 @@ updates:
       timezone: 'Europe/Madrid'
     open-pull-requests-limit: 10
     groups:
+      react:
+        patterns:
+          - 'react*'
+          - '@types/react*'
+      types:
+        patterns:
+          - '@types/*'
       fontawesome:
         patterns:
           - '@fortawesome*'
