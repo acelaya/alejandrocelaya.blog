@@ -14,7 +14,7 @@ export const HeaderSearch: FC<{ className?: string }> = ({ className }) => {
       <input
         type="search"
         className={clsx(
-          'md:absolute right-0 rounded-sm p-2 md:pr-9 outline-0 text-main',
+          'md:absolute right-0 rounded-sm p-2 md:pr-9 outline-0 text-main bg-white',
           'w-full md:w-0 md:opacity-0 md:focus:w-80 focus:opacity-100 transition-appear',
         )}
         placeholder="Search…"
@@ -32,7 +32,7 @@ export const HeaderSearch: FC<{ className?: string }> = ({ className }) => {
       />
       <button
         tabIndex={-1}
-        className="absolute right-2 top-2"
+        className="absolute right-2 top-2 cursor-pointer"
         onClick={() => ref.current?.focus()}
       >
         <FontAwesomeIcon
