@@ -24,7 +24,7 @@
     "date-fns": "^4.1.0",
     "disqus-react": "^1.1.6",
     "fuse.js": "^7.1.0",
-    "html-entities": "^2.5.5",
+    "html-entities": "^2.6.0",
     "markdown-it": "^14.1.0",
     "photoswipe": "^5.4.4",
     "react": "^19.1.0",
