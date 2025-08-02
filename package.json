@@ -6,10 +6,10 @@
     "preview": "astro preview --host 0.0.0.0"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.1",
+    "@astrojs/mdx": "^4.3.3",
     "@astrojs/react": "^4.3.0",
     "@astrojs/rss": "^4.0.12",
-    "@astrojs/sitemap": "^3.4.1",
+    "@astrojs/sitemap": "^3.4.2",
     "@fortawesome/fontawesome-free": "^7.0.0",
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-brands-svg-icons": "^7.0.0",
@@ -18,7 +18,7 @@
     "@fortawesome/react-fontawesome": "^0.2.3",
     "@mdx-js/react": "^3.1.0",
     "@tailwindcss/vite": "^4.1.11",
-    "astro": "^5.12.3",
+    "astro": "^5.12.8",
     "astro-expressive-code": "^0.41.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
