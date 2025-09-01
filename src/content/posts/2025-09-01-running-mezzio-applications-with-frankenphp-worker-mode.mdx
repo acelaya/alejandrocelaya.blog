@@ -1,0 +1,168 @@
+---
+title: 'Running Mezzio applications with FrankenPHP worker mode'
+categories: ['php']
+tags: ['franken-php', 'async', 'roadrunner', 'mezzio', 'laminas']
+---
+
+[FrankenPHP](https://frankenphp.dev/) is one of the latest additions to the PHP application server ecosystem. It was created by [Kévin Dunglas](https://github.com/dunglas), and recently started being officially supported by [The PHP Foundation](https://thephp.foundation/blog/2025/05/15/frankenphp/).
+
+It is written in Go, and provided as a high-performance replacement for php-fpm. Additionally, it also supports a so-called **worker mode**, which allows applications to be bootstrapped once in memory, and then serve requests much faster.
+
+### Using the worker mode
+
+The [official documentation](https://frankenphp.dev/docs/worker/) explains how to use this mode with **Laravel Octane** and **Symfony**, but when it comes to other frameworks, the example they provide is very generic, and requires you to know how your framework of choice works, and how FrankenPHP dispatches requests in order to do the proper wiring.
+
+On top of that, the worker script example makes use of a `frankenphp_handle_request` function, but it does not explain what it should be passed.
+
+The example worker script looks like this (simplified):
+
+```php
+<?php
+// public/index.php
+
+require __DIR__.'/vendor/autoload.php';
+
+$myApp = new \App\Kernel();
+$myApp->boot();
+
+$handler = static function () use ($myApp) {
+    // Called when a request is received,
+    // superglobals, php://input and the like are reset
+    echo $myApp->handle($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
+};
+
+do {
+    $keepRunning = \frankenphp_handle_request($handler);
+
+    // Do something after sending the HTTP response
+    $myApp->terminate();
+
+    // Call the garbage collector to reduce the chances of it being triggered in the middle of a page generation
+    gc_collect_cycles();
+} while ($keepRunning);
+
+// Cleanup
+$myApp->shutdown();
+```
+
+As you can see, there's a `$handler` callback, which is invoked for every HTTP request. In this example it simple echoes the result of `$myApp->handle(...)`, being `$myApp` and instance of a hypothetical application.
+
+### Adapting for Mezzio
+
+If you have followed [Mezzio's documentation](https://docs.mezzio.dev/mezzio/#get-started-now), you probably started you project by using the skeleton.
+
+If that's the case, you should have ended up with an index script looking more or less like this:
+
+```php
+<?php
+declare(strict_types=1);
+
+chdir(dirname(__DIR__));
+require 'vendor/autoload.php';
+
+(function () {
+    /** @var \Psr\Container\ContainerInterface $container */
+    $container = require 'config/container.php';
+
+    /** @var \Mezzio\Application $app */
+    $app = $container->get(\Mezzio\Application::class);
+    $factory = $container->get(\Mezzio\MiddlewareFactory::class);
+
+    // Execute programmatic/declarative middleware pipeline and routing
+    // configuration statements
+    (require 'config/pipeline.php')($app, $factory, $container);
+    (require 'config/routes.php')($app, $factory, $container);
+
+    $app->run();
+})();
+```
+
+Now let's adapt this to work as a FrankenPHP worker script.
+
+The first thing we need to know is that FrankenPHP invokes the callback passed to `frankenphp_handle_request` on every request. Then, it expects that callback to output/emit the raw response to be sent back to the client.
+
+During the execution of that callback, all PHP standard globals are available, with the values for that specific request.
+
+That means our handler could be implemented like this:
+
+```php
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
+use Mezzio\Application;
+use Psr\Container\ContainerInterface;
+
+/** @var ContainerInterface $container */
+$container = require 'config/container.php';
+
+/** @var Application $app */
+$app = $container->get(Application::class);
+/** @var EmitterInterface $responseEmitter */
+$responseEmitter = $container->get(EmitterInterface::class);
+
+$handler = static function () use ($app, $responseEmitter): void {
+    // Process the request and produce a response
+    $response = $app->handle(ServerRequestFactory::fromGlobals());
+    // Emit the response back to the client
+    $responseEmitter->emit($response);
+};
+
+// ...
+```
+
+Our handler is using Mezzio's Application object to handle a psr-7 request and produce a psr-7 response.
+
+Then we need a way to emit the psr-7 response object. For that we use the Emitter provided by `laminas-httphandlerunner`, which is a dependency of Mezzio, and the service should be available in the container.
+
+> We create the request via `laminas-diactoros`' `ServerRequestFactory::fromGlobals()`, which reads PHP globals to create the request object, but you could use any other psr-7 implementation if desired.
+
+Let's now put everything together and see the result:
+
+```php
+<?php
+declare(strict_types=1);
+
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
+use Mezzio\Application;
+
+chdir(dirname(__DIR__));
+require 'vendor/autoload.php';
+
+(function () {
+    /** @var ContainerInterface $container */
+    $container = require 'config/container.php';
+
+    /** @var Application $app */
+    $app = $container->get(Application::class);
+    $factory = $container->get(\Mezzio\MiddlewareFactory::class);
+
+    (require 'config/pipeline.php')($app, $factory, $container);
+    (require 'config/routes.php')($app, $factory, $container);
+
+    /** @var EmitterInterface $responseEmitter */
+    $responseEmitter = $container->get(EmitterInterface::class);
+    $handler = static function () use ($app, $responseEmitter): void {
+        $response = $app->handle(ServerRequestFactory::fromGlobals());
+        $responseEmitter->emit($response);
+    };
+
+    do {
+        $keepRunning = \frankenphp_handle_request($handler);
+        gc_collect_cycles();
+    } while ($keepRunning);
+})();
+```
+
+With the worker script above you can now serve your Mezzio application with FrankenPHP!
+
+```shell
+frankenphp php-server --worker public/index.php
+```
+
+### Conclusion
+
+More and more, worker mode and long-running apps are going to become the standard way to serve PHP apps. The ecosystem still needs to adjust and adapt a bit, but the benefits are big.
+
+There are other alternative servers, like [RoadRunner](https://roadrunner.dev/), which is in fact more performant than FrankenPHP (in my experience) and has other features on top, like the ability to run background jobs.
+
+However, with the PHP Foundation supporting FrankenPHP, I expect it soon to become the "de facto" way to run PHP applications.
