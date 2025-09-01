@@ -45,7 +45,7 @@ do {
 $myApp->shutdown();
 ```
 
-As you can see, there's a `$handler` callback, which is invoked for every HTTP request. In this example it simple echoes the result of `$myApp->handle(...)`, being `$myApp` and instance of a hypothetical application.
+As you can see, there's a `$handler` callback, which is invoked for every HTTP request. In this example it simply echoes the result of `$myApp->handle(...)`, being `$myApp` an instance of a hypothetical application.
 
 ### Adapting for Mezzio
 
@@ -163,6 +163,6 @@ frankenphp php-server --worker public/index.php
 
 More and more, worker mode and long-running apps are going to become the standard way to serve PHP apps. The ecosystem still needs to adjust and adapt a bit, but the benefits are big.
 
-There are other alternative servers, like [RoadRunner](https://roadrunner.dev/), which is in fact more performant than FrankenPHP (in my experience) and has other features on top, like the ability to run background jobs.
+There are other alternative servers, like [RoadRunner](https://roadrunner.dev/), which is in fact more performant than FrankenPHP (in my experience) and has other features on top, like the ability to run background jobs, or native support for psr-7 frameworks.
 
 However, with the PHP Foundation supporting FrankenPHP, I expect it soon to become the "de facto" way to run PHP applications.
