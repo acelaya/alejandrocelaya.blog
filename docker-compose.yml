@@ -2,8 +2,9 @@ services:
     acelaya_blog_node:
         container_name: acelaya_blog_node
         user: 1000:1000
-        image: node:22.10-alpine
-        command: /bin/sh -c "cd /blog && npm install && npm run dev"
+        image: node:24.7-alpine
+        working_dir: /blog
+        command: /bin/sh -c "npm install && node --run dev"
         volumes:
             - ./:/blog
         ports:
