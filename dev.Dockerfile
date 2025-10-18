@@ -1,4 +1,4 @@
-FROM node:24.10-alpine
+FROM node:25.0-alpine
 
 # Install tini
 RUN apk add --no-cache tini
