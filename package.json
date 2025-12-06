@@ -27,8 +27,8 @@
     "html-entities": "^2.6.0",
     "markdown-it": "^14.1.0",
     "photoswipe": "^5.4.4",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "react-external-link": "^2.6.1",
     "react-photoswipe-gallery": "^4.0.0",
     "tailwindcss": "^4.0.1"
