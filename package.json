@@ -25,7 +25,7 @@
     "disqus-react": "^1.1.7",
     "fuse.js": "^7.1.0",
     "html-entities": "^2.6.0",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^14.1.1",
     "photoswipe": "^5.4.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
