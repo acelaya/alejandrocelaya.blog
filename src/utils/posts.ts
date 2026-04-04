@@ -30,8 +30,8 @@ export type PostMeta = z.infer<typeof postMetaSchema>;
 
 export interface Post {
   id: string;
-  body: string;
-  excerpt: string;
+  body?: string;
+  excerpt?: string;
   slug: string;
   url: string;
   date: string;

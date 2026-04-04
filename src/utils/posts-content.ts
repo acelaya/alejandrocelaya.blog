@@ -24,15 +24,16 @@ const postExcerpt = (body: string) => {
 
 export const getAllPosts = (): Promise<Post[]> => getCollection('posts').then(
   (posts) => [...posts].reverse().map(
-    ({ slug, ...rest }) => {
-      const [year, month, day, ...restOfSlug] = slug.split('-');
+    ({ id, ...rest }) => {
+      const [year, month, day, ...restOfSlug] = id.split('-');
       const url = `/${year}/${month}/${day}/${restOfSlug.join('-')}/`;
       const date = `${year}-${month}-${day}`;
       const formattedDate = format(parse(date, 'y-M-d', new Date()), 'dd MMMM y');
-      const excerpt = postExcerpt(rest.body);
+      const excerpt = rest.body && postExcerpt(rest.body);
 
       return {
-        slug,
+        id,
+        slug: id,
         url,
         date,
         formattedDate,
