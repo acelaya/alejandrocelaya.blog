@@ -23,7 +23,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "disqus-react": "^1.1.7",
-    "fuse.js": "^7.1.0",
+    "fuse.js": "^7.2.0",
     "html-entities": "^2.6.0",
     "markdown-it": "^14.1.1",
     "photoswipe": "^5.4.4",
