@@ -9,7 +9,6 @@ import { SecondaryContainer } from '../components/SecondaryContainer';
 import Link from '../components/Link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { PostComments } from '../components/post/PostComments';
 import Divider from '../components/Divider.astro';
 
 export interface Props {
@@ -62,8 +61,4 @@ const { post, prevPost, nextPost } = Astro.props;
       </li>
     </ul>
   </SecondaryContainer>
-
-  <Container>
-    <PostComments post={post} client:only="react" />
-  </Container>
 </Layout>

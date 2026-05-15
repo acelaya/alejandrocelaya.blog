@@ -1,5 +1,4 @@
 ---
-import { CommentCount } from 'disqus-react';
 import type { Post } from '../utils/posts';
 import PostHeading from '../components/post/PostHeading.astro';
 import { PostTaxonomies } from '../components/post/PostTaxonomies';
@@ -9,7 +8,6 @@ import PostPreview from '../components/post/PostPreview.astro';
 import { Container } from '../components/Container';
 import Divider from '../components/Divider.astro';
 import Link from '../components/Link';
-import { disqusPropsForPost } from '../utils/disqus';
 
 export interface Props{
   posts: Post[];
