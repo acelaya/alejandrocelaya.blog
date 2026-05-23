@@ -169,8 +169,8 @@ Then we need to edit the `Search` component to fetch this itself:
 import Fuse from 'fuse.js';
 import { useState, useMemo } from 'react';
 
--export function Search({ posts }) {
-+export function Search() {
+- export function Search({ posts }) {
++ export function Search() {
 + const [posts, setPosts] = useState<Post[] | null>(null);
   const [searchValue, setSearchValue] = useState('');
 - const fuse = useMemo(() => new Fuse(posts { keys: ['body', 'title'] }), [posts]);
