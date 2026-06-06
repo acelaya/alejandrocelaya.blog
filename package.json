@@ -22,7 +22,7 @@
     "astro-expressive-code": "^0.42.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
-    "fuse.js": "^7.3.0",
+    "fuse.js": "^7.4.2",
     "html-entities": "^2.6.0",
     "markdown-it": "^14.2.0",
     "photoswipe": "^5.4.4",
