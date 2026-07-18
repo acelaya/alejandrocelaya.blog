@@ -17,7 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.3.0",
     "@fortawesome/react-fontawesome": "^3.4.0",
     "@mdx-js/react": "^3.1.1",
-    "@tailwindcss/vite": "^4.3.2",
+    "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.0.6",
     "astro-expressive-code": "^0.44.0",
     "clsx": "^2.1.1",
