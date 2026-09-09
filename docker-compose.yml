@@ -6,7 +6,7 @@ services:
           context: .
           dockerfile: ./dev.Dockerfile
         working_dir: /blog
-        command: /bin/sh -c "npm install && node --run dev"
+        command: /bin/sh -c "rm -f ./.astro/dev.json && npm install && node --run dev"
         volumes:
             - ./:/blog
         ports:

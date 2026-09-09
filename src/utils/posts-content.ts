@@ -17,7 +17,8 @@ const postExcerpt = (body: string) => {
     .slice(0, 6)
     .join(' ')
     // Truncate to 300 characters
-    .substring(0, 300);
+    .substring(0, 300)
+    .trim();
 
   return `${excerpt}…`;
 }
